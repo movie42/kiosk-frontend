@@ -1,0 +1,34 @@
+{
+  "name": "everyone-kiosk",
+  "version": "1.0.0",
+  "description": "every one can use kiosk",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "dev:server": "nodemon --exec babel-node src/server.js",
+    "dev:client": "cd client && npm start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/movie42/kiosk.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/movie42/kiosk/issues"
+  },
+  "homepage": "https://github.com/movie42/kiosk#readme",
+  "dependencies": {
+    "concurrently": "^7.1.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "mongoose": "^6.2.9",
+    "nodemon": "^2.0.15"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.17.8",
+    "@babel/node": "^7.16.8",
+    "@babel/preset-env": "^7.16.11"
+  }
+}
