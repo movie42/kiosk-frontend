@@ -1,25 +1,13 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-
-interface IFetchProps {
-  responseData?: any;
-  success?: boolean;
-}
+import React from "react";
+import { BrowserRouter } from "react-router-dom";
+import Router from "./Routers/Routers";
 
 function App() {
-  const [responseData, setResponseData] = useState<IFetchProps>({});
-
-  const testFetcu = async () => {
-    const response = await fetch("http://localhost:5500");
-    const { data } = await response.json();
-    setResponseData(data);
-  };
-
-  useEffect(() => {
-    testFetcu();
-  }, []);
-
-  return <div className="App">{responseData?.success ? "성공" : "실패"}</div>;
+  return (
+    <BrowserRouter>
+      <Router />
+    </BrowserRouter>
+  );
 }
 
 export default App;
