@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
     "dev:server": "nodemon --exec babel-node src/server.js",
-    "dev:client": "cd client && npm start"
+    "dev:client": "cd ../client && npm start"
   },
   "repository": {
     "type": "git",

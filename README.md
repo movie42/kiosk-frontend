@@ -1,5 +1,8 @@
 # 누구나 키오스크 프로젝트
 
+프로젝트 진행 전에 꼭 읽어보세요!
+다른 문의 사항은 채팅방에 남기거나 이슈로 남겨야할 사항은 이슈로 남겨주세요.
+
 ## 개요
 
 웹을 통해 키오스크를 만들어 언제 어디서 누구나 쉽게 사용할 수 있는 키오스크 웹 어플리케이션을 만듭니다.
@@ -23,39 +26,42 @@ $ git clone https://github.com/movie42/kiosk
 3. clone한 깃 프로젝트 안에서 자신의 브랜치를 만듭니다.
 
 ```shell
-$ git branch <이름>-master
+$ git branch <이름>-main
 ```
 
 4. github project 탭을 확인합니다.
 5. 팀원과 협의하여 자신이 진행할 아이템을 확인합니다.
-6. 프로젝트 시작전에 자신의 master branch에서 branch를 한번 더 만듭니다.
+6. 프로젝트 시작전에 자신의 main branch에서 branch를 한번 더 만듭니다.
 
 ```shell
 $ git branch <issue NO>
 ```
 
-7. project 폴더 안에서 .env 파일을 생성합니다. MONGODB_ATLAS는 PM에게 문의합니다. .env파일은 git에 업데이트 되지 않도록 각별하게 주의해주시기 바랍니다. git 설정이 꼬여서 혹시 .env파일이 git에 올라간 경우 자신의 브런치 내에서 commit log를 이전으로 롤백하고 git 설정을 다시 해주시기 바랍니다.
+7. project/server 폴더 안에서 .env 파일을 생성합니다. MONGODB_ATLAS는 PM에게 문의합니다. .env파일은 git에 업데이트 되지 않도록 각별하게 주의해주시기 바랍니다. git 설정이 꼬여서 혹시 .env파일이 git에 올라간 경우 자신의 브런치 내에서 commit log를 이전으로 롤백하고 git 설정을 다시 해주시기 바랍니다.
 
 ```env
 PORT=5500
 MOGODB_ATLAS=<please request to admin>
 ```
 
-8. project 폴더 안에서 터미널에 다음과 같이 명령어를 입력합니다.
+8. client와 server에서 패키지를 각각 설치합니다.
+
+9. project/server 폴더 안에서 터미널에 다음과 같이 명령어를 입력합니다.
 
 ```
+$ cd server
 $ npm run dev
 ```
 
-프론트와 백앤드 서버가 동시에 돌아갑니다.
+프론트와 백앤드 서버가 동시에 돌아갑니다. 만약 동시에 돌아가게 하고 싶지 않다면 각각 폴더에서 패키지 명령어를 입력합니다.
 
-9.  자신의 코드를 작성합니다.
+10. 자신의 코드를 작성합니다.
 
 - 기능 요구사항을 잘 확인해주세요.
-- 프로젝트 기본적인 디자인은 figma에 초대되면 확인할 수 있습니다.
+- 프로젝트 기본적인 디자인은 [피그마](https://www.figma.com/file/0bv2rseEAQqo8x87zefSyx/everyone-kiosk?node-id=0%3A1)에서 확인하실 수 있습니다.
 
 - Front end는 client 폴더 안에서 작업합니다.
-- Back end는 Project 폴더 안에서 작업합니다.
+- Back end는 server 폴더 안에서 작업합니다.
 
 😄 즐거운 코딩 하세요!
 
@@ -89,7 +95,7 @@ git config commit.template ./path/to/.gitmessage
 # footer 이슈 번호를 등록해주세요.
 
 # 자신에게 알맞은 type을 골라 기록하세요
-# _______________________________________________________
+# _______________________________________
 # feat: 새로운 기능을 추가했을 떄.
 # fix: 버그를 고쳤을 때
 # docs: README와 같은 팀 전체가 공유하고 있는 문서를 수정하거나 새롭게 추가했을 때
@@ -97,7 +103,8 @@ git config commit.template ./path/to/.gitmessage
 # refactor: 코드를 리펙토링 했을 때
 # test: 테스트를 진행했을 때, 또는 테스트 코드를 작성했을 때
 # chore: Updating build tasks, package manager configs, etc; no production code change
-# _________________________
+# _______________________________________
+#
 # Remember me ~
 #   Capitalize the subject line
 #     제목줄은 대문자로 시작한다.
@@ -111,13 +118,13 @@ git config commit.template ./path/to/.gitmessage
 #     본문에는 "어떻게" 보다는 "왜"와 "무엇을" 설명한다.
 #   Can use multiple lines with "-" for bullet points in body
 #     본문에 목록을 나타낼때는 "-"로 시작한다.
-# ------------------
+#
 ```
 
 4. 저장하고 종료합니다.
 5. 설정이 제대로 되었는지 확인하려면 commit을 직접 해보거나 명령어를 입력해서 \[commit\] 부분에 자신이 설정한대로 저장되었는지 확인합니다.
 
-```
+```shell
 // global로 commit message를 입력했다면
 $ git config --global -e
 
@@ -127,6 +134,26 @@ $ git config -e
 
 6. commit 메시지를 작성할 때 commit만 입력합니다. vi 편집기가 열립니다. 만약 vi 편집기가 익숙하지 않다면 [아티클](https://rottk.tistory.com/entry/VS-Code-%EB%A5%BC-Git-%ED%8E%B8%EC%A7%91%EA%B8%B0%EB%A1%9C-%ED%99%9C%EC%9A%A9)을 읽어보고 vscode를 git 기본 편집기로 설정합니다.
 
+7. 커밋합니다.
+
 ```
 $ git commit
 ```
+
+😀 즐거운 코딩 되세요!
+
+## MEET UP
+
+1. 매주 수요일 8시
+
+   - 프로젝트 피드백
+     - 좋은거, 불만 사항, 개선 사항 협의 등
+   - 개인 회고
+     - 자신이 배운거, 겪고 있는 이슈 공유 등
+   - 계획
+     - 현재 진행된 정도에 따라 앞으로 어느정도까지 완성될 수 있을지
+
+2. 매주 일요일 8시
+   - 프로젝트 동작 눈으로 보고 확인하기
+     - 확인되는 버그, 따로 작업한 사항 연결할 부분 찾기 등
+     - 확인된 사항을 바탕으로 역할 정하기
