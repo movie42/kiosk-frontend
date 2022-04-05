@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import styled from "styled-components";
 
@@ -23,7 +23,7 @@ const Header = styled.div`
     font-size: 2.8rem;
     color: ${(props) => props.theme.white};
     border-radius: 0.3rem;
-    background-color: ${(props) => props.theme.neutral};
+    background-color: ${(props) => props.theme.netural};
   }
 `;
 
@@ -31,7 +31,6 @@ const Main = styled.main``;
 
 const AdminLayout = () => {
   const [isLogin, setIsLogin] = useState(false);
-
   return (
     <Wrapper>
       <Header>
