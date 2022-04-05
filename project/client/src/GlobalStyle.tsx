@@ -32,6 +32,7 @@ body {
 	font-size:10px;
 	font-family: "Noto Sans KR", sans-serif;
 	line-height: 1;
+	color:${(props) => props.theme.black}
 }
 ol, ul {
 	list-style: none;
