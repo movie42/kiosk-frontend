@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styled from "styled-components";
+import styled, { StyledComponent } from "styled-components";
 
 const Item: React.FC<
   | IProductItemProps
@@ -36,6 +36,7 @@ interface IProductItemProps {
   price: string | number;
   imageUrl?: string;
   select?: boolean;
+  handler?: (value: any) => any;
 }
 
 const ProductItem: React.FC<IProductItemProps> = ({
@@ -43,11 +44,18 @@ const ProductItem: React.FC<IProductItemProps> = ({
   name,
   price,
   imageUrl,
+  handler,
 }) => {
   const [select, setSelect] = useState(false);
-
   return (
-    <Item data-id={id} onClick={() => setSelect(!select)} select={select}>
+    <Item
+      data-id={id}
+      select={select}
+      onClick={(e) => {
+        handler && handler(e);
+        setSelect(!select);
+      }}
+    >
       <div>
         {imageUrl && <img src={imageUrl} alt={name} />}
         <h3>{name}</h3>
