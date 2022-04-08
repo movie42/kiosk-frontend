@@ -1,5 +1,11 @@
 import React, { useState } from "react";
+import { useRecoilState } from "recoil";
 import styled, { StyledComponent } from "styled-components";
+import { ProductListValues } from "../../mockup/productList";
+import {
+  productListState,
+  selectProductListState,
+} from "../../state/productItemState";
 
 const Item: React.FC<
   | IProductItemProps
@@ -45,15 +51,23 @@ const ProductItem: React.FC<IProductItemProps> = ({
   price,
   imageUrl,
   handler,
+  select,
 }) => {
-  const [select, setSelect] = useState(false);
+  const [productList, setProductList] = useRecoilState(productListState);
   return (
     <Item
       data-id={id}
       select={select}
       onClick={(e) => {
         handler && handler(e);
-        setSelect(!select);
+        setProductList((item) =>
+          [
+            ...item.filter((value) => value.id !== id),
+            ...item
+              .filter((value) => value.id === id)
+              .map((item) => ({ ...item, select: !item.select })),
+          ].sort((a, b) => (a.id > b.id ? 1 : -1)),
+        );
       }}
     >
       <div>
