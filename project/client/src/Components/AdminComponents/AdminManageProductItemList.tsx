@@ -4,7 +4,10 @@ import ProductItem from "./ProductItem";
 import { ProductListValues } from "../../mockup/productList";
 import StateMenuBar from "./StateMenuBar";
 import { useRecoilState } from "recoil";
-import { productListState } from "../../productItemState";
+import {
+  productListState,
+  selectProductListState,
+} from "../../state/productItemState";
 
 const Container = styled.div`
   h1 {
@@ -23,7 +26,9 @@ const Container = styled.div`
 
 const AdminManageProductItemList = () => {
   const [productList, setProductList] = useRecoilState(productListState);
-  const [selectList, setSelectList] = useState<ProductListValues[]>([]);
+  const [selectList, setSelectList] = useRecoilState<ProductListValues[]>(
+    selectProductListState,
+  );
 
   const selectHandler = (event: React.MouseEvent<HTMLLIElement>) => {
     const id = event.currentTarget.dataset.id;
@@ -31,7 +36,7 @@ const AdminManageProductItemList = () => {
     const selectProduct = productList.filter((item) => item.id === Number(id));
 
     id &&
-      setSelectList((prevState: ProductListValues[]) => {
+      setSelectList((prevState) => {
         const itemIndex = prevState.findIndex(
           (value) => value.id === Number(id),
         );
@@ -54,6 +59,7 @@ const AdminManageProductItemList = () => {
                 id={item.id}
                 name={item.name}
                 price={item.price}
+                select={item.select}
                 handler={selectHandler}
               />
             ))}

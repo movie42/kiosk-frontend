@@ -15,7 +15,7 @@ const AdminMenu = () => {
           <Link to="#">스탭 주문 화면</Link>
         </li>
         <li>
-          <Link to="#">메뉴 관리하기</Link>
+          <Link to="/admin/1/manage-product">메뉴 관리하기</Link>
         </li>
       </ul>
     </Wrapper>

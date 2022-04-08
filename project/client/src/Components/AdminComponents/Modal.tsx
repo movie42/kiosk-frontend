@@ -2,7 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { productList, ProductListValues } from "../../mockup/productList";
-import { productListState } from "../../productItemState";
+import {
+  productListState,
+  selectProductListState,
+} from "../../state/productItemState";
 import ProductItem from "./ProductItem";
 
 const Wrapper = styled.div`
@@ -114,11 +117,17 @@ const Modal: React.FC<IModalProps<ProductListValues>> = ({
   modalHeadtitle,
   items,
 }) => {
+  const [selectList, setSelectList] = useRecoilState<ProductListValues[]>(
+    selectProductListState,
+  );
   const [productList, setProductList] = useRecoilState(productListState);
   const [isDeleteState, setDeleteState] = useState(false);
-  const [deleteItems, setDeleteItems] = useState<ProductListValues[]>([]);
 
   const handleModal = () => {
+    setSelectList([]);
+    setProductList((preValue) => [
+      ...preValue.map((value) => ({ ...value, select: false })),
+    ]);
     setModal(false);
   };
 
@@ -126,27 +135,31 @@ const Modal: React.FC<IModalProps<ProductListValues>> = ({
     const compare = (a: { id: number }, b: { id: number }) => a.id === b.id;
     const newProductList = productList.filter(
       (product) =>
-        !deleteItems.some((deleteProduct) => compare(product, deleteProduct)),
+        !selectList
+          .filter((value) => value.select === true)
+          .some((deleteProduct) => compare(product, deleteProduct)),
     );
+
     setProductList(newProductList);
     setModal(false);
+    setSelectList([]);
   };
-  const checkBokChangeHandler = (event: React.MouseEvent<HTMLElement>) => {
+
+  const checkBoxChangeHandler = (event: React.MouseEvent<HTMLElement>) => {
     let id = event.currentTarget.dataset.id;
-    const [unSelectItem] = deleteItems.filter(
+    const [unSelectItem] = selectList.filter(
       (value) => value.id === Number(id),
     );
-    unSelectItem.select = !unSelectItem.select;
-    setDeleteItems((prevState) =>
+    setSelectList((prevState) =>
       [
         ...prevState.filter((value) => value.id !== Number(id)),
-        unSelectItem,
+        { ...unSelectItem, select: !unSelectItem.select },
       ].sort((a, b) => (a.id > b.id ? 1 : -1)),
     );
   };
 
   useEffect(() => {
-    setDeleteItems(
+    setSelectList(
       items
         .map((value) => ({ ...value, select: true }))
         .sort((a, b) => (a.id > b.id ? 1 : -1)),
@@ -167,8 +180,8 @@ const Modal: React.FC<IModalProps<ProductListValues>> = ({
           </>
         )}
         <ul>
-          {deleteItems?.map((item) => (
-            <li key={item.id} data-id={item.id} onClick={checkBokChangeHandler}>
+          {selectList?.map((item) => (
+            <li key={item.id} data-id={item.id} onClick={checkBoxChangeHandler}>
               <SelectContainer select={item.select} />
               <label htmlFor={`${item.id}`}>{item.name}</label>
             </li>
