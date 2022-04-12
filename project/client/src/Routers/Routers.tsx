@@ -13,6 +13,8 @@ const Router = () => {
         <Route path="login" element={<AdminMain />} />
         <Route path=":id">
           <Route path="menu" element={<AdminMenu />} />
+          <Route path="manage-customer-order" />
+          <Route path="manage-crew" />
           <Route
             path="manage-product"
             element={<AdminManageProductItemList />}
@@ -20,6 +22,7 @@ const Router = () => {
           <Route path="add-product" element={<AdminManageProductAddItem />} />
         </Route>
       </Route>
+      <Route path="/order" />
     </Routes>
   );
 };
