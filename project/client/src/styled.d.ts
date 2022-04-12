@@ -14,5 +14,9 @@ declare module "styled-components" {
     "netural-light": string;
     white: string;
     black: string;
+    "brand-color-blue": string;
+    "brand-color-green": string;
+    "brand-color-brown": string;
+    "brand-color-purple": string;
   }
 }
