@@ -1,11 +1,35 @@
-import * as dotenv from "dotenv";
-import app from "./app";
-import "./db";
+import { ApolloServer } from "apollo-server-express";
+import { ApolloServerPluginDrainHttpServer } from "apollo-server-core";
+import express from "express";
+import http from "http";
+import schema from "./schema";
+import { GraphQLSchema } from "graphql";
+import client from "./client";
 
-dotenv.config();
+const startApolloServer = async (schema: GraphQLSchema) => {
+  const app = express();
+  const httpServer = http.createServer(app);
 
-const PORT = process.env.PORT || 5500;
+  const server = new ApolloServer({
+    schema,
+    context: async ({ req }) => {
+      return {
+        client,
+      };
+    },
+    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+  });
 
-app.listen(PORT, () =>
-  console.log(`✅ App is Running : http://localhost:${PORT}`),
-);
+  await server.start();
+
+  server.applyMiddleware({
+    app,
+    path: "/",
+  });
+
+  app.listen(5500);
+
+  console.log("http://localhost:5500");
+};
+
+startApolloServer(schema);
