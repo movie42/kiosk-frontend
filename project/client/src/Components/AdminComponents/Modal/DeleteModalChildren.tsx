@@ -1,49 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import styled from "styled-components";
-import { productList, ProductListValues } from "../../mockup/productList";
+import { ProductListValues } from "../../../mockup/productList";
 import {
   productListState,
   selectProductListState,
-} from "../../state/productItemState";
-import ProductItem from "./ProductItem";
+} from "../../../state/productItemState";
+import styled from "styled-components";
 
 const Wrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 1;
-`;
-const ModalContainer = styled.div`
-  position: relative;
-  width: 40rem;
-  height: 40rem;
-  background-color: ${(props) => props.theme.white};
-  border-radius: 1rem;
-  overflow-y: auto;
-  padding: 2rem;
-  h1 {
-    font-size: 5rem;
-    font-weight: bolder;
-  }
-
-  h2 {
-    font-size: 2.3rem;
-    word-break: keep-all;
-    line-height: 1.2;
-    margin-top: 0.7rem;
-  }
-
-  p {
-    font-size: 1.6rem;
-    margin-top: 0.7rem;
-  }
-
   ul {
     margin-top: 1.5rem;
     li {
@@ -95,33 +59,18 @@ const SelectContainer: React.FC<{ select: boolean | undefined }> = styled.span<{
   border-radius: 50%;
 `;
 
-const ModalWrapper = styled.div`
-  position: absolute;
-  z-index: -1;
-  top: 0;
-  width: 100vw;
-  height: 100vh;
-  opacity: 0.85;
-  background-color: ${(props) => props.theme.black};
-  overflow: hidden;
-`;
-
-interface IModalProps<T> {
-  modalHeadtitle: string;
+interface IDeleteModalChildrenProps<T> {
   setModal: React.Dispatch<React.SetStateAction<boolean>>;
-  items: Array<T>;
+  items?: Array<T>;
 }
 
-const Modal: React.FC<IModalProps<ProductListValues>> = ({
-  setModal,
-  modalHeadtitle,
-  items,
-}) => {
+const DeleteModalChildren: React.FC<
+  IDeleteModalChildrenProps<ProductListValues>
+> = ({ setModal, items }) => {
   const [selectList, setSelectList] = useRecoilState<ProductListValues[]>(
     selectProductListState,
   );
   const [productList, setProductList] = useRecoilState(productListState);
-  const [isDeleteState, setDeleteState] = useState(false);
 
   const handleModal = () => {
     setSelectList([]);
@@ -159,26 +108,20 @@ const Modal: React.FC<IModalProps<ProductListValues>> = ({
   };
 
   useEffect(() => {
-    setSelectList(
-      items
-        .map((value) => ({ ...value, select: true }))
-        .sort((a, b) => (a.id > b.id ? 1 : -1)),
-    );
+    if (items) {
+      setSelectList(
+        items
+          .map((value) => ({ ...value, select: true }))
+          .sort((a, b) => (a.id > b.id ? 1 : -1)),
+      );
+    }
   }, []);
 
   return (
-    <Wrapper>
-      <ModalContainer>
-        <h1>{modalHeadtitle}</h1>
-        {!isDeleteState && (
-          <>
-            <h2>
-              삭제 버튼을 누르면 복구할 수 없습니다. 삭제하기 전에 선택한 상품을
-              확인하세요.
-            </h2>
-            <p>상품 이름을 클릭하면 삭제 여부를 다시 선택할 수 있습니다.</p>
-          </>
-        )}
+    <>
+      <h1>삭제하기</h1>
+      <h2>상품을 삭제하면 복구할 수 없습니다.</h2>
+      <Wrapper>
         <ul>
           {selectList?.map((item) => (
             <li key={item.id} data-id={item.id} onClick={checkBoxChangeHandler}>
@@ -191,10 +134,9 @@ const Modal: React.FC<IModalProps<ProductListValues>> = ({
           <button onClick={handleModal}>돌아가기</button>
           <button onClick={selectDeleteItemsSubmitHandler}>삭제하기</button>
         </div>
-      </ModalContainer>
-      <ModalWrapper />
-    </Wrapper>
+      </Wrapper>
+    </>
   );
 };
 
-export default Modal;
+export default DeleteModalChildren;

@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { ProductListValues } from "../../mockup/productList";
-import Modal from "./Modal";
+import DeleteModalChildren from "./Modal/DeleteModalChildren";
+import Modal from "./Modal/Modal";
 
 const MenuBarContainer = styled.div`
   display: flex;
@@ -47,11 +48,9 @@ const StateMenuBar: React.FC<ISateMenuBarProps> = ({ selectItems }) => {
   return (
     <>
       {isModal && (
-        <Modal
-          modalHeadtitle="삭제하기"
-          setModal={setModal}
-          items={selectItems}
-        />
+        <Modal>
+          <DeleteModalChildren setModal={setModal} items={selectItems} />
+        </Modal>
       )}
       <MenuBarContainer>
         <h2>{selectItems.length}개의 상품을 삭제하려면 버튼을 누르세요.</h2>
