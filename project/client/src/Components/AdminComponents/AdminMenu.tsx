@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
+import Modal from "./Modal/Modal";
+import IsOpenModalChildren from "./Modal/IsOpenModalChildren";
 
 const Wrapper = styled.div`
   h2 {
@@ -130,10 +132,14 @@ interface IAdminMenuProps {
 
 const AdminMenu = () => {
   const [toggleState, setToggleState] = useState(false);
+  const [isModal, setIsModal] = useState(false);
+  const [confirm, setConfirm] = useState(false);
   const navigate = useNavigate();
+
   const toggleHandler = () => {
-    setToggleState(!toggleState);
+    setIsModal(true);
   };
+
   const linkToCustomerWindowHandler = (
     e: React.MouseEvent<HTMLButtonElement>,
   ) => {
@@ -147,22 +153,38 @@ const AdminMenu = () => {
       navigate("manage-customer-order");
     }
     if (linkName === "product-manage") {
-      navigate("manage-product");
+      navigate("/admin/:id/manage-product");
     }
     if (linkName === "crew-manage") {
       navigate("manage-crew");
     }
   };
 
+  useEffect(() => {
+    if (confirm) {
+      setToggleState((preValue) => !preValue);
+      setConfirm(false);
+    }
+  }, [confirm]);
+
   return (
     <Wrapper>
+      {isModal && (
+        <Modal>
+          <IsOpenModalChildren
+            toggleState={toggleState}
+            setModal={setIsModal}
+            setConfirm={setConfirm}
+          />
+        </Modal>
+      )}
       <h2>원하는 기능을 선택하세요.</h2>
       <Menu>
         <MenuButtonWrapper>
           {toggleState ? (
             <p>가게를 닫으려면 버튼을 누르세요.</p>
           ) : (
-            <p>가게를 열여면 버튼을 누르세요.</p>
+            <p>가게를 열려면 버튼을 누르세요.</p>
           )}
           <ToggleButton
             isActive={toggleState}
