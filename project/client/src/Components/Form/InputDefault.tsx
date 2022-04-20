@@ -1,7 +1,7 @@
 import React from "react";
 import { RegisterOptions, useForm, UseFormRegister } from "react-hook-form";
 import styled from "styled-components";
-import ErrorMessage from "./ErrorMessage";
+import Label from "./LabelDefault";
 
 const InputContainer = styled.div`
   margin-bottom: 1.2rem;
@@ -22,38 +22,30 @@ const InputContainer = styled.div`
   }
 `;
 
-interface IInputProps {
-  label: React.DetailedHTMLProps<
-    React.LabelHTMLAttributes<HTMLLabelElement>,
-    HTMLLabelElement
-  >;
-  labelText: string;
-  input: React.DetailedHTMLProps<
+interface IInputProps
+  extends React.DetailedHTMLProps<
     React.InputHTMLAttributes<HTMLInputElement>,
     HTMLInputElement
-  >;
+  > {
   register?: any;
   registerOptions?: RegisterOptions;
   error: string | undefined | null;
 }
 
-const AdminInput = ({
-  label,
-  labelText,
-  input,
+const InputDefault = ({
   register,
   registerOptions,
   error,
+  ...props
 }: IInputProps) => {
   return (
     <div>
       <InputContainer>
-        <label {...label}>{labelText}</label>
-        <input {...input} {...register(input.name, registerOptions)} />
+        <input {...props} {...register(props.name, registerOptions)} />
       </InputContainer>
-      {error && <ErrorMessage error={error} />}
+      {error && <Label text={error} />}
     </div>
   );
 };
 
-export default AdminInput;
+export default InputDefault;

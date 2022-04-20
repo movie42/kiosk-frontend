@@ -1,7 +1,7 @@
 import React from "react";
 import { RegisterOptions } from "react-hook-form";
 import styled from "styled-components";
-import ErrorMessage from "./ErrorMessage";
+import Label from "./LabelDefault";
 
 const TextAreaContainer = styled.div`
   margin-bottom: 1.2rem;
@@ -27,37 +27,29 @@ const TextAreaContainer = styled.div`
   }
 `;
 
-interface IAdminTextAreaProps {
-  label: React.DetailedHTMLProps<
-    React.LabelHTMLAttributes<HTMLLabelElement>,
-    HTMLLabelElement
-  >;
-  labelText: string;
-  textarea: React.DetailedHTMLProps<
+interface ITextAreaProps
+  extends React.DetailedHTMLProps<
     React.TextareaHTMLAttributes<HTMLTextAreaElement>,
     HTMLTextAreaElement
-  >;
+  > {
   register?: any;
   registerOptions?: RegisterOptions;
   error: string;
 }
 
 const TextareaDefault = ({
-  label,
-  labelText,
-  textarea,
   register,
   registerOptions,
   error,
-}: IAdminTextAreaProps) => {
+  ...props
+}: ITextAreaProps) => {
   return (
     <TextAreaContainer>
-      <label {...label}>{labelText}</label>
       <textarea
-        {...textarea}
-        {...register(textarea?.name, registerOptions)}
+        {...props}
+        {...register(props.name, registerOptions)}
       ></textarea>
-      {error && <ErrorMessage error={error} />}
+      {error && <Label text={error} />}
     </TextAreaContainer>
   );
 };
