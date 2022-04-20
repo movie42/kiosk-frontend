@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { Body1, Headline1, Headline2 } from "../../mixin";
 
 const Wrapper = styled.div`
   display: flex;
@@ -16,22 +17,20 @@ const Wrapper = styled.div`
 const ModalContainer: React.FC<IModalProps> = styled.div<IModalProps>`
   width: 40rem;
   height: ${(props) => props.strach && "40rem"};
-  background-color: ${(props) => props.theme.white};
+  background-color: ${(props) => props.theme.color.background100};
   border-radius: 1rem;
   overflow-y: auto;
   padding: 2rem;
   h1 {
-    font-size: 4rem;
-    font-weight: bolder;
+    ${Headline1};
   }
   h2 {
-    font-size: 2.3rem;
+    ${Headline2};
     word-break: keep-all;
-    line-height: 1.2;
     margin-top: 0.7rem;
   }
   p {
-    font-size: 1.6rem;
+    ${Body1};
     margin-top: 0.7rem;
   }
 `;
@@ -43,7 +42,7 @@ const ModalWrapper = styled.div`
   width: 100%;
   height: 100%;
   opacity: 0.85;
-  background-color: ${(props) => props.theme.black};
+  background-color: ${(props) => props.theme.color.background100};
   overflow: hidden;
 `;
 

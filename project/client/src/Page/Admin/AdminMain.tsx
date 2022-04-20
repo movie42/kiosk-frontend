@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
-import AdminInput from "./AdminInput";
-import ErrorMessage from "../ErrorMessage";
+import AdminInput from "../../Components/Form/InputDefault";
+import ErrorMessage from "../../Components/Form/ErrorMessage";
 import { userInfo } from "../../mockup/userInfo";
+import { Headline2 } from "../../mixin";
 
 const Wrapper = styled.div`
   height: 80vh;
@@ -12,8 +13,7 @@ const Wrapper = styled.div`
 `;
 
 const Title = styled.h2`
-  padding: 1.5rem 0;
-  font-size: 3rem;
+  ${Headline2};
 `;
 
 const FormContainer = styled.div`
@@ -48,10 +48,10 @@ const ActionContainer = styled.div`
     padding: 0.7rem 2rem;
     border: 0;
     font-size: 2.8rem;
-    color: ${(props) => props.theme.white};
+    color: ${(props) => props.theme.color.fontColorWhite};
     border-radius: 0.3rem;
     line-height: 2.8rem;
-    background-color: ${(props) => props.theme.success};
+    background-color: ${(props) => props.theme.color.primary600};
   }
 `;
 

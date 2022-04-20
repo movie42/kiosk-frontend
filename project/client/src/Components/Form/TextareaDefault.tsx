@@ -1,13 +1,12 @@
 import React from "react";
 import { RegisterOptions } from "react-hook-form";
-import { text } from "stream/consumers";
 import styled from "styled-components";
-import ErrorMessage from "../ErrorMessage";
+import ErrorMessage from "./ErrorMessage";
 
 const TextAreaContainer = styled.div`
   margin-bottom: 1.2rem;
   padding: 0.6rem;
-  border-bottom: 1px solid ${(props) => props.theme.netural};
+  border-bottom: 1px solid ${(props) => props.theme.color.gray200};
   width: 100%;
   overflow-x: hidden;
   overflow-y: auto;
@@ -43,7 +42,7 @@ interface IAdminTextAreaProps {
   error: string;
 }
 
-const AdminTextArea = ({
+const TextareaDefault = ({
   label,
   labelText,
   textarea,
@@ -63,4 +62,4 @@ const AdminTextArea = ({
   );
 };
 
-export default AdminTextArea;
+export default TextareaDefault;

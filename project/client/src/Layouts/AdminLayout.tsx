@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import styled from "styled-components";
+import { Headline1 } from "../mixin";
 
 const Wrapper = styled.div`
   padding: 1rem 2rem;
@@ -13,17 +14,16 @@ const Header = styled.div`
   width: 100%;
   height: 5rem;
   h1 {
-    font-size: 5rem;
-    font-weight: 900;
+    ${Headline1}
   }
   button {
     cursor: pointer;
     padding: 0.5rem 2rem;
     border: 0;
     font-size: 2.8rem;
-    color: ${(props) => props.theme.white};
+    color: ${(props) => props.theme.color.fontColorWhite};
     border-radius: 0.3rem;
-    background-color: ${(props) => props.theme.netural};
+    background-color: ${(props) => props.theme.color.gray300};
   }
 `;
 

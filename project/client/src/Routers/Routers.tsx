@@ -1,9 +1,9 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import AdminMain from "../Components/AdminComponents/AdminMain";
-import AdminManageProductAddItem from "../Components/AdminComponents/AdminManageProductAddItem";
-import AdminManageProductItemList from "../Components/AdminComponents/AdminManageProductItemList";
-import AdminMenu from "../Components/AdminComponents/AdminMenu";
+import AdminMain from "../Page/Admin/AdminMain";
+import AdminManageProductAddItem from "../Page/Admin/AdminManageProductAddItem";
+import AdminManageProductItemList from "../Page/Admin/AdminManageProductItemList";
+import AdminMenu from "../Page/Admin/AdminMenu";
 import AdminLayout from "../Layouts/AdminLayout";
 
 const Router = () => {
