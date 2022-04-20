@@ -2,8 +2,8 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import AdminInput from "./AdminInput";
-import AdminTextArea from "./AdminTextArea";
+import AdminInput from "../../Components/Form/InputDefault";
+import Textarea from "../../Components/Form/TextareaDefault";
 
 const Container = styled.div`
   button.add-product-button {
@@ -11,20 +11,20 @@ const Container = styled.div`
     padding: 0.7rem 2rem;
     border: 0;
     font-size: 2rem;
-    color: ${(props) => props.theme.white};
+    color: ${(props) => props.theme.color.fontColorWhite};
     border-radius: 0.3rem;
     line-height: 2.8rem;
-    background-color: ${(props) => props.theme.success};
+    background-color: ${(props) => props.theme.color.primary600};
   }
   button.cancel-product-button {
     cursor: pointer;
     padding: 0.7rem 2rem;
     border: 0;
     font-size: 2rem;
-    color: ${(props) => props.theme.white};
+    color: ${(props) => props.theme.color.fontColorWhite};
     border-radius: 0.3rem;
     line-height: 2.8rem;
-    background-color: ${(props) => props.theme.success};
+    background-color: ${(props) => props.theme.color.primary600};
   }
 `;
 
@@ -67,7 +67,7 @@ const AdminManageProductAddItem = () => {
           registerOptions={{ required: "상품의 가격은 꼭 입력해야해요" }}
           error={errors.productPrice?.message}
         />
-        <AdminTextArea
+        <Textarea
           label={{ htmlFor: "productInfomation" }}
           labelText="상품 가격"
           textarea={{ name: "productInfomation", id: "productInfomation" }}

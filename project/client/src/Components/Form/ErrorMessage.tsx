@@ -7,7 +7,7 @@ const ErrorMessageContainer = styled.div`
   label {
     font-size: 1.2rem;
     text-align: left;
-    color: ${(props) => props.theme["warning-dark"]};
+    color: ${(props) => props.theme.color.error500};
     font-weight: 500;
   }
 `;

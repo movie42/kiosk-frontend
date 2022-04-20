@@ -6,6 +6,7 @@ import {
   productListState,
   selectProductListState,
 } from "../../state/productItemState";
+import { SelectOption } from "./AdminManageProductItemList";
 
 const Item: React.FC<
   | IProductItemProps
@@ -17,7 +18,11 @@ const Item: React.FC<
   padding: 1rem;
   border-radius: 0.3rem;
   background-color: ${(props) =>
-    props.select ? props.theme.warning : props.theme.netural};
+    props.select
+      ? props.selectOption?.option === "delete"
+        ? props.theme.color.error500
+        : props.theme.color.secondary600
+      : props.theme.color.gray300};
 
   div {
     display: grid;
@@ -42,6 +47,7 @@ interface IProductItemProps {
   price: string | number;
   imageUrl?: string;
   select?: boolean;
+  selectOption?: SelectOption;
   handler?: (value: any) => any;
 }
 
@@ -52,13 +58,19 @@ const ProductItem: React.FC<IProductItemProps> = ({
   imageUrl,
   handler,
   select,
+  selectOption,
 }) => {
   const [productList, setProductList] = useRecoilState(productListState);
+
   return (
     <Item
       data-id={id}
       select={select}
+      selectOption={selectOption}
       onClick={(e) => {
+        if (selectOption?.option === "none") {
+          return;
+        }
         handler && handler(e);
         setProductList((item) =>
           [
