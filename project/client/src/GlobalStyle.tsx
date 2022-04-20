@@ -1,7 +1,7 @@
 import { createGlobalStyle } from "styled-components";
 
 export const GlobalStyle = createGlobalStyle`
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;700;900&display=swap');
 
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -32,7 +32,7 @@ body {
 	font-size:10px;
 	font-family: "Noto Sans KR", sans-serif;
 	line-height: 1;
-	color:${(props) => props.theme.black}
+	color:${(props) => props.theme.color.fontColorBlack};
 }
 ol, ul {
 	list-style: none;
