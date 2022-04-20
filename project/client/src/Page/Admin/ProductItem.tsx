@@ -20,9 +20,9 @@ const Item: React.FC<
   background-color: ${(props) =>
     props.select
       ? props.selectOption?.option === "delete"
-        ? props.theme.warning
-        : props.theme["brand-color-green"]
-      : props.theme.netural};
+        ? props.theme.color.error500
+        : props.theme.color.secondary600
+      : props.theme.color.gray300};
 
   div {
     display: grid;

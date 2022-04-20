@@ -37,13 +37,13 @@ const ManageOptionContainer = styled.div`
   }
 `;
 const CreateProductButton = styled(ButtonDefaultStyle)`
-  background-color: ${(props) => props.theme.success};
+  background-color: ${(props) => props.theme.color.primary600};
 `;
 const DeleteProductButton = styled(ButtonDefaultStyle)`
-  background-color: ${(props) => props.theme.warning};
+  background-color: ${(props) => props.theme.color.error500};
 `;
 const UpdateProductButton = styled(ButtonDefaultStyle)`
-  background-color: ${(props) => props.theme.success};
+  background-color: ${(props) => props.theme.color.primary600};
 `;
 
 export interface SelectOption {

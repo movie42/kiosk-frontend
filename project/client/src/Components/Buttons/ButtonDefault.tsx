@@ -7,8 +7,8 @@ const Button = styled.button`
   border: 0;
   padding: 0.8rem 1.3rem;
   border-radius: 0.5rem;
-  color: ${(props) => props.theme.white};
-  background-color: ${(props) => props.theme.netural};
+  color: ${(props) => props.theme.color.fontColorWhite};
+  background-color: ${(props) => props.theme.color.gray300};
 `;
 
 interface IButtonDefaultStyle extends React.HTMLAttributes<HTMLButtonElement> {

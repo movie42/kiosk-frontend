@@ -20,13 +20,13 @@ const MenuBarContainer = styled.div`
   left: 0;
   right: 0;
   padding: 0 2rem;
-  background-color: ${(props) => props.theme.black};
+  background-color: ${(props) => props.theme.color.backgroundBlack100};
   height: 6rem;
 
   h2 {
     font-size: 2.2rem;
     font-weight: bold;
-    color: ${(props) => props.theme.white};
+    color: ${(props) => props.theme.color.fontColorWhite};
   }
 
   button {
@@ -34,10 +34,10 @@ const MenuBarContainer = styled.div`
     padding: 0.7rem 2rem;
     border: 0;
     font-size: 2.4rem;
-    color: ${(props) => props.theme.white};
+    color: ${(props) => props.theme.color.fontColorWhite};
     border-radius: 0.3rem;
     line-height: 2.8rem;
-    background-color: ${(props) => props.theme.warning};
+    background-color: ${(props) => props.theme.color.error500};
   }
 `;
 

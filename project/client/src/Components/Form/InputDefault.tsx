@@ -6,7 +6,7 @@ import ErrorMessage from "./ErrorMessage";
 const InputContainer = styled.div`
   margin-bottom: 1.2rem;
   padding: 0.6rem;
-  border-bottom: 1px solid ${(props) => props.theme.netural};
+  border-bottom: 1px solid ${(props) => props.theme.color.gray200};
   width: 100%;
   label {
     font-weight: bold;

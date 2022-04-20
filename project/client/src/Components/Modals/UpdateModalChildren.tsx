@@ -28,7 +28,7 @@ const FormContainer = styled.div`
     .product-form-container {
       box-sizing: border-box;
       padding: 1rem 1rem;
-      border: 1px solid ${(props) => props.theme.netural};
+      border: 1px solid ${(props) => props.theme.color.gray200};
       display: flex;
       flex-direction: column;
       margin-bottom: 1rem;
@@ -58,13 +58,13 @@ const ButtonContainer = styled.div`
     border: 0;
     padding: 0.8rem 1.3rem;
     border-radius: 0.5rem;
-    color: ${(props) => props.theme.white};
+    color: ${(props) => props.theme.color.fontColorWhite};
     &:nth-child(1) {
-      background-color: ${(props) => props.theme.netural};
+      background-color: ${(props) => props.theme.color.gray200};
     }
 
     &:nth-child(2) {
-      background-color: ${(props) => props.theme["warning-dark"]};
+      background-color: ${(props) => props.theme.color.error500};
     }
 
     &:not(:first-child) {
