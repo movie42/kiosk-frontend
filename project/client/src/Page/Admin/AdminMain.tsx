@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
-import AdminInput from "./AdminInput";
-import ErrorMessage from "../ErrorMessage";
+import AdminInput from "../../Components/Form/InputDefault";
+import ErrorMessage from "../../Components/Form/ErrorMessage";
 import { userInfo } from "../../mockup/userInfo";
 
 const Wrapper = styled.div`

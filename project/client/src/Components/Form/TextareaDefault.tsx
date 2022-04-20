@@ -2,7 +2,7 @@ import React from "react";
 import { RegisterOptions } from "react-hook-form";
 import { text } from "stream/consumers";
 import styled from "styled-components";
-import ErrorMessage from "../ErrorMessage";
+import ErrorMessage from "./ErrorMessage";
 
 const TextAreaContainer = styled.div`
   margin-bottom: 1.2rem;

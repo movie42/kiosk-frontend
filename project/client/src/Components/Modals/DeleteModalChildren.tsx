@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import { ProductListValues } from "../../../mockup/productList";
+import { ProductListValues } from "../../mockup/productList";
 import {
   productListState,
   selectProductListState,
-} from "../../../state/productItemState";
+} from "../../state/productItemState";
 import styled from "styled-components";
+import { SelectOption } from "../../Page/Admin/AdminManageProductItemList";
 
 const Wrapper = styled.div`
   ul {
@@ -61,12 +62,13 @@ const SelectContainer: React.FC<{ select: boolean | undefined }> = styled.span<{
 
 interface IDeleteModalChildrenProps<T> {
   setModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setSelectOption: React.Dispatch<React.SetStateAction<SelectOption>>;
   items?: Array<T>;
 }
 
 const DeleteModalChildren: React.FC<
   IDeleteModalChildrenProps<ProductListValues>
-> = ({ setModal, items }) => {
+> = ({ setModal, items, setSelectOption }) => {
   const [selectList, setSelectList] = useRecoilState<ProductListValues[]>(
     selectProductListState,
   );
@@ -78,6 +80,7 @@ const DeleteModalChildren: React.FC<
       ...preValue.map((value) => ({ ...value, select: false })),
     ]);
     setModal(false);
+    setSelectOption({ option: "none" });
   };
 
   const selectDeleteItemsSubmitHandler = () => {

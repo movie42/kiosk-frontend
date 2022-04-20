@@ -1,7 +1,7 @@
 import React from "react";
 import { RegisterOptions, useForm, UseFormRegister } from "react-hook-form";
 import styled from "styled-components";
-import ErrorMessage from "../ErrorMessage";
+import ErrorMessage from "./ErrorMessage";
 
 const InputContainer = styled.div`
   margin-bottom: 1.2rem;

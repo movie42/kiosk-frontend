@@ -2,8 +2,8 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import AdminInput from "./AdminInput";
-import AdminTextArea from "./AdminTextArea";
+import AdminInput from "../../Components/Form/InputDefault";
+import AdminTextArea from "../../Components/Form/TextareaDefault";
 
 const Container = styled.div`
   button.add-product-button {
