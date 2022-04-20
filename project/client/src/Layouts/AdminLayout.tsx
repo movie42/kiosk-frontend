@@ -35,7 +35,7 @@ const AdminLayout = () => {
     <Wrapper>
       <Header>
         <h1>누구나 키오스크</h1>
-        {isLogin && <button>로그아웃</button>}
+        {isLogin && <button onClick={() => setIsLogin(false)}>로그아웃</button>}
       </Header>
       <Main>
         <Outlet />

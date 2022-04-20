@@ -13,4 +13,8 @@ export const theme: DefaultTheme = {
   "netural-light": "#E2E2E2",
   white: "#ffffff",
   black: "#2E2E2E",
+  "brand-color-blue": "#323FB5",
+  "brand-color-green": "#00984F",
+  "brand-color-brown": "#984900",
+  "brand-color-purple": "#5E00BC",
 };
