@@ -1,15 +1,16 @@
 import React, { useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { ProductListValues } from "../../mockup/productList";
 import {
   productListState,
+  selectOptionState,
   selectProductListState,
 } from "../../state/productItemState";
 import { SelectOption } from "./AdminManageProductItemList";
 import Modal from "../../Components/Modals/Modal";
-import DeleteModalChildren from "../../Components/Modals/DeleteModalChildren";
-import UpdateModalChildren from "../../Components/Modals/UpdateModalChildren";
+import DeleteModalChildren from "./Modal/DeleteModalChildren";
+import UpdateModalChildren from "./Modal/UpdateModalChildren";
 
 const MenuBarContainer = styled.div`
   display: flex;
@@ -44,14 +45,13 @@ const MenuBarContainer = styled.div`
 interface ISateMenuBarProps {
   selectItems: Array<ProductListValues>;
   selectOption: SelectOption;
-  setSelectOption: React.Dispatch<React.SetStateAction<SelectOption>>;
 }
 
 const StateMenuBar: React.FC<ISateMenuBarProps> = ({
   selectItems,
   selectOption,
-  setSelectOption,
 }) => {
+  const setSelectOption = useSetRecoilState(selectOptionState);
   const [isModal, setModal] = useState(false);
   const [productList, setProductList] = useRecoilState(productListState);
   const [selectList, setSelectList] = useRecoilState<ProductListValues[]>(
@@ -75,19 +75,11 @@ const StateMenuBar: React.FC<ISateMenuBarProps> = ({
       {isModal &&
         (selectOption.option === "delete" ? (
           <Modal strach={true}>
-            <DeleteModalChildren
-              setModal={setModal}
-              setSelectOption={setSelectOption}
-              items={selectItems}
-            />
+            <DeleteModalChildren setModal={setModal} items={selectItems} />
           </Modal>
         ) : (
           <Modal strach={true}>
-            <UpdateModalChildren
-              setModal={setModal}
-              setSelectOption={setSelectOption}
-              items={selectItems}
-            />
+            <UpdateModalChildren setModal={setModal} items={selectItems} />
           </Modal>
         ))}
 

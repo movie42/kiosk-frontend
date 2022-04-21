@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-const Button = styled.button`
+const Button: React.FC<IButtonDefaultStyle> = styled.button<IButtonDefaultStyle>`
   cursor: pointer;
   font-size: 2rem;
   border: 0;
@@ -11,11 +11,18 @@ const Button = styled.button`
   background-color: ${(props) => props.theme.color.gray300};
 `;
 
-interface IButtonDefaultStyle extends React.HTMLAttributes<HTMLButtonElement> {
+interface IButtonDefaultStyle
+  extends React.DetailedHTMLProps<
+    React.ButtonHTMLAttributes<HTMLButtonElement>,
+    HTMLButtonElement
+  > {
   children: JSX.Element | string;
 }
 
-const ButtonDefaultStyle = ({ children, ...props }: IButtonDefaultStyle) => {
+const ButtonDefaultStyle: React.FC<IButtonDefaultStyle> = ({
+  children,
+  ...props
+}) => {
   return <Button {...props}>{children}</Button>;
 };
 
