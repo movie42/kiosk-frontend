@@ -7,6 +7,7 @@ import { useRecoilState } from "recoil";
 import ButtonDefaultStyle from "../../Components/Buttons/ButtonDefault";
 import {
   productListState,
+  selectOptionState,
   selectProductListState,
 } from "../../state/productItemState";
 import { useNavigate } from "react-router-dom";
@@ -52,9 +53,7 @@ export interface SelectOption {
 
 const AdminManageProductItemList = () => {
   const navigate = useNavigate();
-  const [selectOption, setSelectOption] = useState<SelectOption>({
-    option: "none",
-  });
+  const [selectOption, setSelectOption] = useRecoilState(selectOptionState);
   const [productList, setProductList] = useRecoilState(productListState);
   const [selectList, setSelectList] = useRecoilState<ProductListValues[]>(
     selectProductListState,
@@ -127,11 +126,7 @@ const AdminManageProductItemList = () => {
         </ul>
       </Container>
       {selectOption.option !== "none" && (
-        <StateMenuBar
-          selectOption={selectOption}
-          setSelectOption={setSelectOption}
-          selectItems={selectList}
-        />
+        <StateMenuBar selectOption={selectOption} selectItems={selectList} />
       )}
     </>
   );
