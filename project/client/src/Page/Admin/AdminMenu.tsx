@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import Modal from "../../Components/Modals/Modal";
-import IsOpenModalChildren from "../../Components/Modals/IsOpenModalChildren";
+import IsOpenModalChildren from "./Modal/IsOpenModalChildren";
 
 const Wrapper = styled.div`
   h2 {

@@ -14,7 +14,6 @@ const Router = () => {
         <Route path=":id">
           <Route path="menu" element={<AdminMenu />} />
           <Route path="manage-customer-order" />
-          <Route path="manage-crew" />
           <Route
             path="manage-product"
             element={<AdminManageProductItemList />}

@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import ButtonDefaultStyle from "../Buttons/ButtonDefault";
+import ButtonDefaultStyle from "../../../Components/Buttons/ButtonDefault";
 
 const Wrapper = styled.div`
   display: grid;

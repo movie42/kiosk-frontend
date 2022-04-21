@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
-import { ProductListValues } from "../../mockup/productList";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { ProductListValues } from "../../../mockup/productList";
 import {
   productListState,
+  selectOptionState,
   selectProductListState,
-} from "../../state/productItemState";
+} from "../../../state/productItemState";
 import styled from "styled-components";
-import { SelectOption } from "../../Page/Admin/AdminManageProductItemList";
+import { SelectOption } from "../AdminManageProductItemList";
 
 const Wrapper = styled.div`
   ul {
@@ -64,13 +65,13 @@ const SelectContainer: React.FC<{ select: boolean | undefined }> = styled.span<{
 
 interface IDeleteModalChildrenProps<T> {
   setModal: React.Dispatch<React.SetStateAction<boolean>>;
-  setSelectOption: React.Dispatch<React.SetStateAction<SelectOption>>;
   items?: Array<T>;
 }
 
 const DeleteModalChildren: React.FC<
   IDeleteModalChildrenProps<ProductListValues>
-> = ({ setModal, items, setSelectOption }) => {
+> = ({ setModal, items }) => {
+  const setSelectOption = useSetRecoilState(selectOptionState);
   const [selectList, setSelectList] = useRecoilState<ProductListValues[]>(
     selectProductListState,
   );
@@ -93,10 +94,10 @@ const DeleteModalChildren: React.FC<
           .filter((value) => value.select === true)
           .some((deleteProduct) => compare(product, deleteProduct)),
     );
-
     setProductList(newProductList);
     setModal(false);
     setSelectList([]);
+    setSelectOption({ option: "none" });
   };
 
   const checkBoxChangeHandler = (event: React.MouseEvent<HTMLElement>) => {

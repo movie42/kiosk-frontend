@@ -4,7 +4,7 @@ export interface ProductListValues {
   name: string;
   price: number;
   option?: string[];
-  desc?: "";
+  desc?: string;
   select?: boolean;
 }
 
