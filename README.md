@@ -142,6 +142,80 @@ $ git commit
 
 😀 즐거운 코딩 되세요!
 
+## Style Guide
+
+### 🌈Color
+
+컬러를 지정할 때 지정된 컬러를 사용해주세요.
+
+Primary = primary600
+Primary Hover = primary800
+Primary Active = primary400
+Secondary = secondary500
+Secondary Hover = secondary700
+Secondary Active = secondary300
+Error, Warn = error500
+Error, Warn Hover = error800
+Error, Warn Active = error300
+Line default = gray200
+Button default = gray 300
+Background default = background100
+Transparent Background default = backgroundBlack70
+Font Color default = fontColorBlack
+
+색상이 지정되지 않은 버튼 등을 구분해야할 때 Primary와 Secondary에서 결정해주세요. Color Step을 300의 간격으로 설정해주세요.
+
+error100~900은 경고나 에러에만 사용하려고 합니다. UI가 경고의 의미가 아닌 것은 사용하지 않습니다.
+
+### Font
+
+1. Basic Font
+
+   - Noto Sans KR
+
+2. Default Font Style
+
+변경하고 싶은 사항이 있으면 언제든지 알려주세요!
+
+- mixin.ts
+
+```ts
+export const Headline1 = styled.h1`
+  font-size: 5rem;
+  font-weight: 900;
+  line-height: 2;
+  letter-spacing: -0.2;
+`;
+
+export const Headline2 = styled.h2`
+  font-size: 3rem;
+  font-weight: 900;
+  line-height: 2;
+  letter-spacing: -0.2;
+`;
+
+export const SubTitle1 = styled.h3`
+  font-size: 2.4rem;
+  font-weight: 700;
+  line-height: 1.7;
+  letter-spacing: -0.1;
+`;
+
+export const SubTitle2 = styled.h4`
+  font-size: 2rem;
+  font-weight: 400;
+  line-height: 1.7;
+  letter-spacing: -0.1;
+`;
+
+export const Body1 = styled.p`
+  font-size: 1.6rem;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: -0.1;
+`;
+```
+
 ## MEET UP
 
 1. 매주 수요일 8시

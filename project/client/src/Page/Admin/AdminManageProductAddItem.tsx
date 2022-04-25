@@ -2,8 +2,10 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import AdminInput from "./AdminInput";
-import AdminTextArea from "./AdminTextArea";
+
+import InputDefault from "../../Components/Form/InputDefault";
+import Label from "../../Components/Form/LabelDefault";
+import Textarea from "../../Components/Form/TextareaDefault";
 
 const Container = styled.div`
   button.add-product-button {
@@ -11,20 +13,20 @@ const Container = styled.div`
     padding: 0.7rem 2rem;
     border: 0;
     font-size: 2rem;
-    color: ${(props) => props.theme.white};
+    color: ${(props) => props.theme.color.fontColorWhite};
     border-radius: 0.3rem;
     line-height: 2.8rem;
-    background-color: ${(props) => props.theme.success};
+    background-color: ${(props) => props.theme.color.primary600};
   }
   button.cancel-product-button {
     cursor: pointer;
     padding: 0.7rem 2rem;
     border: 0;
     font-size: 2rem;
-    color: ${(props) => props.theme.white};
+    color: ${(props) => props.theme.color.fontColorWhite};
     border-radius: 0.3rem;
     line-height: 2.8rem;
-    background-color: ${(props) => props.theme.success};
+    background-color: ${(props) => props.theme.color.primary600};
   }
 `;
 
@@ -42,35 +44,42 @@ const AdminManageProductAddItem = () => {
   return (
     <Container>
       <form onSubmit={onSubmit}>
-        <AdminInput
-          label={{ htmlFor: "productThumbnail" }}
-          labelText="상품 대표 이미지"
-          input={{ name: "productThumbnail", type: "file", accept: "image/*" }}
+        <Label htmlFor="productThumbnail" text="섬네일" />
+        <InputDefault
+          id="productThumbnail"
+          type="file"
+          accept="image/*"
+          name="productThumbnail"
           register={register}
           error={errors.productThumbnail?.message}
         />
-        <AdminInput
-          label={{ htmlFor: "productName" }}
-          labelText="상품 이름"
-          input={{ name: "productName", type: "text" }}
+        <Label htmlFor="productName" text="상품 이름" />
+        <InputDefault
+          id="productName"
+          type="text"
+          placeholder="상품 이름을 입력해주세요."
+          name="productName"
           register={register}
           registerOptions={{
             required: "상품 이름은 꼭 입력해야해요",
           }}
           error={errors.productName?.message}
         />
-        <AdminInput
-          label={{ htmlFor: "productPrice" }}
-          labelText="상품 가격"
-          input={{ name: "productPrice", type: "number" }}
+        <Label htmlFor="productPrice" text="상품 가격" />
+        <InputDefault
+          id="productPrice"
+          typeof="number"
+          placeholder="상품 가격을 입력해주세요."
+          name="productPrice"
           register={register}
           registerOptions={{ required: "상품의 가격은 꼭 입력해야해요" }}
           error={errors.productPrice?.message}
         />
-        <AdminTextArea
-          label={{ htmlFor: "productInfomation" }}
-          labelText="상품 가격"
-          textarea={{ name: "productInfomation", id: "productInfomation" }}
+        <Label htmlFor="productInfomation" text="상품 정보" />
+        <Textarea
+          id="productInfomation"
+          placeholder="상세 정보를 입력해주세요."
+          name="productInfomation"
           register={register}
           error={errors.productInfomation?.message}
         />

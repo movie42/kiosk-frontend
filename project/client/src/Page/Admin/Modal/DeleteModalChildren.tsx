@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { ProductListValues } from "../../../mockup/productList";
 import {
   productListState,
+  selectOptionState,
   selectProductListState,
 } from "../../../state/productItemState";
 import styled from "styled-components";
+import { SelectOption } from "../AdminManageProductItemList";
 
 const Wrapper = styled.div`
   ul {
@@ -32,13 +34,13 @@ const Wrapper = styled.div`
       border: 0;
       padding: 0.8rem 1.3rem;
       border-radius: 0.5rem;
-      color: ${(props) => props.theme.white};
+      color: ${(props) => props.theme.color.fontColorWhite};
       &:nth-child(1) {
-        background-color: ${(props) => props.theme.netural};
+        background-color: ${(props) => props.theme.color.gray300};
       }
 
       &:nth-child(2) {
-        background-color: ${(props) => props.theme["warning-dark"]};
+        background-color: ${(props) => props.theme.color.error500};
       }
 
       &:not(:first-child) {
@@ -52,10 +54,12 @@ const SelectContainer: React.FC<{ select: boolean | undefined }> = styled.span<{
   select: boolean;
 }>`
   background-color: ${(props) =>
-    props.select ? props.theme.warning : props.theme.white};
+    props.select
+      ? props.theme.color.error500
+      : props.theme.color.background100};
   width: 1.2rem;
   height: 1.2rem;
-  border: 3px solid ${(props) => props.theme.black};
+  border: 3px solid ${(props) => props.theme.color.gray200};
   border-radius: 50%;
 `;
 
@@ -67,6 +71,7 @@ interface IDeleteModalChildrenProps<T> {
 const DeleteModalChildren: React.FC<
   IDeleteModalChildrenProps<ProductListValues>
 > = ({ setModal, items }) => {
+  const setSelectOption = useSetRecoilState(selectOptionState);
   const [selectList, setSelectList] = useRecoilState<ProductListValues[]>(
     selectProductListState,
   );
@@ -78,6 +83,7 @@ const DeleteModalChildren: React.FC<
       ...preValue.map((value) => ({ ...value, select: false })),
     ]);
     setModal(false);
+    setSelectOption({ option: "none" });
   };
 
   const selectDeleteItemsSubmitHandler = () => {
@@ -88,10 +94,10 @@ const DeleteModalChildren: React.FC<
           .filter((value) => value.select === true)
           .some((deleteProduct) => compare(product, deleteProduct)),
     );
-
     setProductList(newProductList);
     setModal(false);
     setSelectList([]);
+    setSelectOption({ option: "none" });
   };
 
   const checkBoxChangeHandler = (event: React.MouseEvent<HTMLElement>) => {

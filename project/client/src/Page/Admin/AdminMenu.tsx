@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
-import Modal from "./Modal/Modal";
+import Modal from "../../Components/Modals/Modal";
 import IsOpenModalChildren from "./Modal/IsOpenModalChildren";
 
 const Wrapper = styled.div`
@@ -26,11 +26,11 @@ const MenuButtonDefault = styled.button`
   width: 20rem;
   height: 70vh;
   cursor: pointer;
-  background-color: ${(props) => props.theme.success};
+  background-color: ${(props) => props.theme.color.primary600};
   font-size: 3rem;
   font-weight: bold;
   word-break: keep-all;
-  color: ${(props) => props.theme.white};
+  color: ${(props) => props.theme.color.fontColorWhite};
 `;
 
 const MenuButtonWrapper = styled.div`
@@ -47,7 +47,7 @@ const LinkToStaffWindowButton = styled(MenuButtonDefault)`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: ${(props) => props.theme["brand-color-green"]};
+  background-color: ${(props) => props.theme.color.secondary500};
 `;
 
 const BusinessManageButtonWrapper = styled.div`
@@ -58,12 +58,12 @@ const BusinessManageButtonWrapper = styled.div`
 
 const LinkToProductManageWindowButton = styled(MenuButtonDefault)`
   height: 100%;
-  background-color: ${(props) => props.theme["brand-color-blue"]};
+  background-color: ${(props) => props.theme.color.primary800};
 `;
 
 const LinkToCrewMangageWindowButton = styled(MenuButtonDefault)`
   height: 100%;
-  background-color: ${(props) => props.theme["brand-color-purple"]};
+  background-color: ${(props) => props.theme.color.secondary800};
 `;
 
 const LinkToCustomerWindowButton: React.FC<
@@ -75,7 +75,7 @@ const LinkToCustomerWindowButton: React.FC<
 > = styled(MenuButtonDefault)<IAdminMenuProps>`
   position: relative;
   background-color: ${(props) =>
-    props.isActive ? props.theme["brand-color-blue"] : props.theme.netural};
+    props.isActive ? props.theme.color.primary600 : props.theme.color.gray300};
   span {
     display: inline-block;
     font-weight: normal;
@@ -102,7 +102,7 @@ const ToggleButton: React.FC<
   height: 1rem;
   cursor: pointer;
   background-color: ${(props) =>
-    props.isActive ? props.theme.success : props.theme.warning};
+    props.isActive ? props.theme.color.primary600 : props.theme.color.error500};
   border: 0;
   border-radius: 2rem;
   padding: 0.5rem 0.3rem;
@@ -110,8 +110,8 @@ const ToggleButton: React.FC<
   box-shadow: inset 0.1rem 0.15rem 0.2rem
     ${(props) =>
       props.isActive
-        ? props.theme["success-dark"]
-        : props.theme["warning-dark"]};
+        ? props.theme.color.primary800
+        : props.theme.color.error800};
   &::before {
     position: absolute;
     top: 50%;
@@ -121,7 +121,7 @@ const ToggleButton: React.FC<
     width: 1.7rem;
     height: 1.7rem;
     border-radius: 2rem;
-    background-color: ${(props) => props.theme.white};
+    background-color: ${(props) => props.theme.color.background100};
     content: "";
   }
 `;

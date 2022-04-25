@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+
 import styled from "styled-components";
-import AdminInput from "./AdminInput";
-import ErrorMessage from "../ErrorMessage";
+import InputDefault from "../../Components/Form/InputDefault";
+import Label from "../../Components/Form/LabelDefault";
+
 import { userInfo } from "../../mockup/userInfo";
+import { Headline2 } from "../../mixin";
 
 const Wrapper = styled.div`
   height: 80vh;
@@ -12,8 +15,7 @@ const Wrapper = styled.div`
 `;
 
 const Title = styled.h2`
-  padding: 1.5rem 0;
-  font-size: 3rem;
+  ${Headline2};
 `;
 
 const FormContainer = styled.div`
@@ -48,10 +50,10 @@ const ActionContainer = styled.div`
     padding: 0.7rem 2rem;
     border: 0;
     font-size: 2.8rem;
-    color: ${(props) => props.theme.white};
+    color: ${(props) => props.theme.color.fontColorWhite};
     border-radius: 0.3rem;
     line-height: 2.8rem;
-    background-color: ${(props) => props.theme.success};
+    background-color: ${(props) => props.theme.color.primary600};
   }
 `;
 
@@ -104,14 +106,12 @@ const AdminMain = () => {
       <Title>관리자 로그인 화면</Title>
       <FormContainer>
         <form onSubmit={onSubmit}>
-          <AdminInput
-            label={{ htmlFor: "email" }}
-            labelText="아이디"
-            input={{
-              name: "email",
-              type: "text",
-              placeholder: "아이디를 입력해주세요.",
-            }}
+          <Label htmlFor="email" text="아이디" />
+          <InputDefault
+            id="email"
+            name="email"
+            placeholder="이메일을 입력해주세요."
+            type="email"
             register={register}
             registerOptions={{
               required: "아이디를 입력해주세요.",
@@ -123,14 +123,13 @@ const AdminMain = () => {
             }}
             error={errors.email?.message}
           />
-          <AdminInput
-            label={{ htmlFor: "password" }}
-            labelText="비밀번호"
-            input={{
-              name: "password",
-              type: "password",
-              placeholder: "비밀번호를 입력해주세요.",
-            }}
+          <Label htmlFor="password" text="비밀번호" />
+          <InputDefault
+            id="password"
+            name="password"
+            type="password"
+            placeholder="비밀번호를 입력해주세요."
+            typeof="password"
             register={register}
             registerOptions={{
               required: "비밀번호를 입력해주세요.",
@@ -138,7 +137,7 @@ const AdminMain = () => {
             error={errors.password?.message}
           />
           {errors?.loginFail?.message && (
-            <ErrorMessage error={errors?.loginFail?.message} />
+            <Label text={errors?.loginFail?.message} />
           )}
           <ActionContainer>
             <Link to="#">아이디 또는 비밀번호를 잃어버리셨나요?</Link>

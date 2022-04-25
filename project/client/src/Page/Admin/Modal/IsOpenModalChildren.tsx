@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import ButtonDefaultStyle from "../../ButtonDefaultStyle";
+import ButtonDefaultStyle from "../../../Components/Buttons/ButtonDefault";
 
 const Wrapper = styled.div`
   display: grid;
@@ -22,10 +22,10 @@ const Wrapper = styled.div`
 `;
 const CancelButton = styled(ButtonDefaultStyle)``;
 const StopConfirmButton = styled(ButtonDefaultStyle)`
-  background-color: ${(props) => props.theme.warning};
+  background-color: ${(props) => props.theme.color.error500};
 `;
 const StartConfirmButton = styled(ButtonDefaultStyle)`
-  background-color: ${(props) => props.theme.success};
+  background-color: ${(props) => props.theme.color.primary600};
 `;
 
 interface IIsOpenModalChildrenProps {
