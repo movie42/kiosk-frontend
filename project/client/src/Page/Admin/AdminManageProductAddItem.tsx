@@ -1,5 +1,5 @@
 import React from "react";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
@@ -10,27 +10,31 @@ import ButtonDefaultStyle from "../../Components/Buttons/ButtonDefault";
 import { IoIosAddCircle } from "react-icons/io";
 
 const Container = styled.div`
+  margin-bottom: 8rem;
   form {
-    border: 1px solid ${(props) => props.theme.color.gray300};
-    padding: 0.8rem;
-    div {
-      display: grid;
-      grid-template-columns: 20% 80%;
-      padding: 1rem 0;
-      border-bottom: 1px solid ${(props) => props.theme.color.gray300};
-      label {
-        font-size: 2rem;
-        align-self: center;
-      }
-      input {
-        font-size: 2rem;
-        border: 0;
-        align-self: center;
-      }
-      textarea {
-        border: 0;
-        font-size: 2rem;
-        align-self: center;
+    fieldset {
+      border: 1px solid ${(props) => props.theme.color.gray300};
+      padding: 0.8rem;
+      margin-bottom: 1rem;
+      div {
+        display: grid;
+        grid-template-columns: 20% 80%;
+        padding: 1rem 0;
+        border-bottom: 1px solid ${(props) => props.theme.color.gray300};
+        label {
+          font-size: 2rem;
+          align-self: center;
+        }
+        input {
+          font-size: 2rem;
+          border: 0;
+          align-self: center;
+        }
+        textarea {
+          border: 0;
+          font-size: 2rem;
+          align-self: center;
+        }
       }
     }
   }
@@ -107,13 +111,31 @@ const CancelButton = styled(ButtonDefaultStyle)`
 const AdminManageProductAddItem = () => {
   const {
     register,
-    formState: { errors },
     handleSubmit,
-  } = useForm();
+    control,
+    setError: errors,
+  } = useForm({
+    defaultValues: {
+      product: [
+        {
+          productThumbnail: "",
+          productName: "",
+          productPrice: "",
+          productInfomation: "",
+        },
+      ],
+    },
+  });
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "product",
+  });
 
   const onSubmit = handleSubmit((data) => {
     console.log(data);
   });
+
+  const deleteProduct = (index: number) => {};
 
   return (
     <Container>
@@ -121,69 +143,83 @@ const AdminManageProductAddItem = () => {
         <h2>상품 등록</h2>
         <div>
           <p>등록할 상품을 추가하려면 오른쪽 버튼을 누르세요.</p>
-          <AddProductButton>
+          <AddProductButton
+            onClick={() =>
+              append({
+                productThumbnail: "",
+                productName: "",
+                productPrice: "",
+                productInfomation: "",
+              })
+            }
+          >
             <IoIosAddCircle />
           </AddProductButton>
         </div>
       </CreateProductHeader>
       <form onSubmit={onSubmit}>
-        <div>
-          <Label htmlFor="productThumbnail">섬네일</Label>
-          <AddThumbnailLabel htmlFor="productThumbnail">
-            <IoIosAddCircle />
-          </AddThumbnailLabel>
-          <AddThumbnail
-            id="productThumbnail"
-            type="file"
-            accept="image/*"
-            name="productThumbnail"
-            placeholder="사진 찾기"
-            register={register}
-            error={errors.productThumbnail?.message}
-          />
-        </div>
-        <div>
-          <Label htmlFor="productName">상품 이름</Label>
-          <InputDefault
-            id="productName"
-            type="text"
-            placeholder="상품 이름을 입력해주세요."
-            name="productName"
-            register={register}
-            registerOptions={{
-              required: "상품 이름은 꼭 입력해야해요",
-            }}
-            error={errors.productName?.message}
-          />
-        </div>
-        <div>
-          <Label htmlFor="productPrice">상품 가격</Label>
-          <InputDefault
-            id="productPrice"
-            typeof="number"
-            placeholder="상품 가격을 입력해주세요."
-            name="productPrice"
-            register={register}
-            registerOptions={{ required: "상품의 가격은 꼭 입력해야해요" }}
-            error={errors.productPrice?.message}
-          />
-        </div>
-        <div>
-          <Label htmlFor="productInfomation">상품 정보</Label>
-          <Textarea
-            id="productInfomation"
-            placeholder="상세 정보를 입력해주세요."
-            name="productInfomation"
-            register={register}
-            error={errors.productInfomation?.message}
-          />
-        </div>
+        {fields.map((item, index) => (
+          <fieldset key={item.id}>
+            <button onClick={() => remove(index)}>삭제</button>
+            <div>
+              <Label htmlFor="productThumbnail">섬네일</Label>
+              <AddThumbnailLabel htmlFor="productThumbnail">
+                <IoIosAddCircle />
+              </AddThumbnailLabel>
+              <AddThumbnail
+                id="productThumbnail"
+                type="file"
+                accept="image/*"
+                name="productThumbnail"
+                placeholder="사진 찾기"
+                register={register}
+                fieldName={`product.${index}`}
+              />
+            </div>
+            <div>
+              <Label htmlFor="productName">상품 이름</Label>
+              <InputDefault
+                id="productName"
+                type="text"
+                placeholder="상품 이름을 입력해주세요."
+                name="productName"
+                register={register}
+                fieldName={`product.${index}`}
+                registerOptions={{
+                  required: "상품 이름은 꼭 입력해야해요",
+                }}
+              />
+            </div>
+            <div>
+              <Label htmlFor="productPrice">상품 가격</Label>
+              <InputDefault
+                id="productPrice"
+                typeof="number"
+                placeholder="상품 가격을 입력해주세요."
+                name="productPrice"
+                register={register}
+                fieldName={`product.${index}`}
+                registerOptions={{ required: "상품의 가격은 꼭 입력해야해요" }}
+              />
+            </div>
+            <div>
+              <Label htmlFor="productInfomation">상품 정보</Label>
+              <Textarea
+                id="productInfomation"
+                placeholder="상세 정보를 입력해주세요."
+                name="productInfomation"
+                register={register}
+                fieldName={`product.${index}`}
+              />
+            </div>
+          </fieldset>
+        ))}
       </form>
       <ButtonContainer>
         <h3>상품 입력이 끝나면 등록하기 버튼을 눌러주세요.</h3>
         <div>
           <CancelButton>등록 취소</CancelButton>
-          <CreateButton>상품 등록</CreateButton>
+          <CreateButton onClick={onSubmit}>상품 등록</CreateButton>
         </div>
       </ButtonContainer>
     </Container>
