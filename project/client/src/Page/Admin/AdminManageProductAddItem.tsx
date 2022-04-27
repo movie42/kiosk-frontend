@@ -135,8 +135,6 @@ const AdminManageProductAddItem = () => {
     console.log(data);
   });
 
-  const deleteProduct = (index: number) => {};
-
   return (
     <Container>
       <CreateProductHeader>
