@@ -26,7 +26,7 @@ const TextareaDefault = ({
         {...props}
         {...register(`${fieldName}.${props.name}`, registerOptions)}
       ></textarea>
-      {error && <Label text={error} />}
+      {error && <Label>{error}</Label>}
     </>
   ) : (
     <>
@@ -34,7 +34,7 @@ const TextareaDefault = ({
         {...props}
         {...register(props.name, registerOptions)}
       ></textarea>
-      {error && <Label text={error} />}
+      {error && <Label>{error}</Label>}
     </>
   );
 };

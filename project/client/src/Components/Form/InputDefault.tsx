@@ -13,7 +13,7 @@ interface IInputProps
     React.InputHTMLAttributes<HTMLInputElement>,
     HTMLInputElement
   > {
-  register?: UseFormRegister<FieldValues>;
+  register?: any;
   registerOptions?: RegisterOptions;
   fieldName?: string;
   error?: string | undefined | null;
@@ -33,18 +33,18 @@ const InputDefault = ({
           {...props}
           {...register(`${fieldName}.${props.name}`, registerOptions)}
         />
-        {error && <Label text={error} />}
+        {error && <Label>{error}</Label>}
       </>
     ) : (
       <>
         <input {...props} {...register(`${props.name}`, registerOptions)} />
-        {error && <Label text={error} />}
+        {error && <Label>{error}</Label>}
       </>
     )
   ) : (
     <>
       <input {...props} />
-      {error && <Label text={error} />}
+      {error && <Label>{error}</Label>}
     </>
   );
 };
