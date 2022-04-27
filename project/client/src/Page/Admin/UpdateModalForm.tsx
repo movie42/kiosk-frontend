@@ -29,7 +29,7 @@ const UpdateModalForm = ({ fieldName, register, item }: any) => {
   return (
     <fieldset name={fieldName} data-id={item.id}>
       <FieldContainer>
-        <LabelDefault htmlFor="file" text="상품 썸네일" />
+        <LabelDefault htmlFor="file">상품 섬네일</LabelDefault>
         <InputDefault
           id="file"
           type="file"
@@ -40,7 +40,7 @@ const UpdateModalForm = ({ fieldName, register, item }: any) => {
         />
       </FieldContainer>
       <FieldContainer>
-        <LabelDefault htmlFor="name" text="상품 이름" />
+        <LabelDefault htmlFor="name">상품 이름</LabelDefault>
         <InputDefault
           type="text"
           id="name"
@@ -51,7 +51,7 @@ const UpdateModalForm = ({ fieldName, register, item }: any) => {
         />
       </FieldContainer>
       <FieldContainer>
-        <LabelDefault htmlFor="price" text="상품 가격" />
+        <LabelDefault htmlFor="price">상품 가격</LabelDefault>
         <InputDefault
           type="number"
           id="price"
@@ -62,7 +62,7 @@ const UpdateModalForm = ({ fieldName, register, item }: any) => {
         />
       </FieldContainer>
       <FieldContainer>
-        <LabelDefault htmlFor="option" text="상품 옵션" />
+        <LabelDefault htmlFor="option">상품 옵션</LabelDefault>
         <InputDefault
           type="text"
           id="option"
@@ -73,7 +73,7 @@ const UpdateModalForm = ({ fieldName, register, item }: any) => {
         />
       </FieldContainer>
       <FieldContainer>
-        <LabelDefault htmlFor="desc" text="상품 정보" />
+        <LabelDefault htmlFor="desc">상품 정보</LabelDefault>
         <TextareaDefault
           id="desc"
           name="desc"

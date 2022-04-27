@@ -106,7 +106,7 @@ const AdminMain = () => {
       <Title>관리자 로그인 화면</Title>
       <FormContainer>
         <form onSubmit={onSubmit}>
-          <Label htmlFor="email" text="아이디" />
+          <Label htmlFor="email">이메일</Label>
           <InputDefault
             id="email"
             name="email"
@@ -123,7 +123,7 @@ const AdminMain = () => {
             }}
             error={errors.email?.message}
           />
-          <Label htmlFor="password" text="비밀번호" />
+          <Label htmlFor="password">비밀번호</Label>
           <InputDefault
             id="password"
             name="password"
@@ -137,7 +137,7 @@ const AdminMain = () => {
             error={errors.password?.message}
           />
           {errors?.loginFail?.message && (
-            <Label text={errors?.loginFail?.message} />
+            <Label>{errors?.loginFail?.message}</Label>
           )}
           <ActionContainer>
             <Link to="#">아이디 또는 비밀번호를 잃어버리셨나요?</Link>
