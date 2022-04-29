@@ -3,6 +3,20 @@
 프로젝트 진행 전에 꼭 읽어보세요!
 다른 문의 사항은 채팅방에 남기거나 이슈로 남겨야할 사항은 이슈로 남겨주세요.
 
+## 목차
+
+- [누구나 키오스크 프로젝트](#누구나-키오스크-프로젝트)
+  - [목차](#목차)
+  - [개요](#개요)
+  - [시작하기](#시작하기)
+  - [Commit Rule && Setting](#commit-rule--setting)
+  - [PR 하기](#pr-하기)
+  - [리뷰 하기](#리뷰-하기)
+  - [Style Guide](#style-guide)
+    - [🌈Color](#color)
+    - [Font](#font)
+  - [MEET UP](#meet-up)
+
 ## 개요
 
 웹을 통해 키오스크를 만들어 언제 어디서 누구나 쉽게 사용할 수 있는 키오스크 웹 어플리케이션을 만듭니다.
@@ -10,60 +24,37 @@
 1. Front
    - React v17.0.2
    - React Dom v17.0.2
-2. Back
-   - NodeJS v16.14.2
-   - ExpressJS v4.17.3
+   - NodeJS 16.14.2
 
 ## 시작하기
 
 1. github에서 프로젝트 팀원 초대롤 승인합니다.
-2. project를 clone합니다.
+2. repository를 folk를 합니다.
+3. 자신의 저장소에서 project를 clone합니다.
 
 ```shell
-$ git clone https://github.com/movie42/kiosk
+$ git clone https://github.com/<자신의 브랜치 이름>/kiosk
 ```
 
-3. clone한 깃 프로젝트 안에서 자신의 브랜치를 만듭니다.
+4. develop 브랜치로 checkout합니다.
 
 ```shell
-$ git branch <이름>-main
+$ git checkout develop
 ```
 
-4. github project 탭을 확인합니다.
-5. 팀원과 협의하여 자신이 진행할 아이템을 확인합니다.
-6. 프로젝트 시작전에 자신의 main branch에서 branch를 한번 더 만듭니다.
+5. 기능을 만들 때 feature 브랜치를 만듭니다.
+6. github project 탭을 확인합니다.
+7. 팀원과 협의하여 자신이 진행할 아이템을 확인합니다.
+8. 브랜치를 한번 더 만듭니다.
 
 ```shell
-$ git branch <issue NO>
+$ git checkout -b feature/issue<번호>
 ```
 
-7. project/server 폴더 안에서 .env 파일을 생성합니다. MONGODB_ATLAS는 PM에게 문의합니다. .env파일은 git에 업데이트 되지 않도록 각별하게 주의해주시기 바랍니다. git 설정이 꼬여서 혹시 .env파일이 git에 올라간 경우 자신의 브런치 내에서 commit log를 이전으로 롤백하고 git 설정을 다시 해주시기 바랍니다.
-
-```env
-PORT=5500
-MOGODB_ATLAS=<please request to admin>
-```
-
-8. client와 server에서 패키지를 각각 설치합니다.
-
-9. project/server 폴더 안에서 터미널에 다음과 같이 명령어를 입력합니다.
-
-```
-$ cd server
-$ npm run dev
-```
-
-프론트와 백앤드 서버가 동시에 돌아갑니다. 만약 동시에 돌아가게 하고 싶지 않다면 각각 폴더에서 패키지 명령어를 입력합니다.
-
-10. 자신의 코드를 작성합니다.
+9.  자신의 코드를 작성합니다.
 
 - 기능 요구사항을 잘 확인해주세요.
 - 프로젝트 기본적인 디자인은 [피그마](https://www.figma.com/file/0bv2rseEAQqo8x87zefSyx/everyone-kiosk?node-id=0%3A1)에서 확인하실 수 있습니다.
-
-- Front end는 client 폴더 안에서 작업합니다.
-- Back end는 server 폴더 안에서 작업합니다.
-
-😄 즐거운 코딩 하세요!
 
 ## Commit Rule && Setting
 
@@ -140,7 +131,29 @@ $ git config -e
 $ git commit
 ```
 
-😀 즐거운 코딩 되세요!
+## PR 하기
+
+1. PR은 자주 해주세요.
+2. PR은 개요, 한일, 스크린 샷으로 나뉩니다.
+
+- 개요 : 자신이 한 일의 개요를 작성합니다.
+- 한일 : 무엇을 했는지 다른 팀원이 이해할 수 있게 작성합니다.
+- 스크린 샷 : UI의 변화, 에러 등의 스크린샷을 촬영해서 올려주세요.
+
+참고 : 🎥[Github으로 팀 프로젝트 하기 1편 | Pull request 코드리뷰 개발자](https://www.youtube.com/watch?v=9FZaYz0s8s4)
+
+## 리뷰 하기
+
+1. 리뷰는 PR에 대해서 하면 됩니다.
+2. 리뷰를 할 때는 코드에 대한 질문이나 제안 등을 작성해주세요.
+   - 질문하고 싶은 코드로 마우스를 가져가면 +가 나타납니다.
+   - +를 누르면 comment를 작성할 수 있습니다.
+   - 작성을 다 마치고 Start a review 버튼을 누릅니다.
+   - 리뷰를 마쳤다면 오른쪽 viewed에 체크를 합니다.
+3. 리뷰할 것이 없다면 따로 코멘트를 작성하지 않아도 됩니다.
+4. 리뷰를 다 마쳤다면 Review changes를 누르고 코멘트를 작성하거나 작성할 코멘트가 없다면 submit review를 누르면 됩니다.
+
+참고 : 🎥[Github으로 팀 프로젝트 하기 1편 | Pull request 코드리뷰 개발자](https://www.youtube.com/watch?v=9FZaYz0s8s4)
 
 ## Style Guide
 
@@ -148,20 +161,20 @@ $ git commit
 
 컬러를 지정할 때 지정된 컬러를 사용해주세요.
 
-Primary = primary600
-Primary Hover = primary800
-Primary Active = primary400
-Secondary = secondary500
-Secondary Hover = secondary700
-Secondary Active = secondary300
-Error, Warn = error500
-Error, Warn Hover = error800
-Error, Warn Active = error300
-Line default = gray200
-Button default = gray 300
-Background default = background100
-Transparent Background default = backgroundBlack70
-Font Color default = fontColorBlack
+- Primary = primary600
+- Primary Hover = primary800
+- Primary Active = primary400
+- Secondary = secondary500
+- Secondary Hover = secondary700
+- Secondary Active = secondary300
+- Error, Warn = error500
+- Error, Warn Hover = error800
+- Error, Warn Active = error300
+- Line default = gray200
+- Button default = gray 300
+- Background default = background100
+- Transparent Background default = backgroundBlack70
+- Font Color default = fontColorBlack
 
 색상이 지정되지 않은 버튼 등을 구분해야할 때 Primary와 Secondary에서 결정해주세요. Color Step을 300의 간격으로 설정해주세요.
 
@@ -231,3 +244,5 @@ export const Body1 = styled.p`
    - 프로젝트 동작 눈으로 보고 확인하기
      - 확인되는 버그, 따로 작업한 사항 연결할 부분 찾기 등
      - 확인된 사항을 바탕으로 역할 정하기
+
+😄 즐거운 코딩 하세요!
