@@ -4,14 +4,12 @@ interface ILabelProps
   extends React.DetailedHTMLProps<
     React.LabelHTMLAttributes<HTMLLabelElement>,
     HTMLLabelElement
-  > {
-  text: string | null | undefined;
-}
+  > {}
 
-const LabelDefault = ({ text, ...props }: ILabelProps) => {
+const LabelDefault = ({ ...props }: ILabelProps) => {
   return (
     <>
-      <label {...props}>{text}</label>
+      <label {...props}>{props.children}</label>
     </>
   );
 };

@@ -1,5 +1,10 @@
 import React from "react";
-import { RegisterOptions, useForm, UseFormRegister } from "react-hook-form";
+import {
+  FieldValues,
+  RegisterOptions,
+  useForm,
+  UseFormRegister,
+} from "react-hook-form";
 import styled from "styled-components";
 import Label from "./LabelDefault";
 
@@ -21,18 +26,25 @@ const InputDefault = ({
   error,
   ...props
 }: IInputProps) => {
-  return fieldName ? (
-    <>
-      <input
-        {...props}
-        {...register(`${fieldName}.${props.name}`, registerOptions)}
-      />
-      {error && <Label text={error} />}
-    </>
+  return register ? (
+    fieldName ? (
+      <>
+        <input
+          {...props}
+          {...register(`${fieldName}.${props.name}`, registerOptions)}
+        />
+        {error && <Label>{error}</Label>}
+      </>
+    ) : (
+      <>
+        <input {...props} {...register(`${props.name}`, registerOptions)} />
+        {error && <Label>{error}</Label>}
+      </>
+    )
   ) : (
     <>
-      <input {...props} {...register(props.name, registerOptions)} />
-      {error && <Label text={error} />}
+      <input {...props} />
+      {error && <Label>{error}</Label>}
     </>
   );
 };
