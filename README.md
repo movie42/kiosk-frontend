@@ -45,10 +45,10 @@ $ git checkout develop
 6. github project 탭을 확인합니다.
 7. 팀원과 협의하여 자신이 진행할 아이템을 확인합니다.
 8. 브랜치를 한번 더 만듭니다.
-   - 기능 : feature/issue#<번호>
+   - 기능 : feature/자기이름_issue#<번호>
 
 ```shell
-$ git checkout -b feature/issue#<번호>
+$ git checkout -b feature/자기이름_issue#<번호>
 ```
 
 9.  자신의 코드를 작성합니다.
