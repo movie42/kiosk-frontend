@@ -72,6 +72,7 @@ const ProductItem: React.FC<IProductItemProps> = ({
           return;
         }
         handler && handler(e);
+        console.log("hi");
         setProductList((item) =>
           [
             ...item.filter((value) => value.id !== id),
