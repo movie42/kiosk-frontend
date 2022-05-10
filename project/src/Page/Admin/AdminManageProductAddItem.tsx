@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -108,27 +108,39 @@ const CancelButton = styled(ButtonDefaultStyle)`
   margin-right: 0.3rem;
 `;
 
+interface ProductDefaultValue {
+  productThumbnail: string;
+  productName: string;
+  productPrice: string;
+  productOption: string[];
+  productInfomation: string;
+}
+
 const AdminManageProductAddItem = () => {
+  const [options, setOptions] = useState<ProductDefaultValue["productOption"]>(
+    []
+  );
   const {
     register,
     handleSubmit,
     control,
-    setError: errors,
-  } = useForm({
+    formState: { errors }
+  } = useForm<{ product: ProductDefaultValue[] }>({
     defaultValues: {
       product: [
         {
           productThumbnail: "",
           productName: "",
           productPrice: "",
-          productInfomation: "",
-        },
-      ],
-    },
+          productOption: [],
+          productInfomation: ""
+        }
+      ]
+    }
   });
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "product",
+    name: "product"
   });
 
   const onSubmit = handleSubmit((data) => {
@@ -147,7 +159,8 @@ const AdminManageProductAddItem = () => {
                 productThumbnail: "",
                 productName: "",
                 productPrice: "",
-                productInfomation: "",
+                productOption: [],
+                productInfomation: ""
               })
             }
           >
@@ -184,7 +197,7 @@ const AdminManageProductAddItem = () => {
                 register={register}
                 fieldName={`product.${index}`}
                 registerOptions={{
-                  required: "상품 이름은 꼭 입력해야해요",
+                  required: "상품 이름은 꼭 입력해야해요"
                 }}
               />
             </div>
@@ -192,12 +205,23 @@ const AdminManageProductAddItem = () => {
               <Label htmlFor="productPrice">상품 가격</Label>
               <InputDefault
                 id="productPrice"
-                typeof="number"
+                type="number"
                 placeholder="상품 가격을 입력해주세요."
                 name="productPrice"
                 register={register}
                 fieldName={`product.${index}`}
                 registerOptions={{ required: "상품의 가격은 꼭 입력해야해요" }}
+              />
+            </div>
+            <div>
+              <Label htmlFor="productOption">상품 옵션</Label>
+              <InputDefault
+                id="productOption"
+                type="text"
+                placeholder="상품 옵션을 입력해주세요."
+                name="productOption"
+                register={register}
+                fieldName={`product.${index}`}
               />
             </div>
             <div>
