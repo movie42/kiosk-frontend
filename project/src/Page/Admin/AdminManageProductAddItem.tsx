@@ -118,12 +118,13 @@ const ModalButtonContainer = styled.div`
     padding: 0.8rem 1.3rem;
     border-radius: 0.5rem;
     color: ${(props) => props.theme.color.fontColorWhite};
-    &:nth-child(1) {
+
+    &.modal-cancel-button {
       background-color: ${(props) => props.theme.color.gray200};
     }
 
-    &:nth-child(2) {
-      background-color: ${(props) => props.theme.color.error500};
+    &.modal-confirm-button {
+      background-color: ${(props) => props.theme.color.primary600};
     }
 
     &:not(:first-child) {
@@ -133,11 +134,11 @@ const ModalButtonContainer = styled.div`
 `;
 
 interface ProductDefaultValue {
-  productThumbnail: string;
-  productName: string;
-  productPrice: string;
-  productOption: string;
-  productInfomation: string;
+  thumbnail: string;
+  name: string;
+  price: string;
+  option: string;
+  infomation: string;
 }
 
 const AdminManageProductAddItem = () => {
@@ -153,11 +154,11 @@ const AdminManageProductAddItem = () => {
     defaultValues: {
       product: [
         {
-          productThumbnail: "",
-          productName: "",
-          productPrice: "",
-          productOption: "",
-          productInfomation: ""
+          thumbnail: "",
+          name: "",
+          price: "",
+          option: "",
+          infomation: ""
         }
       ]
     }
@@ -198,8 +199,18 @@ const AdminManageProductAddItem = () => {
           <>
             <h2>상품을 등록 하시겠습니까?</h2>
             <ModalButtonContainer>
-              <button onClick={cancelAddProductItems}>돌아가기</button>
-              <button onClick={confirmAddProductItems}>등록하기</button>
+              <button
+                className="modal-cancel-button"
+                onClick={cancelAddProductItems}
+              >
+                돌아가기
+              </button>
+              <button
+                className="modal-confirm-button"
+                onClick={confirmAddProductItems}
+              >
+                등록하기
+              </button>
             </ModalButtonContainer>
           </>
         </Modal>
@@ -212,11 +223,11 @@ const AdminManageProductAddItem = () => {
             <AddProductButton
               onClick={() =>
                 append({
-                  productThumbnail: "",
-                  productName: "",
-                  productPrice: "",
-                  productOption: "",
-                  productInfomation: ""
+                  thumbnail: "",
+                  name: "",
+                  price: "",
+                  option: "",
+                  infomation: ""
                 })
               }
             >
@@ -229,27 +240,27 @@ const AdminManageProductAddItem = () => {
             <fieldset key={item.id}>
               <button onClick={() => remove(index)}>삭제</button>
               <div>
-                <Label htmlFor="productThumbnail">섬네일</Label>
-                <AddThumbnailLabel htmlFor="productThumbnail">
+                <Label htmlFor="thumbnail">섬네일</Label>
+                <AddThumbnailLabel htmlFor="thumbnail">
                   <IoIosAddCircle />
                 </AddThumbnailLabel>
                 <AddThumbnail
-                  id="productThumbnail"
+                  id="thumbnail"
                   type="file"
                   accept="image/*"
-                  name="productThumbnail"
+                  name="thumbnail"
                   placeholder="사진 찾기"
                   register={register}
                   fieldName={`product.${index}`}
                 />
               </div>
               <div>
-                <Label htmlFor="productName">상품 이름</Label>
+                <Label htmlFor="name">상품 이름</Label>
                 <InputDefault
-                  id="productName"
+                  id="name"
                   type="text"
                   placeholder="상품 이름을 입력해주세요."
-                  name="productName"
+                  name="name"
                   register={register}
                   fieldName={`product.${index}`}
                   registerOptions={{
@@ -258,12 +269,12 @@ const AdminManageProductAddItem = () => {
                 />
               </div>
               <div>
-                <Label htmlFor="productPrice">상품 가격</Label>
+                <Label htmlFor="price">상품 가격</Label>
                 <InputDefault
-                  id="productPrice"
+                  id="price"
                   type="number"
                   placeholder="상품 가격을 입력해주세요."
-                  name="productPrice"
+                  name="price"
                   register={register}
                   fieldName={`product.${index}`}
                   registerOptions={{
@@ -272,22 +283,22 @@ const AdminManageProductAddItem = () => {
                 />
               </div>
               <div>
-                <Label htmlFor="productOption">상품 옵션</Label>
+                <Label htmlFor="option">상품 옵션</Label>
                 <InputDefault
-                  id="productOption"
+                  id="option"
                   type="text"
                   placeholder="상품 옵션을 입력해주세요. 옵션은 반드시 ,로 구분해주세요."
-                  name="productOption"
+                  name="option"
                   register={register}
                   fieldName={`product.${index}`}
                 />
               </div>
               <div>
-                <Label htmlFor="productInfomation">상품 정보</Label>
+                <Label htmlFor="infomation">상품 정보</Label>
                 <Textarea
-                  id="productInfomation"
+                  id="infomation"
                   placeholder="상세 정보를 입력해주세요."
-                  name="productInfomation"
+                  name="infomation"
                   register={register}
                   fieldName={`product.${index}`}
                 />
