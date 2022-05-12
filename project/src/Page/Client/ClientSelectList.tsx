@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useRecoilState } from "recoil";
 import { selectMenuListState } from "../../state/productItemState";
+import { IOrderSelectedItem } from "./ClientMenu";
 import Modal from "../../Components/Modals/Modal";
 import styled from "styled-components";
 import { Headline1 } from "../../mixin";
@@ -43,15 +44,31 @@ const MenuListItem = styled.div`
 `;
 
 const ClientSelectList = () => {
+  // 주문 목록 리스트
   const [totalSelectMenu, setTotalSelectMenu] =
     useRecoilState(selectMenuListState);
 
+  // 주문 수량 변경
+  const [count, setCount] = useState(0);
+
+  console.log(totalSelectMenu);
   const [isModal, setIsModal] = useState(false);
 
   // for Order State bar handler
   const handlePayment = () => {
     setIsModal(true);
   };
+
+  const handleAddCount = (current: IOrderSelectedItem) => {
+    let [selected] = totalSelectMenu.filter((menu) => menu.id === current.id);
+    setTotalSelectMenu((item) =>
+      [
+        ...item.filter((el) => el !== selected),
+        { ...selected, totalCount: selected.totalCount + 1 },
+      ].sort((a, b) => (a.id > b.id ? 1 : -1))
+    );
+  };
+
   return (
     <>
       {isModal && (
@@ -66,7 +83,12 @@ const ClientSelectList = () => {
       {totalSelectMenu.map((item) => (
         <MenuListItem key={item.id}>
           <h2>{item.name}</h2>
-          <p>주문수량: {item.totalCount}</p>
+          <p>
+            주문수량:
+            <button>-</button>
+            {item.totalCount}
+            <button onClick={() => handleAddCount(item)}>+</button>
+          </p>
           <p>총 가격: {item.totalPrice}</p>
           {item.option && <p>{item.option}</p>}
         </MenuListItem>

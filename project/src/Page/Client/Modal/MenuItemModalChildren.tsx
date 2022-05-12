@@ -2,19 +2,12 @@ import React, { useState } from "react";
 import { ProductListValues } from "../../../mockup/productList";
 import ButtonDefaultStyle from "../../../Components/Buttons/ButtonDefault";
 import styled from "styled-components";
+import { IOrderSelectedItem } from "../ClientMenu";
 
 const OptionButton = styled(ButtonDefaultStyle)<{ selected?: boolean }>`
   background-color: ${(props) =>
     props.selected ? props.theme.color.primary800 : props.theme.color.gray300};
 `;
-
-interface IOrderSelectedItem {
-  id: number;
-  name: string;
-  option?: string;
-  totalCount: number;
-  totalPrice: number;
-}
 
 interface IMenuItemModalChildrenProps {
   setIsModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -64,7 +57,7 @@ const MenuItemModalChildren: React.FC<IMenuItemModalChildrenProps> = ({
       {selectedItem[0].option?.map((item, i) => (
         <OptionButton
           key={item}
-          selected={i === 0 ? true : false}
+          selected={selectedOption === item ? true : false}
           onClick={() => setSelectedOption(item)}
         >
           {item}
