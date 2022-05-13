@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import AdminMain from "../Page/Admin/AdminMain";
 import AdminManageProductAddItem from "../Page/Admin/AdminManageProductAddItem";
 import AdminManageProductItemList from "../Page/Admin/AdminManageProductItemList";
@@ -8,6 +8,10 @@ import AdminLayout from "../Layouts/AdminLayout";
 import PageNotFound from "../Page/404/404";
 import MangeOrderMain from "../Page/MangeOrder/MangeOrderMain";
 import OrderLayout from "../Layouts/OrderLayout";
+import ClientLayout from "../Layouts/ClientLayout";
+import ClientMain from "../Page/Client/ClientMain";
+import ClientMenu from "../Page/Client/ClientMenu";
+import ClientSelectList from "../Page/Client/ClientSelectList";
 
 const Router = () => {
   return (
@@ -28,6 +32,12 @@ const Router = () => {
         <Route path="" element={<MangeOrderMain />} />
       </Route>
       <Route path="/order" />
+      <Route path="/client" element={<ClientLayout />}>
+        <Route path="" element={<Navigate to="/client/main" />} />
+        <Route path="main" element={<ClientMain />} />
+        <Route path="menu" element={<ClientMenu />} />
+        <Route path="select-list" element={<ClientSelectList />} />
+      </Route>
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
