@@ -5,6 +5,9 @@ import AdminManageProductAddItem from "../Page/Admin/AdminManageProductAddItem";
 import AdminManageProductItemList from "../Page/Admin/AdminManageProductItemList";
 import AdminMenu from "../Page/Admin/AdminMenu";
 import AdminLayout from "../Layouts/AdminLayout";
+import PageNotFound from "../Page/404/404";
+import MangeOrderMain from "../Page/MangeOrder/MangeOrderMain";
+import OrderLayout from "../Layouts/OrderLayout";
 
 const Router = () => {
   return (
@@ -21,7 +24,11 @@ const Router = () => {
           <Route path="add-product" element={<AdminManageProductAddItem />} />
         </Route>
       </Route>
+      <Route path="/manage-order" element={<OrderLayout />}>
+        <Route path="" element={<MangeOrderMain />} />
+      </Route>
       <Route path="/order" />
+      <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
 };
