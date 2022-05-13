@@ -1,10 +1,14 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import AdminMain from "../Page/Admin/AdminMain";
 import AdminManageProductAddItem from "../Page/Admin/AdminManageProductAddItem";
 import AdminManageProductItemList from "../Page/Admin/AdminManageProductItemList";
 import AdminMenu from "../Page/Admin/AdminMenu";
 import AdminLayout from "../Layouts/AdminLayout";
+import ClientLayout from "../Layouts/ClientLayout";
+import ClientMain from "../Page/Client/ClientMain";
+import ClientMenu from "../Page/Client/ClientMenu";
+import ClientSelectList from "../Page/Client/ClientSelectList";
 
 const Router = () => {
   return (
@@ -22,6 +26,12 @@ const Router = () => {
         </Route>
       </Route>
       <Route path="/order" />
+      <Route path="/client" element={<ClientLayout />}>
+        <Route path="" element={<Navigate to="/client/main" />} />
+        <Route path="main" element={<ClientMain />} />
+        <Route path="menu" element={<ClientMenu />} />
+        <Route path="select-list" element={<ClientSelectList />} />
+      </Route>
     </Routes>
   );
 };
