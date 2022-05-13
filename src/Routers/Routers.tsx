@@ -26,10 +26,8 @@ const Router = () => {
             element={<AdminManageProductItemList />}
           />
           <Route path="add-product" element={<AdminManageProductAddItem />} />
+          <Route path="manage-order" element={<MangeOrderMain />} />
         </Route>
-      </Route>
-      <Route path="/manage-order" element={<OrderLayout />}>
-        <Route path="" element={<MangeOrderMain />} />
       </Route>
       <Route path="/order" />
       <Route path="/client" element={<ClientLayout />}>

@@ -46,7 +46,7 @@ export const orderList: Order[] = [
     state: "order",
   },
   {
-    id: 4,
+    id: 5,
     orderNumber: 1005,
     productName: "소고기 덮밥",
     quantity: 1,
@@ -55,7 +55,7 @@ export const orderList: Order[] = [
     state: "order",
   },
   {
-    id: 4,
+    id: 6,
     orderNumber: 1005,
     productName: "소고기 덮밥",
     quantity: 2,
@@ -64,7 +64,7 @@ export const orderList: Order[] = [
     state: "cancel",
   },
   {
-    id: 4,
+    id: 7,
     orderNumber: 1005,
     productName: "소고기 덮밥",
     quantity: 2,
@@ -73,7 +73,7 @@ export const orderList: Order[] = [
     state: "cancel",
   },
   {
-    id: 4,
+    id: 8,
     orderNumber: 1005,
     productName: "소고기 덮밥",
     quantity: 2,
@@ -82,7 +82,7 @@ export const orderList: Order[] = [
     state: "cancel",
   },
   {
-    id: 5,
+    id: 9,
     orderNumber: 2001,
     productName: "소고기 덮밥",
     quantity: 1,
@@ -91,7 +91,7 @@ export const orderList: Order[] = [
     state: "cancel",
   },
   {
-    id: 6,
+    id: 10,
     orderNumber: 2002,
     productName: "소고기 덮밥",
     quantity: 1,
