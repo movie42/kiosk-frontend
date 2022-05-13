@@ -45,13 +45,13 @@ $ git checkout develop
 6. github project 탭을 확인합니다.
 7. 팀원과 협의하여 자신이 진행할 아이템을 확인합니다.
 8. 브랜치를 한번 더 만듭니다.
-   - 기능 : feature/자기이름_issue#<번호>
+   - 기능 : feature/기능/이슈
 
 ```shell
-$ git checkout -b feature/자기이름_issue#<번호>
+$ git checkout -b feature/기능/이슈
 ```
 
-9.  자신의 코드를 작성합니다.
+6.  자신의 코드를 작성합니다.
 
 - 기능 요구사항을 잘 확인해주세요.
 - 프로젝트 기본적인 디자인은 [피그마](https://www.figma.com/file/0bv2rseEAQqo8x87zefSyx/everyone-kiosk?node-id=0%3A1)에서 확인하실 수 있습니다.
@@ -134,7 +134,9 @@ $ git commit
 ## PR 하기
 
 1. PR은 자주 해주세요.
-2. PR은 개요, 한일, 스크린 샷으로 나뉩니다.
+2. PR은 main 브랜치로 날려주세요.
+3. 자신이 만든 기능을 서버에서 테스트 해보고 싶을 경우에는 develop 브랜치로 push 해주세요.
+4. PR은 개요, 한일, 스크린 샷으로 나뉩니다.
 
 - 개요 : 자신이 한 일의 개요를 작성합니다.
 - 한일 : 무엇을 했는지 다른 팀원이 이해할 수 있게 작성합니다.
@@ -144,14 +146,14 @@ $ git commit
 
 ## 리뷰 하기
 
-1. 리뷰는 PR에 대해서 하면 됩니다.
+1. 리뷰는 24시간 안에 합니다.
 2. 리뷰를 할 때는 코드에 대한 질문이나 제안 등을 작성해주세요.
    - 질문하고 싶은 코드로 마우스를 가져가면 +가 나타납니다.
    - +를 누르면 comment를 작성할 수 있습니다.
    - 작성을 다 마치고 Start a review 버튼을 누릅니다.
    - 리뷰를 마쳤다면 오른쪽 viewed에 체크를 합니다.
 3. 리뷰할 것이 없다면 따로 코멘트를 작성하지 않아도 됩니다.
-4. 리뷰를 다 마쳤다면 Review changes를 누르고 코멘트를 작성하거나 작성할 코멘트가 없다면 submit review를 누르면 됩니다.
+4. 리뷰를 다 마쳤다면 Review changes를 누르고 코멘트를 작성하거나 작성할 코멘트가 없다면 approve를 해주세요.
 
 참고 : 🎥[Github으로 팀 프로젝트 하기 1편 | Pull request 코드리뷰 개발자](https://www.youtube.com/watch?v=9FZaYz0s8s4)
 
