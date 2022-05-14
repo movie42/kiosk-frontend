@@ -6,7 +6,7 @@ const Button: React.FC<IButtonDefaultStyle> = styled.button<IButtonDefaultStyle>
   font-size: 2rem;
   border: 0;
   padding: 0.8rem 1.3rem;
-  border-radius: 0.5rem;
+  border-radius: 0.3rem;
   color: ${(props) => props.theme.color.fontColorWhite};
   background-color: ${(props) => props.theme.color.gray300};
 `;
