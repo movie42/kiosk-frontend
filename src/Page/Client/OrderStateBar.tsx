@@ -1,5 +1,4 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const MenuBarContainer = styled.div`
@@ -36,6 +35,7 @@ interface ITotalOrderMenu {
   totalCount: number;
   totalPrice: number;
   label: string;
+  goBack?: (value: any) => void;
   handler?: (value: any) => void;
 }
 
@@ -43,6 +43,7 @@ const OrderStateBar: React.FC<ITotalOrderMenu> = ({
   totalCount = 0,
   totalPrice = 0,
   label,
+  goBack,
   handler,
 }) => {
   return (
@@ -52,6 +53,7 @@ const OrderStateBar: React.FC<ITotalOrderMenu> = ({
           총 상품 수: {totalCount} 개 &nbsp;&nbsp;&nbsp; 주문 가격:
           {totalPrice} 원
         </h2>
+        {goBack && <button onClick={goBack}>돌아가기</button>}
         <button onClick={handler}>{label}</button>
       </MenuBarContainer>
     </div>
