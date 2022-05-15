@@ -5,6 +5,9 @@ import AdminManageProductAddItem from "../Page/Admin/AdminManageProductAddItem";
 import AdminManageProductItemList from "../Page/Admin/AdminManageProductItemList";
 import AdminMenu from "../Page/Admin/AdminMenu";
 import AdminLayout from "../Layouts/AdminLayout";
+import PageNotFound from "../Page/404/404";
+import MangeOrderMain from "../Page/MangeOrder/MangeOrderMain";
+import OrderLayout from "../Layouts/OrderLayout";
 import ClientLayout from "../Layouts/ClientLayout";
 import ClientMain from "../Page/Client/ClientMain";
 import ClientMenu from "../Page/Client/ClientMenu";
@@ -23,6 +26,7 @@ const Router = () => {
             element={<AdminManageProductItemList />}
           />
           <Route path="add-product" element={<AdminManageProductAddItem />} />
+          <Route path="manage-order" element={<MangeOrderMain />} />
         </Route>
       </Route>
       <Route path="/order" />
@@ -32,6 +36,7 @@ const Router = () => {
         <Route path="menu" element={<ClientMenu />} />
         <Route path="select-list" element={<ClientSelectList />} />
       </Route>
+      <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
 };
