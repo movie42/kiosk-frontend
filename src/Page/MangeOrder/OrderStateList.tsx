@@ -2,7 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import ButtonDefaultStyle from "../../Components/Buttons/ButtonDefault";
 import { SubTitle1, SubTitle2 } from "../../mixin";
-import { Order } from "../../mockup/orderList";
+import { Order, OrderList } from "../../mockup/orderList";
+import OrderItem from "./OrderItem";
 
 const List = styled.ul`
   li {
@@ -23,15 +24,15 @@ const List = styled.ul`
   }
 `;
 
-const OrderButton = styled(ButtonDefaultStyle)<IOrderState>`
+export const OrderButton = styled(ButtonDefaultStyle)<IOrderState>`
   background-color: ${(props) =>
     props.state === "order" && props.theme.color.secondary400};
 `;
-const CompleteButton = styled(ButtonDefaultStyle)<IOrderState>`
+export const CompleteButton = styled(ButtonDefaultStyle)<IOrderState>`
   background-color: ${(props) =>
     props.state === "complete" && props.theme.color.primary700};
 `;
-const CancelButton = styled(ButtonDefaultStyle)<IOrderState>`
+export const CancelButton = styled(ButtonDefaultStyle)<IOrderState>`
   background-color: ${(props) =>
     props.state === "cancel" && props.theme.color.error500};
 `;
@@ -41,10 +42,14 @@ interface IOrderProps {
 }
 
 interface IOrderState {
-  state: Order["state"];
+  state: OrderList["state"];
 }
 
 const OrderStateList = ({ orders }: IOrderProps) => {
+  const handleCancelStateModal = () => {};
+  const handleOrderStateModal = () => {};
+  const handleCompleteStateModal = () => {};
+
   return (
     <List>
       <li>
@@ -55,24 +60,12 @@ const OrderStateList = ({ orders }: IOrderProps) => {
       {orders.map((order) => (
         <li key={order.id} data-id={order.id}>
           <span>{order.orderNumber}</span>
-          <span>{order.productName}</span>
-          {order.state === "order" && (
-            <span>
-              <CancelButton state={order.state}>취소</CancelButton>
-              <OrderButton state={order.state}>주문</OrderButton>
-              <CompleteButton state={order.state}>완료</CompleteButton>
-            </span>
-          )}
-          {order.state === "complete" && (
-            <span>
-              <CompleteButton state={order.state}>완료</CompleteButton>
-            </span>
-          )}
-          {order.state === "cancel" && (
-            <span>
-              <CancelButton state={order.state}>취소</CancelButton>
-            </span>
-          )}
+          <OrderItem
+            orderList={order.orderList}
+            handleCancelStateModal={handleCancelStateModal}
+            handleOrderStateModal={handleOrderStateModal}
+            handleCompleteStateModal={handleCompleteStateModal}
+          />
         </li>
       ))}
     </List>
