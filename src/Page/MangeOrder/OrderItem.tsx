@@ -16,38 +16,34 @@ const OrderItem = ({
 }: IOrderItemProp) => {
   return (
     <>
-      {orderList.some((item) => item.state) && (
-        <>
-          <span>
-            {orderList[0].productName}{" "}
-            {orderList.length > 1 ? `외 ${orderList.length}` : ""}
-          </span>
-          <span>
-            {orderList.every((item) => item.state) && (
-              <>
-                <CancelButton
-                  onClick={handleCancelStateModal}
-                  state={orderList[0].state}
-                >
-                  취소
-                </CancelButton>
-                <OrderButton
-                  onClick={handleOrderStateModal}
-                  state={orderList[0].state}
-                >
-                  주문
-                </OrderButton>
-                <CompleteButton
-                  onClick={handleCompleteStateModal}
-                  state={orderList[0].state}
-                >
-                  완료
-                </CompleteButton>
-              </>
-            )}
-          </span>
-        </>
-      )}
+      <span>
+        {orderList[0].productName}{" "}
+        {orderList.length > 1 ? `외 ${orderList.length}` : ""}
+      </span>
+      <span>
+        {orderList.every((item) => item.state) && (
+          <>
+            <CancelButton
+              onClick={handleCancelStateModal}
+              state={orderList[0].state}
+            >
+              취소
+            </CancelButton>
+            <OrderButton
+              onClick={handleOrderStateModal}
+              state={orderList[0].state}
+            >
+              주문
+            </OrderButton>
+            <CompleteButton
+              onClick={handleCompleteStateModal}
+              state={orderList[0].state}
+            >
+              완료
+            </CompleteButton>
+          </>
+        )}
+      </span>
     </>
   );
 };

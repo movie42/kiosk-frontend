@@ -7,6 +7,7 @@ import { orderState } from "../../state/orderState";
 import { Order, OrderList, orderList } from "../../mockup/orderList";
 import OrderStateList from "./OrderStateList";
 import { SubTitle1 } from "../../mixin";
+import { useForm } from "react-hook-form";
 
 const Wrapper = styled.div``;
 
@@ -75,6 +76,7 @@ const MangeOrderMain = () => {
   );
   const [orders, setOrders] = useRecoilState(orderState);
   const [sortOrders, setSortOrders] = useState<Order[]>([]);
+  const { register, handleSubmit } = useForm();
 
   const showAllOrders = () => {
     setSortOption("all");
@@ -93,14 +95,9 @@ const MangeOrderMain = () => {
     setSortOption("cancel");
   };
 
-  const searchOrder = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log(searchTerm);
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.currentTarget.value);
-  };
+  const searchOrder = handleSubmit((data) => {
+    setSearchTerm(data.searchOrder);
+  });
 
   useEffect(() => {
     setOrders(orderList);
@@ -122,17 +119,27 @@ const MangeOrderMain = () => {
     setSortOrders(orders);
   }, [orders]);
 
+  useEffect(() => {
+    if (searchTerm === "") {
+      setSortOrders(orders);
+      return;
+    }
+    const selectedSearchTermList = orders.filter(
+      (order) => Number(order.orderNumber) === Number(searchTerm),
+    );
+    setSortOrders(selectedSearchTermList);
+  }, [searchTerm]);
+
   return (
     <Wrapper>
       <OptionContainer>
         <h2>주문 관리</h2>
         <form onSubmit={searchOrder}>
           <SearchingInput
-            value={searchTerm}
-            onChange={handleChange}
+            register={register}
+            registerOptions={{ max: 3000, min: 0 }}
             type="number"
             name="searchOrder"
-            maxLength={4}
             placeholder="주문번호를 입력해주세요."
           />
         </form>
