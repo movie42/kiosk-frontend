@@ -4,7 +4,7 @@ import InputDefault from "../../Components/Form/InputDefault";
 import ButtonDefaultStyle from "../../Components/Buttons/ButtonDefault";
 import { useRecoilState } from "recoil";
 import { orderState } from "../../state/orderState";
-import { Order, orderList } from "../../mockup/orderList";
+import { Order, OrderList, orderList } from "../../mockup/orderList";
 import OrderStateList from "./OrderStateList";
 import { SubTitle1 } from "../../mixin";
 
@@ -65,12 +65,14 @@ const CompleteOrderStateButton = styled(ButtonDefaultStyle)<ISortOption>`
 const OrderStateContainer = styled.div``;
 
 interface ISortOption {
-  sortOption: "all" | Order["state"];
+  sortOption: "all" | OrderList["state"];
 }
 
 const MangeOrderMain = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [sortOption, setSortOption] = useState<"all" | Order["state"]>("all");
+  const [sortOption, setSortOption] = useState<"all" | OrderList["state"]>(
+    "all",
+  );
   const [orders, setOrders] = useRecoilState(orderState);
   const [sortOrders, setSortOrders] = useState<Order[]>([]);
 
@@ -81,17 +83,14 @@ const MangeOrderMain = () => {
 
   const showOrders = () => {
     setSortOption("order");
-    setSortOrders(orders.filter((value) => value.state === "order"));
   };
 
   const showCompleteOrders = () => {
     setSortOption("complete");
-    setSortOrders(orders.filter((value) => value.state === "complete"));
   };
 
   const showCancelOrders = () => {
     setSortOption("cancel");
-    setSortOrders(orders.filter((value) => value.state === "cancel"));
   };
 
   const searchOrder = (e: React.FormEvent<HTMLFormElement>) => {
@@ -106,6 +105,18 @@ const MangeOrderMain = () => {
   useEffect(() => {
     setOrders(orderList);
   }, []);
+
+  useEffect(() => {
+    if (sortOption === "all") {
+      setSortOrders(orders);
+      return;
+    }
+    const selectedOptionList = orders.filter((order) =>
+      order.orderList.some((value) => value.state === sortOption),
+    );
+
+    setSortOrders(selectedOptionList);
+  }, [sortOption]);
 
   useEffect(() => {
     setSortOrders(orders);
