@@ -1,10 +1,10 @@
 import React from "react";
-import { OrderList } from "../../mockup/orderList";
+import { Order, OrderList } from "../../mockup/orderList";
 import { CancelButton, CompleteButton, OrderButton } from "./OrderStateList";
 
 interface IOrderItemProp {
   orderList: OrderList[];
-  handleCancelStateModal: () => any;
+  handleCancelStateModal: (e: React.MouseEvent<HTMLButtonElement>) => any;
   handleOrderStateModal: () => any;
   handleCompleteStateModal: () => any;
 }

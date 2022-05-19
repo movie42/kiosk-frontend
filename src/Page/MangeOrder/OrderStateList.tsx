@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import ButtonDefaultStyle from "../../Components/Buttons/ButtonDefault";
+import Modal from "../../Components/Modals/Modal";
 import { SubTitle1, SubTitle2 } from "../../mixin";
-import { Order, OrderList } from "../../mockup/orderList";
+import { Order, orderList, OrderList } from "../../mockup/orderList";
 import OrderItem from "./OrderItem";
+
+const OrderModal = styled(Modal)``;
 
 const List = styled.ul`
   li {
@@ -22,6 +25,20 @@ const List = styled.ul`
       }
     }
   }
+`;
+
+const OrderStateContainer = styled.div`
+  display: flex;
+`;
+const ButtonContainer = styled.div``;
+
+const PriceContainer = styled.div``;
+
+const SelectStateButton = styled.span<{
+  state: string;
+}>`
+  background-color: ${(props) =>
+    props.state === "cancel" && props.theme.color.error700};
 `;
 
 export const OrderButton = styled(ButtonDefaultStyle)<IOrderState>`
@@ -46,29 +63,106 @@ interface IOrderState {
 }
 
 const OrderStateList = ({ orders }: IOrderProps) => {
-  const handleCancelStateModal = () => {};
+  const [isCancelModal, setIsCancelModal] = useState(false);
+
+  const [modalOrder, setModalOrder] = useState<Order>({
+    id: 0,
+    orderNumber: 0,
+    orderList: [],
+  });
+
+  const handleCancelStateModal = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const id = e.currentTarget.closest("li")?.dataset.id;
+    const [selectedItem] = orders.filter(
+      (order) => Number(order.id) === Number(id),
+    );
+    setModalOrder(selectedItem);
+    setIsCancelModal(true);
+  };
   const handleOrderStateModal = () => {};
   const handleCompleteStateModal = () => {};
 
+  const handleCancelOrder = () => {};
+
+  const handleChangeState = (e: React.MouseEvent<HTMLLIElement>) => {
+    const id = e.currentTarget.dataset.index;
+    const [selectedValue] = modalOrder.orderList.filter(
+      (item, index) => Number(index) === Number(id),
+    );
+
+    const unSelectedValue = modalOrder.orderList.filter(
+      (item, index) => Number(index) !== Number(id),
+    );
+
+    const newOrderList: OrderList[] = [
+      ...unSelectedValue,
+      { ...selectedValue, state: "cancel" },
+    ].sort((a, b) => (a.optionID > b.optionID ? 1 : -1));
+
+    setModalOrder((pre) => ({
+      ...pre,
+      orderList: newOrderList,
+    }));
+  };
+
   return (
-    <List>
-      <li>
-        <h3>주문 번호</h3>
-        <h3>주문한 상품</h3>
-        <h3>현황</h3>
-      </li>
-      {orders.map((order) => (
-        <li key={order.id} data-id={order.id}>
-          <span>{order.orderNumber}</span>
-          <OrderItem
-            orderList={order.orderList}
-            handleCancelStateModal={handleCancelStateModal}
-            handleOrderStateModal={handleOrderStateModal}
-            handleCompleteStateModal={handleCompleteStateModal}
-          />
+    <>
+      {isCancelModal && (
+        <OrderModal strach={true}>
+          <>
+            <h1>주문번호 {modalOrder?.orderNumber}</h1>
+            <p>취소할 상품을 선택하세요.</p>
+            <h3>구성</h3>
+            <ul>
+              {modalOrder?.orderList.map((value, index) => (
+                <li data-index={index} onClick={handleChangeState}>
+                  <SelectStateButton state={value.state} />
+                  <span>{value.productName} </span>
+                  <span>{value.optionID} </span>
+                  <span>{value.quantity}개</span>
+                </li>
+              ))}
+            </ul>
+            <OrderStateContainer>
+              <PriceContainer>
+                <h2>
+                  총 가격{" "}
+                  {modalOrder?.orderList.reduce(
+                    (acc, current) => acc + current.price,
+                    0,
+                  )}
+                </h2>
+              </PriceContainer>
+              <ButtonContainer>
+                <button onClick={() => setIsCancelModal(false)}>
+                  {" "}
+                  돌아가기
+                </button>
+                <button onClick={handleCancelOrder}>취소하기</button>
+              </ButtonContainer>
+            </OrderStateContainer>
+          </>
+        </OrderModal>
+      )}
+      <List>
+        <li>
+          <h3>주문 번호</h3>
+          <h3>주문한 상품</h3>
+          <h3>현황</h3>
         </li>
-      ))}
-    </List>
+        {orders.map((order) => (
+          <li key={order.id} data-id={order.id}>
+            <span>{order.orderNumber}</span>
+            <OrderItem
+              orderList={order.orderList}
+              handleCancelStateModal={handleCancelStateModal}
+              handleOrderStateModal={handleOrderStateModal}
+              handleCompleteStateModal={handleCompleteStateModal}
+            />
+          </li>
+        ))}
+      </List>
+    </>
   );
 };
 

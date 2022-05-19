@@ -10,7 +10,7 @@ export interface OrderList {
   quantity: number;
   price: number;
   optionID: "기본" | "매운맛" | "아주 매운맛";
-  state: "order" | "complete" | "cancel";
+  state: string;
 }
 
 export const orderList: Order[] = [
