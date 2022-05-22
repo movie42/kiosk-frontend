@@ -28,56 +28,63 @@ const MenuItemModalChildren: React.FC<IMenuItemModalChildrenProps> = ({
 }) => {
   const orderSelectedItem = () => {
     const [sameMenu] = orderItem.filter(
-      (ordered) => ordered.productId === selectedItem[0].id
+      (ordered) =>
+        ordered.productId === selectedItem[0].id &&
+        ordered.option === selectedOption
     );
+    const { option: hasOption }: any = selectedItem[0];
 
-    if (
-      count === 0 ||
-      (selectedItem[0].option?.length !== 0 && selectedOption === "")
-    ) {
-      alert("수량과 옵션을 선택해주세요");
-    } else {
-      if (sameMenu && sameMenu.option === selectedOption) {
-        setOrderItem((orderItem) =>
-          [
-            ...orderItem.filter((el) => el !== sameMenu),
-            {
-              ...sameMenu,
-              totalCount: sameMenu.totalCount + count,
-              totalPrice: sameMenu.totalPrice + sameMenu.price + count,
-            },
-          ].sort(function (a, b) {
-            if (a.productId === b.productId) {
-              return a.option && b.option && a.option > b.option ? 1 : -1;
-            } else {
-              return a.productId - b.productId;
-            }
-          })
-        );
-      } else {
-        setOrderItem((orderItem) =>
-          [
-            ...orderItem,
-            {
-              productId: selectedItem[0].id,
-              name: selectedItem[0].name,
-              option: selectedOption,
-              price: selectedItem[0].price,
-              totalCount: count,
-              totalPrice: selectedItem[0].price * count,
-            },
-          ].sort(function (a, b) {
-            if (a.productId === b.productId) {
-              return a.option && b.option && a.option > b.option ? 1 : -1;
-            } else {
-              return a.productId - b.productId;
-            }
-          })
-        );
-      }
-      setCount(0);
-      setIsModal(false);
+    if (count === 0) {
+      alert("수량을 선택해주세요");
+      return;
     }
+
+    if (hasOption?.length > 0 && !selectedOption) {
+      alert("옵션을 선택하세요");
+      return;
+    }
+
+    if (!sameMenu || sameMenu.option !== selectedOption) {
+      setOrderItem((orderItem) =>
+        [
+          ...orderItem,
+          {
+            productId: selectedItem[0].id,
+            name: selectedItem[0].name,
+            option: selectedOption,
+            price: selectedItem[0].price,
+            totalCount: count,
+            totalPrice: selectedItem[0].price * count,
+          },
+        ].sort((a: any, b: any) => {
+          if (a.productId === b.productId) {
+            return a?.option > b?.option ? 1 : -1;
+          }
+          return a.productId - b.productId;
+        })
+      );
+    }
+
+    if (sameMenu?.option === selectedOption) {
+      setOrderItem((orderItem) =>
+        [
+          ...orderItem.filter((el) => el !== sameMenu),
+          {
+            ...sameMenu,
+            totalCount: sameMenu.totalCount + count,
+            totalPrice: sameMenu.totalPrice + sameMenu.price + count,
+          },
+        ].sort((a: any, b: any) => {
+          if (a.productId === b.productId) {
+            return a?.option > b?.option ? 1 : -1;
+          }
+          return a.productId - b.productId;
+        })
+      );
+    }
+
+    setCount(0);
+    setIsModal(false);
   };
 
   const cancelItem = () => {

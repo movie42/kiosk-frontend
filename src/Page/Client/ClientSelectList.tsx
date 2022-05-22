@@ -8,6 +8,7 @@ import { Headline1 } from "../../mixin";
 import OrderStateBar from "./OrderStateBar";
 import PaymentModalChildren from "./Modal/PaymentModalChildren";
 import { useNavigate } from "react-router-dom";
+import ButtonDefaultStyle from "../../Components/Buttons/ButtonDefault";
 
 const Header = styled.div`
   display: flex;
@@ -30,9 +31,18 @@ const Header = styled.div`
 `;
 
 const MenuListItem = styled.div`
+  display: grid;
+  grid-template-columns: 20% 50% 30%;
+  padding: 0.5rem 0;
   border-bottom: 1px solid black;
-  width: 100%;
-  padding-bottom: 1rem;
+  img {
+    border: 1px solid;
+    border-color: ${(props) => props.theme.color.gray300};
+  }
+  div {
+    /* display: grid; */
+    padding: 0 0.5rem;
+  }
   h2 {
     font-size: 2rem;
     font-weight: bold;
@@ -42,6 +52,9 @@ const MenuListItem = styled.div`
     font-size: 1.5rem;
     padding: 0.3rem 0;
   }
+`;
+const DeleteButton = styled(ButtonDefaultStyle)`
+  background-color: ${(props) => props.theme.color.gray300};
 `;
 
 const ClientSelectList = () => {
@@ -71,20 +84,19 @@ const ClientSelectList = () => {
           totalCount: newCount,
           totalPrice: selected.price * newCount,
         },
-      ].sort(function (a, b) {
+      ].sort((a: any, b: any) => {
         if (a.productId === b.productId) {
-          return a.option && b.option && a.option > b.option ? 1 : -1;
-        } else {
-          return a.productId - b.productId;
+          return a?.option > b?.option ? 1 : -1;
         }
+        return a.productId - b.productId;
       })
     );
   };
 
   const handleMinusCount = (current: IOrderSelectedItem) => {
-    let [selected] = totalSelectMenu.filter(
-      (menu) => menu.productId === current.productId
-    );
+    let [selected] = totalSelectMenu
+      .filter((menu) => menu.productId === current.productId)
+      .filter((menu) => menu.option === current.option);
     let newCount = selected.totalCount - 1;
     if (newCount < 1) {
       return;
@@ -97,7 +109,12 @@ const ClientSelectList = () => {
           totalCount: newCount,
           totalPrice: selected.price * newCount,
         },
-      ].sort((a, b) => (a.productId > b.productId ? 1 : -1))
+      ].sort((a: any, b: any) => {
+        if (a.productId === b.productId) {
+          return a?.option > b?.option ? 1 : -1;
+        }
+        return a.productId - b.productId;
+      })
     );
   };
 
@@ -124,16 +141,23 @@ const ClientSelectList = () => {
 
       {totalSelectMenu.map((item, i) => (
         <MenuListItem key={`${item.productId}_${i}`}>
-          <h2>{item.name}</h2>
-          <button onClick={() => handleDelete(item)}>삭제하기</button>
-          {item.option && <p>{item.option}</p>}
-          <p>총 가격: {item.totalPrice}</p>
-          <p>
-            주문수량:
-            <button onClick={() => handleMinusCount(item)}>-</button>
-            {item.totalCount}
-            <button onClick={() => handleAddCount(item)}>+</button>
-          </p>
+          <img src="" />
+          <div>
+            <h2>{item.name}</h2>
+            {item.option && <p>선택옵션: {item.option}</p>}
+            <p>
+              주문수량:
+              <button onClick={() => handleMinusCount(item)}>-</button>
+              {item.totalCount}
+              <button onClick={() => handleAddCount(item)}>+</button>
+            </p>
+          </div>
+          <div>
+            <p>총 가격: {item.totalPrice}</p>
+            <DeleteButton onClick={() => handleDelete(item)}>
+              삭제하기
+            </DeleteButton>
+          </div>
         </MenuListItem>
       ))}
 

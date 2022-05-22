@@ -40,14 +40,15 @@ const PaymentModalChildren: React.FC<IPaymentModalChildrenProps> = ({
   };
   return (
     <PaymentBox>
-      {!isPaid ? (
+      {!isPaid && (
         <>
           <h2>결제중입니다</h2>
           <p>카드를 삽입해주세요</p>
           <button onClick={() => setIsPaid(true)}>결제완료</button>
           <button onClick={() => setIsModal(false)}>취소하기</button>
         </>
-      ) : !isPrint ? (
+      )}
+      {!isPaid && !isPrint ? (
         <>
           <h2>결제가 완료되었습니다</h2>
           <p>영수증을 출력하시겠습니까?</p>
