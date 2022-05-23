@@ -2,11 +2,13 @@ import React from "react";
 import { Order, OrderList } from "../../mockup/orderList";
 import { CancelButton, CompleteButton, OrderButton } from "./OrderStateList";
 
+type ModalButton = (e: React.MouseEvent<HTMLButtonElement>) => void;
+
 interface IOrderItemProp {
   orderList: OrderList[];
-  handleCancelStateModal: (e: React.MouseEvent<HTMLButtonElement>) => any;
-  handleOrderStateModal: () => any;
-  handleCompleteStateModal: () => any;
+  handleCancelStateModal: ModalButton;
+  handleOrderStateModal: ModalButton;
+  handleCompleteStateModal: ModalButton;
 }
 const OrderItem = ({
   orderList,

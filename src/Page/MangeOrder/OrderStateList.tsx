@@ -64,6 +64,10 @@ interface IOrderState {
 
 const OrderStateList = ({ orders }: IOrderProps) => {
   const [isCancelModal, setIsCancelModal] = useState(false);
+  const [isOrderModal, setIsOrderModal] = useState(false);
+  const [isCompleteModal, setIsCompleteModal] = useState(false);
+
+  const [selectedOrder, setSelectedOrder] = useState([]);
 
   const [modalOrder, setModalOrder] = useState<Order>({
     id: 0,
@@ -79,8 +83,22 @@ const OrderStateList = ({ orders }: IOrderProps) => {
     setModalOrder(selectedItem);
     setIsCancelModal(true);
   };
-  const handleOrderStateModal = () => {};
-  const handleCompleteStateModal = () => {};
+  const handleOrderStateModal = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const id = e.currentTarget.closest("li")?.dataset.id;
+    const [selectedItem] = orders.filter(
+      (order) => Number(order.id) === Number(id),
+    );
+    setModalOrder(selectedItem);
+    setIsOrderModal(true);
+  };
+  const handleCompleteStateModal = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const id = e.currentTarget.closest("li")?.dataset.id;
+    const [selectedItem] = orders.filter(
+      (order) => Number(order.id) === Number(id),
+    );
+    setModalOrder(selectedItem);
+    setIsCompleteModal(true);
+  };
 
   const handleCancelOrder = () => {};
 
@@ -135,6 +153,80 @@ const OrderStateList = ({ orders }: IOrderProps) => {
               </PriceContainer>
               <ButtonContainer>
                 <button onClick={() => setIsCancelModal(false)}>
+                  {" "}
+                  돌아가기
+                </button>
+                <button onClick={handleCancelOrder}>취소하기</button>
+              </ButtonContainer>
+            </OrderStateContainer>
+          </>
+        </OrderModal>
+      )}
+      {isOrderModal && (
+        <OrderModal strach={true}>
+          <>
+            <h1>주문번호 {modalOrder?.orderNumber}</h1>
+            <p>취소할 상품을 선택하세요.</p>
+            <h3>구성</h3>
+            <ul>
+              {modalOrder?.orderList.map((value, index) => (
+                <li data-index={index} onClick={handleChangeState}>
+                  <SelectStateButton state={value.state} />
+                  <span>{value.productName} </span>
+                  <span>{value.optionID} </span>
+                  <span>{value.quantity}개</span>
+                </li>
+              ))}
+            </ul>
+            <OrderStateContainer>
+              <PriceContainer>
+                <h2>
+                  총 가격{" "}
+                  {modalOrder?.orderList.reduce(
+                    (acc, current) => acc + current.price,
+                    0,
+                  )}
+                </h2>
+              </PriceContainer>
+              <ButtonContainer>
+                <button onClick={() => setIsOrderModal(false)}>
+                  {" "}
+                  돌아가기
+                </button>
+                <button onClick={handleCancelOrder}>취소하기</button>
+              </ButtonContainer>
+            </OrderStateContainer>
+          </>
+        </OrderModal>
+      )}
+      {isCompleteModal && (
+        <OrderModal strach={true}>
+          <>
+            <h1>주문번호 {modalOrder?.orderNumber}</h1>
+            <p>취소할 상품을 선택하세요.</p>
+            <h3>구성</h3>
+            <ul>
+              {modalOrder?.orderList.map((value, index) => (
+                <li data-index={index} onClick={handleChangeState}>
+                  <SelectStateButton state={value.state} />
+                  <span>{value.productName} </span>
+                  <span>{value.optionID} </span>
+                  <span>{value.quantity}개</span>
+                </li>
+              ))}
+            </ul>
+            <OrderStateContainer>
+              <PriceContainer>
+                <h2>
+                  총 가격{" "}
+                  {modalOrder?.orderList.reduce(
+                    (acc, current) => acc + current.price,
+                    0,
+                  )}
+                </h2>
+              </PriceContainer>
+              <ButtonContainer>
+                <button onClick={() => setIsCompleteModal(false)}>
                   {" "}
                   돌아가기
                 </button>
