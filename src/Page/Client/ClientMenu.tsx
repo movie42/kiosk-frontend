@@ -77,9 +77,10 @@ const Item = styled.button`
 `;
 
 export interface IOrderSelectedItem {
-  id: number;
+  productId: number;
   name: string;
   option?: string;
+  price: number;
   totalCount: number;
   totalPrice: number;
 }
