@@ -5,13 +5,13 @@ import { CancelButton, CompleteButton, OrderButton } from "./OrderStateList";
 type ModalButton = (e: React.MouseEvent<HTMLButtonElement>) => void;
 
 interface IOrderItemProp {
-  orderList: OrderList[];
+  orders: OrderList[];
   handleCancelStateModal: ModalButton;
   handleOrderStateModal: ModalButton;
   handleCompleteStateModal: ModalButton;
 }
 const OrderItem = ({
-  orderList,
+  orders,
   handleCancelStateModal,
   handleOrderStateModal,
   handleCompleteStateModal,
@@ -19,27 +19,26 @@ const OrderItem = ({
   return (
     <>
       <span>
-        {orderList[0].productName}{" "}
-        {orderList.length > 1 ? `외 ${orderList.length}` : ""}
+        {orders[0].productName} {orders.length > 1 ? `외 ${orders.length}` : ""}
       </span>
       <span>
-        {orderList.every((item) => item.state) && (
+        {orders.every((item) => item.state) && (
           <>
             <CancelButton
               onClick={handleCancelStateModal}
-              state={orderList[0].state}
+              state={orders[0].state}
             >
               취소
             </CancelButton>
             <OrderButton
               onClick={handleOrderStateModal}
-              state={orderList[0].state}
+              state={orders[0].state}
             >
               주문
             </OrderButton>
             <CompleteButton
               onClick={handleCompleteStateModal}
-              state={orderList[0].state}
+              state={orders[0].state}
             >
               완료
             </CompleteButton>

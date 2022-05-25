@@ -4,7 +4,7 @@ import InputDefault from "../../Components/Form/InputDefault";
 import ButtonDefaultStyle from "../../Components/Buttons/ButtonDefault";
 import { useRecoilState } from "recoil";
 import { orderState } from "../../state/orderState";
-import { Order, OrderList, orderList } from "../../mockup/orderList";
+import { Order, orderList, OrderState } from "../../mockup/orderList";
 import OrderStateList from "./OrderStateList";
 import { SubTitle1 } from "../../mixin";
 import { useForm } from "react-hook-form";
@@ -38,25 +38,31 @@ const ButtonContainer = styled.div`
   }
 `;
 
-const WholeOrderStateButton = styled(ButtonDefaultStyle)<ISortOption>`
+const WholeOrderStateButton = styled(ButtonDefaultStyle)<{
+  sortOption: OrderState;
+}>`
   background-color: ${(props) =>
     props.sortOption === "all"
       ? props.theme.color.primary600
       : props.theme.color.gray300};
 `;
-const OrderStateButton = styled(ButtonDefaultStyle)<ISortOption>`
+const OrderStateButton = styled(ButtonDefaultStyle)<{ sortOption: OrderState }>`
   background-color: ${(props) =>
     props.sortOption === "order"
       ? props.theme.color.secondary300
       : props.theme.color.gray300};
 `;
-const CancelOrderStateButton = styled(ButtonDefaultStyle)<ISortOption>`
+const CancelOrderStateButton = styled(ButtonDefaultStyle)<{
+  sortOption: OrderState;
+}>`
   background-color: ${(props) =>
     props.sortOption === "cancel"
       ? props.theme.color.error500
       : props.theme.color.gray300};
 `;
-const CompleteOrderStateButton = styled(ButtonDefaultStyle)<ISortOption>`
+const CompleteOrderStateButton = styled(ButtonDefaultStyle)<{
+  sortOption: OrderState;
+}>`
   background-color: ${(props) =>
     props.sortOption === "complete"
       ? props.theme.color.primary700
@@ -65,34 +71,28 @@ const CompleteOrderStateButton = styled(ButtonDefaultStyle)<ISortOption>`
 
 const OrderStateContainer = styled.div``;
 
-interface ISortOption {
-  sortOption: "all" | OrderList["state"];
-}
-
 const MangeOrderMain = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [sortOption, setSortOption] = useState<"all" | OrderList["state"]>(
-    "all",
-  );
+  const [sortOption, setSortOption] = useState<OrderState>(OrderState.all);
   const [orders, setOrders] = useRecoilState(orderState);
   const [sortOrders, setSortOrders] = useState<Order[]>([]);
   const { register, handleSubmit } = useForm();
 
   const showAllOrders = () => {
-    setSortOption("all");
+    setSortOption(OrderState.all);
     setSortOrders(orders);
   };
 
   const showOrders = () => {
-    setSortOption("order");
+    setSortOption(OrderState.order);
   };
 
   const showCompleteOrders = () => {
-    setSortOption("complete");
+    setSortOption(OrderState.complete);
   };
 
   const showCancelOrders = () => {
-    setSortOption("cancel");
+    setSortOption(OrderState.cancel);
   };
 
   const searchOrder = handleSubmit((data) => {
@@ -109,7 +109,7 @@ const MangeOrderMain = () => {
       return;
     }
     const selectedOptionList = orders.filter((order) =>
-      order.orderList.some((value) => value.state === sortOption),
+      order.orders.some((value) => value.state === sortOption),
     );
 
     setSortOrders(selectedOptionList);

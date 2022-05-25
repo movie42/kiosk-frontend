@@ -3,7 +3,7 @@ import styled from "styled-components";
 import ButtonDefaultStyle from "../../Components/Buttons/ButtonDefault";
 import Modal from "../../Components/Modals/Modal";
 import { SubTitle1, SubTitle2 } from "../../mixin";
-import { Order, orderList, OrderList } from "../../mockup/orderList";
+import { Order, OrderList, OrderState } from "../../mockup/orderList";
 import OrderItem from "./OrderItem";
 
 const OrderModal = styled(Modal)``;
@@ -72,7 +72,7 @@ const OrderStateList = ({ orders }: IOrderProps) => {
   const [modalOrder, setModalOrder] = useState<Order>({
     id: 0,
     orderNumber: 0,
-    orderList: [],
+    orders: [],
   });
 
   const handleCancelStateModal = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -104,17 +104,17 @@ const OrderStateList = ({ orders }: IOrderProps) => {
 
   const handleChangeState = (e: React.MouseEvent<HTMLLIElement>) => {
     const id = e.currentTarget.dataset.index;
-    const [selectedValue] = modalOrder.orderList.filter(
+    const [selectedValue] = modalOrder.orders.filter(
       (item, index) => Number(index) === Number(id),
     );
 
-    const unSelectedValue = modalOrder.orderList.filter(
+    const unSelectedValue = modalOrder.orders.filter(
       (item, index) => Number(index) !== Number(id),
     );
 
     const newOrderList: OrderList[] = [
       ...unSelectedValue,
-      { ...selectedValue, state: "cancel" },
+      { ...selectedValue, state: OrderState.cancel },
     ].sort((a, b) => (a.optionID > b.optionID ? 1 : -1));
 
     setModalOrder((pre) => ({
@@ -132,7 +132,7 @@ const OrderStateList = ({ orders }: IOrderProps) => {
             <p>취소할 상품을 선택하세요.</p>
             <h3>구성</h3>
             <ul>
-              {modalOrder?.orderList.map((value, index) => (
+              {modalOrder?.orders.map((value, index) => (
                 <li data-index={index} onClick={handleChangeState}>
                   <SelectStateButton state={value.state} />
                   <span>{value.productName} </span>
@@ -145,7 +145,7 @@ const OrderStateList = ({ orders }: IOrderProps) => {
               <PriceContainer>
                 <h2>
                   총 가격{" "}
-                  {modalOrder?.orderList.reduce(
+                  {modalOrder?.orders.reduce(
                     (acc, current) => acc + current.price,
                     0,
                   )}
@@ -169,7 +169,7 @@ const OrderStateList = ({ orders }: IOrderProps) => {
             <p>취소할 상품을 선택하세요.</p>
             <h3>구성</h3>
             <ul>
-              {modalOrder?.orderList.map((value, index) => (
+              {modalOrder?.orders.map((value, index) => (
                 <li data-index={index} onClick={handleChangeState}>
                   <SelectStateButton state={value.state} />
                   <span>{value.productName} </span>
@@ -182,7 +182,7 @@ const OrderStateList = ({ orders }: IOrderProps) => {
               <PriceContainer>
                 <h2>
                   총 가격{" "}
-                  {modalOrder?.orderList.reduce(
+                  {modalOrder?.orders.reduce(
                     (acc, current) => acc + current.price,
                     0,
                   )}
@@ -206,7 +206,7 @@ const OrderStateList = ({ orders }: IOrderProps) => {
             <p>취소할 상품을 선택하세요.</p>
             <h3>구성</h3>
             <ul>
-              {modalOrder?.orderList.map((value, index) => (
+              {modalOrder?.orders.map((value, index) => (
                 <li data-index={index} onClick={handleChangeState}>
                   <SelectStateButton state={value.state} />
                   <span>{value.productName} </span>
@@ -219,7 +219,7 @@ const OrderStateList = ({ orders }: IOrderProps) => {
               <PriceContainer>
                 <h2>
                   총 가격{" "}
-                  {modalOrder?.orderList.reduce(
+                  {modalOrder?.orders.reduce(
                     (acc, current) => acc + current.price,
                     0,
                   )}
@@ -246,7 +246,7 @@ const OrderStateList = ({ orders }: IOrderProps) => {
           <li key={order.id} data-id={order.id}>
             <span>{order.orderNumber}</span>
             <OrderItem
-              orderList={order.orderList}
+              orders={order.orders}
               handleCancelStateModal={handleCancelStateModal}
               handleOrderStateModal={handleOrderStateModal}
               handleCompleteStateModal={handleCompleteStateModal}
