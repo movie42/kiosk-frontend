@@ -65,7 +65,7 @@ const OrderModal = ({
 
     const newOrderList: OrderList[] = [
       ...unSelectedValue,
-      { ...selectedValue, state: OrderState.cancel },
+      { ...selectedValue, state: OrderState.CANCEL },
     ].sort((a, b) => (a.optionID > b.optionID ? 1 : -1));
 
     setModalOrder((pre) => ({

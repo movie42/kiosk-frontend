@@ -3,7 +3,7 @@ import styled from "styled-components";
 import ButtonDefaultStyle from "../../Components/Buttons/ButtonDefault";
 import Modal from "../../Components/Modals/Modal";
 import { SubTitle1, SubTitle2 } from "../../mixin";
-import { Order, OrderList, OrderState } from "../../mockup/orderList";
+import { Order, OrderState } from "../../mockup/orderList";
 import OrderItem from "./OrderItem";
 import OrderModal from "./OrderModal";
 
@@ -49,19 +49,20 @@ const OrderStateList = ({ orders }: IOrderProps) => {
     const [selectedItem] = orders.filter(
       (order) => Number(order.id) === Number(id),
     );
+
     setModalOrder(selectedItem);
 
-    if (state === OrderState.order) {
+    if (state === OrderState.ORDER) {
       setIsOrderModal(true);
       return;
     }
 
-    if (state === OrderState.cancel) {
+    if (state === OrderState.CANCEL) {
       setIsCancelModal(true);
       return;
     }
 
-    if (state === OrderState.complete) {
+    if (state === OrderState.COMPLETE) {
       setIsCompleteModal(true);
       return;
     }

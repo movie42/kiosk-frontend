@@ -73,26 +73,26 @@ const OrderStateContainer = styled.div``;
 
 const MangeOrderMain = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [sortOption, setSortOption] = useState<OrderState>(OrderState.all);
+  const [sortOption, setSortOption] = useState<OrderState>(OrderState.ALL);
   const [orders, setOrders] = useRecoilState(orderState);
   const [sortOrders, setSortOrders] = useState<Order[]>([]);
   const { register, handleSubmit } = useForm();
 
   const showAllOrders = () => {
-    setSortOption(OrderState.all);
+    setSortOption(OrderState.ALL);
     setSortOrders(orders);
   };
 
   const showOrders = () => {
-    setSortOption(OrderState.order);
+    setSortOption(OrderState.ORDER);
   };
 
   const showCompleteOrders = () => {
-    setSortOption(OrderState.complete);
+    setSortOption(OrderState.COMPLETE);
   };
 
   const showCancelOrders = () => {
-    setSortOption(OrderState.cancel);
+    setSortOption(OrderState.CANCEL);
   };
 
   const searchOrder = handleSubmit((data) => {
@@ -125,7 +125,7 @@ const MangeOrderMain = () => {
       return;
     }
     const selectedSearchTermList = orders.filter(
-      (order) => Number(order.orderNumber) === Number(searchTerm),
+      (order) => Number(order.id) === Number(searchTerm),
     );
     setSortOrders(selectedSearchTermList);
   }, [searchTerm]);

@@ -26,19 +26,19 @@ const OrderItem = ({ orders, handleSetModalItem }: IOrderItemProp) => {
         {orders.every((item) => item.state) && (
           <>
             <CancelButton
-              onClick={(e) => handleSetModalItem(e, OrderState.cancel)}
+              onClick={(e) => handleSetModalItem(e, OrderState.CANCEL)}
               state={orders[0].state}
             >
               취소
             </CancelButton>
             <OrderButton
-              onClick={(e) => handleSetModalItem(e, OrderState.order)}
+              onClick={(e) => handleSetModalItem(e, OrderState.ORDER)}
               state={orders[0].state}
             >
               주문
             </OrderButton>
             <CompleteButton
-              onClick={(e) => handleSetModalItem(e, OrderState.complete)}
+              onClick={(e) => handleSetModalItem(e, OrderState.COMPLETE)}
               state={orders[0].state}
             >
               완료
