@@ -1,37 +1,56 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import ButtonDefaultStyle from "../../Components/Buttons/ButtonDefault";
-
 import Modal from "../../Components/Modals/Modal";
 import { Order, OrderList, OrderState } from "../../mockup/orderList";
+import { calculatePrice } from "../../utils/helper/calculatePrice";
+import { translateOrderStateFromEngToKo } from "../../utils/helper/translateOrderStateFromEngToKo";
 
 const ModalContainer = styled(Modal)``;
 
-const SelectStateButton = styled.span<{
-  state: string;
-}>`
-  background-color: ${(props) =>
-    props.state === "cancel" && props.theme.color.error700};
-`;
-
 const OrderStateContainer = styled.div`
   display: flex;
+  align-self: flex-end;
+  justify-content: space-between;
+  align-items: center;
 `;
-const ButtonContainer = styled.div``;
+
+const ButtonContainer = styled.div<ButtonState>`
+  button {
+    cursor: pointer;
+    border: 0;
+    font-size: 1.8rem;
+    padding: 0.7rem 1rem;
+    border-radius: 0.5rem;
+    &.cancel-button {
+      background-color: ${(props) => props.theme.color.gray300};
+      margin-right: 0.8rem;
+    }
+    &.confirm-button {
+      background-color: ${(props) =>
+        props.state === OrderState.CANCEL
+          ? props.theme.color.error700
+          : props.theme.color.primary600};
+      color: ${(props) => props.theme.color.fontColorWhite};
+    }
+  }
+`;
 
 const PriceContainer = styled.div``;
 
-export const OrderButton = styled(ButtonDefaultStyle)<IOrderState>`
-  background-color: ${(props) =>
-    props.state === "order" && props.theme.color.secondary400};
+const ModalItemContainer = styled.ul`
+  margin: 1rem 0;
+  li {
+    margin-bottom: 0.8rem;
+  }
 `;
-export const CompleteButton = styled(ButtonDefaultStyle)<IOrderState>`
-  background-color: ${(props) =>
-    props.state === "complete" && props.theme.color.primary700};
-`;
-export const CancelButton = styled(ButtonDefaultStyle)<IOrderState>`
-  background-color: ${(props) =>
-    props.state === "cancel" && props.theme.color.error500};
+
+const MordalItem = styled.li`
+  display: flex;
+  align-items: center;
+  font-size: 1.8rem;
+  span {
+    margin-right: 1.2rem;
+  }
 `;
 
 interface IOrderModalProps {
@@ -39,11 +58,11 @@ interface IOrderModalProps {
   setModalOrder: React.Dispatch<React.SetStateAction<Order>>;
   setIsModal: React.Dispatch<React.SetStateAction<boolean>>;
   modalMessage: string;
-  confirmButtonText: string;
+  modalState: OrderList["state"];
 }
 
-interface IOrderState {
-  state: OrderList["state"];
+interface ButtonState {
+  state?: OrderList["state"];
 }
 
 const OrderModal = ({
@@ -51,63 +70,78 @@ const OrderModal = ({
   setModalOrder,
   setIsModal,
   modalMessage,
-  confirmButtonText,
+  modalState,
 }: IOrderModalProps) => {
-  const handleChangeState = (e: React.MouseEvent<HTMLLIElement>) => {
-    const id = e.currentTarget.dataset.index;
-    const [selectedValue] = modalOrder.orders.filter(
-      (item, index) => Number(index) === Number(id),
-    );
+  const handleSetState = () => {
+    if (modalState === OrderState.COMPLETE) {
+      const newOrders: OrderList[] = modalOrder.orders.map((value) => {
+        if (value.state !== OrderState.CANCEL) {
+          return { ...value, state: OrderState.COMPLETE };
+        }
+        return value;
+      });
+      setModalOrder((pre) => ({ ...pre, orders: newOrders }));
+      setIsModal(false);
+      return;
+    }
 
-    const unSelectedValue = modalOrder.orders.filter(
-      (item, index) => Number(index) !== Number(id),
-    );
-
-    const newOrderList: OrderList[] = [
-      ...unSelectedValue,
-      { ...selectedValue, state: OrderState.CANCEL },
-    ].sort((a, b) => (a.optionID > b.optionID ? 1 : -1));
-
-    setModalOrder((pre) => ({
-      ...pre,
-      orderList: newOrderList,
-    }));
+    if (modalState === OrderState.CANCEL) {
+      const newOrders: OrderList[] = modalOrder.orders.map((value) => ({
+        ...value,
+        state: OrderState.CANCEL,
+      }));
+      setModalOrder((pre) => ({ ...pre, orders: newOrders }));
+      setIsModal(false);
+      return;
+    }
   };
 
-  const handleState = () => {};
-
   return (
-    <ModalContainer strach={true}>
-      <>
+    <ModalContainer strach={false}>
+      <div>
         <h1>주문번호 {modalOrder?.orderNumber}</h1>
         <p>{modalMessage}</p>
         <h3>구성</h3>
-        <ul>
-          {modalOrder?.orders.map((value, index) => (
-            <li data-index={index} onClick={handleChangeState}>
-              <SelectStateButton state={value.state} />
+        <ModalItemContainer>
+          {modalOrder?.orders.map((value) => (
+            <MordalItem>
               <span>{value.productName} </span>
               <span>{value.optionID} </span>
               <span>{value.quantity}개</span>
-            </li>
+              <span>
+                {value.state === OrderState.CANCEL
+                  ? 0
+                  : calculatePrice(value.price, value.quantity)}
+                원
+              </span>
+              <span>{translateOrderStateFromEngToKo(value.state)}</span>
+            </MordalItem>
           ))}
-        </ul>
+        </ModalItemContainer>
         <OrderStateContainer>
           <PriceContainer>
             <h2>
               총 가격{" "}
-              {modalOrder?.orders.reduce(
-                (acc, current) => acc + current.price,
-                0,
-              )}
+              {modalOrder?.orders
+                .filter((item) => item.state !== OrderState.CANCEL)
+                .reduce(
+                  (acc, current) => acc + current.price * current.quantity,
+                  0,
+                )
+                .toLocaleString("ko-KR")}
+              원
             </h2>
           </PriceContainer>
-          <ButtonContainer>
-            <button onClick={() => setIsModal(false)}>돌아가기</button>
-            <button onClick={handleState}>{confirmButtonText}</button>
+          <ButtonContainer state={modalState}>
+            <button className="cancel-button" onClick={() => setIsModal(false)}>
+              돌아가기
+            </button>
+            <button className="confirm-button" onClick={handleSetState}>
+              주문{translateOrderStateFromEngToKo(modalState)}
+            </button>
           </ButtonContainer>
         </OrderStateContainer>
-      </>
+      </div>
     </ModalContainer>
   );
 };

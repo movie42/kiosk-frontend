@@ -1,29 +1,56 @@
 import React, { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import ButtonDefaultStyle from "../../Components/Buttons/ButtonDefault";
-import Modal from "../../Components/Modals/Modal";
 import { SubTitle1, SubTitle2 } from "../../mixin";
 import { Order, OrderState } from "../../mockup/orderList";
+import { orderState } from "../../state/orderState";
 import OrderItem from "./OrderItem";
 import OrderModal from "./OrderModal";
 
 const List = styled.ul`
   li {
     display: grid;
-    grid-template-columns: 1fr 2fr 5fr;
-    margin-bottom: 0.8rem;
-
+    &.list-header {
+      grid-template-columns: 1fr repeat(5, 1fr);
+    }
+    &.list-container {
+      align-items: flex-start;
+      grid-template-columns: 1fr 5fr;
+      margin-bottom: 0.8rem;
+      border-bottom: 1px solid ${(props) => props.theme.color.gray300};
+    }
     h3 {
       ${SubTitle2}
+      font-weight: 900;
     }
-    span {
-      ${SubTitle1}
-      button {
-        padding: 0.8rem 3rem;
-        margin-right: 0.5rem;
+    div {
+      display: grid;
+      align-items: center;
+      span {
+        ${SubTitle1}
+        display: flex;
+        justify-content: flex-start;
+        &.order-button-container {
+          align-items: flex-start;
+          display: flex;
+          flex-direction: column;
+        }
       }
     }
   }
+`;
+
+const CompleteAllOrderButton = styled(ButtonDefaultStyle)`
+  font-size: 1.2rem;
+  padding: 0.8rem;
+  margin-bottom: 0.3rem;
+`;
+
+const CancelAllOrderButton = styled(ButtonDefaultStyle)`
+  font-size: 1.2rem;
+  padding: 0.8rem;
+  margin-bottom: 0.3rem;
 `;
 
 interface IOrderProps {
@@ -31,9 +58,10 @@ interface IOrderProps {
 }
 
 const OrderStateList = ({ orders }: IOrderProps) => {
-  const [isOrderModal, setIsOrderModal] = useState(false);
   const [isCancelModal, setIsCancelModal] = useState(false);
   const [isCompleteModal, setIsCompleteModal] = useState(false);
+
+  const [orderList, setOrderList] = useRecoilState(orderState);
 
   const [modalOrder, setModalOrder] = useState<Order>({
     id: 0,
@@ -52,11 +80,6 @@ const OrderStateList = ({ orders }: IOrderProps) => {
 
     setModalOrder(selectedItem);
 
-    if (state === OrderState.ORDER) {
-      setIsOrderModal(true);
-      return;
-    }
-
     if (state === OrderState.CANCEL) {
       setIsCancelModal(true);
       return;
@@ -68,15 +91,26 @@ const OrderStateList = ({ orders }: IOrderProps) => {
     }
   };
 
+  useEffect(() => {
+    setOrderList((orders) =>
+      orders.map((order) => {
+        if (order.id === modalOrder.id) {
+          return modalOrder;
+        }
+        return order;
+      }),
+    );
+  }, [modalOrder]);
+
   return (
     <>
-      {isOrderModal && (
+      {isCompleteModal && (
         <OrderModal
           modalOrder={modalOrder}
           setModalOrder={setModalOrder}
-          setIsModal={setIsOrderModal}
-          confirmButtonText="완료하기"
-          modalMessage="주문 목록을 확인하고 주문이 완료되었다면 완료하기 버튼을 누르세요."
+          setIsModal={setIsCompleteModal}
+          modalState={OrderState.COMPLETE}
+          modalMessage="개별 취소된 주문은 완료되지 않습니다. 주문을 완료하시겠습니까?"
         />
       )}
       {isCancelModal && (
@@ -84,32 +118,37 @@ const OrderStateList = ({ orders }: IOrderProps) => {
           modalOrder={modalOrder}
           setModalOrder={setModalOrder}
           setIsModal={setIsCancelModal}
-          modalMessage="취소할 주문을 선택하고 '취소하기' 버튼을 누르세요."
-          confirmButtonText="취소하기"
-        />
-      )}
-      {isCompleteModal && (
-        <OrderModal
-          modalOrder={modalOrder}
-          setModalOrder={setModalOrder}
-          setIsModal={setIsCompleteModal}
-          modalMessage="주문이 모두 완료되었다면 '주문완료' 버튼을 누르세요."
-          confirmButtonText="주문완료"
+          modalState={OrderState.CANCEL}
+          modalMessage="주문을 취소하면 완료된 주문을 포함해 모든 주문이 취소됩니다."
         />
       )}
       <List>
-        <li>
+        <li className="list-header">
           <h3>주문 번호</h3>
           <h3>주문한 상품</h3>
+          <h3>옵션</h3>
+          <h3>수량</h3>
+          <h3>가격</h3>
           <h3>현황</h3>
         </li>
         {orders.map((order) => (
-          <li key={order.id} data-id={order.id}>
-            <span>{order.orderNumber}</span>
-            <OrderItem
-              orders={order.orders}
-              handleSetModalItem={handleSetModalItem}
-            />
+          <li className="list-container" key={order.id} data-id={order.id}>
+            <div>
+              <span>{order.orderNumber}</span>
+              <span className="order-button-container">
+                <CompleteAllOrderButton
+                  onClick={(e) => handleSetModalItem(e, OrderState.COMPLETE)}
+                >
+                  주문완료
+                </CompleteAllOrderButton>
+                <CancelAllOrderButton
+                  onClick={(e) => handleSetModalItem(e, OrderState.CANCEL)}
+                >
+                  주문취소
+                </CancelAllOrderButton>
+              </span>
+            </div>
+            <OrderItem orders={order.orders} orderId={order.id} />
           </li>
         ))}
       </List>

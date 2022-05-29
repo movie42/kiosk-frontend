@@ -46,12 +46,14 @@ const WholeOrderStateButton = styled(ButtonDefaultStyle)<{
       ? props.theme.color.primary600
       : props.theme.color.gray300};
 `;
+
 const OrderStateButton = styled(ButtonDefaultStyle)<{ sortOption: OrderState }>`
   background-color: ${(props) =>
     props.sortOption === "order"
       ? props.theme.color.secondary300
       : props.theme.color.gray300};
 `;
+
 const CancelOrderStateButton = styled(ButtonDefaultStyle)<{
   sortOption: OrderState;
 }>`
@@ -60,6 +62,7 @@ const CancelOrderStateButton = styled(ButtonDefaultStyle)<{
       ? props.theme.color.error500
       : props.theme.color.gray300};
 `;
+
 const CompleteOrderStateButton = styled(ButtonDefaultStyle)<{
   sortOption: OrderState;
 }>`
@@ -125,7 +128,7 @@ const MangeOrderMain = () => {
       return;
     }
     const selectedSearchTermList = orders.filter(
-      (order) => Number(order.id) === Number(searchTerm),
+      (order) => Number(order.orderNumber) === Number(searchTerm),
     );
     setSortOrders(selectedSearchTermList);
   }, [searchTerm]);
