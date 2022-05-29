@@ -4,9 +4,10 @@ import InputDefault from "../../Components/Form/InputDefault";
 import ButtonDefaultStyle from "../../Components/Buttons/ButtonDefault";
 import { useRecoilState } from "recoil";
 import { orderState } from "../../state/orderState";
-import { Order, orderList } from "../../mockup/orderList";
+import { Order, orderList, OrderState } from "../../mockup/orderList";
 import OrderStateList from "./OrderStateList";
 import { SubTitle1 } from "../../mixin";
+import { useForm } from "react-hook-form";
 
 const Wrapper = styled.div``;
 
@@ -37,25 +38,31 @@ const ButtonContainer = styled.div`
   }
 `;
 
-const WholeOrderStateButton = styled(ButtonDefaultStyle)<ISortOption>`
+const WholeOrderStateButton = styled(ButtonDefaultStyle)<{
+  sortOption: OrderState;
+}>`
   background-color: ${(props) =>
     props.sortOption === "all"
       ? props.theme.color.primary600
       : props.theme.color.gray300};
 `;
-const OrderStateButton = styled(ButtonDefaultStyle)<ISortOption>`
+const OrderStateButton = styled(ButtonDefaultStyle)<{ sortOption: OrderState }>`
   background-color: ${(props) =>
     props.sortOption === "order"
       ? props.theme.color.secondary300
       : props.theme.color.gray300};
 `;
-const CancelOrderStateButton = styled(ButtonDefaultStyle)<ISortOption>`
+const CancelOrderStateButton = styled(ButtonDefaultStyle)<{
+  sortOption: OrderState;
+}>`
   background-color: ${(props) =>
     props.sortOption === "cancel"
       ? props.theme.color.error500
       : props.theme.color.gray300};
 `;
-const CompleteOrderStateButton = styled(ButtonDefaultStyle)<ISortOption>`
+const CompleteOrderStateButton = styled(ButtonDefaultStyle)<{
+  sortOption: OrderState;
+}>`
   background-color: ${(props) =>
     props.sortOption === "complete"
       ? props.theme.color.primary700
@@ -64,52 +71,64 @@ const CompleteOrderStateButton = styled(ButtonDefaultStyle)<ISortOption>`
 
 const OrderStateContainer = styled.div``;
 
-interface ISortOption {
-  sortOption: "all" | Order["state"];
-}
-
 const MangeOrderMain = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [sortOption, setSortOption] = useState<"all" | Order["state"]>("all");
+  const [sortOption, setSortOption] = useState<OrderState>(OrderState.all);
   const [orders, setOrders] = useRecoilState(orderState);
   const [sortOrders, setSortOrders] = useState<Order[]>([]);
+  const { register, handleSubmit } = useForm();
 
   const showAllOrders = () => {
-    setSortOption("all");
+    setSortOption(OrderState.all);
     setSortOrders(orders);
   };
 
   const showOrders = () => {
-    setSortOption("order");
-    setSortOrders(orders.filter((value) => value.state === "order"));
+    setSortOption(OrderState.order);
   };
 
   const showCompleteOrders = () => {
-    setSortOption("complete");
-    setSortOrders(orders.filter((value) => value.state === "complete"));
+    setSortOption(OrderState.complete);
   };
 
   const showCancelOrders = () => {
-    setSortOption("cancel");
-    setSortOrders(orders.filter((value) => value.state === "cancel"));
+    setSortOption(OrderState.cancel);
   };
 
-  const searchOrder = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log(searchTerm);
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.currentTarget.value);
-  };
+  const searchOrder = handleSubmit((data) => {
+    setSearchTerm(data.searchOrder);
+  });
 
   useEffect(() => {
     setOrders(orderList);
   }, []);
 
   useEffect(() => {
+    if (sortOption === "all") {
+      setSortOrders(orders);
+      return;
+    }
+    const selectedOptionList = orders.filter((order) =>
+      order.orders.some((value) => value.state === sortOption),
+    );
+
+    setSortOrders(selectedOptionList);
+  }, [sortOption]);
+
+  useEffect(() => {
     setSortOrders(orders);
   }, [orders]);
+
+  useEffect(() => {
+    if (searchTerm === "") {
+      setSortOrders(orders);
+      return;
+    }
+    const selectedSearchTermList = orders.filter(
+      (order) => Number(order.orderNumber) === Number(searchTerm),
+    );
+    setSortOrders(selectedSearchTermList);
+  }, [searchTerm]);
 
   return (
     <Wrapper>
@@ -117,11 +136,10 @@ const MangeOrderMain = () => {
         <h2>주문 관리</h2>
         <form onSubmit={searchOrder}>
           <SearchingInput
-            value={searchTerm}
-            onChange={handleChange}
+            register={register}
+            registerOptions={{ max: 3000, min: 0 }}
             type="number"
             name="searchOrder"
-            maxLength={4}
             placeholder="주문번호를 입력해주세요."
           />
         </form>
