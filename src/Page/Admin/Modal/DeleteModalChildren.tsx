@@ -7,7 +7,6 @@ import {
   selectProductListState,
 } from "../../../state/productItemState";
 import styled from "styled-components";
-import { SelectOption } from "../AdminManageProductItemList";
 
 const Wrapper = styled.div`
   ul {
