@@ -132,7 +132,7 @@ const ClientMenu = () => {
               <Item key={item.id} onClick={() => selectHandler(item.id)}>
                 <div>
                   <h3>{item.name}</h3>
-                  <h4>가격 {item.price}원</h4>
+                  <h4>가격 {item.price.toLocaleString()}원</h4>
                 </div>
               </Item>
             ))}
