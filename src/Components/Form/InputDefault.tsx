@@ -5,7 +5,6 @@ import {
   useForm,
   UseFormRegister,
 } from "react-hook-form";
-import styled from "styled-components";
 import Label from "./LabelDefault";
 
 interface IInputProps
@@ -33,18 +32,18 @@ const InputDefault = ({
           {...props}
           {...register(`${fieldName}.${props.name}`, registerOptions)}
         />
-        {error && <Label>{error}</Label>}
+        {error && <Label className="error-label">{error}</Label>}
       </>
     ) : (
       <>
         <input {...props} {...register(`${props.name}`, registerOptions)} />
-        {error && <Label>{error}</Label>}
+        {error && <Label className="error-label">{error}</Label>}
       </>
     )
   ) : (
     <>
       <input {...props} />
-      {error && <Label>{error}</Label>}
+      {error && <Label className="error-label">{error}</Label>}
     </>
   );
 };
