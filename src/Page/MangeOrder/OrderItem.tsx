@@ -53,20 +53,21 @@ const OrderItem = ({ orderId, orders }: IOrderItemProp): JSX.Element => {
   const handleOrderState = (selectedOrder: OrderList, newState: OrderState) => {
     setOrderList((pre) =>
       pre.map((item) => {
-        if (item.id === orderId) {
-          const newOrders = item.orders.map((order) => {
-            if (
-              order.optionID === selectedOrder.optionID &&
-              order.productId === selectedOrder.productId
-            ) {
-              return { ...order, state: newState };
-            }
-            return order;
-          });
-
-          return { ...item, orders: newOrders };
+        if (item.id !== orderId) {
+          return item;
         }
-        return item;
+
+        const newOrders = item.orders.map((order) => {
+          if (
+            order.optionID === selectedOrder.optionID &&
+            order.productId === selectedOrder.productId
+          ) {
+            return { ...order, state: newState };
+          }
+          return order;
+        });
+
+        return { ...item, orders: newOrders };
       }),
     );
   };
