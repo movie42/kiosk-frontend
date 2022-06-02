@@ -1,4 +1,4 @@
-import React, { MouseEvent, useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import ProductItem from "./ProductItem";
 import { ProductListValues } from "../../mockup/productList";
@@ -7,6 +7,8 @@ import { useRecoilState } from "recoil";
 import ButtonDefaultStyle from "../../Components/Buttons/ButtonDefault";
 import {
   productListState,
+  SelectOption,
+  Option,
   selectOptionState,
   selectProductListState,
 } from "../../state/productItemState";
@@ -47,10 +49,6 @@ const UpdateProductButton = styled(ButtonDefaultStyle)`
   background-color: ${(props) => props.theme.color.primary600};
 `;
 
-export interface SelectOption {
-  option: "none" | "delete" | "update";
-}
-
 const AdminManageProductItemList = () => {
   const navigate = useNavigate();
   const [selectOption, setSelectOption] = useRecoilState(selectOptionState);
@@ -64,21 +62,22 @@ const AdminManageProductItemList = () => {
   };
 
   const selectHandler = (event: React.MouseEvent<HTMLLIElement>) => {
-    if (selectOption.option === "none") {
+    if (selectOption.options === "none") {
       return;
     }
+
     const id = event.currentTarget.dataset.id;
     const selectProduct = productList.filter((item) => item.id === Number(id));
-    id &&
-      setSelectList((prevState) => {
-        const itemIndex = prevState.findIndex(
-          (value) => value.id === Number(id),
-        );
-        if (itemIndex !== -1) {
-          return prevState.filter((value) => value.id !== Number(id));
-        }
-        return [...prevState, ...selectProduct];
-      });
+
+    setSelectList((prevState) => {
+      const itemIndex = prevState.findIndex((value) => value.id === Number(id));
+
+      if (itemIndex !== -1) {
+        return prevState.filter((value) => value.id !== Number(id));
+      }
+
+      return [...prevState, ...selectProduct];
+    });
   };
 
   return (
@@ -86,7 +85,7 @@ const AdminManageProductItemList = () => {
       <Container>
         <ManageOptionContainer>
           <h2>상품 관리</h2>
-          {selectOption.option === "none" && (
+          {selectOption.options === "none" && (
             <div>
               <CreateProductButton
                 onClick={() => navigate("/admin/:id/add-product")}
@@ -95,14 +94,14 @@ const AdminManageProductItemList = () => {
               </CreateProductButton>
               <UpdateProductButton
                 onClick={() => {
-                  handleSelectOption({ option: "update" });
+                  handleSelectOption({ options: Option.UPDATE });
                 }}
               >
                 상품수정
               </UpdateProductButton>
               <DeleteProductButton
                 onClick={() => {
-                  handleSelectOption({ option: "delete" });
+                  handleSelectOption({ options: Option.DELETE });
                 }}
               >
                 상품삭제
@@ -125,7 +124,7 @@ const AdminManageProductItemList = () => {
             ))}
         </ul>
       </Container>
-      {selectOption.option !== "none" && (
+      {selectOption.options !== "none" && (
         <StateMenuBar selectOption={selectOption} selectItems={selectList} />
       )}
     </>

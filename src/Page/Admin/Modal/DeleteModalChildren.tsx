@@ -5,17 +5,21 @@ import {
   productListState,
   selectOptionState,
   selectProductListState,
+  Option,
 } from "../../../state/productItemState";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  height: 100%;
   ul {
     margin-top: 1.5rem;
     li {
       display: flex;
       align-items: center;
       line-height: 1.6;
-
       label {
         margin-left: 0.5rem;
         font-size: 1.7rem;
@@ -23,10 +27,9 @@ const Wrapper = styled.div`
     }
   }
   div {
-    position: absolute;
-    bottom: 2rem;
-    right: 2rem;
-
+    display: flex;
+    justify-items: flex-end;
+    align-self: flex-end;
     button {
       cursor: pointer;
       font-size: 2rem;
@@ -67,9 +70,10 @@ interface IDeleteModalChildrenProps<T> {
   items?: Array<T>;
 }
 
-const DeleteModalChildren: React.FC<
-  IDeleteModalChildrenProps<ProductListValues>
-> = ({ setModal, items }) => {
+const DeleteModalChildren = ({
+  setModal,
+  items,
+}: IDeleteModalChildrenProps<ProductListValues>) => {
   const setSelectOption = useSetRecoilState(selectOptionState);
   const [selectList, setSelectList] = useRecoilState<ProductListValues[]>(
     selectProductListState,
@@ -82,50 +86,48 @@ const DeleteModalChildren: React.FC<
       ...preValue.map((value) => ({ ...value, select: false })),
     ]);
     setModal(false);
-    setSelectOption({ option: "none" });
+    setSelectOption({ options: Option.NONE });
   };
 
   const selectDeleteItemsSubmitHandler = () => {
     const compare = (a: { id: number }, b: { id: number }) => a.id === b.id;
+
     const newProductList = productList.filter(
       (product) =>
         !selectList
           .filter((value) => value.select === true)
           .some((deleteProduct) => compare(product, deleteProduct)),
     );
+
     setProductList(newProductList);
     setModal(false);
     setSelectList([]);
-    setSelectOption({ option: "none" });
+    setSelectOption({ options: Option.NONE });
   };
 
   const checkBoxChangeHandler = (event: React.MouseEvent<HTMLElement>) => {
     let id = event.currentTarget.dataset.id;
-    const [unSelectItem] = selectList.filter(
-      (value) => value.id === Number(id),
-    );
+
     setSelectList((prevState) =>
-      [
-        ...prevState.filter((value) => value.id !== Number(id)),
-        { ...unSelectItem, select: !unSelectItem.select },
-      ].sort((a, b) => (a.id > b.id ? 1 : -1)),
+      prevState.map((value) => {
+        if (value.id !== Number(id)) {
+          return value;
+        }
+        return { ...value, select: !value.select };
+      }),
     );
   };
 
   useEffect(() => {
     if (items) {
-      setSelectList(
-        items
-          .map((value) => ({ ...value, select: true }))
-          .sort((a, b) => (a.id > b.id ? 1 : -1)),
-      );
+      setSelectList(items.map((value) => ({ ...value, select: true })));
     }
   }, []);
 
   return (
     <>
       <h1>삭제하기</h1>
-      <h2>상품을 삭제하면 복구할 수 없습니다.</h2>
+      <p>상품을 삭제하면 복구할 수 없습니다.</p>
       <Wrapper>
         <ul>
           {selectList?.map((item) => (

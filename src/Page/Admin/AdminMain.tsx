@@ -1,154 +1,218 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
-
 import styled from "styled-components";
-import InputDefault from "../../Components/Form/InputDefault";
-import Label from "../../Components/Form/LabelDefault";
-
-import { userInfo } from "../../mockup/userInfo";
-import { Headline2 } from "../../mixin";
+import { Link, useNavigate } from "react-router-dom";
+import Modal from "../../Components/Modals/Modal";
+import IsOpenModalChildren from "./Modal/IsOpenModalChildren";
 
 const Wrapper = styled.div`
-  height: 80vh;
-  overflow: hidden;
+  h2 {
+    font-size: 2rem;
+  }
 `;
 
-const Title = styled.h2`
-  ${Headline2};
-`;
-
-const FormContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  position: relative;
+const Menu = styled.div`
+  display: grid;
+  gap: 1rem;
+  margin-top: 2.5rem;
+  grid-template-columns: repeat(3, 20rem);
+  justify-items: center;
   justify-content: center;
-  align-items: center;
-  height: 50vh;
-  width: 38rem;
-  margin: 0 auto;
-  form {
-    height: inherit;
-    display: flex;
-    position: relative;
-    flex-direction: column;
-    justify-content: center;
-    width: 100%;
+`;
+
+const MenuButtonDefault = styled.button`
+  box-sizing: border-box;
+  border: 0;
+  border-radius: 0.6rem;
+  width: 20rem;
+  height: 70vh;
+  cursor: pointer;
+  background-color: ${(props) => props.theme.color.primary600};
+  font-size: 3rem;
+  font-weight: bold;
+  word-break: keep-all;
+  color: ${(props) => props.theme.color.fontColorWhite};
+`;
+
+const MenuButtonWrapper = styled.div`
+  position: relative;
+  p {
+    position: absolute;
+    top: -1.3rem;
+    right: 0;
+    font-size: 1rem;
   }
 `;
 
-const ActionContainer = styled.div`
+const LinkToStaffWindowButton = styled(MenuButtonDefault)`
   display: flex;
-  width: inherit;
-  justify-content: space-between;
   align-items: center;
-  a {
-    font-size: 1.5rem;
-  }
-  button {
-    cursor: pointer;
-    padding: 0.7rem 2rem;
-    border: 0;
-    font-size: 2.8rem;
-    color: ${(props) => props.theme.color.fontColorWhite};
-    border-radius: 0.3rem;
-    line-height: 2.8rem;
-    background-color: ${(props) => props.theme.color.primary600};
+  justify-content: center;
+  background-color: ${(props) => props.theme.color.secondary500};
+`;
+
+const BusinessManageButtonWrapper = styled.div`
+  display: grid;
+  grid-template-rows: repeat(auto-fit, 1fr);
+  gap: 0.8rem;
+`;
+
+const LinkToProductManageWindowButton = styled(MenuButtonDefault)`
+  height: 100%;
+  background-color: ${(props) => props.theme.color.primary800};
+`;
+
+const LinkToCrewMangageWindowButton = styled(MenuButtonDefault)`
+  height: 100%;
+  background-color: ${(props) => props.theme.color.secondary800};
+`;
+
+const LinkToCustomerWindowButton: React.FC<
+  | IAdminMenuProps
+  | React.DetailedHTMLProps<
+      React.HTMLAttributes<HTMLButtonElement>,
+      HTMLButtonElement
+    >
+> = styled(MenuButtonDefault)<IAdminMenuProps>`
+  position: relative;
+  background-color: ${(props) =>
+    props.isActive ? props.theme.color.primary600 : props.theme.color.gray300};
+  span {
+    display: inline-block;
+    font-weight: normal;
+    font-size: 1.2rem;
+    &:first-child {
+      font-size: 3rem;
+      font-weight: bold;
+    }
   }
 `;
 
-interface IUserProps {
-  email: string;
-  password: string;
-  loginFail: string;
+const ToggleButton: React.FC<
+  | IAdminMenuProps
+  | React.DetailedHTMLProps<
+      React.HTMLAttributes<HTMLDivElement>,
+      HTMLDivElement
+    >
+> = styled.div<IAdminMenuProps>`
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  width: 3rem;
+  height: 1rem;
+  cursor: pointer;
+  background-color: ${(props) =>
+    props.isActive ? props.theme.color.primary600 : props.theme.color.error500};
+  border: 0;
+  border-radius: 2rem;
+  padding: 0.5rem 0.3rem;
+  margin: 0.5rem;
+  box-shadow: inset 0.1rem 0.15rem 0.2rem
+    ${(props) =>
+      props.isActive
+        ? props.theme.color.primary800
+        : props.theme.color.error800};
+  &::before {
+    position: absolute;
+    top: 50%;
+    left: ${(props) => (props.isActive ? "unset" : "0.2rem")};
+    right: ${(props) => (props.isActive ? "0.2rem" : "unset")};
+    transform: translateY(-50%);
+    width: 1.7rem;
+    height: 1.7rem;
+    border-radius: 2rem;
+    background-color: ${(props) => props.theme.color.background100};
+    content: "";
+  }
+`;
+
+interface IAdminMenuProps {
+  isActive: boolean;
 }
 
-const AdminMain = () => {
-  const [isLogin, setLogin] = useState(false);
-  const [isLoading, setLoading] = useState(false);
+const AdminMenu = () => {
+  const [toggleState, setToggleState] = useState(false);
+  const [isModal, setIsModal] = useState(false);
+  const [confirm, setConfirm] = useState(false);
   const navigate = useNavigate();
-  const {
-    register,
-    handleSubmit,
-    setError,
-    formState: { errors },
-  } = useForm<IUserProps>();
 
-  const onSubmit = handleSubmit(async (data: IUserProps) => {
-    const [user] = userInfo.filter((value) => value.email === data.email);
-    if (data.email !== user.email) {
-      setError("loginFail", { message: "이메일 또는 비밀번호가 다릅니다." });
-      return;
+  const toggleHandler = () => {
+    setIsModal(true);
+  };
+
+  const linkToCustomerWindowHandler = (
+    e: React.MouseEvent<HTMLButtonElement>,
+  ) => {
+    const linkName = e.currentTarget.dataset.link;
+    if (linkName === "order" && toggleState) {
+      navigate("/client");
     }
 
-    if (data.password !== user.password) {
-      setError("loginFail", { message: "이메일 또는 비밀번호가 다릅니다." });
-      return;
+    if (linkName === "manage-order") {
+      navigate("/admin/:id/manage-order");
     }
 
-    setError("loginFail", { message: "" });
-    setLogin(true);
-    setLoading(true);
-  });
+    if (linkName === "manage-product") {
+      navigate("/admin/:id/manage-product");
+    }
+  };
 
   useEffect(() => {
-    if (!isLoading) {
-      return;
+    if (confirm) {
+      setToggleState((preValue) => !preValue);
+      setConfirm(false);
     }
+  }, [confirm]);
 
-    let loading = setTimeout(() => navigate("/admin/1/menu"), 3000);
-
-    return () => clearTimeout(loading);
-  }, [isLoading]);
-
-  return !isLogin ? (
+  return (
     <Wrapper>
-      <Title>관리자 로그인 화면</Title>
-      <FormContainer>
-        <form onSubmit={onSubmit}>
-          <Label htmlFor="email">이메일</Label>
-          <InputDefault
-            id="email"
-            name="email"
-            placeholder="이메일을 입력해주세요."
-            type="email"
-            register={register}
-            registerOptions={{
-              required: "아이디를 입력해주세요.",
-              pattern: {
-                value:
-                  /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                message: "이메일이 아닙니다.",
-              },
-            }}
-            error={errors.email?.message}
+      {isModal && (
+        <Modal>
+          <IsOpenModalChildren
+            toggleState={toggleState}
+            setModal={setIsModal}
+            setConfirm={setConfirm}
           />
-          <Label htmlFor="password">비밀번호</Label>
-          <InputDefault
-            id="password"
-            name="password"
-            type="password"
-            placeholder="비밀번호를 입력해주세요."
-            typeof="password"
-            register={register}
-            registerOptions={{
-              required: "비밀번호를 입력해주세요.",
-            }}
-            error={errors.password?.message}
-          />
-          {errors?.loginFail?.message && (
-            <Label>{errors?.loginFail?.message}</Label>
+        </Modal>
+      )}
+      <h2>원하는 기능을 선택하세요.</h2>
+      <Menu>
+        <MenuButtonWrapper>
+          {toggleState ? (
+            <p>가게를 닫으려면 버튼을 누르세요.</p>
+          ) : (
+            <p>가게를 열려면 버튼을 누르세요.</p>
           )}
-          <ActionContainer>
-            <Link to="#">아이디 또는 비밀번호를 잃어버리셨나요?</Link>
-            <button onClick={onSubmit}>로그인</button>
-          </ActionContainer>
-        </form>
-      </FormContainer>
+          <ToggleButton
+            isActive={toggleState}
+            onClick={toggleHandler}
+          ></ToggleButton>
+          <LinkToCustomerWindowButton
+            data-link="order"
+            onClick={linkToCustomerWindowHandler}
+            isActive={toggleState}
+          >
+            <span>고객 주문 화면</span>
+            {toggleState && <span>현재 주문을 받고 있는 중입니다.</span>}
+          </LinkToCustomerWindowButton>
+        </MenuButtonWrapper>
+        <LinkToStaffWindowButton
+          data-link="manage-order"
+          onClick={linkToCustomerWindowHandler}
+        >
+          고객 주문 관리하기
+        </LinkToStaffWindowButton>
+        <BusinessManageButtonWrapper>
+          <LinkToProductManageWindowButton
+            data-link="manage-product"
+            onClick={linkToCustomerWindowHandler}
+          >
+            상품 관리하기
+          </LinkToProductManageWindowButton>
+        </BusinessManageButtonWrapper>
+      </Menu>
     </Wrapper>
-  ) : (
-    <h1>로그인 중입니다.</h1>
   );
 };
 
-export default AdminMain;
+export default AdminMenu;
