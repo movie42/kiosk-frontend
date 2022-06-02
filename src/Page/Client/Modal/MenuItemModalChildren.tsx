@@ -54,13 +54,14 @@ const MenuItemModalChildren: React.FC<IMenuItemModalChildrenProps> = ({
   orderItem,
   setOrderItem,
 }) => {
+  const [selected] = selectedItem;
   const orderSelectedItem = () => {
     const [sameMenu] = orderItem.filter(
       (ordered) =>
-        ordered.productId === selectedItem[0].id &&
-        ordered.option === selectedOption
+        ordered.productId === selected.id && ordered.option === selectedOption
     );
-    const { option: hasOption }: any = selectedItem[0];
+
+    const { option: hasOption }: any = selected;
 
     if (count === 0) {
       alert("수량을 선택해주세요");
@@ -77,12 +78,12 @@ const MenuItemModalChildren: React.FC<IMenuItemModalChildrenProps> = ({
         [
           ...orderItem,
           {
-            productId: selectedItem[0].id,
-            name: selectedItem[0].name,
+            productId: selected.id,
+            name: selected.name,
             option: selectedOption,
-            price: selectedItem[0].price,
+            price: selected.price,
             totalCount: count,
-            totalPrice: selectedItem[0].price * count,
+            totalPrice: selected.price * count,
           },
         ].sort((a: any, b: any) => {
           if (a.productId === b.productId) {
@@ -100,7 +101,7 @@ const MenuItemModalChildren: React.FC<IMenuItemModalChildrenProps> = ({
           {
             ...sameMenu,
             totalCount: sameMenu.totalCount + count,
-            totalPrice: sameMenu.totalPrice + sameMenu.price + count,
+            totalPrice: sameMenu.totalPrice + sameMenu.price * count,
           },
         ].sort((a: any, b: any) => {
           if (a.productId === b.productId) {
@@ -124,12 +125,12 @@ const MenuItemModalChildren: React.FC<IMenuItemModalChildrenProps> = ({
 
   return (
     <>
-      <h2>{selectedItem[0].name}</h2>
+      <h2>{selected.name}</h2>
       <Title>구성</Title>
-      <p>{selectedItem[0].name} 1개</p>
+      <p>{selected.name} 1개</p>
       <Title>상품옵션</Title>
 
-      {selectedItem[0].option?.map((item, i) => (
+      {selected.option?.map((item, i) => (
         <OptionButton
           key={item}
           selected={selectedOption === item ? true : false}
@@ -141,13 +142,13 @@ const MenuItemModalChildren: React.FC<IMenuItemModalChildrenProps> = ({
 
       <Title>
         총 가격&nbsp;
-        {(count * Number(selectedItem[0].price)).toLocaleString()}원
+        {(count * Number(selected.price)).toLocaleString()}원
       </Title>
       <OrderContainer>
         <MinusCountButton
           onClick={() => {
             if (count < 1) return;
-            setCount(count - 1);
+            setCount((count) => count - 1);
           }}
         >
           <AiFillMinusCircle />
@@ -156,7 +157,7 @@ const MenuItemModalChildren: React.FC<IMenuItemModalChildrenProps> = ({
         <AddCountButton
           onClick={() => {
             if (count < 0) return;
-            setCount(count + 1);
+            setCount((count) => count + 1);
           }}
         >
           <IoIosAddCircle />

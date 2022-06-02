@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useRecoilState } from "recoil";
@@ -65,11 +65,8 @@ const PaymentModalChildren: React.FC<IPaymentModalChildrenProps> = ({
   const [printReceipt, setPrintReceipt] = useState<Boolean>(false);
 
   // set time out
-  let showTimer: NodeJS.Timeout;
-  let closeTimer: NodeJS.Timeout;
+
   const handleReceipt = (receipt: Boolean) => {
-    clearInterval(showTimer);
-    clearTimeout(closeTimer);
     setPrintReceipt(receipt);
     setIsPrint(true);
   };
@@ -86,18 +83,26 @@ const PaymentModalChildren: React.FC<IPaymentModalChildrenProps> = ({
   const closeReceipt = () => {
     setIsPaid(true);
     setPrintReceipt(true);
-    showTimer = setInterval(() => {
-      setRemain((prv) => prv - 1);
-    }, 1000);
-
-    closeTimer = setTimeout(() => {
-      clearInterval(showTimer);
-      clearTimeout(closeTimer);
-      setIsPrint(true);
-    }, 5000);
   };
 
-  console.log(orderList);
+  useEffect(() => {
+    if (isPaid) {
+      let closeTimer = setTimeout(() => {
+        setIsPrint(true);
+      }, 5000);
+
+      return () => clearTimeout(closeTimer);
+    }
+  }, [isPaid]);
+
+  useEffect(() => {
+    if (isPaid) {
+      let showTimer = setInterval(() => {
+        setRemain((prv) => prv - 1);
+      }, 1000);
+      return () => clearInterval(showTimer);
+    }
+  }, [closeReceipt]);
 
   return (
     <PaymentBox>
