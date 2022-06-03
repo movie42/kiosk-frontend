@@ -1,12 +1,7 @@
 import React, { useState } from "react";
 import { useRecoilState } from "recoil";
-import styled, { StyledComponent } from "styled-components";
-import { ProductListValues } from "../../mockup/productList";
-import {
-  productListState,
-  selectProductListState,
-} from "../../state/productItemState";
-import { SelectOption } from "./AdminManageProductItemList";
+import styled from "styled-components";
+import { productListState, SelectOption } from "../../state/productItemState";
 
 const Item: React.FC<
   | IProductItemProps
@@ -19,7 +14,7 @@ const Item: React.FC<
   border-radius: 0.3rem;
   background-color: ${(props) =>
     props.select
-      ? props.selectOption?.option === "delete"
+      ? props.selectOption?.options === "delete"
         ? props.theme.color.error500
         : props.theme.color.secondary600
       : props.theme.color.gray300};
@@ -68,7 +63,7 @@ const ProductItem: React.FC<IProductItemProps> = ({
       select={select}
       selectOption={selectOption}
       onClick={(e) => {
-        if (selectOption?.option === "none") {
+        if (selectOption?.options === "none") {
           return;
         }
         handler && handler(e);

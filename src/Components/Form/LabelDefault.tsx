@@ -7,11 +7,7 @@ interface ILabelProps
   > {}
 
 const LabelDefault = ({ ...props }: ILabelProps) => {
-  return (
-    <>
-      <label {...props}>{props.children}</label>
-    </>
-  );
+  return <label {...props}>{props.children}</label>;
 };
 
 export default LabelDefault;
