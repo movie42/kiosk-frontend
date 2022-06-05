@@ -50,8 +50,8 @@ const OrderStateBar: React.FC<ITotalOrderMenu> = ({
     <div>
       <MenuBarContainer>
         <h2>
-          총 상품 수: {totalCount} 개 &nbsp;&nbsp;&nbsp; 주문 가격:
-          {totalPrice} 원
+          총 상품 수:&nbsp;{totalCount}개 &nbsp;&nbsp;&nbsp; 주문 가격:&nbsp;
+          {totalPrice.toLocaleString()} 원
         </h2>
         {goBack && <button onClick={goBack}>돌아가기</button>}
         <button onClick={handler}>{label}</button>

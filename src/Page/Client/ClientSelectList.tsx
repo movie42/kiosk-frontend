@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { useRecoilState } from "recoil";
+import styled from "styled-components";
+import { IoIosAddCircle } from "react-icons/io";
+import { AiFillMinusCircle } from "react-icons/ai";
 import { selectMenuListState } from "../../state/productItemState";
 import { IOrderSelectedItem } from "./ClientMenu";
 import Modal from "../../Components/Modals/Modal";
-import styled from "styled-components";
 import { Headline1 } from "../../mixin";
 import OrderStateBar from "./OrderStateBar";
 import PaymentModalChildren from "./Modal/PaymentModalChildren";
@@ -52,9 +54,25 @@ const MenuListItem = styled.div`
     font-size: 1.5rem;
     padding: 0.3rem 0;
   }
+  span {
+    vertical-align: super;
+    padding: 0.5rem;
+  }
 `;
 const DeleteButton = styled(ButtonDefaultStyle)`
   background-color: ${(props) => props.theme.color.gray300};
+`;
+export const AddCountButton = styled(ButtonDefaultStyle)`
+  background-color: unset;
+  color: ${(props) => props.theme.color.primary500};
+  font-size: 2.3rem;
+  padding: 0;
+`;
+export const MinusCountButton = styled(ButtonDefaultStyle)`
+  background-color: unset;
+  color: ${(props) => props.theme.color.error500};
+  font-size: 2.3rem;
+  padding: 0;
 `;
 
 const ClientSelectList = () => {
@@ -147,13 +165,17 @@ const ClientSelectList = () => {
             {item.option && <p>선택옵션: {item.option}</p>}
             <p>
               주문수량:
-              <button onClick={() => handleMinusCount(item)}>-</button>
-              {item.totalCount}
-              <button onClick={() => handleAddCount(item)}>+</button>
+              <MinusCountButton onClick={() => handleMinusCount(item)}>
+                <AiFillMinusCircle />
+              </MinusCountButton>
+              <span>{item.totalCount}</span>
+              <AddCountButton onClick={() => handleAddCount(item)}>
+                <IoIosAddCircle />
+              </AddCountButton>
             </p>
           </div>
           <div>
-            <p>총 가격: {item.totalPrice}</p>
+            <p>총 가격: {item.totalPrice.toLocaleString()}원</p>
             <DeleteButton onClick={() => handleDelete(item)}>
               삭제하기
             </DeleteButton>
