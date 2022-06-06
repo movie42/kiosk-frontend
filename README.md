@@ -12,6 +12,7 @@
   - [Commit Rule && Setting](#commit-rule--setting)
   - [PR 하기](#pr-하기)
   - [리뷰 하기](#리뷰-하기)
+  - [GrpahQL](#grpahql)
   - [Style Guide](#style-guide)
     - [🌈Color](#color)
     - [Font](#font)
@@ -156,6 +157,47 @@ $ git commit
 4. 리뷰를 다 마쳤다면 Review changes를 누르고 코멘트를 작성하거나 작성할 코멘트가 없다면 approve를 해주세요.
 
 참고 : 🎥[Github으로 팀 프로젝트 하기 1편 | Pull request 코드리뷰 개발자](https://www.youtube.com/watch?v=9FZaYz0s8s4)
+
+## GrpahQL
+
+1. query문 작성은 src/graphql 폴더 안에 작성합니다.
+
+2. query
+
+```gql
+query store($id: Int!) {
+  store(id: $id) {
+    id
+    name
+    code
+    address
+    phone
+    ownerId
+    products
+  }
+}
+```
+
+3. mutation
+
+```gql
+mutation login($email: email, $password: password) {
+  login(email: $email, password: $password) {
+    accessToken
+    refreshToken
+  }
+}
+```
+
+4. npm run generate 명령어를 실행합니다.
+
+```shell
+$ npm run generate
+```
+
+5. 성공적으로 generate를 마쳤다면 src/graphql.ts 파일을 열어봅니다. 파일 안에 자신이 작성한 query가 React Query에서 사용 가능하도록 커스텀 훅이 생성된 것을 볼 수 있습니다.
+
+6. Hook을 사용하여 서버에 요청할 코드를 작성합니다.
 
 ## Style Guide
 
