@@ -11,6 +11,9 @@ import ClientLayout from "../Layouts/ClientLayout";
 import ClientMain from "../Page/Client/ClientMain";
 import ClientMenu from "../Page/Client/ClientMenu";
 import ClientSelectList from "../Page/Client/ClientSelectList";
+import LandingMain from "../Page/Landing/LandingMain";
+import SignUp from "../Page/Landing/SignUp";
+import Agreement from "../Page/Landing/Agreement";
 
 const Router = () => {
   return (
@@ -33,6 +36,12 @@ const Router = () => {
         <Route path="main" element={<ClientMain />} />
         <Route path="menu" element={<ClientMenu />} />
         <Route path="select-list" element={<ClientSelectList />} />
+      </Route>
+      <Route path="/landing">
+        <Route path="" element={<Navigate to="/landing/main" />} />
+        <Route path="main" element={<LandingMain />} />
+        <Route path="agreement" element={<Agreement />} />
+        <Route path="signup" element={<SignUp />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />
     </Routes>

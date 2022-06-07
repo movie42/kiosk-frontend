@@ -139,12 +139,8 @@ const ClientMenu = () => {
         </ul>
       </Container>
       <OrderStateBar
-        totalCount={orderItem.reduce(function (acc, obj) {
-          return acc + obj.totalCount;
-        }, 0)}
-        totalPrice={orderItem.reduce(function (acc, obj) {
-          return acc + obj.totalPrice;
-        }, 0)}
+        totalCount={orderItem.reduce((acc, obj) => acc + obj.totalCount, 0)}
+        totalPrice={orderItem.reduce((acc, obj) => acc + obj.totalPrice, 0)}
         label="주문 목록 보기"
         handler={() => navigate("/client/select-list")}
       />

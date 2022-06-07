@@ -184,12 +184,14 @@ const ClientSelectList = () => {
       ))}
 
       <OrderStateBar
-        totalCount={totalSelectMenu.reduce(function (acc, obj) {
-          return acc + obj.totalCount;
-        }, 0)}
-        totalPrice={totalSelectMenu.reduce(function (acc, obj) {
-          return acc + obj.totalPrice;
-        }, 0)}
+        totalCount={totalSelectMenu.reduce(
+          (acc, obj) => acc + obj.totalCount,
+          0
+        )}
+        totalPrice={totalSelectMenu.reduce(
+          (acc, obj) => acc + obj.totalPrice,
+          0
+        )}
         label="주문하기"
         goBack={() => navigate("/client/menu")}
         handler={handlePayment}
