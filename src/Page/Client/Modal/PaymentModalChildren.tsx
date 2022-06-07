@@ -108,9 +108,7 @@ const PaymentModalChildren: React.FC<IPaymentModalChildrenProps> = ({
           <p>
             총 결제&nbsp;
             {orderList
-              .reduce(function (acc, obj) {
-                return acc + obj.totalPrice;
-              }, 0)
+              .reduce((acc, obj) => acc + obj.totalPrice, 0)
               .toLocaleString()}
             원
           </p>
