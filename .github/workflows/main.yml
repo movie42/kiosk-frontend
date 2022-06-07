@@ -24,7 +24,8 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           script: |
-            cd ${{ secrets.WEB_PATH }} && git pull
+            cd ${{ secrets.WEB_PATH }}
+            git checkout main
+            git pull origin main
             npm install
             npm build
-            pm2 reload main
