@@ -1,7 +1,16 @@
 import { atom } from "recoil";
 import { productList, ProductListValues } from "../mockup/productList";
-import { SelectOption } from "../Page/Admin/AdminManageProductItemList";
 import { IOrderSelectedItem } from "../Page/Client/ClientMenu";
+
+export enum Option {
+  NONE = "none",
+  DELETE = "delete",
+  UPDATE = "update",
+}
+
+export interface SelectOption {
+  options: Option;
+}
 
 export const productListState = atom({
   key: "productList",
@@ -15,7 +24,7 @@ export const selectProductListState = atom({
 
 export const selectOptionState = atom<SelectOption>({
   key: "selectOption",
-  default: { option: "none" },
+  default: { options: Option.NONE },
 });
 
 // client

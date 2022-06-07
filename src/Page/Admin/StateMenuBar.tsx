@@ -1,18 +1,20 @@
 import React, { useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import styled from "styled-components";
+import styled, { StyledComponent } from "styled-components";
 import { ProductListValues } from "../../mockup/productList";
 import {
   productListState,
   selectOptionState,
   selectProductListState,
+  Option,
+  SelectOption,
 } from "../../state/productItemState";
-import { SelectOption } from "./AdminManageProductItemList";
+
 import Modal from "../../Components/Modals/Modal";
 import DeleteModalChildren from "./Modal/DeleteModalChildren";
 import UpdateModalChildren from "./Modal/UpdateModalChildren";
 
-const MenuBarContainer = styled.div`
+const MenuBarContainer: React.FC<SelectOption> = styled.div<SelectOption>`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -38,7 +40,17 @@ const MenuBarContainer = styled.div`
     color: ${(props) => props.theme.color.fontColorWhite};
     border-radius: 0.3rem;
     line-height: 2.8rem;
-    background-color: ${(props) => props.theme.color.error500};
+
+    &.confirm-button {
+      background-color: ${(props) =>
+        props.options === "delete"
+          ? props.theme.color.error500
+          : props.theme.color.secondary500};
+    }
+    &.cancel-button {
+      margin-right: 1.3rem;
+      background-color: ${(props) => props.theme.color.gray400};
+    }
   }
 `;
 
@@ -53,8 +65,8 @@ const StateMenuBar: React.FC<ISateMenuBarProps> = ({
 }) => {
   const setSelectOption = useSetRecoilState(selectOptionState);
   const [isModal, setModal] = useState(false);
-  const [productList, setProductList] = useRecoilState(productListState);
-  const [selectList, setSelectList] = useRecoilState<ProductListValues[]>(
+  const setProductList = useSetRecoilState(productListState);
+  const setSelectList = useSetRecoilState<ProductListValues[]>(
     selectProductListState,
   );
 
@@ -63,7 +75,7 @@ const StateMenuBar: React.FC<ISateMenuBarProps> = ({
   };
 
   const updateSelectOptionToNone = () => {
-    setSelectOption({ option: "none" });
+    setSelectOption({ options: Option.NONE });
     setProductList((preValue) => [
       ...preValue.map((item) => ({ ...item, select: false })),
     ]);
@@ -73,7 +85,7 @@ const StateMenuBar: React.FC<ISateMenuBarProps> = ({
   return (
     <>
       {isModal &&
-        (selectOption.option === "delete" ? (
+        (selectOption.options === "delete" ? (
           <Modal strach={true}>
             <DeleteModalChildren setModal={setModal} items={selectItems} />
           </Modal>
@@ -83,18 +95,36 @@ const StateMenuBar: React.FC<ISateMenuBarProps> = ({
           </Modal>
         ))}
 
-      <MenuBarContainer>
-        {selectOption.option === "delete" ? (
+      <MenuBarContainer options={selectOption.options}>
+        {selectOption.options === "delete" ? (
           <>
             <h2>{selectItems.length}개의 상품을 삭제하려면 버튼을 누르세요.</h2>
-            <button onClick={updateSelectOptionToNone}>취소하기</button>
-            <button onClick={handleModalAppear}>삭제하기</button>
+            <div>
+              <button
+                className="cancel-button"
+                onClick={updateSelectOptionToNone}
+              >
+                취소하기
+              </button>
+              <button className="confirm-button" onClick={handleModalAppear}>
+                삭제하기
+              </button>
+            </div>
           </>
         ) : (
           <>
             <h2>{selectItems.length}개의 상품을 수정하려면 버튼을 누르세요.</h2>
-            <button onClick={updateSelectOptionToNone}>취소하기</button>
-            <button onClick={handleModalAppear}>수정하기</button>
+            <div>
+              <button
+                className="cancel-button"
+                onClick={updateSelectOptionToNone}
+              >
+                취소하기
+              </button>
+              <button className="confirm-button" onClick={handleModalAppear}>
+                수정하기
+              </button>
+            </div>
           </>
         )}
       </MenuBarContainer>

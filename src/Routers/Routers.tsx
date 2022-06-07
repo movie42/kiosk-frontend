@@ -1,13 +1,12 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import AdminMain from "../Page/Admin/AdminMain";
+import AdminLogin from "../Page/Admin/AdminLogin";
 import AdminManageProductAddItem from "../Page/Admin/AdminManageProductAddItem";
 import AdminManageProductItemList from "../Page/Admin/AdminManageProductItemList";
-import AdminMenu from "../Page/Admin/AdminMenu";
+import AdminMain from "../Page/Admin/AdminMain";
 import AdminLayout from "../Layouts/AdminLayout";
 import PageNotFound from "../Page/404/404";
 import MangeOrderMain from "../Page/MangeOrder/MangeOrderMain";
-import OrderLayout from "../Layouts/OrderLayout";
 import ClientLayout from "../Layouts/ClientLayout";
 import ClientMain from "../Page/Client/ClientMain";
 import ClientMenu from "../Page/Client/ClientMenu";
@@ -20,10 +19,9 @@ const Router = () => {
   return (
     <Routes>
       <Route path="/admin" element={<AdminLayout />}>
-        <Route path="login" element={<AdminMain />} />
+        <Route path="login" element={<AdminLogin />} />
         <Route path=":id">
-          <Route path="menu" element={<AdminMenu />} />
-          <Route path="manage-customer-order" />
+          <Route path="main" element={<AdminMain />} />
           <Route
             path="manage-product"
             element={<AdminManageProductItemList />}
