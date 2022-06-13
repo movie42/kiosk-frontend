@@ -8,6 +8,9 @@ import Label from "../../Components/Form/LabelDefault";
 
 import { userInfo } from "../../mockup/userInfo";
 import { Headline2, SubTitle1, SubTitle2 } from "../../mixin";
+import { useRecoilState } from "recoil";
+import { userState } from "../../state/userState";
+import { useLoginMutation } from "../../generated/graphql";
 
 const Wrapper = styled.div`
   height: 80vh;
@@ -78,7 +81,8 @@ interface IUserProps {
 }
 
 const AdminMain = () => {
-  const [isLogin, setLogin] = useState(false);
+  const { mutate } = useLoginMutation(graphqlCli);
+  const [isLogin, setIsLogin] = useRecoilState(userState);
   const [isLoading, setLoading] = useState(false);
 
   const navigate = useNavigate();
@@ -102,7 +106,7 @@ const AdminMain = () => {
     }
 
     setError("loginFail", { message: "" });
-    setLogin(true);
+    setIsLogin({ login: true });
     setLoading(true);
   });
 
