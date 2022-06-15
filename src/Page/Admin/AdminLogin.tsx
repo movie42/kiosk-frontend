@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
@@ -6,11 +6,12 @@ import styled from "styled-components";
 import InputDefault from "../../Components/Form/InputDefault";
 import Label from "../../Components/Form/LabelDefault";
 
-import { userInfo } from "../../mockup/userInfo";
 import { Headline2, SubTitle1, SubTitle2 } from "../../mixin";
 import { useRecoilState } from "recoil";
 import { userState } from "../../state/userState";
 import { useLoginMutation } from "../../generated/graphql";
+import graphqlReqeustClient from "../../lib/graphqlRequestClient";
+import { handleErrorMessage } from "../../utils/helper/handleErrorMessage";
 
 const Wrapper = styled.div`
   height: 80vh;
@@ -80,47 +81,59 @@ interface IUserProps {
   loginFail: string;
 }
 
-const AdminMain = () => {
-  const { mutate } = useLoginMutation(graphqlCli);
-  const [isLogin, setIsLogin] = useRecoilState(userState);
-  const [isLoading, setLoading] = useState(false);
+export interface ErrorState {
+  response: {
+    errors: [
+      {
+        message: string;
+        extensions: {
+          code: string;
+          response: {
+            statusCode: number;
+            message: string;
+            error: string;
+          };
+        };
+      },
+    ];
+    status: number;
+  };
+}
 
+const AdminMain = () => {
   const navigate = useNavigate();
+  const [isLogin, setIsLogin] = useRecoilState(userState);
+  const [errorState, setErrorState] = useState<ErrorState>();
+  const { mutate, data } = useLoginMutation<Error>(graphqlReqeustClient, {
+    onSuccess: (data) => {
+      console.log(data);
+      /**TODO:
+       * user ID는 서버를 통해서 받은 정보로 조회가 가능해야합니다.
+       * 지금은 임시로 하드코딩한 것이기 때문에 반드시 수정해야합니다.
+       */
+      // navigate("/admin/1/manage-product");
+    },
+    onError: (error) => {
+      handleErrorMessage(error, setErrorState);
+      if (errorState) {
+        const [message] = errorState?.response.errors;
+        setError("loginFail", message);
+      }
+    },
+  });
+
   const {
     register,
     handleSubmit,
-    setError,
     formState: { errors },
+    setError,
   } = useForm<IUserProps>();
 
   const onSubmit = handleSubmit(async (data: IUserProps) => {
-    const [user] = userInfo.filter((value) => value.email === data.email);
-    if (data.email !== user.email) {
-      setError("loginFail", { message: "이메일 또는 비밀번호가 다릅니다." });
-      return;
-    }
-
-    if (data.password !== user.password) {
-      setError("loginFail", { message: "이메일 또는 비밀번호가 다릅니다." });
-      return;
-    }
-
-    setError("loginFail", { message: "" });
-    setIsLogin({ login: true });
-    setLoading(true);
+    mutate({ ...data });
   });
 
-  useEffect(() => {
-    if (!isLoading) {
-      return;
-    }
-
-    let loading = setTimeout(() => navigate("/admin/1/menu"), 3000);
-
-    return () => clearTimeout(loading);
-  }, [isLoading]);
-
-  return !isLogin ? (
+  return !isLogin.login ? (
     <Wrapper>
       <Title>관리자 로그인 화면</Title>
       <FormContainer>
