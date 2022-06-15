@@ -14,6 +14,9 @@ import ClientSelectList from "../Page/Client/ClientSelectList";
 import LandingMain from "../Page/Landing/LandingMain";
 import SignUp from "../Page/Landing/SignUp";
 import Agreement from "../Page/Landing/Agreement";
+import AdminStoreList from "../Page/Admin/AdminStoreList";
+import AdminCreateStore from "../Page/Admin/AdminCreateStore";
+import AdminUpdateStore from "../Page/Admin/AdminUpdateStore";
 
 const Router = () => {
   return (
@@ -21,13 +24,24 @@ const Router = () => {
       <Route path="/admin" element={<AdminLayout />}>
         <Route path="login" element={<AdminLogin />} />
         <Route path=":id">
-          <Route path="main" element={<AdminMain />} />
-          <Route
-            path="manage-product"
-            element={<AdminManageProductItemList />}
-          />
-          <Route path="add-product" element={<AdminManageProductAddItem />} />
-          <Route path="manage-order" element={<MangeOrderMain />} />
+          <Route path="store">
+            <Route path="" element={<Navigate to="list" />} />
+            <Route path="list" element={<AdminStoreList />} />
+            <Route path="create" element={<AdminCreateStore />} />
+            <Route path="update" element={<AdminUpdateStore />} />
+            <Route path=":id">
+              <Route path="main" element={<AdminMain />} />
+              <Route
+                path="manage-product"
+                element={<AdminManageProductItemList />}
+              />
+              <Route
+                path="add-product"
+                element={<AdminManageProductAddItem />}
+              />
+              <Route path="manage-order" element={<MangeOrderMain />} />
+            </Route>
+          </Route>
         </Route>
       </Route>
       <Route path="/order" />
