@@ -1,6 +1,5 @@
 import { GraphQLClient } from "graphql-request";
-import { RequestInit } from "graphql-request/dist/types.dom";
-import { useQuery, UseQueryOptions } from "react-query";
+import { useMutation, UseMutationOptions } from "react-query";
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = {
@@ -76,6 +75,7 @@ export type Mutation = {
   addProducts: Scalars["Boolean"];
   addStore: Scalars["Boolean"];
   addUser: Scalars["Boolean"];
+  login: TokenOutput;
   removeProductOptions: Scalars["Boolean"];
   removeProducts: Scalars["Boolean"];
   removeStore: Scalars["Boolean"];
@@ -100,6 +100,11 @@ export type MutationAddStoreArgs = {
 
 export type MutationAddUserArgs = {
   user: AddUserInput;
+};
+
+export type MutationLoginArgs = {
+  email: Scalars["String"];
+  password: Scalars["String"];
 };
 
 export type MutationRemoveProductOptionsArgs = {
@@ -160,21 +165,16 @@ export type Product = {
 
 export type Query = {
   __typename?: "Query";
-  login: TokenOutput;
   orders: Array<Order>;
   store?: Maybe<Store>;
   stores: Array<Maybe<Store>>;
   users: Array<Maybe<User>>;
 };
 
-export type QueryLoginArgs = {
-  email: Scalars["String"];
-  password: Scalars["String"];
-};
-
 export type QueryOrdersArgs = {
   limit?: InputMaybe<Scalars["Int"]>;
   offset?: InputMaybe<Scalars["Int"]>;
+  storeId: Scalars["Int"];
 };
 
 export type QueryStoreArgs = {
@@ -219,13 +219,13 @@ export type RemoveProductOptionInput = {
   OptionIds: Array<Scalars["Int"]>;
 };
 
-export type LoginQueryVariables = Exact<{
+export type LoginMutationVariables = Exact<{
   email: Scalars["String"];
   password: Scalars["String"];
 }>;
 
-export type LoginQuery = {
-  __typename?: "Query";
+export type LoginMutation = {
+  __typename?: "Mutation";
   login: {
     __typename?: "TokenOutput";
     accessToken: string;
@@ -234,26 +234,31 @@ export type LoginQuery = {
 };
 
 export const LoginDocument = `
-    query login($email: String!, $password: String!) {
+    mutation login($email: String!, $password: String!) {
   login(email: $email, password: $password) {
     accessToken
     refreshToken
   }
 }
     `;
-export const useLoginQuery = <TData = LoginQuery, TError = unknown>(
+export const useLoginMutation = <TError = unknown, TContext = unknown>(
   client: GraphQLClient,
-  variables: LoginQueryVariables,
-  options?: UseQueryOptions<LoginQuery, TError, TData>,
+  options?: UseMutationOptions<
+    LoginMutation,
+    TError,
+    LoginMutationVariables,
+    TContext
+  >,
   headers?: RequestInit["headers"],
 ) =>
-  useQuery<LoginQuery, TError, TData>(
-    ["login", variables],
-    fetcher<LoginQuery, LoginQueryVariables>(
-      client,
-      LoginDocument,
-      variables,
-      headers,
-    ),
+  useMutation<LoginMutation, TError, LoginMutationVariables, TContext>(
+    ["login"],
+    (variables?: LoginMutationVariables) =>
+      fetcher<LoginMutation, LoginMutationVariables>(
+        client,
+        LoginDocument,
+        variables,
+        headers,
+      )(),
     options,
   );

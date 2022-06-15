@@ -5,7 +5,7 @@ import AdminManageProductAddItem from "../Page/Admin/AdminManageProductAddItem";
 import AdminManageProductItemList from "../Page/Admin/AdminManageProductItemList";
 import AdminMain from "../Page/Admin/AdminMain";
 import AdminLayout from "../Layouts/AdminLayout";
-import PageNotFound from "../Page/404/404";
+import PageNotFound from "../Page/Errors/404";
 import MangeOrderMain from "../Page/MangeOrder/MangeOrderMain";
 import ClientLayout from "../Layouts/ClientLayout";
 import ClientMain from "../Page/Client/ClientMain";
