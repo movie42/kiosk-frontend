@@ -1,27 +1,29 @@
-import React, { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import InputDefault from "../../Components/Form/InputDefault";
 import ButtonDefaultStyle from "../../Components/Buttons/ButtonDefault";
 import { Wrapper, Header, Title, Container } from "./Agreement";
 import { SubTitle2, Body1 } from "../../mixin";
+import { useNavigate } from "react-router-dom";
+import LabelDefault from "../../Components/Form/LabelDefault";
 
-const FormContainer = styled.div`
+const FormContainer = styled.form`
+  height: inherit;
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+`;
+
+const SubContainer = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
   justify-content: center;
-  align-items: center;
   width: 38rem;
-  margin: 0 auto;
-  form {
-    height: inherit;
-    display: flex;
-    position: relative;
-    flex-direction: column;
-    justify-content: center;
-    width: 100%;
-  }
+  margin: 2rem auto;
 `;
 
 const SignUpInput = styled(InputDefault)`
@@ -39,46 +41,79 @@ const SignUpInput = styled(InputDefault)`
 `;
 
 const GroupForm = styled.div`
+  width: 100%;
   display: flex;
+  justify-content: space-between;
   align-items: center;
   gap: 10px;
-`;
-
-const StoreForm = styled.div`
-  margin-top: 3rem;
-  display: flex;
   p {
     ${Body1}
+    line-height: 2;
   }
+  span {
+    font-size: 1.2rem;
+  }
+`;
+
+const ErrorMessage = styled.p`
+  ${Body1}
+  color: ${(props) => props.theme.color.error500};
+`;
+
+const ActionButton = styled(ButtonDefaultStyle)<{ option?: string }>`
+  margin-left: 5px;
+  color: ${(props) => props.theme.color.fontColorWhite};
+  background-color: ${(props) =>
+    props.option === "confirm"
+      ? props.theme.color.primary600
+      : props.theme.color.gray300};
 `;
 
 interface ISignUpProps {
   email: string;
-  lastName: string;
-  firstName: string;
+  name: string;
   password: string;
   passwordConfirm: string;
   storeNumber: number;
-  ownerLastName: string;
-  ownerFirstName: string;
-  ownerPassword: string;
-  ownerPasswordConfirm: string;
+  storeName: string;
+  address: string;
+  phone: number;
 }
 
 const SignUp = () => {
+  const navigate = useNavigate();
+
   // signup form
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
-  } = useForm<ISignUpProps>();
+  } = useForm<ISignUpProps>({ mode: "onSubmit" });
 
   const onSubmit = (data: ISignUpProps): void => {
-    console.log(data);
+    navigate("/admin/login");
   };
 
   // display store registration form
   const [checkStore, setCheckStore] = useState(true);
+  const password = useRef({});
+  password.current = watch("password", "");
+
+  // goBack modal
+  const handleGoBack = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
+    const confirm = window.confirm(
+      "작성 내용이 취소됩니다. 정말 돌아가시겠습니까?"
+    );
+    if (confirm) navigate("/landing/agreement");
+  };
+
+  useEffect(() => {
+    register("email");
+    register("name");
+    register("password");
+  }, [register]);
 
   return (
     <Wrapper>
@@ -87,8 +122,8 @@ const SignUp = () => {
       </Header>
       <Container>
         <Title>사업체 가입</Title>
-        <FormContainer>
-          <form onSubmit={handleSubmit(onSubmit)}>
+        <FormContainer onSubmit={handleSubmit(onSubmit)}>
+          <SubContainer>
             <SignUpInput
               id="email"
               name="email"
@@ -103,19 +138,11 @@ const SignUp = () => {
                 },
               }}
             />
-            <div>{errors.email?.message}</div>
+            <ErrorMessage>{errors.email?.message}</ErrorMessage>
             <GroupForm>
               <SignUpInput
-                id="lastName"
-                name="lastName"
-                placeholder="성"
-                register={register}
-                required
-              />
-
-              <SignUpInput
-                id="firstName"
-                name="firstName"
+                id="name"
+                name="name"
                 placeholder="이름"
                 register={register}
                 required
@@ -132,59 +159,61 @@ const SignUp = () => {
             />
 
             <SignUpInput
-              id="confirmPassword"
-              name="confirmPassword"
+              id="passwordConfirm"
+              name="passwordConfirm"
               type="password"
               placeholder="비밀번호 확인"
               register={register}
+              registerOptions={{
+                validate: (value) =>
+                  value === password.current || "비밀번호가 일치하지 않습니다.",
+              }}
               required
             />
-            <StoreForm>
+            <ErrorMessage>{errors.passwordConfirm?.message}</ErrorMessage>
+          </SubContainer>
+
+          <SubContainer>
+            <GroupForm>
               <p>사업체 정보 입력</p>
-              <GroupForm>
+              <div>
                 <input
                   type="checkbox"
                   checked={!checkStore}
                   onChange={() => setCheckStore((prev) => !prev)}
                 />
                 <span>나중에 입력할게요</span>
-              </GroupForm>
-            </StoreForm>
+              </div>
+            </GroupForm>
             {checkStore && (
               <>
                 <SignUpInput
-                  placeholder="상호"
+                  placeholder="사업장번호"
                   id="storeNumber"
                   name="storeNumber"
                 />
-                <GroupForm>
-                  <SignUpInput
-                    placeholder="성"
-                    id="ownerLastName"
-                    name="ownerLastName"
-                  />
-
-                  <SignUpInput
-                    placeholder="이름"
-                    id="ownerFirstName"
-                    name="ownerFirstName"
-                  />
-                </GroupForm>
                 <SignUpInput
-                  placeholder="비밀번호"
-                  id="ownerPassword"
-                  name="ownerPassword"
+                  placeholder="상호명"
+                  id="storeName"
+                  name="storeName"
                 />
 
-                <SignUpInput
-                  placeholder="비밀번호확인"
-                  id="ownerConfirmPassword"
-                  name="ownerConfirmPassword"
-                />
+                <SignUpInput placeholder="주소" id="address" name="address" />
+                <SignUpInput placeholder="전화번호" id="phone" name="phone" />
               </>
             )}
-            <input type="submit" value="가입하기" />
-          </form>
+          </SubContainer>
+          <GroupForm>
+            <p>정보를 전부 입력하셨다면 가입하기 버튼을 눌러주세요.</p>
+            <div>
+              <ActionButton onClick={(e) => handleGoBack(e)}>
+                돌아가기
+              </ActionButton>
+              <ActionButton type="submit" option="confirm">
+                가입하기
+              </ActionButton>
+            </div>
+          </GroupForm>
         </FormContainer>
       </Container>
     </Wrapper>
