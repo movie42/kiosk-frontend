@@ -51,6 +51,8 @@ const Router = () => {
         <Route path="menu" element={<ClientMenu />} />
         <Route path="select-list" element={<ClientSelectList />} />
       </Route>
+
+      <Route path="" element={<Navigate to="/landing/main" />} />
       <Route path="/landing">
         <Route path="" element={<Navigate to="/landing/main" />} />
         <Route path="main" element={<LandingMain />} />

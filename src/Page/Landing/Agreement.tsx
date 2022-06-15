@@ -1,7 +1,9 @@
 import styled from "styled-components";
-import { Headline1, Headline2, SubTitle1 } from "../../mixin";
+import { Headline1, Headline2, SubTitle1, Body1 } from "../../mixin";
 import ButtonDefaultStyle from "../../Components/Buttons/ButtonDefault";
 import { useNavigate } from "react-router-dom";
+import { termsOfService, privacyPolicy } from "./Agreement/AgreementContent";
+import { useState } from "react";
 
 export const Wrapper = styled.div`
   padding: 1rem 2rem;
@@ -34,35 +36,91 @@ export const Header = styled.div`
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  h3 {
-    ${SubTitle1}
-    text-align: center;
-    flex-grow: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+`;
+
+const TermsContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  span {
+    ${Body1}
   }
 `;
 
-const ConfirmButton = styled(ButtonDefaultStyle)`
-  margin: 0 auto;
+const TermsText = styled.pre`
+  font-size: 1rem;
+  white-space: pre-wrap;
+  height: 30vh;
+  overflow-y: scroll;
+  margin-bottom: 1rem;
+`;
+
+const ConfirmButton = styled(ButtonDefaultStyle)<{ option?: boolean }>`
+  margin-left: 5px;
   color: ${(props) => props.theme.color.fontColorWhite};
-  background-color: ${(props) => props.theme.color.primary600};
+  background-color: ${(props) =>
+    props.option === true
+      ? props.theme.color.primary600
+      : props.theme.color.gray300};
+`;
+
+const AgreementButton = styled(ButtonDefaultStyle)<{ option?: boolean }>`
+  font-size: 1.2rem;
+  padding: 0.8rem;
+  color: ${(props) => props.theme.color.fontColorWhite};
+  background-color: ${(props) =>
+    props.option === true
+      ? props.theme.color.primary600
+      : props.theme.color.gray300};
 `;
 
 const Agreement = () => {
   const navigate = useNavigate();
+
+  const [terms, setTerms] = useState<boolean>(false);
+  const [privacy, setPrivacy] = useState<boolean>(false);
+
   return (
     <Wrapper>
       <Header>
         <h1>누구나 키오스크</h1>
       </Header>
       <Container>
-        <Title>사업체 가입</Title>
-        <h3>약관 페이지 동의하기</h3>
-        <ConfirmButton onClick={() => navigate("/landing/signup")}>
-          동의하기
-        </ConfirmButton>
+        <TermsContainer>
+          <Title>이용약관 동의</Title>
+          <AgreementButton onClick={() => setTerms(true)} option={terms}>
+            동의하기
+          </AgreementButton>
+        </TermsContainer>
+        <TermsText>{termsOfService}</TermsText>
+        <hr />
+        <TermsContainer>
+          <Title>개인정보 수집 및 이용 동의</Title>
+          <AgreementButton onClick={() => setPrivacy(true)} option={privacy}>
+            동의하기
+          </AgreementButton>
+        </TermsContainer>
+        <TermsText>{privacyPolicy}</TermsText>
+        <hr />
+
+        <TermsContainer>
+          <span>약관을 모두 동의하셨다면 회원가입 버튼을 누르세요.</span>
+          <div>
+            <ConfirmButton
+              onClick={() => navigate("/landing/main")}
+              option={false}
+            >
+              돌아가기
+            </ConfirmButton>
+            <ConfirmButton
+              onClick={() => navigate("/landing/signup")}
+              disabled={!terms || !privacy}
+              option={terms && privacy}
+            >
+              회원가입
+            </ConfirmButton>
+          </div>
+        </TermsContainer>
       </Container>
     </Wrapper>
   );
