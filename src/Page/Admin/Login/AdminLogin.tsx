@@ -1,17 +1,19 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 import styled from "styled-components";
-import InputDefault from "../../Components/Form/InputDefault";
-import Label from "../../Components/Form/LabelDefault";
+import InputDefault from "../../../Components/Form/InputDefault";
+import Label from "../../../Components/Form/LabelDefault";
 
-import { Headline2, SubTitle1, SubTitle2 } from "../../mixin";
+import { Headline2, SubTitle1, SubTitle2 } from "../../../mixin";
 import { useRecoilState } from "recoil";
-import { userState } from "../../state/userState";
-import { useLoginMutation } from "../../generated/graphql";
-import graphqlReqeustClient from "../../lib/graphqlRequestClient";
-import { handleErrorMessage } from "../../utils/helper/handleErrorMessage";
+import { userState } from "../../../state/userState";
+import { useLoginMutation } from "../../../generated/graphql";
+import graphqlReqeustClient from "../../../lib/graphqlRequestClient";
+import { handleErrorMessage } from "../../../utils/helper/handleErrorMessage";
+import { useQueryClient } from "react-query";
+import AdminLoadingAndGetUser from "./AdminLoadingAndGetUser";
 
 const Wrapper = styled.div`
   height: 80vh;
@@ -88,36 +90,55 @@ export interface ErrorState {
         message: string;
         extensions: {
           code: string;
-          response: {
-            statusCode: number;
+          exception: {
+            response: {
+              error: string;
+            };
+            status: number;
             message: string;
-            error: string;
+            name: string;
           };
         };
       },
     ];
+    data: null;
     status: number;
   };
 }
 
 const AdminMain = () => {
-  const navigate = useNavigate();
-  const [isLogin, setIsLogin] = useRecoilState(userState);
+  const queryClient = useQueryClient();
+  const [isUser, setIsUser] = useRecoilState(userState);
   const [errorState, setErrorState] = useState<ErrorState>();
-  const { mutate, data } = useLoginMutation<Error>(graphqlReqeustClient, {
+
+  const { mutate } = useLoginMutation<Error>(graphqlReqeustClient(), {
     onSuccess: (data) => {
-      console.log(data);
-      /**TODO:
-       * user ID는 서버를 통해서 받은 정보로 조회가 가능해야합니다.
-       * 지금은 임시로 하드코딩한 것이기 때문에 반드시 수정해야합니다.
-       */
-      // navigate("/admin/1/manage-product");
+      const {
+        login: { accessToken, refreshToken },
+      } = data;
+
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
+      setIsUser((pre) => ({
+        ...pre,
+        isLogin: true,
+        accessToken,
+        refreshToken,
+      }));
+      queryClient.invalidateQueries("me");
     },
     onError: (error) => {
       handleErrorMessage(error, setErrorState);
+      /**
+       * TODO:
+       * 에러 메시지가 일관되지 않아 처리에 어려움이 있다.
+       * 백앤드 개발자에게 에러 메시지를 보낼때 message에 실어 보낼 수 있도록 요청하기.
+       */
       if (errorState) {
+        console.log(errorState);
         const [message] = errorState?.response.errors;
-        setError("loginFail", message);
+        const error = message.extensions.exception.response.error;
+        setError("loginFail", { message: error });
       }
     },
   });
@@ -133,7 +154,7 @@ const AdminMain = () => {
     mutate({ ...data });
   });
 
-  return !isLogin.login ? (
+  return !isUser.isLogin ? (
     <Wrapper>
       <Title>관리자 로그인 화면</Title>
       <FormContainer>
@@ -179,7 +200,7 @@ const AdminMain = () => {
       </FormContainer>
     </Wrapper>
   ) : (
-    <h1>로그인 중입니다.</h1>
+    <AdminLoadingAndGetUser />
   );
 };
 

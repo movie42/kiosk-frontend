@@ -1,6 +1,6 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import AdminLogin from "../Page/Admin/AdminLogin";
+import AdminLogin from "../Page/Admin/Login/AdminLogin";
 import AdminManageProductAddItem from "../Page/Admin/AdminManageProductAddItem";
 import AdminManageProductItemList from "../Page/Admin/AdminManageProductItemList";
 import AdminMain from "../Page/Admin/AdminMain";
@@ -14,9 +14,9 @@ import ClientSelectList from "../Page/Client/ClientSelectList";
 import LandingMain from "../Page/Landing/LandingMain";
 import SignUp from "../Page/Landing/SignUp";
 import Agreement from "../Page/Landing/Agreement";
-import AdminStoreList from "../Page/Admin/AdminStoreList";
-import AdminCreateStore from "../Page/Admin/AdminCreateStore";
-import AdminUpdateStore from "../Page/Admin/AdminUpdateStore";
+import AdminStoreList from "../Page/Admin/Store/AdminStoreList";
+import AdminCreateStore from "../Page/Admin/Store/AdminCreateStore";
+import AdminUpdateStore from "../Page/Admin/Store/AdminUpdateStore";
 
 const Router = () => {
   return (
