@@ -29,13 +29,13 @@ const Router = () => {
       {isLogin && (
         <>
           <Route path="/admin" element={<AdminLayout />}>
-            <Route path=":id">
+            <Route path=":userId">
               <Route path="store">
                 <Route path="" element={<Navigate to="list" />} />
                 <Route path="list" element={<AdminStoreList />} />
                 <Route path="create" element={<AdminCreateStore />} />
                 <Route path="update" element={<AdminUpdateStore />} />
-                <Route path=":id">
+                <Route path=":storeId">
                   <Route path="main" element={<AdminMain />} />
                   <Route
                     path="manage-product"

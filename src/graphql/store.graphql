@@ -1,0 +1,18 @@
+query store($id: Float!) {
+  store(id: $id) {
+    products {
+      name
+    }
+  }
+}
+
+mutation addStore(
+  $name: String!
+  $code: String!
+  $address: String!
+  $phone: String!
+) {
+  addStore(
+    store: { name: $name, code: $code, address: $address, phone: $phone }
+  )
+}
