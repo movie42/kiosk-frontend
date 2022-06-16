@@ -14,14 +14,11 @@ import graphqlReqeustClient from "../../../lib/graphqlRequestClient";
 import { handleErrorMessage } from "../../../utils/helper/handleErrorMessage";
 import { useQueryClient } from "react-query";
 import AdminLoadingAndGetUser from "./AdminLoadingAndGetUser";
+import PageHeaderMessage from "../../../Components/PageHeader";
 
 const Wrapper = styled.div`
   height: 80vh;
   overflow: hidden;
-`;
-
-const Title = styled.h2`
-  ${Headline2};
 `;
 
 const FormContainer = styled.div`
@@ -156,7 +153,7 @@ const AdminMain = () => {
 
   return !isUser.isLogin ? (
     <Wrapper>
-      <Title>관리자 로그인 화면</Title>
+      <PageHeaderMessage header="로그인" />
       <FormContainer>
         <form onSubmit={onSubmit}>
           <LoginLabel htmlFor="email">이메일</LoginLabel>

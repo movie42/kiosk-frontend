@@ -1,6 +1,6 @@
 import { atom } from "recoil";
 
-interface UserState {
+export interface UserState {
   id: string | undefined;
   name: string | undefined;
   email: string | undefined;

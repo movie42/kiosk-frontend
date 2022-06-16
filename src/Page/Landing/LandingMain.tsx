@@ -63,12 +63,10 @@ const LandingMain = () => {
         <h1>누구나 키오스크</h1>
         <Title>누구나 쉽고 빠르게 내 가게를 운영하는 방법</Title>
         <div>
-          <LinkButton onClick={() => navigate("/landing/agreement")}>
+          <LinkButton onClick={() => navigate("/agreement")}>
             회원가입
           </LinkButton>
-          <LinkButton onClick={() => navigate("/admin/login")}>
-            로그인
-          </LinkButton>
+          <LinkButton onClick={() => navigate("/login")}>로그인</LinkButton>
         </div>
       </Container>
     </Wrapper>
