@@ -6,6 +6,7 @@ import { theme } from "./theme";
 import { GlobalStyle } from "./GlobalStyle";
 import App from "./App";
 import { QueryClientProvider, QueryClient } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
 
 const queryClient = new QueryClient();
 
@@ -16,6 +17,7 @@ ReactDOM.render(
         <ThemeProvider theme={theme}>
           <GlobalStyle />
           <App />
+          <ReactQueryDevtools initialIsOpen={false} />
         </ThemeProvider>
       </RecoilRoot>
     </QueryClientProvider>

@@ -1,5 +1,11 @@
 import { GraphQLClient } from "graphql-request";
-import { useMutation, UseMutationOptions } from "react-query";
+import { RequestInit } from "graphql-request/dist/types.dom";
+import {
+  useQuery,
+  useMutation,
+  UseQueryOptions,
+  UseMutationOptions,
+} from "react-query";
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = {
@@ -165,6 +171,7 @@ export type Product = {
 
 export type Query = {
   __typename?: "Query";
+  me: User;
   orders: Array<Order>;
   store?: Maybe<Store>;
   stores: Array<Maybe<Store>>;
@@ -219,6 +226,18 @@ export type RemoveProductOptionInput = {
   OptionIds: Array<Scalars["Int"]>;
 };
 
+export type StoreQueryVariables = Exact<{
+  id: Scalars["Float"];
+}>;
+
+export type StoreQuery = {
+  __typename?: "Query";
+  store?: {
+    __typename?: "Store";
+    products: Array<{ __typename?: "Product"; name: string }>;
+  } | null;
+};
+
 export type LoginMutationVariables = Exact<{
   email: Scalars["String"];
   password: Scalars["String"];
@@ -233,6 +252,38 @@ export type LoginMutation = {
   };
 };
 
+export type MeQueryVariables = Exact<{ [key: string]: never }>;
+
+export type MeQuery = {
+  __typename?: "Query";
+  me: { __typename?: "User"; id: string; name: string; email: string };
+};
+
+export const StoreDocument = `
+    query store($id: Float!) {
+  store(id: $id) {
+    products {
+      name
+    }
+  }
+}
+    `;
+export const useStoreQuery = <TData = StoreQuery, TError = unknown>(
+  client: GraphQLClient,
+  variables: StoreQueryVariables,
+  options?: UseQueryOptions<StoreQuery, TError, TData>,
+  headers?: RequestInit["headers"],
+) =>
+  useQuery<StoreQuery, TError, TData>(
+    ["store", variables],
+    fetcher<StoreQuery, StoreQueryVariables>(
+      client,
+      StoreDocument,
+      variables,
+      headers,
+    ),
+    options,
+  );
 export const LoginDocument = `
     mutation login($email: String!, $password: String!) {
   login(email: $email, password: $password) {
@@ -260,5 +311,27 @@ export const useLoginMutation = <TError = unknown, TContext = unknown>(
         variables,
         headers,
       )(),
+    options,
+  );
+
+export const MeDocument = `
+    query me {
+  me {
+    id
+    name
+    email
+  }
+}
+    `;
+
+export const useMeQuery = <TData = MeQuery, TError = unknown>(
+  client: GraphQLClient,
+  variables?: MeQueryVariables,
+  options?: UseQueryOptions<MeQuery, TError, TData>,
+  headers?: RequestInit["headers"],
+) =>
+  useQuery<MeQuery, TError, TData>(
+    variables === undefined ? ["me"] : ["me", variables],
+    fetcher<MeQuery, MeQueryVariables>(client, MeDocument, variables, headers),
     options,
   );

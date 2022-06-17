@@ -4,6 +4,8 @@ import styled from "styled-components";
 import Nav from "../Components/Nav/Nav";
 import { Headline1 } from "../mixin";
 import { GiHamburgerMenu } from "react-icons/gi";
+import { useRecoilValue } from "recoil";
+import { userState } from "../state/userState";
 
 const Wrapper = styled.div`
   padding: 1rem 2rem;
@@ -31,7 +33,7 @@ const Link = styled(NavLink)``;
 const Main = styled.main``;
 
 const AdminLayout = () => {
-  const [isLogin, setIsLogin] = useState(false);
+  const user = useRecoilValue(userState);
   const [isMenu, setIsMenu] = useState(false);
 
   useEffect(() => {
@@ -48,10 +50,7 @@ const AdminLayout = () => {
         {isMenu && (
           <Nav setNavState={setIsMenu}>
             <>
-              <li>
-                <Link to="/admin/login">로그인</Link>
-              </li>
-              {isLogin && (
+              {user.isLogin && (
                 <>
                   <li>
                     <Link to=":id/store/list">가게목록</Link>

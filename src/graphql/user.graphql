@@ -4,3 +4,11 @@ mutation login($email: String!, $password: String!) {
     refreshToken
   }
 }
+
+query me {
+  me {
+    id
+    name
+    email
+  }
+}

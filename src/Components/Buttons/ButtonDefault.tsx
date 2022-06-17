@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import styled from "styled-components";
 
 const Button: React.FC<IButtonDefaultStyle> = styled.button<IButtonDefaultStyle>`
@@ -16,7 +16,7 @@ interface IButtonDefaultStyle
     React.ButtonHTMLAttributes<HTMLButtonElement>,
     HTMLButtonElement
   > {
-  children: JSX.Element | string;
+  children: ReactNode;
 }
 
 const ButtonDefaultStyle: React.FC<IButtonDefaultStyle> = ({
