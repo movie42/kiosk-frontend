@@ -7,7 +7,7 @@ interface IuseSetUserInfoToLocalStroageProps {}
 
 const useSetUserInfoToLocalStorage = () => {
   const setUser = (user: UserState) => {
-    localStorage.setItem("user", JSON.stringify(user));
+    localStorage.setItem("kiosk-user", JSON.stringify(user));
   };
   return { setUser };
 };
