@@ -5,7 +5,7 @@ interface IuseGetUserStateFromLocalStorageProps {}
 
 const useGetUserInfoFromLocalStorage = () => {
   const getUser = () => {
-    const user = localStorage.getItem("kioks-user");
+    const user = localStorage.getItem("kiosk-user");
 
     if (user) {
       return JSON.parse(user) as UserState;
