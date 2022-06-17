@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter } from "react-router-dom";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import Router from "./Routers/Routers";
@@ -9,17 +9,13 @@ function App() {
   const [user, setUser] = useRecoilState(userState);
   const { getUser } = useGetUserInfoFromLocalStorage();
 
-  useMemo(() => {
+  useEffect(() => {
     const storageUser = getUser();
-
     if (!storageUser) {
       return;
     }
-
-    if (!user.isLogin) {
-      setUser(storageUser);
-    }
-  }, [user]);
+    setUser(storageUser);
+  }, [setUser]);
 
   return (
     <BrowserRouter>

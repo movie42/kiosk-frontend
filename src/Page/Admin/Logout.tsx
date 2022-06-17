@@ -21,7 +21,7 @@ const Logout = () => {
       accessToken: undefined,
       refreshToken: undefined,
     });
-    removeUser("user");
+    removeUser("kiosk-user");
 
     setTimeout(() => navigate("/"), 3000);
   }, []);
