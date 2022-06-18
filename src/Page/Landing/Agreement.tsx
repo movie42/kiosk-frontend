@@ -53,6 +53,29 @@ const TermsText = styled.pre`
   height: 30vh;
   overflow-y: scroll;
   margin-bottom: 1rem;
+  line-height: 1.3;
+`;
+
+export const ButtonGroup = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  span {
+    ${Body1}
+  }
+  ${({ theme }) => theme.device.mobile} {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 10px;
+    height: 10rem;
+    padding-bottom: 1rem;
+    div {
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
+    }
+  }
 `;
 
 const ConfirmButton = styled(ButtonDefaultStyle)<{ option?: boolean }>`
@@ -103,24 +126,21 @@ const Agreement = () => {
         <TermsText>{privacyPolicy}</TermsText>
         <hr />
 
-        <TermsContainer>
+        <ButtonGroup>
           <span>약관을 모두 동의하셨다면 회원가입 버튼을 누르세요.</span>
           <div>
-            <ConfirmButton
-              onClick={() => navigate("/landing/main")}
-              option={false}
-            >
+            <ConfirmButton onClick={() => navigate("/")} option={false}>
               돌아가기
             </ConfirmButton>
             <ConfirmButton
-              onClick={() => navigate("/landing/signup")}
+              onClick={() => navigate("/signup")}
               disabled={!terms || !privacy}
               option={terms && privacy}
             >
               회원가입
             </ConfirmButton>
           </div>
-        </TermsContainer>
+        </ButtonGroup>
       </Container>
     </Wrapper>
   );
