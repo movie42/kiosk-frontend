@@ -29,6 +29,18 @@ const MenuBarContainer = styled.div`
     line-height: 2.8rem;
     background-color: ${(props) => props.theme.color.error500};
   }
+  ${({ theme }) => theme.device.mobile} {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+    height: 10rem;
+    div {
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
+    }
+  }
 `;
 
 interface ITotalOrderMenu {
@@ -53,8 +65,10 @@ const OrderStateBar: React.FC<ITotalOrderMenu> = ({
           총 상품 수:&nbsp;{totalCount}개 &nbsp;&nbsp;&nbsp; 주문 가격:&nbsp;
           {totalPrice.toLocaleString()} 원
         </h2>
-        {goBack && <button onClick={goBack}>돌아가기</button>}
-        <button onClick={handler}>{label}</button>
+        <div>
+          {goBack && <button onClick={goBack}>돌아가기</button>}
+          <button onClick={handler}>{label}</button>
+        </div>
       </MenuBarContainer>
     </div>
   );

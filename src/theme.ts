@@ -61,4 +61,9 @@ export const theme: DefaultTheme = {
     fontColorBlack: "#000000",
     fontColorWhite: "#ffffff",
   },
+  device: {
+    desktop: "@media screen and (min-width: 1241px)",
+    tablet: "@media screen and (max-width: 1240px)",
+    mobile: "@media screen and (max-width: 500px)",
+  },
 };

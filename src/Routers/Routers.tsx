@@ -20,6 +20,7 @@ import AdminUpdateStore from "../Page/Admin/Store/AdminUpdateStore";
 import { useRecoilValue } from "recoil";
 import { userState } from "../state/userState";
 import Logout from "../Page/Admin/Logout";
+import LandingLayout from "../Layouts/LandingLayout";
 
 const Router = () => {
   const { isLogin } = useRecoilValue(userState);
@@ -58,7 +59,7 @@ const Router = () => {
           </Route>
         </>
       )}
-      <Route path="/" element={<ClientLayout />}>
+      <Route path="/" element={<LandingLayout />}>
         <Route path="/" element={<LandingMain />} />
         <Route path="agreement" element={<Agreement />} />
         <Route path="signup" element={<SignUp />} />
