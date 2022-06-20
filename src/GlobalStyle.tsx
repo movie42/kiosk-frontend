@@ -28,7 +28,7 @@ article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
 	display: block;
 }
-body {
+html, body {
 	font-size:10px;
 	font-family: "Noto Sans KR", sans-serif;
 	line-height: 1;

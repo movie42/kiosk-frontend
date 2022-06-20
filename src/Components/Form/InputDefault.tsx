@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  FieldError,
   FieldValues,
   RegisterOptions,
   useForm,
@@ -25,24 +26,30 @@ const InputDefault = ({
   error,
   ...props
 }: IInputProps) => {
-  return register ? (
-    fieldName ? (
+  if (!register) {
+    return (
       <>
-        <input
-          {...props}
-          {...register(`${fieldName}.${props.name}`, registerOptions)}
-        />
+        <input {...props} />
         {error && <Label className="error-label">{error}</Label>}
       </>
-    ) : (
+    );
+  }
+
+  if (!fieldName) {
+    return (
       <>
         <input {...props} {...register(`${props.name}`, registerOptions)} />
         {error && <Label className="error-label">{error}</Label>}
       </>
-    )
-  ) : (
+    );
+  }
+
+  return (
     <>
-      <input {...props} />
+      <input
+        {...props}
+        {...register(`${fieldName}.${props.name}`, registerOptions)}
+      />
       {error && <Label className="error-label">{error}</Label>}
     </>
   );

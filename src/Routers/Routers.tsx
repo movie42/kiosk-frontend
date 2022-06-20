@@ -35,8 +35,8 @@ const Router = () => {
                 <Route path="" element={<Navigate to="list" />} />
                 <Route path="list" element={<AdminStoreList />} />
                 <Route path="create" element={<AdminCreateStore />} />
-                <Route path="update" element={<AdminUpdateStore />} />
                 <Route path=":storeId">
+                  <Route path="update" element={<AdminUpdateStore />} />
                   <Route path="main" element={<AdminMain />} />
                   <Route
                     path="manage-product"
@@ -57,15 +57,19 @@ const Router = () => {
             <Route path="menu" element={<ClientMenu />} />
             <Route path="select-list" element={<ClientSelectList />} />
           </Route>
+          <Route path="/logout" element={<Logout />} />
         </>
       )}
-      <Route path="/" element={<LandingLayout />}>
-        <Route path="/" element={<LandingMain />} />
-        <Route path="agreement" element={<Agreement />} />
-        <Route path="signup" element={<SignUp />} />
-        <Route path="login" element={<Login />} />
-        <Route path="logout" element={<Logout />} />
-      </Route>
+      {!isLogin && (
+        <>
+          <Route path="/" element={<ClientLayout />}>
+            <Route path="/" element={<LandingMain />} />
+            <Route path="agreement" element={<Agreement />} />
+            <Route path="signup" element={<SignUp />} />
+            <Route path="login" element={<Login />} />
+          </Route>
+        </>
+      )}
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );

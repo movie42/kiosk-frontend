@@ -228,7 +228,12 @@ export type StoreQueryVariables = Exact<{
 }>;
 
 
-export type StoreQuery = { __typename?: 'Query', store?: { __typename?: 'Store', products: Array<{ __typename?: 'Product', name: string }> } | null };
+export type StoreQuery = { __typename?: 'Query', store?: { __typename?: 'Store', id: string, name: string, code: string, phone: string, address: string } | null };
+
+export type StoresQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type StoresQuery = { __typename?: 'Query', stores: Array<{ __typename?: 'Store', id: string, name: string, code: string, phone: string, address: string } | null> };
 
 export type AddStoreMutationVariables = Exact<{
   name: Scalars['String'];
@@ -239,6 +244,13 @@ export type AddStoreMutationVariables = Exact<{
 
 
 export type AddStoreMutation = { __typename?: 'Mutation', addStore: boolean };
+
+export type RemoveStoreMutationVariables = Exact<{
+  id: Scalars['Float'];
+}>;
+
+
+export type RemoveStoreMutation = { __typename?: 'Mutation', removeStore: boolean };
 
 export type LoginMutationVariables = Exact<{
   email: Scalars['String'];
@@ -257,9 +269,11 @@ export type MeQuery = { __typename?: 'Query', me: { __typename?: 'User', id: str
 export const StoreDocument = `
     query store($id: Float!) {
   store(id: $id) {
-    products {
-      name
-    }
+    id
+    name
+    code
+    phone
+    address
   }
 }
     `;
@@ -275,6 +289,31 @@ export const useStoreQuery = <
     useQuery<StoreQuery, TError, TData>(
       ['store', variables],
       fetcher<StoreQuery, StoreQueryVariables>(client, StoreDocument, variables, headers),
+      options
+    );
+export const StoresDocument = `
+    query stores {
+  stores {
+    id
+    name
+    code
+    phone
+    address
+  }
+}
+    `;
+export const useStoresQuery = <
+      TData = StoresQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient,
+      variables?: StoresQueryVariables,
+      options?: UseQueryOptions<StoresQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useQuery<StoresQuery, TError, TData>(
+      variables === undefined ? ['stores'] : ['stores', variables],
+      fetcher<StoresQuery, StoresQueryVariables>(client, StoresDocument, variables, headers),
       options
     );
 export const AddStoreDocument = `
@@ -293,6 +332,24 @@ export const useAddStoreMutation = <
     useMutation<AddStoreMutation, TError, AddStoreMutationVariables, TContext>(
       ['addStore'],
       (variables?: AddStoreMutationVariables) => fetcher<AddStoreMutation, AddStoreMutationVariables>(client, AddStoreDocument, variables, headers)(),
+      options
+    );
+export const RemoveStoreDocument = `
+    mutation removeStore($id: Float!) {
+  removeStore(id: $id)
+}
+    `;
+export const useRemoveStoreMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      client: GraphQLClient,
+      options?: UseMutationOptions<RemoveStoreMutation, TError, RemoveStoreMutationVariables, TContext>,
+      headers?: RequestInit['headers']
+    ) =>
+    useMutation<RemoveStoreMutation, TError, RemoveStoreMutationVariables, TContext>(
+      ['removeStore'],
+      (variables?: RemoveStoreMutationVariables) => fetcher<RemoveStoreMutation, RemoveStoreMutationVariables>(client, RemoveStoreDocument, variables, headers)(),
       options
     );
 export const LoginDocument = `

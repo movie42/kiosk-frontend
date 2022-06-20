@@ -41,7 +41,7 @@ const ModalContainer: React.FC<IModalProps> = styled.div<IModalProps>`
   }
 `;
 
-const ModalWrapper = styled.div`
+const TransparentBackground = styled.div`
   position: absolute;
   z-index: -1;
   top: 0;
@@ -60,7 +60,7 @@ const Modal = ({ strach, children }: IModalProps) => {
   return (
     <Wrapper>
       <ModalContainer strach={strach}>{children}</ModalContainer>
-      <ModalWrapper />
+      <TransparentBackground />
     </Wrapper>
   );
 };
