@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 import styled from "styled-components";
 import InputDefault from "../../../Components/Form/InputDefault";
 import Label from "../../../Components/Form/LabelDefault";
 
-import { Headline2, SubTitle1, SubTitle2 } from "../../../mixin";
+import { SubTitle1, SubTitle2 } from "../../../mixin";
 import { useRecoilState } from "recoil";
 import { userState } from "../../../state/userState";
 import { useLoginMutation } from "../../../generated/graphql";
@@ -114,8 +114,6 @@ const AdminMain = () => {
         login: { accessToken, refreshToken },
       } = data;
 
-      localStorage.setItem("accessToken", accessToken);
-      localStorage.setItem("refreshToken", refreshToken);
       setIsUser((pre) => ({
         ...pre,
         isLogin: true,
