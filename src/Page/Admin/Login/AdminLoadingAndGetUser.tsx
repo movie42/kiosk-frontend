@@ -13,6 +13,7 @@ const AdminLoadingAndGetUser = () => {
   const navigate = useNavigate();
   const [isUser, setIsUser] = useRecoilState(userState);
   const { setUser } = useSetUserInfoToLocalStorage();
+
   const { isSuccess, isRefetching } = useMeQuery<MeQuery, Error>(
     graphqlReqeustClient(isUser.accessToken),
     undefined,
