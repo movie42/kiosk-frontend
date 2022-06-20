@@ -11,15 +11,20 @@ const OptionButton = styled(ButtonDefaultStyle)<{ selected?: boolean }>`
   background-color: ${(props) =>
     props.selected ? props.theme.color.primary800 : props.theme.color.gray300};
   margin-right: 1rem;
+  flex-grow: 1;
 `;
 const OrderContainer = styled.div`
   display: grid;
   grid-template-columns: 50px 0.5fr 50px 1fr 1fr;
-  column-gap: 20px;
+  column-gap: 10px;
   align-items: center;
+`;
+const OptionContainer = styled.div`
+  display: flex;
 `;
 const CancelButton = styled(ButtonDefaultStyle)`
   background-color: ${(props) => props.theme.color.gray300};
+  padding: 0.8rem 1rem;
 `;
 const OrderButton = styled(ButtonDefaultStyle)`
   background-color: ${(props) => props.theme.color.primary800};
@@ -129,17 +134,17 @@ const MenuItemModalChildren: React.FC<IMenuItemModalChildrenProps> = ({
       <Title>구성</Title>
       <p>{selected.name} 1개</p>
       <Title>상품옵션</Title>
-
-      {selected.option?.map((item, i) => (
-        <OptionButton
-          key={item}
-          selected={selectedOption === item ? true : false}
-          onClick={() => setSelectedOption(item)}
-        >
-          {item}
-        </OptionButton>
-      ))}
-
+      <OptionContainer>
+        {selected.option?.map((item, i) => (
+          <OptionButton
+            key={item}
+            selected={selectedOption === item ? true : false}
+            onClick={() => setSelectedOption(item)}
+          >
+            {item}
+          </OptionButton>
+        ))}
+      </OptionContainer>
       <Title>
         총 가격&nbsp;
         {(count * Number(selected.price)).toLocaleString()}원

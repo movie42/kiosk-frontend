@@ -62,5 +62,10 @@ declare module "styled-components" {
       fontColorBlack: string;
       fontColorWhite: string;
     };
+    device: {
+      desktop: string;
+      tablet: string;
+      mobile: string;
+    };
   }
 }

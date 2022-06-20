@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import InputDefault from "../../Components/Form/InputDefault";
 import ButtonDefaultStyle from "../../Components/Buttons/ButtonDefault";
-import { Wrapper, Header, Title, Container } from "./Agreement";
+import { Wrapper, Header, Title, Container, ButtonGroup } from "./Agreement";
 import { SubTitle2, Body1 } from "../../mixin";
 import { useNavigate } from "react-router-dom";
 import LabelDefault from "../../Components/Form/LabelDefault";
@@ -92,7 +92,7 @@ const SignUp = () => {
   } = useForm<ISignUpProps>({ mode: "onSubmit" });
 
   const onSubmit = (data: ISignUpProps): void => {
-    navigate("/admin/login");
+    navigate("/login");
   };
 
   // display store registration form
@@ -106,7 +106,7 @@ const SignUp = () => {
     const confirm = window.confirm(
       "작성 내용이 취소됩니다. 정말 돌아가시겠습니까?"
     );
-    if (confirm) navigate("/landing/agreement");
+    if (confirm) navigate("/agreement");
   };
 
   useEffect(() => {
@@ -203,8 +203,8 @@ const SignUp = () => {
               </>
             )}
           </SubContainer>
-          <GroupForm>
-            <p>정보를 전부 입력하셨다면 가입하기 버튼을 눌러주세요.</p>
+          <ButtonGroup>
+            <span>정보를 전부 입력하셨다면 가입하기 버튼을 눌러주세요.</span>
             <div>
               <ActionButton onClick={(e) => handleGoBack(e)}>
                 돌아가기
@@ -213,7 +213,7 @@ const SignUp = () => {
                 가입하기
               </ActionButton>
             </div>
-          </GroupForm>
+          </ButtonGroup>
         </FormContainer>
       </Container>
     </Wrapper>
