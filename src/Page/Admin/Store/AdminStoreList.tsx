@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { userState } from "../../../state/userState";
 import {
+  useMyStoresQuery,
   useRemoveStoreMutation,
   useStoreQuery,
   useStoresQuery,
@@ -18,6 +19,7 @@ import Modal from "../../../Components/Modals/Modal";
 import IsOpenModalChildren from "../Modal/IsOpenModalChildren";
 import { useQueryClient } from "react-query";
 import { MdDelete, MdCreate } from "react-icons/md";
+import useModalHook from "../../../utils/customHooks/useModalHook";
 
 const Wrapper = styled.div``;
 const Header = styled.div`
@@ -127,62 +129,116 @@ interface IAdminMenuProps {
 interface IAdminStoreListProps {}
 
 const AdminStoreList = () => {
-  const [toggleState, setToggleState] = useState(false);
-  const [isModal, setIsModal] = useState(false);
-  const [confirm, setConfirm] = useState(false);
+  const [toggleState, setToggleState] = useState<boolean | undefined>(false);
+  const {
+    id: toggleId,
+    setId: setToggleId,
+    confirm: toggleConfirm,
+    setConfirm: setToggleConfirm,
+    isModal: isToggleModal,
+    setIsModal: setIsToggleModal,
+  } = useModalHook();
+
+  const {
+    id: deleteItemId,
+    setId: setDeleteItemId,
+    confirm: deleteConfirm,
+    setConfirm: setDeleteConfirm,
+    isModal: isDeleteModal,
+    setIsModal: setIsDeleteModal,
+  } = useModalHook();
+
   const navigate = useNavigate();
   const user = useRecoilValue(userState);
   const [store, setStore] = useRecoilState(storeState);
   const queryClient = useQueryClient();
-  const storeQuery = useStoresQuery(
+
+  const { isSuccess: isStoreRequestSuccess } = useMyStoresQuery(
     graphqlReqeustClient(user.accessToken),
     undefined,
     {
       onSuccess: (data) => {
-        const stores = data.stores.map<storeStateProps>((value) => ({
+        const stores = data.myStores.map<storeStateProps>((value) => ({
           id: value?.id,
           name: value?.name,
           code: value?.code,
           address: value?.address,
           phone: value?.phone,
+          isAvailable: value?.isAvailable,
         }));
 
         setStore(stores);
       },
     },
   );
-  const { mutate } = useRemoveStoreMutation(
+
+  const { mutate: deleteMutate } = useRemoveStoreMutation(
     graphqlReqeustClient(user.accessToken),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries("stores");
+        queryClient.invalidateQueries("myStores");
       },
     },
   );
-  const toggleHandler = () => {
-    setIsModal(true);
+  const toggleHandler = (id: string | undefined) => {
+    if (id) {
+      setToggleId(id);
+    }
+    setIsToggleModal(true);
   };
 
-  const handleDeleteItem = (id: string | undefined) => {
-    mutate({ id: Number(id) });
+  const deleteModalHandler = (id: string | undefined) => {
+    if (id) {
+      setDeleteItemId(id);
+    }
+    setIsDeleteModal(true);
   };
 
   useEffect(() => {
-    if (confirm) {
+    if (toggleConfirm) {
+      //TODO: toggle mutation 필요합니다.
       setToggleState((preValue) => !preValue);
-      setConfirm(false);
+      setToggleConfirm(false);
+      setToggleId(null);
     }
-  }, [confirm]);
+  }, [toggleConfirm]);
+
+  useEffect(() => {
+    if (deleteConfirm) {
+      deleteMutate({ id: Number(deleteItemId) });
+      setDeleteItemId(null);
+      setIsDeleteModal(false);
+    }
+  }, [deleteConfirm]);
 
   return (
     <Wrapper>
-      {isModal && (
+      {isToggleModal && (
         <Modal>
           <IsOpenModalChildren
             toggleState={toggleState}
-            setModal={setIsModal}
-            setConfirm={setConfirm}
+            setModal={setIsToggleModal}
+            setConfirm={setToggleConfirm}
           />
+        </Modal>
+      )}
+      {isDeleteModal && (
+        <Modal>
+          <>
+            <h1>삭제하시겠습니까?</h1>
+            <p>삭제하면 가게에 등록된 모든 정보가 함께 삭제됩니다.</p>
+            <div>
+              <button
+                onClick={() => {
+                  setIsDeleteModal(false);
+                  setDeleteItemId(null);
+                }}
+              >
+                돌아가기
+              </button>
+              <button onClick={() => setDeleteConfirm(true)}>삭제</button>
+            </div>
+          </>
         </Modal>
       )}
       <Header>
@@ -200,41 +256,46 @@ const AdminStoreList = () => {
         </AddStoreButton>
       </Header>
 
-      <StoreList>
-        {store.map((item) => (
-          <Item>
-            <Link to={`/admin/${user.id}/store/${item.id}/main`}>
-              <h3>{item.name}</h3>
-            </Link>
-            <div className="button-container">
-              <div className="toggle-button-box">
-                <ToggleButton
-                  isActive={toggleState}
-                  onClick={toggleHandler}
-                ></ToggleButton>
+      {isStoreRequestSuccess && (
+        <StoreList>
+          {store.map((item) => (
+            <Item key={item.id}>
+              <Link to={`/admin/${user.id}/store/${item.id}/main`}>
+                <h3>{item.name}</h3>
+              </Link>
+              <div className="button-container">
+                <div className="toggle-button-box">
+                  <ToggleButton
+                    isActive={item.isAvailable}
+                    onClick={() => {
+                      toggleHandler(item.id);
+                      setToggleState(item.isAvailable);
+                    }}
+                  ></ToggleButton>
+                </div>
+                <div className="various-button-box">
+                  <button
+                    className="update-button"
+                    onClick={() =>
+                      navigate(`/admin/${user.id}/store/${item.id}/update`)
+                    }
+                  >
+                    <MdCreate />
+                    <span>수정</span>
+                  </button>
+                  <button
+                    className="delete-button"
+                    onClick={() => deleteModalHandler(item.id)}
+                  >
+                    <MdDelete />
+                    <span>삭제</span>
+                  </button>
+                </div>
               </div>
-              <div className="various-button-box">
-                <button
-                  className="update-button"
-                  onClick={() =>
-                    navigate(`/admin/${user.id}/store/${item.id}/update`)
-                  }
-                >
-                  <MdCreate />
-                  <span>수정</span>
-                </button>
-                <button
-                  className="delete-button"
-                  onClick={() => handleDeleteItem(item?.id)}
-                >
-                  <MdDelete />
-                  <span>삭제</span>
-                </button>
-              </div>
-            </div>
-          </Item>
-        ))}
-      </StoreList>
+            </Item>
+          ))}
+        </StoreList>
+      )}
     </Wrapper>
   );
 };

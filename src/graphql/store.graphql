@@ -18,6 +18,21 @@ query stores {
   }
 }
 
+query myStores {
+  myStores {
+    id
+    name
+    code
+    address
+    phone
+    isAvailable
+  }
+}
+
+query storeIsAvailable($id: Float!) {
+  storeIsAvailable(id: $id)
+}
+
 mutation addStore(
   $name: String!
   $code: String!
@@ -31,4 +46,13 @@ mutation addStore(
 
 mutation removeStore($id: Float!) {
   removeStore(id: $id)
+}
+
+mutation updateStore(
+  $id: Float!
+  $name: String!
+  $address: String!
+  $phone: String!
+) {
+  updateStore(id: $id, store: { name: $name, address: $address, phone: $phone })
 }
