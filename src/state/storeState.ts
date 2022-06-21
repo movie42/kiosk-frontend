@@ -18,7 +18,12 @@ const initialValue = {
   isAvailable: false,
 };
 
-export const storeState = atom<storeStateProps[]>({
+export const storesState = atom<storeStateProps[]>({
   key: "stores",
   default: [initialValue],
+});
+
+export const storeState = atom<storeStateProps>({
+  key: "store",
+  default: initialValue,
 });

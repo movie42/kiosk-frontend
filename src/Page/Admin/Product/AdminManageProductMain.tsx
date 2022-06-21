@@ -1,8 +1,19 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Modal from "../../../Components/Modals/Modal";
 import IsOpenModalChildren from "../Modal/IsOpenModalChildren";
+import useModalHook from "../../../utils/customHooks/useModalHook";
+import PageHeaderMessage from "../../../Components/PageHeader";
+import {
+  useMyStoresQuery,
+  useStoreQuery,
+  useStoresQuery,
+} from "../../../generated/graphql";
+import graphqlReqeustClient from "../../../lib/graphqlRequestClient";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { userState } from "../../../state/userState";
+import { storeState } from "../../../state/storeState";
 
 const Wrapper = styled.div`
   h2 {
@@ -64,6 +75,13 @@ const LinkToProductManageWindowButton = styled(MenuButtonDefault)`
 const LinkToCrewMangageWindowButton = styled(MenuButtonDefault)`
   height: 100%;
   background-color: ${(props) => props.theme.color.secondary800};
+`;
+
+const BusinessInfoContainer = styled.div`
+  span {
+    font-size: 1.8rem;
+    margin-right: 1.2rem;
+  }
 `;
 
 const LinkToCustomerWindowButton: React.FC<
@@ -131,10 +149,28 @@ interface IAdminMenuProps {
 }
 
 const AdminManageProductMain = () => {
-  const [toggleState, setToggleState] = useState(false);
-  const [isModal, setIsModal] = useState(false);
-  const [confirm, setConfirm] = useState(false);
+  const { storeId } = useParams();
+  const { id: userId } = useRecoilValue(userState);
   const navigate = useNavigate();
+  const [store, setStore] = useRecoilState(storeState);
+  const { accessToken, refreshToken } = useRecoilValue(userState);
+  const [toggleState, setToggleState] = useState(false);
+  const { id, setId, isModal, setIsModal, confirm, setConfirm } =
+    useModalHook();
+  const { isSuccess } = useStoreQuery(
+    graphqlReqeustClient(accessToken),
+    {
+      id: Number(id),
+    },
+    {
+      onSuccess: (data) => {
+        if (data.store) {
+          const { id, name, code, address, phone, isAvailable } = data.store;
+          setStore({ id, name, address, code, phone, isAvailable });
+        }
+      },
+    },
+  );
 
   const toggleHandler = () => {
     setIsModal(true);
@@ -149,13 +185,19 @@ const AdminManageProductMain = () => {
     }
 
     if (linkName === "manage-order") {
-      navigate("/admin/:id/manage-order");
+      navigate(`/admin/${userId}/store/${storeId}/manage-order`);
     }
 
     if (linkName === "manage-product") {
-      navigate("/admin/:id/manage-product");
+      navigate(`/admin/${userId}/store/${storeId}/product/manage-product`);
     }
   };
+
+  useEffect(() => {
+    if (storeId) {
+      setId(storeId);
+    }
+  }, []);
 
   useEffect(() => {
     if (confirm) {
@@ -175,10 +217,15 @@ const AdminManageProductMain = () => {
           />
         </Modal>
       )}
-      <h2>원하는 기능을 선택하세요.</h2>
+      <PageHeaderMessage header="관리자 메뉴" message={store.name} />
+      <BusinessInfoContainer>
+        <span>사업자 번호 : {store.code}</span>
+        <span>주소 : {store.address}</span>
+        <span>대표번호 : {store.phone}</span>
+      </BusinessInfoContainer>
       <Menu>
         <MenuButtonWrapper>
-          {toggleState ? (
+          {store.isAvailable ? (
             <p>가게를 닫으려면 버튼을 누르세요.</p>
           ) : (
             <p>가게를 열려면 버튼을 누르세요.</p>
@@ -190,10 +237,10 @@ const AdminManageProductMain = () => {
           <LinkToCustomerWindowButton
             data-link="order"
             onClick={linkToCustomerWindowHandler}
-            isActive={toggleState}
+            isActive={store.isAvailable}
           >
             <span>고객 주문 화면</span>
-            {toggleState && <span>현재 주문을 받고 있는 중입니다.</span>}
+            {store.isAvailable && <span>현재 주문을 받고 있는 중입니다.</span>}
           </LinkToCustomerWindowButton>
         </MenuButtonWrapper>
         <LinkToStaffWindowButton

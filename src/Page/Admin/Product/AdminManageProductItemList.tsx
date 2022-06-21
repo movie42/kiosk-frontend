@@ -3,7 +3,7 @@ import styled from "styled-components";
 import ProductItem from "./ProductItem";
 import { ProductListValues } from "../../../mockup/productList";
 import StateMenuBar from "./StateMenuBar";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import ButtonDefaultStyle from "../../../Components/Buttons/ButtonDefault";
 import {
   productListState,
@@ -12,7 +12,9 @@ import {
   selectOptionState,
   selectProductListState,
 } from "../../../state/productItemState";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import PageHeaderMessage from "../../../Components/PageHeader";
+import { storeState } from "../../../state/storeState";
 
 const Container = styled.div`
   ul.productList {
@@ -50,7 +52,9 @@ const UpdateProductButton = styled(ButtonDefaultStyle)`
 `;
 
 const AdminManageProductItemList = () => {
+  const { storeId, userId } = useParams();
   const navigate = useNavigate();
+  const store = useRecoilValue(storeState);
   const [selectOption, setSelectOption] = useRecoilState(selectOptionState);
   const [productList, setProductList] = useRecoilState(productListState);
   const [selectList, setSelectList] = useRecoilState<ProductListValues[]>(
@@ -84,11 +88,15 @@ const AdminManageProductItemList = () => {
     <>
       <Container>
         <ManageOptionContainer>
-          <h2>상품 관리</h2>
+          <PageHeaderMessage header="상품 관리" message={store.name} />
           {selectOption.options === "none" && (
             <div>
               <CreateProductButton
-                onClick={() => navigate("/admin/:id/add-product")}
+                onClick={() =>
+                  navigate(
+                    `/admin/${userId}/store/${storeId}/product/add-product`,
+                  )
+                }
               >
                 상품등록
               </CreateProductButton>

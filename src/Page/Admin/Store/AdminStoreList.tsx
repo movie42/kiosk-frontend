@@ -12,7 +12,7 @@ import {
   useStoresQuery,
 } from "../../../generated/graphql";
 import graphqlReqeustClient from "../../../lib/graphqlRequestClient";
-import { storeState, storeStateProps } from "../../../state/storeState";
+import { storesState, storeStateProps } from "../../../state/storeState";
 import { Headline2 } from "../../../mixin";
 import { useEffect, useState } from "react";
 import Modal from "../../../Components/Modals/Modal";
@@ -150,7 +150,7 @@ const AdminStoreList = () => {
 
   const navigate = useNavigate();
   const user = useRecoilValue(userState);
-  const [store, setStore] = useRecoilState(storeState);
+  const [store, setStore] = useRecoilState(storesState);
   const queryClient = useQueryClient();
 
   const { isSuccess: isStoreRequestSuccess } = useMyStoresQuery(
@@ -260,7 +260,7 @@ const AdminStoreList = () => {
         <StoreList>
           {store.map((item) => (
             <Item key={item.id}>
-              <Link to={`/admin/${user.id}/store/${item.id}/main`}>
+              <Link to={`/admin/${user.id}/store/${item.id}/product/main`}>
                 <h3>{item.name}</h3>
               </Link>
               <div className="button-container">

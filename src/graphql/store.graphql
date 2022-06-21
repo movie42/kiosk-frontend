@@ -5,6 +5,7 @@ query store($id: Float!) {
     code
     phone
     address
+    isAvailable
   }
 }
 
@@ -15,6 +16,7 @@ query stores {
     code
     phone
     address
+    isAvailable
   }
 }
 

@@ -268,12 +268,12 @@ export type StoreQueryVariables = Exact<{
 }>;
 
 
-export type StoreQuery = { __typename?: 'Query', store?: { __typename?: 'Store', id: string, name: string, code: string, phone: string, address: string } | null };
+export type StoreQuery = { __typename?: 'Query', store?: { __typename?: 'Store', id: string, name: string, code: string, phone: string, address: string, isAvailable: boolean } | null };
 
 export type StoresQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type StoresQuery = { __typename?: 'Query', stores: Array<{ __typename?: 'Store', id: string, name: string, code: string, phone: string, address: string }> };
+export type StoresQuery = { __typename?: 'Query', stores: Array<{ __typename?: 'Store', id: string, name: string, code: string, phone: string, address: string, isAvailable: boolean }> };
 
 export type MyStoresQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -336,6 +336,7 @@ export const StoreDocument = `
     code
     phone
     address
+    isAvailable
   }
 }
     `;
@@ -361,6 +362,7 @@ export const StoresDocument = `
     code
     phone
     address
+    isAvailable
   }
 }
     `;
