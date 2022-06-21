@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import InputDefault from "../../Components/Form/InputDefault";
@@ -6,7 +6,16 @@ import ButtonDefaultStyle from "../../Components/Buttons/ButtonDefault";
 import { Wrapper, Header, Title, Container, ButtonGroup } from "./Agreement";
 import { SubTitle2, Body1 } from "../../mixin";
 import { useNavigate } from "react-router-dom";
-import LabelDefault from "../../Components/Form/LabelDefault";
+import graphqlReqeustClient from "../../lib/graphqlRequestClient";
+import {
+  useAddStoreMutation,
+  useSignupMutation,
+} from "../../generated/graphql";
+import { handleErrorMessage } from "../../utils/helper/handleErrorMessage";
+import { ErrorState } from "../Admin/Login/AdminLogin";
+import { useRecoilState } from "recoil";
+import { userState } from "../../state/userState";
+import { useQueryClient } from "react-query";
 
 const FormContainer = styled.form`
   height: inherit;
@@ -74,15 +83,15 @@ interface ISignUpProps {
   name: string;
   password: string;
   passwordConfirm: string;
-  storeNumber: number;
+  code: string;
   storeName: string;
   address: string;
-  phone: number;
+  phone: string;
 }
 
 const SignUp = () => {
   const navigate = useNavigate();
-
+  const queryClient = useQueryClient();
   // signup form
   const {
     register,
@@ -91,14 +100,71 @@ const SignUp = () => {
     formState: { errors },
   } = useForm<ISignUpProps>({ mode: "onSubmit" });
 
-  const onSubmit = (data: ISignUpProps): void => {
-    navigate("/login");
-  };
-
-  // display store registration form
+  // display store
   const [checkStore, setCheckStore] = useState(true);
+
+  // registration & error
+  const [errorState, setErrorState] = useState<ErrorState>();
+  const [isUser, setIsUser] = useRecoilState(userState);
   const password = useRef({});
   password.current = watch("password", "");
+
+  // mutation
+  const { mutate } = useSignupMutation<Error>(graphqlReqeustClient(), {
+    onSuccess: (data) => {
+      const {
+        signup: { accessToken, refreshToken },
+      } = data;
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
+      setIsUser((pre) => ({
+        ...pre,
+        isLogin: true,
+        accessToken,
+        refreshToken,
+      }));
+      queryClient.invalidateQueries("me");
+      alert("정상적으로 회원가입이 완료되었습니다.");
+      if (!checkStore) {
+        navigate("/login");
+      }
+    },
+    onError: (error) => {
+      handleErrorMessage(error, setErrorState);
+      if (errorState) {
+        console.log(errorState);
+      }
+    },
+  });
+  const { mutate: mutateStore } = useAddStoreMutation<Error>(
+    graphqlReqeustClient(isUser.accessToken),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("stores");
+        navigate("/login");
+      },
+      onError: (error) => {
+        handleErrorMessage(error, setErrorState);
+        if (errorState) {
+          console.log(errorState);
+        }
+      },
+    }
+  );
+
+  const onSubmit = async (data: ISignUpProps) => {
+    const { email, name, password, code, storeName, phone, address } = data;
+    mutate({ user: { email, name, password } });
+
+    if (checkStore) {
+      mutateStore({
+        code: code,
+        name: storeName,
+        phone: phone,
+        address: address,
+      });
+    }
+  };
 
   // goBack modal
   const handleGoBack = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -108,12 +174,6 @@ const SignUp = () => {
     );
     if (confirm) navigate("/agreement");
   };
-
-  useEffect(() => {
-    register("email");
-    register("name");
-    register("password");
-  }, [register]);
 
   return (
     <Wrapper>
@@ -189,17 +249,32 @@ const SignUp = () => {
               <>
                 <SignUpInput
                   placeholder="사업장번호"
-                  id="storeNumber"
-                  name="storeNumber"
+                  id="code"
+                  name="code"
+                  required={checkStore}
+                  register={checkStore && register}
                 />
                 <SignUpInput
                   placeholder="상호명"
                   id="storeName"
                   name="storeName"
+                  required={checkStore}
+                  register={checkStore && register}
                 />
-
-                <SignUpInput placeholder="주소" id="address" name="address" />
-                <SignUpInput placeholder="전화번호" id="phone" name="phone" />
+                <SignUpInput
+                  placeholder="전화번호"
+                  id="phone"
+                  name="phone"
+                  required={checkStore}
+                  register={checkStore && register}
+                />
+                <SignUpInput
+                  placeholder="주소"
+                  id="address"
+                  name="address"
+                  required={checkStore}
+                  register={checkStore && register}
+                />
               </>
             )}
           </SubContainer>
