@@ -14,7 +14,7 @@ export interface SelectOption {
 
 export const productListState = atom({
   key: "productList",
-  default: productList,
+  default: <ProductListValues[]>[],
 });
 
 export const selectProductListState = atom({

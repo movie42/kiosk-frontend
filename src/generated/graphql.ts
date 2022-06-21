@@ -1,6 +1,6 @@
 import { GraphQLClient } from 'graphql-request';
 import { RequestInit } from 'graphql-request/dist/types.dom';
-import { useQuery, useMutation, UseQueryOptions, UseMutationOptions } from 'react-query';
+import { useMutation, useQuery, UseMutationOptions, UseQueryOptions } from 'react-query';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -263,6 +263,13 @@ export type RemoveProductOptionInput = {
   OptionIds: Array<Scalars['Int']>;
 };
 
+export type AddProductsMutationVariables = Exact<{
+  products: Array<AddProductInput> | AddProductInput;
+}>;
+
+
+export type AddProductsMutation = { __typename?: 'Mutation', addProducts: boolean };
+
 export type StoreQueryVariables = Exact<{
   id: Scalars['Float'];
 }>;
@@ -328,6 +335,24 @@ export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 export type MeQuery = { __typename?: 'Query', me: { __typename?: 'User', id: string, name: string, email: string } };
 
 
+export const AddProductsDocument = `
+    mutation addProducts($products: [AddProductInput!]!) {
+  addProducts(products: $products)
+}
+    `;
+export const useAddProductsMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      client: GraphQLClient,
+      options?: UseMutationOptions<AddProductsMutation, TError, AddProductsMutationVariables, TContext>,
+      headers?: RequestInit['headers']
+    ) =>
+    useMutation<AddProductsMutation, TError, AddProductsMutationVariables, TContext>(
+      ['addProducts'],
+      (variables?: AddProductsMutationVariables) => fetcher<AddProductsMutation, AddProductsMutationVariables>(client, AddProductsDocument, variables, headers)(),
+      options
+    );
 export const StoreDocument = `
     query store($id: Float!) {
   store(id: $id) {

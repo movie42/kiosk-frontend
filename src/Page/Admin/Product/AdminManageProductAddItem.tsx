@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 
 import InputDefault from "../../../Components/Form/InputDefault";
@@ -10,6 +10,11 @@ import ButtonDefaultStyle from "../../../Components/Buttons/ButtonDefault";
 import { IoIosAddCircle } from "react-icons/io";
 import Modal from "../../../Components/Modals/Modal";
 import { usePost } from "../../../utils/customHooks/usePost";
+import { InputMaybe, useAddProductsMutation } from "../../../generated/graphql";
+import graphqlReqeustClient from "../../../lib/graphqlRequestClient";
+import { useRecoilValue } from "recoil";
+import { userState } from "../../../state/userState";
+import { useQueryClient } from "react-query";
 
 const Container = styled.div`
   margin-bottom: 8rem;
@@ -67,11 +72,11 @@ const AddProductButton = styled(ButtonDefaultStyle)`
   padding: 0;
 `;
 
-const AddThumbnail = styled(InputDefault)`
+const AddimageUrl = styled(InputDefault)`
   display: none;
 `;
 
-const AddThumbnailLabel = styled(Label)`
+const AddimageUrlLabel = styled(Label)`
   cursor: pointer;
   color: ${(props) => props.theme.color.primary700};
 `;
@@ -134,17 +139,41 @@ const ModalButtonContainer = styled.div`
 `;
 
 interface ProductDefaultValue {
-  thumbnail: string;
+  imageUrl?: string;
   name: string;
-  price: string;
-  option: string;
-  infomation: string;
+  price: number;
+  option?: string;
+  description?: string;
+}
+
+interface ProductMutationValue extends ProductDefaultValue {
+  storeId: number;
 }
 
 const AdminManageProductAddItem = () => {
+  const { storeId } = useParams();
+  const { accessToken, refreshToken } = useRecoilValue(userState);
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const [isModal, setIsModal] = useState(false);
-  const [formData, setFormData] = useState<ProductDefaultValue[]>([]);
+  const [formData, setFormData] = useState<ProductMutationValue[]>([
+    {
+      storeId: 0,
+      imageUrl: "",
+      name: "",
+      price: 0,
+      option: "",
+      description: "",
+    },
+  ]);
+  const { mutate } = useAddProductsMutation<ProductDefaultValue[]>(
+    graphqlReqeustClient(accessToken),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("products");
+      },
+    },
+  );
   const {
     register,
     handleSubmit,
@@ -154,11 +183,11 @@ const AdminManageProductAddItem = () => {
     defaultValues: {
       product: [
         {
-          thumbnail: "",
+          imageUrl: "",
           name: "",
-          price: "",
+          price: 0,
           option: "",
-          infomation: "",
+          description: "",
         },
       ],
     },
@@ -175,7 +204,15 @@ const AdminManageProductAddItem = () => {
 
   const onSubmit = handleSubmit((data) => {
     handleModal();
-    setFormData(data.product);
+    // TODO:mutation값에 options가 없다. 백앤드 반영 후 수정해야한다.
+    setFormData(
+      data.product.map((item) => ({
+        storeId: Number(storeId),
+        name: item.name,
+        price: Number(item.price),
+        description: item.description,
+      })),
+    );
   });
 
   const cancelAddProductItems = () => {
@@ -184,12 +221,14 @@ const AdminManageProductAddItem = () => {
   };
 
   const confirmAddProductItems = () => {
-    // mutation
-
-    // if mutation success
-    navigate(-1);
-
-    // if mutation fail
+    mutate(
+      { products: formData },
+      {
+        onSuccess: () => {
+          navigate(`/admin/1/store/5/product/manage-product`);
+        },
+      },
+    );
   };
 
   return (
@@ -223,11 +262,11 @@ const AdminManageProductAddItem = () => {
             <AddProductButton
               onClick={() =>
                 append({
-                  thumbnail: "",
+                  imageUrl: "",
                   name: "",
-                  price: "",
+                  price: 0,
                   option: "",
-                  infomation: "",
+                  description: "",
                 })
               }
             >
@@ -240,15 +279,15 @@ const AdminManageProductAddItem = () => {
             <fieldset key={item.id}>
               <button onClick={() => remove(index)}>삭제</button>
               <div>
-                <Label htmlFor="thumbnail">섬네일</Label>
-                <AddThumbnailLabel htmlFor="thumbnail">
+                <Label htmlFor="imageUrl">섬네일</Label>
+                <AddimageUrlLabel htmlFor="imageUrl">
                   <IoIosAddCircle />
-                </AddThumbnailLabel>
-                <AddThumbnail
-                  id="thumbnail"
+                </AddimageUrlLabel>
+                <AddimageUrl
+                  id="imageUrl"
                   type="file"
                   accept="image/*"
-                  name="thumbnail"
+                  name="imageUrl"
                   placeholder="사진 찾기"
                   register={register}
                   fieldName={`product.${index}`}
