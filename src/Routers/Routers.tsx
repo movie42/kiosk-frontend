@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "../Page/Admin/Login/AdminLogin";
-import AdminManageProductAddItem from "../Page/Admin/AdminManageProductAddItem";
-import AdminManageProductItemList from "../Page/Admin/AdminManageProductItemList";
-import AdminMain from "../Page/Admin/AdminMain";
+import AdminManageProductAddItem from "../Page/Admin/Product/AdminManageProductAddItem";
+import AdminManageProductItemList from "../Page/Admin/Product/AdminManageProductItemList";
+import AdminMain from "../Page/Admin/Product/AdminManageProductMain";
 import AdminLayout from "../Layouts/AdminLayout";
 import PageNotFound from "../Page/Errors/404";
 import MangeOrderMain from "../Page/MangeOrder/MangeOrderMain";

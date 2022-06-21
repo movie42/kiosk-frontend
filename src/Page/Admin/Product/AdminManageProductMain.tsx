@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
-import Modal from "../../Components/Modals/Modal";
-import IsOpenModalChildren from "./Modal/IsOpenModalChildren";
+import Modal from "../../../Components/Modals/Modal";
+import IsOpenModalChildren from "../Modal/IsOpenModalChildren";
 
 const Wrapper = styled.div`
   h2 {
@@ -130,7 +130,7 @@ interface IAdminMenuProps {
   isActive: boolean;
 }
 
-const AdminMenu = () => {
+const AdminManageProductMain = () => {
   const [toggleState, setToggleState] = useState(false);
   const [isModal, setIsModal] = useState(false);
   const [confirm, setConfirm] = useState(false);
@@ -215,4 +215,4 @@ const AdminMenu = () => {
   );
 };
 
-export default AdminMenu;
+export default AdminManageProductMain;

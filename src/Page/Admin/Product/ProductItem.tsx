@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import { productListState, SelectOption } from "../../state/productItemState";
+import {
+  productListState,
+  SelectOption,
+} from "../../../state/productItemState";
 
 const Item: React.FC<
   | IProductItemProps

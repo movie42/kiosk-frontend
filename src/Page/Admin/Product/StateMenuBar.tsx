@@ -1,18 +1,18 @@
 import React, { useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled, { StyledComponent } from "styled-components";
-import { ProductListValues } from "../../mockup/productList";
+import { ProductListValues } from "../../../mockup/productList";
 import {
   productListState,
   selectOptionState,
   selectProductListState,
   Option,
   SelectOption,
-} from "../../state/productItemState";
+} from "../../../state/productItemState";
 
-import Modal from "../../Components/Modals/Modal";
-import DeleteModalChildren from "./Modal/DeleteModalChildren";
-import UpdateModalChildren from "./Modal/UpdateModalChildren";
+import Modal from "../../../Components/Modals/Modal";
+import DeleteModalChildren from "../Modal/DeleteModalChildren";
+import UpdateModalChildren from "../Modal/UpdateModalChildren";
 
 const MenuBarContainer: React.FC<SelectOption> = styled.div<SelectOption>`
   display: flex;

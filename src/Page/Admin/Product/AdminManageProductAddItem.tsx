@@ -3,13 +3,13 @@ import { useFieldArray, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-import InputDefault from "../../Components/Form/InputDefault";
-import Label from "../../Components/Form/LabelDefault";
-import Textarea from "../../Components/Form/TextareaDefault";
-import ButtonDefaultStyle from "../../Components/Buttons/ButtonDefault";
+import InputDefault from "../../../Components/Form/InputDefault";
+import Label from "../../../Components/Form/LabelDefault";
+import Textarea from "../../../Components/Form/TextareaDefault";
+import ButtonDefaultStyle from "../../../Components/Buttons/ButtonDefault";
 import { IoIosAddCircle } from "react-icons/io";
-import Modal from "../../Components/Modals/Modal";
-import { usePost } from "../../utils/customHooks/usePost";
+import Modal from "../../../Components/Modals/Modal";
+import { usePost } from "../../../utils/customHooks/usePost";
 
 const Container = styled.div`
   margin-bottom: 8rem;
@@ -149,7 +149,7 @@ const AdminManageProductAddItem = () => {
     register,
     handleSubmit,
     control,
-    formState: { errors }
+    formState: { errors },
   } = useForm<{ product: ProductDefaultValue[] }>({
     defaultValues: {
       product: [
@@ -158,15 +158,15 @@ const AdminManageProductAddItem = () => {
           name: "",
           price: "",
           option: "",
-          infomation: ""
-        }
-      ]
-    }
+          infomation: "",
+        },
+      ],
+    },
   });
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "product"
+    name: "product",
   });
 
   const handleModal = () => {
@@ -227,7 +227,7 @@ const AdminManageProductAddItem = () => {
                   name: "",
                   price: "",
                   option: "",
-                  infomation: ""
+                  infomation: "",
                 })
               }
             >
@@ -264,7 +264,7 @@ const AdminManageProductAddItem = () => {
                   register={register}
                   fieldName={`product.${index}`}
                   registerOptions={{
-                    required: "상품 이름은 꼭 입력해야해요"
+                    required: "상품 이름은 꼭 입력해야해요",
                   }}
                 />
               </div>
@@ -278,7 +278,7 @@ const AdminManageProductAddItem = () => {
                   register={register}
                   fieldName={`product.${index}`}
                   registerOptions={{
-                    required: "상품의 가격은 꼭 입력해야해요"
+                    required: "상품의 가격은 꼭 입력해야해요",
                   }}
                 />
               </div>
