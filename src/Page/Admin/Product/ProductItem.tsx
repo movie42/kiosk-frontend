@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
+import ToggleButton from "../../../Components/Buttons/ToggleButton";
 import Noimage from "../../../Images/Noimage";
 import {
   productListState,
@@ -15,6 +17,7 @@ const Item: React.FC<
       HTMLLIElement
     >
 > = styled.li<IProductItemProps>`
+  cursor: pointer;
   background-color: ${(props) => props.theme.color.background100};
   height: 100%;
   min-width: 20rem;
@@ -23,6 +26,8 @@ const Item: React.FC<
   grid-template-rows: 1fr 0.7fr;
   border: 1px solid ${({ theme }) => theme.color.gray300};
   border-radius: 0.4rem;
+  text-decoration: none;
+  color: ${(props) => props.theme.color.fontColorBlack};
   .image-container {
     position: relative;
     .transparent-box {
@@ -49,6 +54,22 @@ const Item: React.FC<
     }
   }
 `;
+const ToggleContainer = styled.div`
+  display: flex;
+  font-size: 1.4rem;
+  font-weight: 600;
+  padding: 0.5rem;
+  align-items: center;
+  color: ${({ theme }) => theme.color.fontColorWhite};
+  margin: 0.4rem;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  p {
+    margin-left: 0.5rem;
+  }
+`;
 
 interface IProductItemProps {
   id: string | number;
@@ -65,13 +86,17 @@ const ProductItem: React.FC<IProductItemProps> = ({
   imageUrl,
   handler,
 }) => {
+  const navigate = useNavigate();
+  const { userId, storeId } = useParams();
   const [productList, setProductList] = useRecoilState(productListState);
   const [selectOption, setSelectOption] = useRecoilState(selectOptionState);
 
   const handleSelectItem = (e: React.MouseEvent<HTMLLIElement>) => {
     if (selectOption?.options === "none") {
+      navigate(`/admin/${userId}/store/${storeId}/product/${id}`);
       return;
     }
+
     handler && handler(e);
     setProductList((item) =>
       [
@@ -85,6 +110,10 @@ const ProductItem: React.FC<IProductItemProps> = ({
   return (
     <Item data-id={id} onClick={handleSelectItem}>
       <div className="image-container">
+        <ToggleContainer>
+          <ToggleButton size={5} isActive={true} />
+          <p>판매 중입니다.</p>
+        </ToggleContainer>
         <span className="transparent-box"></span>
         {imageUrl ? <img src={imageUrl} alt={name} /> : <Noimage />}
       </div>
