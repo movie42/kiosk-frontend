@@ -69,8 +69,10 @@ export type Mutation = {
   removeProducts: Scalars['Boolean'];
   removeStore: Scalars['Boolean'];
   signup: TokenOutput;
+  updateOrderStatus: Scalars['Boolean'];
   updateProduct: Scalars['Boolean'];
   updateProductOption: Scalars['Boolean'];
+  updateStore: Scalars['Boolean'];
   updateUser: Scalars['Boolean'];
   withdraw: Scalars['Boolean'];
 };
@@ -122,6 +124,12 @@ export type MutationSignupArgs = {
 };
 
 
+export type MutationUpdateOrderStatusArgs = {
+  id: Scalars['Int'];
+  status: OrderStatusInput;
+};
+
+
 export type MutationUpdateProductArgs = {
   products: EditProductInput;
 };
@@ -129,6 +137,12 @@ export type MutationUpdateProductArgs = {
 
 export type MutationUpdateProductOptionArgs = {
   option: EditProductOptionInput;
+};
+
+
+export type MutationUpdateStoreArgs = {
+  id: Scalars['Float'];
+  store: UpdateStoreInput;
 };
 
 
@@ -150,8 +164,20 @@ export type Order = {
   number: Scalars['Int'];
   price: Scalars['Int'];
   products: Array<Product>;
+  status: OrderStatusType;
   storeId: Scalars['Int'];
 };
+
+export type OrderStatusInput = {
+  status: OrderStatusType;
+};
+
+export enum OrderStatusType {
+  Canceled = 'CANCELED',
+  Complete = 'COMPLETE',
+  Done = 'DONE',
+  Ready = 'READY'
+}
 
 export type Product = {
   __typename?: 'Product';
@@ -167,9 +193,11 @@ export type Product = {
 export type Query = {
   __typename?: 'Query';
   me: User;
+  myStores: Array<Store>;
   orders: Array<Order>;
   store?: Maybe<Store>;
-  stores: Array<Maybe<Store>>;
+  storeIsAvailable: Scalars['Boolean'];
+  stores: Array<Store>;
   users: Array<Maybe<User>>;
 };
 
@@ -185,6 +213,11 @@ export type QueryStoreArgs = {
   id: Scalars['Float'];
 };
 
+
+export type QueryStoreIsAvailableArgs = {
+  id: Scalars['Float'];
+};
+
 export type SignupInput = {
   email: Scalars['String'];
   name: Scalars['String'];
@@ -196,6 +229,7 @@ export type Store = {
   address: Scalars['String'];
   code: Scalars['String'];
   id: Scalars['ID'];
+  isAvailable: Scalars['Boolean'];
   name: Scalars['String'];
   ownerId: Scalars['Int'];
   phone: Scalars['String'];
@@ -206,6 +240,12 @@ export type TokenOutput = {
   __typename?: 'TokenOutput';
   accessToken: Scalars['String'];
   refreshToken: Scalars['String'];
+};
+
+export type UpdateStoreInput = {
+  address: Scalars['String'];
+  name: Scalars['String'];
+  phone: Scalars['String'];
 };
 
 export type User = {
@@ -228,7 +268,24 @@ export type StoreQueryVariables = Exact<{
 }>;
 
 
-export type StoreQuery = { __typename?: 'Query', store?: { __typename?: 'Store', products: Array<{ __typename?: 'Product', name: string }> } | null };
+export type StoreQuery = { __typename?: 'Query', store?: { __typename?: 'Store', id: string, name: string, code: string, phone: string, address: string } | null };
+
+export type StoresQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type StoresQuery = { __typename?: 'Query', stores: Array<{ __typename?: 'Store', id: string, name: string, code: string, phone: string, address: string }> };
+
+export type MyStoresQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MyStoresQuery = { __typename?: 'Query', myStores: Array<{ __typename?: 'Store', id: string, name: string, code: string, address: string, phone: string, isAvailable: boolean }> };
+
+export type StoreIsAvailableQueryVariables = Exact<{
+  id: Scalars['Float'];
+}>;
+
+
+export type StoreIsAvailableQuery = { __typename?: 'Query', storeIsAvailable: boolean };
 
 export type AddStoreMutationVariables = Exact<{
   name: Scalars['String'];
@@ -239,6 +296,23 @@ export type AddStoreMutationVariables = Exact<{
 
 
 export type AddStoreMutation = { __typename?: 'Mutation', addStore: boolean };
+
+export type RemoveStoreMutationVariables = Exact<{
+  id: Scalars['Float'];
+}>;
+
+
+export type RemoveStoreMutation = { __typename?: 'Mutation', removeStore: boolean };
+
+export type UpdateStoreMutationVariables = Exact<{
+  id: Scalars['Float'];
+  name: Scalars['String'];
+  address: Scalars['String'];
+  phone: Scalars['String'];
+}>;
+
+
+export type UpdateStoreMutation = { __typename?: 'Mutation', updateStore: boolean };
 
 export type LoginMutationVariables = Exact<{
   email: Scalars['String'];
@@ -257,9 +331,11 @@ export type MeQuery = { __typename?: 'Query', me: { __typename?: 'User', id: str
 export const StoreDocument = `
     query store($id: Float!) {
   store(id: $id) {
-    products {
-      name
-    }
+    id
+    name
+    code
+    phone
+    address
   }
 }
     `;
@@ -275,6 +351,76 @@ export const useStoreQuery = <
     useQuery<StoreQuery, TError, TData>(
       ['store', variables],
       fetcher<StoreQuery, StoreQueryVariables>(client, StoreDocument, variables, headers),
+      options
+    );
+export const StoresDocument = `
+    query stores {
+  stores {
+    id
+    name
+    code
+    phone
+    address
+  }
+}
+    `;
+export const useStoresQuery = <
+      TData = StoresQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient,
+      variables?: StoresQueryVariables,
+      options?: UseQueryOptions<StoresQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useQuery<StoresQuery, TError, TData>(
+      variables === undefined ? ['stores'] : ['stores', variables],
+      fetcher<StoresQuery, StoresQueryVariables>(client, StoresDocument, variables, headers),
+      options
+    );
+export const MyStoresDocument = `
+    query myStores {
+  myStores {
+    id
+    name
+    code
+    address
+    phone
+    isAvailable
+  }
+}
+    `;
+export const useMyStoresQuery = <
+      TData = MyStoresQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient,
+      variables?: MyStoresQueryVariables,
+      options?: UseQueryOptions<MyStoresQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useQuery<MyStoresQuery, TError, TData>(
+      variables === undefined ? ['myStores'] : ['myStores', variables],
+      fetcher<MyStoresQuery, MyStoresQueryVariables>(client, MyStoresDocument, variables, headers),
+      options
+    );
+export const StoreIsAvailableDocument = `
+    query storeIsAvailable($id: Float!) {
+  storeIsAvailable(id: $id)
+}
+    `;
+export const useStoreIsAvailableQuery = <
+      TData = StoreIsAvailableQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient,
+      variables: StoreIsAvailableQueryVariables,
+      options?: UseQueryOptions<StoreIsAvailableQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useQuery<StoreIsAvailableQuery, TError, TData>(
+      ['storeIsAvailable', variables],
+      fetcher<StoreIsAvailableQuery, StoreIsAvailableQueryVariables>(client, StoreIsAvailableDocument, variables, headers),
       options
     );
 export const AddStoreDocument = `
@@ -293,6 +439,42 @@ export const useAddStoreMutation = <
     useMutation<AddStoreMutation, TError, AddStoreMutationVariables, TContext>(
       ['addStore'],
       (variables?: AddStoreMutationVariables) => fetcher<AddStoreMutation, AddStoreMutationVariables>(client, AddStoreDocument, variables, headers)(),
+      options
+    );
+export const RemoveStoreDocument = `
+    mutation removeStore($id: Float!) {
+  removeStore(id: $id)
+}
+    `;
+export const useRemoveStoreMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      client: GraphQLClient,
+      options?: UseMutationOptions<RemoveStoreMutation, TError, RemoveStoreMutationVariables, TContext>,
+      headers?: RequestInit['headers']
+    ) =>
+    useMutation<RemoveStoreMutation, TError, RemoveStoreMutationVariables, TContext>(
+      ['removeStore'],
+      (variables?: RemoveStoreMutationVariables) => fetcher<RemoveStoreMutation, RemoveStoreMutationVariables>(client, RemoveStoreDocument, variables, headers)(),
+      options
+    );
+export const UpdateStoreDocument = `
+    mutation updateStore($id: Float!, $name: String!, $address: String!, $phone: String!) {
+  updateStore(id: $id, store: {name: $name, address: $address, phone: $phone})
+}
+    `;
+export const useUpdateStoreMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      client: GraphQLClient,
+      options?: UseMutationOptions<UpdateStoreMutation, TError, UpdateStoreMutationVariables, TContext>,
+      headers?: RequestInit['headers']
+    ) =>
+    useMutation<UpdateStoreMutation, TError, UpdateStoreMutationVariables, TContext>(
+      ['updateStore'],
+      (variables?: UpdateStoreMutationVariables) => fetcher<UpdateStoreMutation, UpdateStoreMutationVariables>(client, UpdateStoreDocument, variables, headers)(),
       options
     );
 export const LoginDocument = `

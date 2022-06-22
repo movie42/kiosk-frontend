@@ -31,7 +31,7 @@ const StartConfirmButton = styled(ButtonDefaultStyle)`
 interface IIsOpenModalChildrenProps {
   setModal: React.Dispatch<React.SetStateAction<boolean>>;
   setConfirm: React.Dispatch<React.SetStateAction<boolean>>;
-  toggleState: boolean;
+  toggleState: boolean | undefined;
 }
 
 const IsOpenModalChildren = ({

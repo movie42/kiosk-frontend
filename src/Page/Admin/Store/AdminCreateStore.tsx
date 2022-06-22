@@ -91,7 +91,7 @@ interface IStoreFormProps {
 }
 
 const AdminStore = () => {
-  const id = useParams();
+  const user = useRecoilValue(userState);
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [errorState, setErrorState] = useState<ErrorState>();
@@ -131,7 +131,7 @@ const AdminStore = () => {
     if (isSuccess && data.addStore) {
       time = setTimeout(() => {
         setIsLoading(false);
-        navigate(`/admin/${id}/store`);
+        navigate(`/admin/${user.id}/store/list`);
       }, 3000);
     }
     return () => time && clearTimeout(time);
@@ -142,7 +142,7 @@ const AdminStore = () => {
       {isLoading && (
         <Loading
           title="가게를 등록 하고있어요."
-          subTitle="첫 가게를 등록하신 것을 축하드립니다 🎉"
+          subTitle="가게를 등록하신 것을 축하드립니다! 🎉"
         />
       )}
       <Form onSubmit={onSubmit}>
