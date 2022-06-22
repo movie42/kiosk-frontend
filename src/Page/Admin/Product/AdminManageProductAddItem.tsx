@@ -170,7 +170,7 @@ const AdminManageProductAddItem = () => {
     graphqlReqeustClient(accessToken),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries("products");
+        queryClient.invalidateQueries("getProducts");
       },
     },
   );

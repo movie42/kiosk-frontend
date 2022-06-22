@@ -31,6 +31,23 @@ query myStores {
   }
 }
 
+query getProducts($id: Float!) {
+  store(id: $id) {
+    id
+    products {
+      id
+      name
+      price
+      imageUrl
+      description
+      options {
+        id
+        name
+      }
+    }
+  }
+}
+
 query storeIsAvailable($id: Float!) {
   storeIsAvailable(id: $id)
 }
