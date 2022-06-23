@@ -7,7 +7,6 @@ import Noimage from "../../../Images/Noimage";
 import { ProductListValues } from "../../../mockup/productList";
 import {
   Option,
-  productListState,
   selectOptionState,
   selectProductListState,
 } from "../../../state/productItemState";
@@ -90,7 +89,6 @@ interface IProductItemProps extends React.HTMLAttributes<HTMLLIElement> {
 const ProductItem = ({ productData }: IProductItemProps) => {
   const navigate = useNavigate();
   const { userId, storeId } = useParams();
-  const productList = useRecoilValue(productListState);
   const [selectProduct, setSelectProduct] = useRecoilState(
     selectProductListState,
   );
@@ -116,7 +114,7 @@ const ProductItem = ({ productData }: IProductItemProps) => {
       return;
     }
 
-    const [selectedProduct] = productList.filter(
+    const [selectedProduct] = productData.filter(
       (product) => product.id === productId,
     );
 

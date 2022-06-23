@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Headline1, SubTitle2 } from "../mixin";
 import { motion, Variants } from "framer-motion";
+import LoadingBall from "./LoadingBall";
 
 const Wrapper = styled(motion.div)`
   position: fixed;
@@ -40,21 +41,9 @@ const SubTitle = styled(motion.p)`
   color: ${(props) => props.theme.color.fontColorWhite};
 `;
 
-const LoadingImageContainer = styled.div`
-  position: relative;
-`;
-
-const LoadingImage = styled(motion.div)`
-  position: absolute;
-  width: 0.5rem;
-  height: 0.5rem;
-  background-color: ${(props) => props.theme.color.background100};
-  border-radius: 0.5rem;
-`;
-
 const loadingBackgroundVariants: Variants = {
   init: {
-    opacity: 0,
+    opacity: 1,
   },
   animate: {
     opacity: 1,
@@ -65,23 +54,7 @@ const loadingBackgroundVariants: Variants = {
     },
   },
   exit: {
-    opacity: 0,
-  },
-};
-
-const loadingImageVariants: Variants = {
-  init: {
-    opacity: 0,
-  },
-  animate: {
-    y: [0, -25],
     opacity: 1,
-    transition: {
-      y: { yoyo: Infinity, duration: 1, ease: "easeInOut" },
-    },
-  },
-  exit: {
-    opacity: 0,
   },
 };
 
@@ -99,11 +72,7 @@ const Loading = ({ title, subTitle }: ILoadingProps) => {
       exit="exit"
     >
       <FontContainer>
-        <LoadingImageContainer>
-          <LoadingImage variants={loadingImageVariants} />
-          <LoadingImage variants={loadingImageVariants} />
-          <LoadingImage variants={loadingImageVariants} />
-        </LoadingImageContainer>
+        <LoadingBall color="white" />
         <Title>{title}</Title>
         {subTitle && <SubTitle>{subTitle}</SubTitle>}
       </FontContainer>

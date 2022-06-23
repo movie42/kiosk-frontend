@@ -52,28 +52,25 @@ const FormContainer = styled.div`
 `;
 
 interface ISelectModalChildrenProps {
-  setModal: React.Dispatch<React.SetStateAction<boolean>>;
-  items?: ProductListValues[];
+  setIsModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const UpdateModalChildren = ({
-  setModal,
-  items,
-}: ISelectModalChildrenProps) => {
+const UpdateModalChildren = ({ setIsModal }: ISelectModalChildrenProps) => {
   const setSelectOption = useSetRecoilState(selectOptionState);
   const [productList, setProductList] = useRecoilState(productListState);
-  const [selectList, setSelectList] = useRecoilState<ProductListValues[]>(
+  const [selectProduct, setSelectProduct] = useRecoilState<ProductListValues[]>(
     selectProductListState,
   );
-  const { register, setError: errors, handleSubmit } = useForm();
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm();
 
-  const handleModal = () => {
-    setSelectList([]);
-    setProductList((preValue) => [
-      ...preValue.map((value) => ({ ...value, select: false })),
-    ]);
-    setModal(false);
+  const onCancel = () => {
+    setSelectProduct([]);
     setSelectOption({ options: Option.NONE });
+    setIsModal(false);
   };
 
   const selectUpdateItemsSubmitHandler = handleSubmit((data: object) => {
@@ -114,20 +111,10 @@ const UpdateModalChildren = ({
     });
 
     setProductList(newProductList);
-    setModal(false);
-    setSelectList([]);
+    setIsModal(false);
+    setSelectProduct([]);
     setSelectOption({ options: Option.NONE });
   });
-
-  useEffect(() => {
-    if (items) {
-      setSelectList(
-        items
-          .map((value) => ({ ...value, select: true }))
-          .sort((a, b) => (a.id > b.id ? 1 : -1)),
-      );
-    }
-  }, []);
 
   /*
   TODO: form 필드 선택시 백그라운드를 변경하는 로직 필요
@@ -145,7 +132,7 @@ const UpdateModalChildren = ({
         </StateInfoContainer>
         <FormContainer>
           <form>
-            {selectList?.map((item) => {
+            {selectProduct?.map((item) => {
               const fieldName = item.id;
               return (
                 <UpdateModalForm
@@ -158,7 +145,7 @@ const UpdateModalChildren = ({
           </form>
         </FormContainer>
         <ButtonContainer>
-          <button className="cancel-button" onClick={handleModal}>
+          <button className="cancel-button" onClick={onCancel}>
             돌아가기
           </button>
           <button

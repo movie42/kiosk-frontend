@@ -270,6 +270,13 @@ export type AddProductsMutationVariables = Exact<{
 
 export type AddProductsMutation = { __typename?: 'Mutation', addProducts: boolean };
 
+export type RemoveProductsMutationVariables = Exact<{
+  productIds: RemoveProductInput;
+}>;
+
+
+export type RemoveProductsMutation = { __typename?: 'Mutation', removeProducts: boolean };
+
 export type StoreQueryVariables = Exact<{
   id: Scalars['Float'];
 }>;
@@ -358,6 +365,24 @@ export const useAddProductsMutation = <
     useMutation<AddProductsMutation, TError, AddProductsMutationVariables, TContext>(
       ['addProducts'],
       (variables?: AddProductsMutationVariables) => fetcher<AddProductsMutation, AddProductsMutationVariables>(client, AddProductsDocument, variables, headers)(),
+      options
+    );
+export const RemoveProductsDocument = `
+    mutation removeProducts($productIds: removeProductInput!) {
+  removeProducts(productIds: $productIds)
+}
+    `;
+export const useRemoveProductsMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      client: GraphQLClient,
+      options?: UseMutationOptions<RemoveProductsMutation, TError, RemoveProductsMutationVariables, TContext>,
+      headers?: RequestInit['headers']
+    ) =>
+    useMutation<RemoveProductsMutation, TError, RemoveProductsMutationVariables, TContext>(
+      ['removeProducts'],
+      (variables?: RemoveProductsMutationVariables) => fetcher<RemoveProductsMutation, RemoveProductsMutationVariables>(client, RemoveProductsDocument, variables, headers)(),
       options
     );
 export const StoreDocument = `

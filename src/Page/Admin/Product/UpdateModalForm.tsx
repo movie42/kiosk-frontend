@@ -64,13 +64,13 @@ const UpdateModalForm = ({
     <FieldSet name={fieldName} data-id={item.id}>
       <FieldContainer>
         <LabelDefault htmlFor="file">섬네일</LabelDefault>
-        {item.thumbnail ? (
+        {/* {item.thumbnail ? (
           <AddThumbnailLabel>{item.thumbnail}</AddThumbnailLabel>
         ) : (
           <AddThumbnailLabel>
             <IoIosAddCircle />
           </AddThumbnailLabel>
-        )}
+        )} */}
         <AddThumbnail
           id="file"
           type="file"
@@ -110,7 +110,7 @@ const UpdateModalForm = ({
           name="option"
           fieldName={fieldName}
           register={register}
-          defaultValue={item.option}
+          // defaultValue={item.option}
         />
       </FieldContainer>
       <FieldContainer>
@@ -120,7 +120,7 @@ const UpdateModalForm = ({
           name="desc"
           fieldName={fieldName}
           register={register}
-          defaultValue={item.desc}
+          // defaultValue={item.desc}
         />
       </FieldContainer>
     </FieldSet>
