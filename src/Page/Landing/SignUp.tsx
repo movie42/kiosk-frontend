@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import InputDefault from "../../Components/Form/InputDefault";
@@ -8,7 +8,9 @@ import { SubTitle2, Body1 } from "../../mixin";
 import { useNavigate } from "react-router-dom";
 import graphqlReqeustClient from "../../lib/graphqlRequestClient";
 import {
+  MeQuery,
   useAddStoreMutation,
+  useMeQuery,
   useSignupMutation,
 } from "../../generated/graphql";
 import { handleErrorMessage } from "../../utils/helper/handleErrorMessage";
@@ -88,10 +90,17 @@ interface ISignUpProps {
   address: string;
   phone: string;
 }
+interface IStoreProps {
+  code: string;
+  name: string;
+  address: string;
+  phone: string;
+}
 
 const SignUp = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+
   // signup form
   const {
     register,
@@ -100,14 +109,28 @@ const SignUp = () => {
     formState: { errors },
   } = useForm<ISignUpProps>({ mode: "onSubmit" });
 
-  // display store
+  // display store & type for save store
   const [checkStore, setCheckStore] = useState(true);
+  const [storeInfo, setStoreInfo] = useState<IStoreProps>();
 
   // registration & error
   const [errorState, setErrorState] = useState<ErrorState>();
   const [isUser, setIsUser] = useRecoilState(userState);
   const password = useRef({});
   password.current = watch("password", "");
+
+  // query
+  const { isSuccess, refetch } = useMeQuery<MeQuery, Error>(
+    graphqlReqeustClient(isUser.accessToken),
+    undefined,
+    {
+      enabled: false,
+      onSuccess: (data) => {
+        const { id, email, name } = data.me;
+        setIsUser((pre) => ({ ...pre, id, email, name }));
+      },
+    }
+  );
 
   // mutation
   const { mutate } = useSignupMutation<Error>(graphqlReqeustClient(), {
@@ -123,11 +146,8 @@ const SignUp = () => {
         accessToken,
         refreshToken,
       }));
-      queryClient.invalidateQueries("me");
       alert("정상적으로 회원가입이 완료되었습니다.");
-      if (!checkStore) {
-        navigate("/login");
-      }
+      refetch();
     },
     onError: (error) => {
       handleErrorMessage(error, setErrorState);
@@ -152,18 +172,34 @@ const SignUp = () => {
     }
   );
 
+  // call mutateStore or not
+  const [saveStore, setSaveStore] = useState(false);
+  useEffect(() => {
+    if (checkStore && saveStore && storeInfo) {
+      mutateStore({ ...storeInfo });
+    }
+  }, [saveStore, setSaveStore]);
+
+  useEffect(() => {
+    if (isSuccess && !checkStore) {
+      navigate("/login");
+    }
+  }, [isSuccess]);
+
+  // submit form
   const onSubmit = async (data: ISignUpProps) => {
     const { email, name, password, code, storeName, phone, address } = data;
-    mutate({ user: { email, name, password } });
-
-    if (checkStore) {
-      mutateStore({
-        code: code,
-        name: storeName,
-        phone: phone,
-        address: address,
-      });
-    }
+    setStoreInfo(() => {
+      return { code, name: storeName, phone, address };
+    });
+    mutate(
+      { user: { email, name, password } },
+      {
+        onSuccess: () => {
+          if (checkStore) setSaveStore((prv) => !prv);
+        },
+      }
+    );
   };
 
   // goBack modal
