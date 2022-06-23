@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import ProductItem from "./ProductItem";
 import { ProductListValues } from "../../../mockup/productList";
 import StateMenuBar from "./StateMenuBar";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import ButtonDefaultStyle from "../../../Components/Buttons/ButtonDefault";
 import {
   productListState,
@@ -69,11 +69,9 @@ const AdminManageProductItemList = () => {
   const { accessToken } = useRecoilValue(userState);
   const navigate = useNavigate();
   const store = useRecoilValue(storeState);
-  const [selectOption, setSelectOption] = useRecoilState(selectOptionState);
   const [productList, setProductList] = useRecoilState(productListState);
-  const [selectList, setSelectList] = useRecoilState<ProductListValues[]>(
-    selectProductListState,
-  );
+  const [selectOption, setSelectOption] = useRecoilState(selectOptionState);
+  const setSelectProduct = useSetRecoilState(selectProductListState);
 
   const { isLoading } = useGetProductsQuery(
     graphqlReqeustClient(accessToken),
@@ -110,24 +108,12 @@ const AdminManageProductItemList = () => {
     setSelectOption(option);
   };
 
-  const selectHandler = (event: React.MouseEvent<HTMLLIElement>) => {
-    if (selectOption.options === "none") {
-      return;
-    }
-
-    const id = event.currentTarget.dataset.id;
-    const selectProduct = productList.filter((item) => item.id === Number(id));
-
-    setSelectList((prevState) => {
-      const itemIndex = prevState.findIndex((value) => value.id === Number(id));
-
-      if (itemIndex !== -1) {
-        return prevState.filter((value) => value.id !== Number(id));
-      }
-
-      return [...prevState, ...selectProduct];
-    });
-  };
+  useEffect(() => {
+    return () => {
+      setSelectOption({ options: Option.NONE });
+      setSelectProduct([]);
+    };
+  }, []);
 
   return isLoading ? (
     <Loading title="등록한 상품을 불러오고 있습니다." />
@@ -160,16 +146,7 @@ const AdminManageProductItemList = () => {
           )}
         </ManageOptionContainer>
         <ul className="productList">
-          {productList &&
-            productList.map((item) => (
-              <ProductItem
-                key={item.id}
-                id={item.id}
-                name={item.name}
-                price={item.price}
-                handler={selectHandler}
-              />
-            ))}
+          <ProductItem productData={productList} />
         </ul>
       </Container>
       {selectOption.options !== "none" && <StateMenuBar />}
