@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "../Page/Admin/Login/AdminLogin";
-import AdminManageProductAddItem from "../Page/Admin/AdminManageProductAddItem";
-import AdminManageProductItemList from "../Page/Admin/AdminManageProductItemList";
-import AdminMain from "../Page/Admin/AdminMain";
+import AdminManageProductAddItem from "../Page/Admin/Product/AdminManageProductAddItem";
+import AdminManageProductItemList from "../Page/Admin/Product/AdminManageProductItemList";
+import AdminMain from "../Page/Admin/Product/AdminManageProductMain";
 import AdminLayout from "../Layouts/AdminLayout";
 import PageNotFound from "../Page/Errors/404";
 import MangeOrderMain from "../Page/MangeOrder/MangeOrderMain";
@@ -21,6 +21,7 @@ import { useRecoilValue } from "recoil";
 import { userState } from "../state/userState";
 import Logout from "../Page/Admin/Logout";
 import LandingLayout from "../Layouts/LandingLayout";
+import AdminManageProductLayout from "../Layouts/AdminManageProductLayout";
 
 const Router = () => {
   const { isLogin } = useRecoilValue(userState);
@@ -37,19 +38,21 @@ const Router = () => {
                 <Route path="create" element={<AdminCreateStore />} />
                 <Route path=":storeId">
                   <Route path="update" element={<AdminUpdateStore />} />
-                  <Route path="main" element={<AdminMain />} />
-                  <Route
-                    path="manage-product"
-                    element={<AdminManageProductItemList />}
-                  />
-                  <Route
-                    path="add-product"
-                    element={<AdminManageProductAddItem />}
-                  />
-                  <Route path="manage-order" element={<MangeOrderMain />} />
                 </Route>
               </Route>
             </Route>
+          </Route>
+          <Route
+            path="/admin/:userId/store/:storeId/product"
+            element={<AdminManageProductLayout />}
+          >
+            <Route path="main" element={<AdminMain />} />
+            <Route
+              path="manage-product"
+              element={<AdminManageProductItemList />}
+            />
+            <Route path="manage-order" element={<MangeOrderMain />} />
+            <Route path="add-product" element={<AdminManageProductAddItem />} />
           </Route>
           <Route path="/client" element={<ClientLayout />}>
             <Route path="" element={<Navigate to="/client/main" />} />
@@ -57,7 +60,6 @@ const Router = () => {
             <Route path="menu" element={<ClientMenu />} />
             <Route path="select-list" element={<ClientSelectList />} />
           </Route>
-          <Route path="/logout" element={<Logout />} />
         </>
       )}
       {/* TODO: private router로 변경하면 login이 동작하지 않습니다. 왜냐하면
@@ -67,6 +69,7 @@ const Router = () => {
         <Route path="agreement" element={<Agreement />} />
         <Route path="signup" element={<SignUp />} />
         <Route path="login" element={<Login />} />
+        <Route path="logout" element={<Logout />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />
     </Routes>

@@ -10,7 +10,7 @@ import {
   Option,
 } from "../../../state/productItemState";
 
-import UpdateModalForm from "../UpdateModalForm";
+import UpdateModalForm from "../Product/UpdateModalForm";
 
 const Wrapper = styled.div`
   display: grid;

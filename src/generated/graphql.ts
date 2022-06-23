@@ -1,6 +1,6 @@
 import { GraphQLClient } from 'graphql-request';
 import { RequestInit } from 'graphql-request/dist/types.dom';
-import { useQuery, useMutation, UseQueryOptions, UseMutationOptions } from 'react-query';
+import { useMutation, useQuery, UseMutationOptions, UseQueryOptions } from 'react-query';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -263,22 +263,36 @@ export type RemoveProductOptionInput = {
   OptionIds: Array<Scalars['Int']>;
 };
 
+export type AddProductsMutationVariables = Exact<{
+  products: Array<AddProductInput> | AddProductInput;
+}>;
+
+
+export type AddProductsMutation = { __typename?: 'Mutation', addProducts: boolean };
+
 export type StoreQueryVariables = Exact<{
   id: Scalars['Float'];
 }>;
 
 
-export type StoreQuery = { __typename?: 'Query', store?: { __typename?: 'Store', id: string, name: string, code: string, phone: string, address: string } | null };
+export type StoreQuery = { __typename?: 'Query', store?: { __typename?: 'Store', id: string, name: string, code: string, phone: string, address: string, isAvailable: boolean } | null };
 
 export type StoresQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type StoresQuery = { __typename?: 'Query', stores: Array<{ __typename?: 'Store', id: string, name: string, code: string, phone: string, address: string }> };
+export type StoresQuery = { __typename?: 'Query', stores: Array<{ __typename?: 'Store', id: string, name: string, code: string, phone: string, address: string, isAvailable: boolean }> };
 
 export type MyStoresQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type MyStoresQuery = { __typename?: 'Query', myStores: Array<{ __typename?: 'Store', id: string, name: string, code: string, address: string, phone: string, isAvailable: boolean }> };
+
+export type GetProductsQueryVariables = Exact<{
+  id: Scalars['Float'];
+}>;
+
+
+export type GetProductsQuery = { __typename?: 'Query', store?: { __typename?: 'Store', id: string, products: Array<{ __typename?: 'Product', id: string, name: string, price: number, imageUrl?: string | null, description?: string | null, options: Array<{ __typename?: 'Option', id: string, name: string }> }> } | null };
 
 export type StoreIsAvailableQueryVariables = Exact<{
   id: Scalars['Float'];
@@ -328,6 +342,24 @@ export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 export type MeQuery = { __typename?: 'Query', me: { __typename?: 'User', id: string, name: string, email: string } };
 
 
+export const AddProductsDocument = `
+    mutation addProducts($products: [AddProductInput!]!) {
+  addProducts(products: $products)
+}
+    `;
+export const useAddProductsMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      client: GraphQLClient,
+      options?: UseMutationOptions<AddProductsMutation, TError, AddProductsMutationVariables, TContext>,
+      headers?: RequestInit['headers']
+    ) =>
+    useMutation<AddProductsMutation, TError, AddProductsMutationVariables, TContext>(
+      ['addProducts'],
+      (variables?: AddProductsMutationVariables) => fetcher<AddProductsMutation, AddProductsMutationVariables>(client, AddProductsDocument, variables, headers)(),
+      options
+    );
 export const StoreDocument = `
     query store($id: Float!) {
   store(id: $id) {
@@ -336,6 +368,7 @@ export const StoreDocument = `
     code
     phone
     address
+    isAvailable
   }
 }
     `;
@@ -361,6 +394,7 @@ export const StoresDocument = `
     code
     phone
     address
+    isAvailable
   }
 }
     `;
@@ -402,6 +436,38 @@ export const useMyStoresQuery = <
     useQuery<MyStoresQuery, TError, TData>(
       variables === undefined ? ['myStores'] : ['myStores', variables],
       fetcher<MyStoresQuery, MyStoresQueryVariables>(client, MyStoresDocument, variables, headers),
+      options
+    );
+export const GetProductsDocument = `
+    query getProducts($id: Float!) {
+  store(id: $id) {
+    id
+    products {
+      id
+      name
+      price
+      imageUrl
+      description
+      options {
+        id
+        name
+      }
+    }
+  }
+}
+    `;
+export const useGetProductsQuery = <
+      TData = GetProductsQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient,
+      variables: GetProductsQueryVariables,
+      options?: UseQueryOptions<GetProductsQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useQuery<GetProductsQuery, TError, TData>(
+      ['getProducts', variables],
+      fetcher<GetProductsQuery, GetProductsQueryVariables>(client, GetProductsDocument, variables, headers),
       options
     );
 export const StoreIsAvailableDocument = `

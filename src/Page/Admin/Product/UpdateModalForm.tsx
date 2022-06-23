@@ -2,10 +2,10 @@ import React from "react";
 import { FieldValues, UseFormRegister } from "react-hook-form";
 import { IoIosAddCircle } from "react-icons/io";
 import styled from "styled-components";
-import InputDefault from "../../Components/Form/InputDefault";
-import LabelDefault from "../../Components/Form/LabelDefault";
-import TextareaDefault from "../../Components/Form/TextareaDefault";
-import { ProductListValues } from "../../mockup/productList";
+import InputDefault from "../../../Components/Form/InputDefault";
+import LabelDefault from "../../../Components/Form/LabelDefault";
+import TextareaDefault from "../../../Components/Form/TextareaDefault";
+import { ProductListValues } from "../../../mockup/productList";
 
 const FieldSet = styled.fieldset`
   box-sizing: border-box;

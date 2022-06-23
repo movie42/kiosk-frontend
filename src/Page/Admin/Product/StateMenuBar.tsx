@@ -1,18 +1,18 @@
 import React, { useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled, { StyledComponent } from "styled-components";
-import { ProductListValues } from "../../mockup/productList";
+import { ProductListValues } from "../../../mockup/productList";
 import {
   productListState,
   selectOptionState,
   selectProductListState,
   Option,
   SelectOption,
-} from "../../state/productItemState";
+} from "../../../state/productItemState";
 
-import Modal from "../../Components/Modals/Modal";
-import DeleteModalChildren from "./Modal/DeleteModalChildren";
-import UpdateModalChildren from "./Modal/UpdateModalChildren";
+import Modal from "../../../Components/Modals/Modal";
+import DeleteModalChildren from "../Modal/DeleteModalChildren";
+import UpdateModalChildren from "../Modal/UpdateModalChildren";
 
 const MenuBarContainer: React.FC<SelectOption> = styled.div<SelectOption>`
   display: flex;
@@ -54,21 +54,15 @@ const MenuBarContainer: React.FC<SelectOption> = styled.div<SelectOption>`
   }
 `;
 
-interface ISateMenuBarProps {
-  selectItems: Array<ProductListValues>;
-  selectOption: SelectOption;
-}
+interface ISateMenuBarProps {}
 
-const StateMenuBar: React.FC<ISateMenuBarProps> = ({
-  selectItems,
-  selectOption,
-}) => {
-  const setSelectOption = useSetRecoilState(selectOptionState);
+const StateMenuBar: React.FC<ISateMenuBarProps> = () => {
+  const [selectOption, setSelectOption] = useRecoilState(selectOptionState);
   const [isModal, setModal] = useState(false);
-  const setProductList = useSetRecoilState(productListState);
-  const setSelectList = useSetRecoilState<ProductListValues[]>(
+  const [selectList, setSelectList] = useRecoilState<ProductListValues[]>(
     selectProductListState,
   );
+  const setProductList = useSetRecoilState(productListState);
 
   const handleModalAppear = () => {
     setModal(!isModal);
@@ -87,18 +81,18 @@ const StateMenuBar: React.FC<ISateMenuBarProps> = ({
       {isModal &&
         (selectOption.options === "delete" ? (
           <Modal strach={true}>
-            <DeleteModalChildren setModal={setModal} items={selectItems} />
+            <DeleteModalChildren setModal={setModal} items={selectList} />
           </Modal>
         ) : (
           <Modal strach={true}>
-            <UpdateModalChildren setModal={setModal} items={selectItems} />
+            <UpdateModalChildren setModal={setModal} items={selectList} />
           </Modal>
         ))}
 
       <MenuBarContainer options={selectOption.options}>
         {selectOption.options === "delete" ? (
           <>
-            <h2>{selectItems.length}개의 상품을 삭제하려면 버튼을 누르세요.</h2>
+            <h2>{selectList.length}개의 상품을 삭제하려면 버튼을 누르세요.</h2>
             <div>
               <button
                 className="cancel-button"
@@ -113,7 +107,7 @@ const StateMenuBar: React.FC<ISateMenuBarProps> = ({
           </>
         ) : (
           <>
-            <h2>{selectItems.length}개의 상품을 수정하려면 버튼을 누르세요.</h2>
+            <h2>{selectList.length}개의 상품을 수정하려면 버튼을 누르세요.</h2>
             <div>
               <button
                 className="cancel-button"
