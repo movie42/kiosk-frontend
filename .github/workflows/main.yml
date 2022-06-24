@@ -2,10 +2,7 @@ name: Kiosk-front
 
 on:
   pull_request:
-    types: [closed]
     branches: [main]
-
-  workflow_dispatch:
 
 jobs:
   build:
@@ -14,13 +11,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-
       - name: executing remote ssh commands using password
         if: github.event_name == 'pull_request'
         uses: appleboy/ssh-action@v0.1.4
         with:
           host: ${{ secrets.HOST }}
-          port: ${{secrets.PORT }}
+          port: ${{ secrets.PORT }}
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           script: |
@@ -28,4 +24,5 @@ jobs:
             git checkout main
             git pull origin main
             npm install
-            npm build
+            pm2 stop npm
+            pm2 start npm -- start
