@@ -152,7 +152,8 @@ const DeleteModalChildren = ({ setIsModal }: IDeleteModalChildrenProps) => {
 
   useEffect(() => {
     if (isSuccess) {
-      setTimeout(() => setIsSendingItem(false), 3000);
+      const timeout = setTimeout(() => setIsSendingItem(false), 3000);
+      return () => clearTimeout(timeout);
     }
   }, [isSuccess]);
 
