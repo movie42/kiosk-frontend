@@ -6,7 +6,19 @@ import ButtonDefaultStyle from "../../Components/Buttons/ButtonDefault";
 import { Wrapper, Header, Title, Container, ButtonGroup } from "./Agreement";
 import { SubTitle2, Body1 } from "../../mixin";
 import { useNavigate } from "react-router-dom";
-import LabelDefault from "../../Components/Form/LabelDefault";
+import graphqlReqeustClient from "../../lib/graphqlRequestClient";
+import {
+  MeQuery,
+  useAddStoreMutation,
+  useMeQuery,
+  useSignupMutation,
+} from "../../generated/graphql";
+import { handleErrorMessage } from "../../utils/helper/handleErrorMessage";
+import { ErrorState } from "../Admin/Login/AdminLogin";
+import { useRecoilState } from "recoil";
+import { userState } from "../../state/userState";
+import { useQueryClient } from "react-query";
+import useSetUserInfoToLocalStorage from "../../utils/customHooks/useSetUser";
 
 const FormContainer = styled.form`
   height: inherit;
@@ -74,14 +86,21 @@ interface ISignUpProps {
   name: string;
   password: string;
   passwordConfirm: string;
-  storeNumber: number;
+  code: string;
   storeName: string;
   address: string;
-  phone: number;
+  phone: string;
+}
+interface IStoreProps {
+  code: string;
+  name: string;
+  address: string;
+  phone: string;
 }
 
 const SignUp = () => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   // signup form
   const {
@@ -91,14 +110,98 @@ const SignUp = () => {
     formState: { errors },
   } = useForm<ISignUpProps>({ mode: "onSubmit" });
 
-  const onSubmit = (data: ISignUpProps): void => {
-    navigate("/login");
-  };
-
-  // display store registration form
+  // display store & type & store mutate trigger
   const [checkStore, setCheckStore] = useState(true);
+  const [storeInfo, setStoreInfo] = useState<IStoreProps>();
+  const [saveStore, setSaveStore] = useState(false);
+
+  // registration & error
+  const [errorState, setErrorState] = useState<ErrorState>();
+  const [isUser, setIsUser] = useRecoilState(userState);
+  const { setUser } = useSetUserInfoToLocalStorage();
   const password = useRef({});
   password.current = watch("password", "");
+
+  // query
+  const { isSuccess, refetch } = useMeQuery<MeQuery, Error>(
+    graphqlReqeustClient(isUser.accessToken),
+    undefined,
+    {
+      enabled: false,
+      onSuccess: (data) => {
+        const { id, email, name } = data.me;
+        setIsUser((pre) => ({ ...pre, id, email, name }));
+      },
+    }
+  );
+
+  // mutation
+  const { mutate } = useSignupMutation<Error>(graphqlReqeustClient(), {
+    onSuccess: (data) => {
+      const {
+        signup: { accessToken, refreshToken },
+      } = data;
+      setIsUser((pre) => ({
+        ...pre,
+        isLogin: true,
+        accessToken,
+        refreshToken,
+      }));
+      alert("정상적으로 회원가입이 완료되었습니다.");
+      refetch();
+    },
+    onError: (error) => {
+      handleErrorMessage(error, setErrorState);
+      if (errorState) {
+        console.log(errorState);
+      }
+    },
+  });
+  const { mutate: mutateStore } = useAddStoreMutation<Error>(
+    graphqlReqeustClient(isUser.accessToken),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("stores");
+        navigate("/login");
+      },
+      onError: (error) => {
+        handleErrorMessage(error, setErrorState);
+        if (errorState) {
+          console.log(errorState);
+        }
+      },
+    }
+  );
+
+  // call mutateStore or not
+  useEffect(() => {
+    if (checkStore && saveStore && storeInfo) {
+      mutateStore({ ...storeInfo });
+    }
+  }, [saveStore]);
+
+  useEffect(() => {
+    if (isSuccess && !checkStore) {
+      setUser(isUser);
+      setTimeout(() => navigate("/login"), 3000);
+    }
+  }, [isSuccess]);
+
+  // submit form
+  const onSubmit = (data: ISignUpProps) => {
+    const { email, name, password, code, storeName, phone, address } = data;
+    setStoreInfo(() => {
+      return { code, name: storeName, phone, address };
+    });
+    mutate(
+      { user: { email, name, password } },
+      {
+        onSuccess: () => {
+          if (checkStore) setSaveStore((prv) => !prv);
+        },
+      }
+    );
+  };
 
   // goBack modal
   const handleGoBack = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -108,12 +211,6 @@ const SignUp = () => {
     );
     if (confirm) navigate("/agreement");
   };
-
-  useEffect(() => {
-    register("email");
-    register("name");
-    register("password");
-  }, [register]);
 
   return (
     <Wrapper>
@@ -189,17 +286,32 @@ const SignUp = () => {
               <>
                 <SignUpInput
                   placeholder="사업장번호"
-                  id="storeNumber"
-                  name="storeNumber"
+                  id="code"
+                  name="code"
+                  required={checkStore}
+                  register={checkStore && register}
                 />
                 <SignUpInput
                   placeholder="상호명"
                   id="storeName"
                   name="storeName"
+                  required={checkStore}
+                  register={checkStore && register}
                 />
-
-                <SignUpInput placeholder="주소" id="address" name="address" />
-                <SignUpInput placeholder="전화번호" id="phone" name="phone" />
+                <SignUpInput
+                  placeholder="전화번호"
+                  id="phone"
+                  name="phone"
+                  required={checkStore}
+                  register={checkStore && register}
+                />
+                <SignUpInput
+                  placeholder="주소"
+                  id="address"
+                  name="address"
+                  required={checkStore}
+                  register={checkStore && register}
+                />
               </>
             )}
           </SubContainer>
