@@ -18,6 +18,7 @@ import { ErrorState } from "../Admin/Login/AdminLogin";
 import { useRecoilState } from "recoil";
 import { userState } from "../../state/userState";
 import { useQueryClient } from "react-query";
+import useSetUserInfoToLocalStorage from "../../utils/customHooks/useSetUser";
 
 const FormContainer = styled.form`
   height: inherit;
@@ -109,13 +110,15 @@ const SignUp = () => {
     formState: { errors },
   } = useForm<ISignUpProps>({ mode: "onSubmit" });
 
-  // display store & type for save store
+  // display store & type & store mutate trigger
   const [checkStore, setCheckStore] = useState(true);
   const [storeInfo, setStoreInfo] = useState<IStoreProps>();
+  const [saveStore, setSaveStore] = useState(false);
 
   // registration & error
   const [errorState, setErrorState] = useState<ErrorState>();
   const [isUser, setIsUser] = useRecoilState(userState);
+  const { setUser } = useSetUserInfoToLocalStorage();
   const password = useRef({});
   password.current = watch("password", "");
 
@@ -138,8 +141,6 @@ const SignUp = () => {
       const {
         signup: { accessToken, refreshToken },
       } = data;
-      localStorage.setItem("accessToken", accessToken);
-      localStorage.setItem("refreshToken", refreshToken);
       setIsUser((pre) => ({
         ...pre,
         isLogin: true,
@@ -173,21 +174,21 @@ const SignUp = () => {
   );
 
   // call mutateStore or not
-  const [saveStore, setSaveStore] = useState(false);
   useEffect(() => {
     if (checkStore && saveStore && storeInfo) {
       mutateStore({ ...storeInfo });
     }
-  }, [saveStore, setSaveStore]);
+  }, [saveStore]);
 
   useEffect(() => {
     if (isSuccess && !checkStore) {
-      navigate("/login");
+      setUser(isUser);
+      setTimeout(() => navigate("/login"), 3000);
     }
   }, [isSuccess]);
 
   // submit form
-  const onSubmit = async (data: ISignUpProps) => {
+  const onSubmit = (data: ISignUpProps) => {
     const { email, name, password, code, storeName, phone, address } = data;
     setStoreInfo(() => {
       return { code, name: storeName, phone, address };
