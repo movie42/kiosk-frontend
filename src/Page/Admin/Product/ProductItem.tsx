@@ -1,59 +1,70 @@
-import React, { useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { useRecoilState } from "recoil";
+import React, { MouseEvent, ReactNode, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import ToggleButton from "../../../Components/Buttons/ToggleButton";
 import Noimage from "../../../Images/Noimage";
+import { ProductListValues } from "../../../mockup/productList";
 import {
-  productListState,
-  SelectOption,
+  Option,
   selectOptionState,
+  selectProductListState,
 } from "../../../state/productItemState";
 
-const Item: React.FC<
-  | IProductItemProps
-  | React.DetailedHTMLProps<
-      React.LiHTMLAttributes<HTMLLIElement>,
-      HTMLLIElement
-    >
-> = styled.li<IProductItemProps>`
-  cursor: pointer;
-  background-color: ${(props) => props.theme.color.background100};
-  height: 100%;
-  min-width: 20rem;
-  overflow: hidden;
-  display: grid;
-  grid-template-rows: 1fr 0.7fr;
-  border: 1px solid ${({ theme }) => theme.color.gray300};
-  border-radius: 0.4rem;
-  text-decoration: none;
-  color: ${(props) => props.theme.color.fontColorBlack};
-  .image-container {
+const Item = styled.li<{ selectOption: Option; selected: boolean }>`
+  .item-container {
     position: relative;
-    .transparent-box {
+    cursor: pointer;
+    background-color: ${(props) => props.theme.color.background100};
+    height: 100%;
+    min-width: 20rem;
+    overflow: hidden;
+    display: grid;
+    grid-template-rows: minmax(12rem, 0.9fr) 0.8fr;
+    border: 1px solid ${({ theme }) => theme.color.gray300};
+    border-radius: 0.4rem;
+    text-decoration: none;
+    color: ${(props) => props.theme.color.fontColorBlack};
+    .is-select {
       position: absolute;
-      z-index: 1;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: ${({ theme }) => theme.color.backgroundBlack60};
+      background-color: ${(props) =>
+        props.selected ? "unset" : props.theme.color.background80};
+      z-index: 4;
     }
-  }
-  .item-info-container {
-    align-self: center;
-    padding: 0.8rem;
-    h3 {
-      font-size: 3rem;
-      font-weight: bold;
-      margin-bottom: 0.6rem;
+    .image-container {
+      overflow: hidden;
+      position: relative;
+      .transparent-box {
+        position: absolute;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
+        background-color: ${({ theme }) => theme.color.backgroundBlack60};
+      }
     }
-    h4 {
-      font-size: 2rem;
-      align-self: end;
+    .item-info-container {
+      align-self: center;
+      padding: 0.8rem;
+      h3 {
+        font-size: 3rem;
+        font-weight: bold;
+        margin-bottom: 0.6rem;
+      }
+      h4 {
+        font-size: 2rem;
+        align-self: end;
+      }
     }
   }
 `;
+
 const ToggleContainer = styled.div`
   display: flex;
   font-size: 1.4rem;
@@ -71,57 +82,81 @@ const ToggleContainer = styled.div`
   }
 `;
 
-interface IProductItemProps {
-  id: string | number;
-  name: string;
-  price: string | number;
-  imageUrl?: string;
-  handler?: (value: any) => any;
+interface IProductItemProps extends React.HTMLAttributes<HTMLLIElement> {
+  productData: ProductListValues[];
 }
 
-const ProductItem: React.FC<IProductItemProps> = ({
-  id,
-  name,
-  price,
-  imageUrl,
-  handler,
-}) => {
+const ProductItem = ({ productData }: IProductItemProps) => {
   const navigate = useNavigate();
   const { userId, storeId } = useParams();
-  const [productList, setProductList] = useRecoilState(productListState);
-  const [selectOption, setSelectOption] = useRecoilState(selectOptionState);
+  const [selectProduct, setSelectProduct] = useRecoilState(
+    selectProductListState,
+  );
+  const selectOption = useRecoilValue(selectOptionState);
 
-  const handleSelectItem = (e: React.MouseEvent<HTMLLIElement>) => {
+  const handleSelectItem = (
+    e: React.MouseEvent<HTMLLIElement>,
+    productId: number,
+  ) => {
     if (selectOption?.options === "none") {
-      navigate(`/admin/${userId}/store/${storeId}/product/${id}`);
+      navigate(`/admin/${userId}/store/${storeId}/product/${productId}`);
       return;
     }
 
-    handler && handler(e);
-    setProductList((item) =>
-      [
-        ...item.filter((value) => value.id !== id),
-        ...item.filter((value) => value.id === id),
-        // .map((item) => ({ ...item, select: !item.select })),
-      ].sort((a, b) => (a.id > b.id ? 1 : -1)),
+    const hasProduct = selectProduct.find(
+      (product) => product.id === productId,
     );
+
+    if (hasProduct) {
+      setSelectProduct((products) =>
+        products.filter((product) => product.id !== productId),
+      );
+      return;
+    }
+
+    const [selectedProduct] = productData.filter(
+      (product) => product.id === productId,
+    );
+
+    setSelectProduct((products) => [...products, selectedProduct]);
   };
 
   return (
-    <Item data-id={id} onClick={handleSelectItem}>
-      <div className="image-container">
-        <ToggleContainer>
-          <ToggleButton size={5} isActive={true} />
-          <p>판매 중입니다.</p>
-        </ToggleContainer>
-        <span className="transparent-box"></span>
-        {imageUrl ? <img src={imageUrl} alt={name} /> : <Noimage />}
-      </div>
-      <div className="item-info-container">
-        <h3>{name}</h3>
-        <h4>가격 {price}원</h4>
-      </div>
-    </Item>
+    <>
+      {productData.map((product) => (
+        <Item
+          key={product.id}
+          data-id={product.id}
+          onClick={(e: React.MouseEvent<HTMLLIElement>) =>
+            handleSelectItem(e, product.id)
+          }
+          selectOption={selectOption.options}
+          selected={selectProduct.some((item) => item.id === product.id)}
+        >
+          <div className="item-container">
+            {selectOption.options !== "none" && (
+              <span className="is-select"></span>
+            )}
+            <div className="image-container">
+              <ToggleContainer>
+                <ToggleButton size={5} isActive={true} />
+                <p>판매 중입니다.</p>
+              </ToggleContainer>
+              <span className="transparent-box"></span>
+              {product.imageUrl ? (
+                <img src={product.imageUrl} alt={product.name} />
+              ) : (
+                <Noimage />
+              )}
+            </div>
+            <div className="item-info-container">
+              <h3>{product.name}</h3>
+              <h4>가격 {product.price}원</h4>
+            </div>
+          </div>
+        </Item>
+      ))}
+    </>
   );
 };
 

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import styled, { StyledComponent } from "styled-components";
+import styled from "styled-components";
 import { ProductListValues } from "../../../mockup/productList";
 import {
   productListState,
@@ -13,6 +13,7 @@ import {
 import Modal from "../../../Components/Modals/Modal";
 import DeleteModalChildren from "../Modal/DeleteModalChildren";
 import UpdateModalChildren from "../Modal/UpdateModalChildren";
+import useModalHook from "../../../utils/customHooks/useModalHook";
 
 const MenuBarContainer: React.FC<SelectOption> = styled.div<SelectOption>`
   display: flex;
@@ -54,18 +55,16 @@ const MenuBarContainer: React.FC<SelectOption> = styled.div<SelectOption>`
   }
 `;
 
-interface ISateMenuBarProps {}
-
-const StateMenuBar: React.FC<ISateMenuBarProps> = () => {
+const StateMenuBar = () => {
   const [selectOption, setSelectOption] = useRecoilState(selectOptionState);
-  const [isModal, setModal] = useState(false);
+  const { isModal, setIsModal } = useModalHook();
   const [selectList, setSelectList] = useRecoilState<ProductListValues[]>(
     selectProductListState,
   );
   const setProductList = useSetRecoilState(productListState);
 
   const handleModalAppear = () => {
-    setModal(!isModal);
+    setIsModal(!isModal);
   };
 
   const updateSelectOptionToNone = () => {
@@ -81,11 +80,11 @@ const StateMenuBar: React.FC<ISateMenuBarProps> = () => {
       {isModal &&
         (selectOption.options === "delete" ? (
           <Modal strach={true}>
-            <DeleteModalChildren setModal={setModal} items={selectList} />
+            <DeleteModalChildren setIsModal={setIsModal} />
           </Modal>
         ) : (
           <Modal strach={true}>
-            <UpdateModalChildren setModal={setModal} items={selectList} />
+            <UpdateModalChildren setIsModal={setIsModal} />
           </Modal>
         ))}
 

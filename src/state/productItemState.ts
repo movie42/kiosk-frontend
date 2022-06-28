@@ -32,3 +32,8 @@ export const selectMenuListState = atom({
   key: "selectMenuListState",
   default: <IOrderSelectedItem[]>[],
 });
+
+export const isCurrentSelectItemState = atom({
+  key: "isCurrentSelectItemState",
+  default: 0,
+});
