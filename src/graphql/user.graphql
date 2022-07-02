@@ -12,3 +12,10 @@ query me {
     email
   }
 }
+
+mutation signup($user: SignupInput!) {
+  signup(user: $user) {
+    accessToken
+    refreshToken
+  }
+}

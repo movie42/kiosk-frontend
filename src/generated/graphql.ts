@@ -348,6 +348,13 @@ export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type MeQuery = { __typename?: 'Query', me: { __typename?: 'User', id: string, name: string, email: string } };
 
+export type SignupMutationVariables = Exact<{
+  user: SignupInput;
+}>;
+
+
+export type SignupMutation = { __typename?: 'Mutation', signup: { __typename?: 'TokenOutput', accessToken: string, refreshToken: string } };
+
 
 export const GetProductsDocument = `
     query getProducts($id: Float!) {
@@ -610,5 +617,26 @@ export const useMeQuery = <
     useQuery<MeQuery, TError, TData>(
       variables === undefined ? ['me'] : ['me', variables],
       fetcher<MeQuery, MeQueryVariables>(client, MeDocument, variables, headers),
+      options
+    );
+export const SignupDocument = `
+    mutation signup($user: SignupInput!) {
+  signup(user: $user) {
+    accessToken
+    refreshToken
+  }
+}
+    `;
+export const useSignupMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      client: GraphQLClient,
+      options?: UseMutationOptions<SignupMutation, TError, SignupMutationVariables, TContext>,
+      headers?: RequestInit['headers']
+    ) =>
+    useMutation<SignupMutation, TError, SignupMutationVariables, TContext>(
+      ['signup'],
+      (variables?: SignupMutationVariables) => fetcher<SignupMutation, SignupMutationVariables>(client, SignupDocument, variables, headers)(),
       options
     );
