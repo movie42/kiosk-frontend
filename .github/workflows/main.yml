@@ -9,20 +9,23 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.pull_request.merged
 
+    strategy:
+      matrix:
+        node-version: [16.x]
+
     steps:
-      - uses: actions/checkout@v3
-      - name: executing remote ssh commands using password
-        if: github.event_name == 'pull_request'
-        uses: appleboy/ssh-action@v0.1.4
-        with:
-          host: ${{ secrets.HOST }}
-          port: ${{ secrets.PORT }}
-          username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.PASSWORD }}
-          script: |
-            cd ${{ secrets.WEB_PATH }}
-            git checkout main
-            git pull origin main
-            npm install
-            pm2 stop npm
-            pm2 start npm -- start
+     - name: executing remote ssh commands using password
+       if: github.event_name == 'pull_request'
+       uses: appleboy/ssh-action@v0.1.4
+       with:
+           host: ${{ secrets.HOST }}
+           port: ${{ secrets.PORT }}
+           username: ${{ secrets.USERNAME }}
+           password: ${{ secrets.PASSWORD }}
+           script : |
+              cd ${{ secrets.WEB_PATH }}
+              git checkout main
+              git pull origin main
+              npm install 
+              npm run build
+              service nginx restart
