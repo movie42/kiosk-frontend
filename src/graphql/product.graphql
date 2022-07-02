@@ -1,3 +1,20 @@
+query getProducts($id: Float!) {
+  store(id: $id) {
+    id
+    products {
+      id
+      name
+      price
+      imageUrl
+      description
+      options {
+        id
+        name
+      }
+    }
+  }
+}
+
 mutation addProducts($products: [AddProductInput!]!) {
   addProducts(products: $products)
 }
