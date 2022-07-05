@@ -5,6 +5,7 @@ import { useRecoilState } from "recoil";
 import { Headline2, SubTitle2, Body1 } from "../../../mixin";
 import { selectMenuListState } from "../../../state/productItemState";
 import ButtonDefaultStyle from "../../../Components/Buttons/ButtonDefault";
+import { RequestPayParams, RequestPayResponse } from "../Payment";
 
 interface IPaymentModalChildrenProps {
   setIsModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -86,6 +87,39 @@ const PaymentModalChildren: React.FC<IPaymentModalChildrenProps> = ({
     setPrintReceipt(true);
   };
 
+  // payment
+  const handlePayment = () => {
+    window.IMP?.init("");
+
+    const amount: number = orderList.reduce(
+      (acc, obj) => acc + obj.totalPrice,
+      0
+    );
+    if (!amount) {
+      alert("결제 금액을 확인해주세요");
+      return;
+    }
+    const data: RequestPayParams = {
+      pg: "kakaopay",
+      pay_method: "card",
+      name: "Kiosk Payment",
+      merchant_uid: `mid_${new Date().getTime()}`,
+      amount: amount,
+      buyer_tel: "000-000-0000",
+    };
+    const callback = (response: RequestPayResponse) => {
+      const { success, merchant_uid, error_msg, imp_uid, error_code } =
+        response;
+      if (success) {
+        console.log(response);
+        closeReceipt();
+      } else {
+        console.log(error_msg, error_code);
+      }
+    };
+    window.IMP?.request_pay(data, callback);
+  };
+
   useEffect(() => {
     if (isPaid) {
       let closeTimer = setTimeout(() => {
@@ -109,8 +143,8 @@ const PaymentModalChildren: React.FC<IPaymentModalChildrenProps> = ({
     <PaymentBox>
       {!isPaid && (
         <>
-          <h2>결제중입니다</h2>
-          <h3>카드를 삽입해주세요</h3>
+          <h2>결제를 진행중입니다</h2>
+          <h3>주문 내용과 금액을 확인해주세요</h3>
           <p>
             총 결제&nbsp;
             {orderList
@@ -128,7 +162,7 @@ const PaymentModalChildren: React.FC<IPaymentModalChildrenProps> = ({
               <span>{el.totalPrice.toLocaleString()}원</span>
             </MenuBox>
           ))}
-          <button onClick={closeReceipt}>결제완료</button>
+          <button onClick={handlePayment}>결제하기</button>
           <button onClick={() => setIsModal(false)}>취소하기</button>
         </>
       )}
