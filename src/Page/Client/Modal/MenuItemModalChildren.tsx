@@ -6,7 +6,46 @@ import { ProductListValues } from "../../../mockup/productList";
 import ButtonDefaultStyle from "../../../Components/Buttons/ButtonDefault";
 import { IOrderSelectedItem } from "../ClientMenu";
 import { AddCountButton, MinusCountButton } from "../ClientSelectList";
-
+import { translateLocalCurrency } from "../../../utils/helper/translateLocalCurrency";
+import Noimage from "../../../Images/Noimage";
+const Wrapper = styled.div`
+  position: relative;
+  color: ${(props) => props.theme.color.fontColorBlack};
+  .image-container {
+    overflow: hidden;
+    position: relative;
+    height: 15rem;
+  }
+  .item-info-container {
+    align-self: center;
+    padding: 1rem;
+    h3 {
+      font-size: 3rem;
+      font-weight: bold;
+      margin-bottom: 0.6rem;
+    }
+    h4 {
+      font-size: 2rem;
+      align-self: end;
+    }
+  }
+`;
+const ItemNameContainer = styled.div`
+  display: flex;
+  font-size: 1.4rem;
+  font-weight: 600;
+  padding: 0.5rem;
+  align-items: center;
+  color: ${({ theme }) => theme.color.fontColorWhite};
+  margin: 0.4rem;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+  h2 {
+    margin-left: 0.5rem;
+  }
+`;
 const OptionButton = styled(ButtonDefaultStyle)<{ selected?: boolean }>`
   background-color: ${(props) =>
     props.selected ? props.theme.color.primary800 : props.theme.color.gray300};
@@ -24,16 +63,19 @@ const OptionContainer = styled.div`
 `;
 const CancelButton = styled(ButtonDefaultStyle)`
   background-color: ${(props) => props.theme.color.gray300};
-  padding: 0.8rem 1rem;
+  padding: 0.8rem;
+  font-family: "Noto Sans KR";
 `;
 const OrderButton = styled(ButtonDefaultStyle)`
   background-color: ${(props) => props.theme.color.primary800};
-  padding: 0.8rem 1rem;
+  padding: 0.8rem;
+  font-family: "Noto Sans KR";
 `;
-const Title = styled.h4`
+const Title = styled.h4<{ composition?: boolean }>`
   font-size: 1.7rem;
   font-weight: bold;
-  margin: 2rem 0 0.5rem;
+  margin: ${(props) =>
+    props.composition ? "0.5rem 0 0.5rem" : "2rem 0 0.5rem"};
 `;
 const ProductCount = styled.span`
   font-size: 2rem;
@@ -129,48 +171,62 @@ const MenuItemModalChildren: React.FC<IMenuItemModalChildrenProps> = ({
   const [selectedOption, setSelectedOption] = useState("");
 
   return (
-    <>
-      <h2>{selected.name}</h2>
-      <Title>구성</Title>
-      <p>{selected.name} 1개</p>
-      <Title>상품옵션</Title>
-      <OptionContainer>
-        {selected.option?.map((item, i) => (
-          <OptionButton
-            key={item}
-            selected={selectedOption === item ? true : false}
-            onClick={() => setSelectedOption(item)}
+    <Wrapper>
+      <div className="image-container">
+        <ItemNameContainer>
+          <h2>{selected.name}</h2>
+        </ItemNameContainer>
+        <Noimage />
+      </div>
+      <div className="item-info-container">
+        <Title composition={true}>구성</Title>
+        <p>{selected.name} 1개</p>
+        {selected.option && (
+          <>
+            <Title>상품옵션</Title>
+            <OptionContainer>
+              {selected.option?.map((item, i) => (
+                <OptionButton
+                  key={item.name}
+                  selected={selectedOption === item.name ? true : false}
+                  onClick={() => setSelectedOption(item.name)}
+                >
+                  {item}
+                </OptionButton>
+              ))}
+            </OptionContainer>
+          </>
+        )}
+        <Title>
+          총 가격&nbsp;
+          {translateLocalCurrency(count * Number(selected.price), "ko-KR", {
+            style: "currency",
+            currency: "KRW",
+          })}
+        </Title>
+        <OrderContainer>
+          <MinusCountButton
+            onClick={() => {
+              if (count < 1) return;
+              setCount((count) => count - 1);
+            }}
           >
-            {item}
-          </OptionButton>
-        ))}
-      </OptionContainer>
-      <Title>
-        총 가격&nbsp;
-        {(count * Number(selected.price)).toLocaleString()}원
-      </Title>
-      <OrderContainer>
-        <MinusCountButton
-          onClick={() => {
-            if (count < 1) return;
-            setCount((count) => count - 1);
-          }}
-        >
-          <AiFillMinusCircle />
-        </MinusCountButton>
-        <ProductCount>{count}</ProductCount>
-        <AddCountButton
-          onClick={() => {
-            if (count < 0) return;
-            setCount((count) => count + 1);
-          }}
-        >
-          <IoIosAddCircle />
-        </AddCountButton>
-        <CancelButton onClick={cancelItem}>취소하기</CancelButton>
-        <OrderButton onClick={orderSelectedItem}>주문하기</OrderButton>
-      </OrderContainer>
-    </>
+            <AiFillMinusCircle />
+          </MinusCountButton>
+          <ProductCount>{count}</ProductCount>
+          <AddCountButton
+            onClick={() => {
+              if (count < 0) return;
+              setCount((count) => count + 1);
+            }}
+          >
+            <IoIosAddCircle />
+          </AddCountButton>
+          <CancelButton onClick={cancelItem}>취소하기</CancelButton>
+          <OrderButton onClick={orderSelectedItem}>주문하기</OrderButton>
+        </OrderContainer>
+      </div>
+    </Wrapper>
   );
 };
 

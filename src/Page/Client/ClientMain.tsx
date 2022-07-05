@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { Headline1 } from "../../mixin";
 
@@ -66,6 +66,7 @@ const TakeOutButton = styled(MenuButtonDefault)`
 
 const ClientMain = () => {
   const navigate = useNavigate();
+  const { userId, storeId } = useParams();
 
   return (
     <>
@@ -77,13 +78,13 @@ const ClientMain = () => {
         <OrderingMethod>
           <EatInButton
             date-type="eat-in"
-            onClick={() => navigate("/client/menu")}
+            onClick={() => navigate(`/client/${userId}/${storeId}/menu`)}
           >
             매장 식사
           </EatInButton>
           <TakeOutButton
             date-type="take-out"
-            onClick={() => navigate("/client/menu")}
+            onClick={() => navigate(`/client/${userId}/${storeId}/menu`)}
           >
             포장하기
           </TakeOutButton>
