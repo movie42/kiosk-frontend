@@ -4,7 +4,7 @@ on:
   pull_request:
     types: [closed]
     branches: [main]
-    
+
   workflow_dispatch:
 
 jobs:
@@ -13,20 +13,20 @@ jobs:
     if: github.event.pull_request.merged
 
     steps:
-     - uses: actions/checkout@v3
-     
-     - name: executing remote ssh commands using password
-       if: github.event_name == 'pull_request'
-       uses: appleboy/ssh-action@v0.1.4
-       with:
-           host: ${{ secrets.HOST }}
-           port: ${{ secrets.PORT }}
-           username: ${{ secrets.USERNAME }}
-           password: ${{ secrets.PASSWORD }}
-           script : |
-              cd ${{ secrets.WEB_PATH }}
-              git checkout main
-              git pull origin main
-              npm install 
-              npm run build
-              service nginx restart
+      - uses: actions/checkout@v3
+
+      - name: executing remote ssh commands using password
+        if: github.event_name == 'pull_request'
+        uses: appleboy/ssh-action@v0.1.4
+        with:
+          host: ${{ secrets.HOST }}
+          port: ${{ secrets.PORT }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          script: |
+            cd ${{ secrets.WEB_PATH }}
+            git checkout main
+            git pull origin main
+            npm ci
+            npm run build
+            service nginx restart
