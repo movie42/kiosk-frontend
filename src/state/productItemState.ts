@@ -1,5 +1,5 @@
 import { atom } from "recoil";
-import { productList, ProductListValues } from "../mockup/productList";
+import { ProductListValues } from "../mockup/productList";
 import { IOrderSelectedItem } from "../Page/Client/ClientMenu";
 
 export enum Option {

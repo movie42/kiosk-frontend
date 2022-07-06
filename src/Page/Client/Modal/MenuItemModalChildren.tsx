@@ -63,7 +63,7 @@ const MenuItemModalChildren: React.FC<IMenuItemModalChildrenProps> = ({
   const orderSelectedItem = () => {
     const [sameMenu] = orderItem.filter(
       (ordered) =>
-        ordered.productId === selected.id && ordered.option === selectedOption
+        ordered.productId === selected.id && ordered.option === selectedOption,
     );
 
     const { option: hasOption }: any = selected;
@@ -95,7 +95,7 @@ const MenuItemModalChildren: React.FC<IMenuItemModalChildrenProps> = ({
             return a?.option > b?.option ? 1 : -1;
           }
           return a.productId - b.productId;
-        })
+        }),
       );
     }
 
@@ -113,7 +113,7 @@ const MenuItemModalChildren: React.FC<IMenuItemModalChildrenProps> = ({
             return a?.option > b?.option ? 1 : -1;
           }
           return a.productId - b.productId;
-        })
+        }),
       );
     }
 
@@ -135,7 +135,7 @@ const MenuItemModalChildren: React.FC<IMenuItemModalChildrenProps> = ({
       <p>{selected.name} 1개</p>
       <Title>상품옵션</Title>
       <OptionContainer>
-        {selected.option?.map((item, i) => (
+        {/* {selected.option?.map((item, i) => (
           <OptionButton
             key={item}
             selected={selectedOption === item ? true : false}
@@ -143,7 +143,7 @@ const MenuItemModalChildren: React.FC<IMenuItemModalChildrenProps> = ({
           >
             {item}
           </OptionButton>
-        ))}
+        ))} */}
       </OptionContainer>
       <Title>
         총 가격&nbsp;
