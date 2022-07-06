@@ -58,6 +58,7 @@ const PaymentModalChildren: React.FC<IPaymentModalChildrenProps> = ({
 }) => {
   const navigate = useNavigate();
   const { userId, storeId } = useParams();
+  const impkey = process.env.REACT_APP_IMP as string;
 
   // paid done
   const [isPaid, setIsPaid] = useState(false);
@@ -89,7 +90,7 @@ const PaymentModalChildren: React.FC<IPaymentModalChildrenProps> = ({
 
   // payment
   const handlePayment = () => {
-    window.IMP?.init("");
+    window.IMP?.init(impkey);
 
     const amount: number = orderList.reduce(
       (acc, obj) => acc + obj.totalPrice,
