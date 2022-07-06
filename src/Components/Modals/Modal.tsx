@@ -22,7 +22,7 @@ const ModalContainer: React.FC<IModalProps> = styled.div<IModalProps>`
   background-color: ${(props) => props.theme.color.background100};
   border-radius: 1rem;
   overflow-y: auto;
-  padding: 2rem;
+  padding: ${(props) => (props.fullBox ? 0 : "2rem")};
   h1 {
     ${Headline1};
     line-height: unset;
@@ -53,13 +53,16 @@ const TransparentBackground = styled.div`
 
 interface IModalProps {
   strach?: boolean;
+  fullBox?: boolean;
   children: JSX.Element;
 }
 
-const Modal = ({ strach, children }: IModalProps) => {
+const Modal = ({ strach, fullBox, children }: IModalProps) => {
   return (
     <Wrapper>
-      <ModalContainer strach={strach}>{children}</ModalContainer>
+      <ModalContainer strach={strach} fullBox={fullBox}>
+        {children}
+      </ModalContainer>
       <TransparentBackground />
     </Wrapper>
   );
