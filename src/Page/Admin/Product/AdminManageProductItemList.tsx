@@ -88,7 +88,10 @@ const AdminManageProductItemList = () => {
               price: value.price,
               imageUrl: value.imageUrl,
               description: value.description,
-              options: value.options,
+              options: value.options.map((item) => ({
+                id: Number(item.id),
+                name: item.name,
+              })),
             }),
           );
           setProductList(productList);

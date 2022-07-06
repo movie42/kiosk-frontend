@@ -105,7 +105,7 @@ const MenuItemModalChildren: React.FC<IMenuItemModalChildrenProps> = ({
   const orderSelectedItem = () => {
     const [sameMenu] = orderItem.filter(
       (ordered) =>
-        ordered.productId === selected.id && ordered.option === selectedOption
+        ordered.productId === selected.id && ordered.option === selectedOption,
     );
 
     const { option: hasOption }: any = selected;
@@ -137,7 +137,7 @@ const MenuItemModalChildren: React.FC<IMenuItemModalChildrenProps> = ({
             return a?.option > b?.option ? 1 : -1;
           }
           return a.productId - b.productId;
-        })
+        }),
       );
     }
 
@@ -155,7 +155,7 @@ const MenuItemModalChildren: React.FC<IMenuItemModalChildrenProps> = ({
             return a?.option > b?.option ? 1 : -1;
           }
           return a.productId - b.productId;
-        })
+        }),
       );
     }
 
@@ -227,6 +227,7 @@ const MenuItemModalChildren: React.FC<IMenuItemModalChildrenProps> = ({
         </OrderContainer>
       </div>
     </Wrapper>
+
   );
 };
 

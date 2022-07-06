@@ -23,6 +23,8 @@ import Logout from "../Page/Admin/Logout";
 import LandingLayout from "../Layouts/LandingLayout";
 import AdminManageProductLayout from "../Layouts/AdminManageProductLayout";
 import AdminLoadingAndGetUser from "../Page/Admin/Login/AdminLoadingAndGetUser";
+import AdminProductDetail from "../Page/Admin/Product/AdminProductDetail";
+
 const Router = () => {
   const { isLogin } = useRecoilValue(userState);
 
@@ -46,6 +48,7 @@ const Router = () => {
             path="/admin/:userId/store/:storeId/product"
             element={<AdminManageProductLayout />}
           >
+            <Route path=":productId" element={<AdminProductDetail />} />
             <Route path="main" element={<AdminMain />} />
             <Route
               path="manage-product"

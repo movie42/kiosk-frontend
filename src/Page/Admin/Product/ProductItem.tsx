@@ -10,6 +10,7 @@ import {
   selectOptionState,
   selectProductListState,
 } from "../../../state/productItemState";
+import { translateLocalCurrency } from "../../../utils/helper/translateLocalCurrency";
 
 const Item = styled.li<{ selectOption: Option; selected: boolean }>`
   .item-container {
@@ -151,7 +152,7 @@ const ProductItem = ({ productData }: IProductItemProps) => {
             </div>
             <div className="item-info-container">
               <h3>{product.name}</h3>
-              <h4>가격 {product.price}원</h4>
+              <h4>가격 {translateLocalCurrency(product.price, "ko-KR")}원</h4>
             </div>
           </div>
         </Item>
