@@ -181,11 +181,11 @@ const MenuItemModalChildren: React.FC<IMenuItemModalChildrenProps> = ({
       <div className="item-info-container">
         <Title composition={true}>구성</Title>
         <p>{selected.name} 1개</p>
-        {selected.option && (
+        {selected.options && (
           <>
             <Title>상품옵션</Title>
             <OptionContainer>
-              {selected.option?.map((item, i) => (
+              {selected.options?.map((item, i) => (
                 <OptionButton
                   key={item.name}
                   selected={selectedOption === item.name ? true : false}
@@ -227,7 +227,6 @@ const MenuItemModalChildren: React.FC<IMenuItemModalChildrenProps> = ({
         </OrderContainer>
       </div>
     </Wrapper>
-
   );
 };
 

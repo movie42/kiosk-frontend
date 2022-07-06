@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { AiOutlineClose } from "react-icons/ai";
 import { Headline2 } from "../../mixin";
 import { NavLinkProps } from "react-router-dom";
-import { HTMLElements } from "framer-motion/types/render/html/supported-elements";
 
 const Wrapper = styled.div`
   position: fixed;
