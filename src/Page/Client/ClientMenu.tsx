@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import Modal from "../../Components/Modals/Modal";
 import OrderStateBar from "./OrderStateBar";
@@ -10,7 +10,12 @@ import {
   selectMenuListState,
 } from "../../state/productItemState";
 import { Headline1 } from "../../mixin";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { userState } from "../../state/userState";
+import { useGetProductsQuery } from "../../generated/graphql";
+import graphqlReqeustClient from "../../lib/graphqlRequestClient";
+import Loading from "../../Components/Loading";
+import Noimage from "../../Images/Noimage";
 
 const Header = styled.div`
   display: flex;
@@ -31,21 +36,13 @@ const Header = styled.div`
     background-color: ${(props) => props.theme.color.gray300};
   }
 `;
-const Wrapper = styled.div`
-  h2 {
-    font-size: 2rem;
-  }
-`;
+
 const Container = styled.div`
   ul.productList {
     display: grid;
     gap: 2rem;
     grid-template-columns: repeat(4, 1fr);
     grid-auto-rows: minmax(20rem, auto);
-  }
-  ul.productList li:active {
-    border: 2px solid;
-    border-color: ${(props) => props.theme.color.primary700};
   }
 `;
 const SubTitle = styled.h2`
@@ -54,24 +51,54 @@ const SubTitle = styled.h2`
   padding: 0.8rem 0 1.3rem 0;
 `;
 
-const Item = styled.button`
-  padding: 1rem;
-  border-radius: 0.3rem;
-  background-color: ${(props) => props.theme.color.gray300};
-  cursor: pointer;
-  div {
-    display: grid;
+const Item = styled.li`
+  .item-container {
+    position: relative;
+    cursor: pointer;
+    background-color: ${(props) => props.theme.color.background100};
     height: 100%;
-
-    h3 {
-      font-size: 2rem;
-      font-weight: bold;
+    min-width: 20rem;
+    overflow: hidden;
+    display: grid;
+    grid-template-rows: minmax(12rem, 0.9fr) 0.8fr;
+    border: 1px solid ${({ theme }) => theme.color.gray300};
+    border-radius: 0.4rem;
+    text-decoration: none;
+    color: ${(props) => props.theme.color.fontColorBlack};
+    .is-select {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 4;
     }
-
-    h4 {
-      font-size: 1.7rem;
-      font-weight: bold;
-      align-self: end;
+    .image-container {
+      overflow: hidden;
+      position: relative;
+      .transparent-box {
+        position: absolute;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
+        background-color: ${({ theme }) => theme.color.backgroundBlack60};
+      }
+    }
+    .item-info-container {
+      align-self: center;
+      padding: 0.8rem;
+      h3 {
+        font-size: 3rem;
+        font-weight: bold;
+        margin-bottom: 0.6rem;
+      }
+      h4 {
+        font-size: 2rem;
+        align-self: end;
+      }
     }
   }
 `;
@@ -86,6 +113,10 @@ export interface IOrderSelectedItem {
 }
 
 const ClientMenu = () => {
+  const navigate = useNavigate();
+  const { userId, storeId } = useParams();
+  const { accessToken } = useRecoilValue(userState);
+
   // display menu
   const [menuList, setMenuList] = useRecoilState(productListState);
 
@@ -105,12 +136,37 @@ const ClientMenu = () => {
     setSelectedItem([...selected]);
   };
 
-  // for Order state bar handler
-  const navigate = useNavigate();
-  return (
+  //
+  const { isLoading } = useGetProductsQuery(
+    graphqlReqeustClient(accessToken),
+    {
+      id: Number(storeId),
+    },
+    {
+      onSuccess: (data) => {
+        if (data.store?.products) {
+          const productList = data.store.products.map<ProductListValues>(
+            (value) => ({
+              id: Number(value.id),
+              name: value.name,
+              price: value.price,
+              imageUrl: value.imageUrl,
+              description: value.description,
+              options: value.options,
+            })
+          );
+          setMenuList(productList);
+        }
+      },
+    }
+  );
+
+  return isLoading ? (
+    <Loading title="등록한 상품을 불러오고 있습니다." />
+  ) : (
     <>
       {isModal && (
-        <Modal strach={true}>
+        <Modal strach={true} fullBox={true}>
           <MenuItemModalChildren
             setIsModal={setIsModal}
             selectedItem={selectedItem}
@@ -130,9 +186,18 @@ const ClientMenu = () => {
           {menuList &&
             menuList.map((item) => (
               <Item key={item.id} onClick={() => selectHandler(item.id)}>
-                <div>
-                  <h3>{item.name}</h3>
-                  <h4>가격 {item.price.toLocaleString()}원</h4>
+                <div className="item-container">
+                  <div className="image-container">
+                    {item.imageUrl ? (
+                      <img src={item.imageUrl} alt={item.name} />
+                    ) : (
+                      <Noimage />
+                    )}
+                  </div>
+                  <div className="item-info-container">
+                    <h3>{item.name}</h3>
+                    <h4>가격 {item.price.toLocaleString()}원</h4>
+                  </div>
                 </div>
               </Item>
             ))}
@@ -142,7 +207,7 @@ const ClientMenu = () => {
         totalCount={orderItem.reduce((acc, obj) => acc + obj.totalCount, 0)}
         totalPrice={orderItem.reduce((acc, obj) => acc + obj.totalPrice, 0)}
         label="주문 목록 보기"
-        handler={() => navigate("/client/select-list")}
+        handler={() => navigate(`/client/${userId}/${storeId}/select-list`)}
       />
     </>
   );

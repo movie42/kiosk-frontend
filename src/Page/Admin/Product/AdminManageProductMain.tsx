@@ -169,7 +169,7 @@ const AdminManageProductMain = () => {
           setStore({ id, name, address, code, phone, isAvailable });
         }
       },
-    },
+    }
   );
 
   const toggleHandler = () => {
@@ -177,11 +177,11 @@ const AdminManageProductMain = () => {
   };
 
   const linkToCustomerWindowHandler = (
-    e: React.MouseEvent<HTMLButtonElement>,
+    e: React.MouseEvent<HTMLButtonElement>
   ) => {
     const linkName = e.currentTarget.dataset.link;
     if (linkName === "order" && toggleState) {
-      navigate("/client");
+      navigate(`/client/${userId}/${storeId}`);
     }
 
     if (linkName === "manage-order") {
