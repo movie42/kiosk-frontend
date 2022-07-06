@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { IoIosAddCircle } from "react-icons/io";
@@ -9,8 +9,10 @@ import Modal from "../../Components/Modals/Modal";
 import { Headline1 } from "../../mixin";
 import OrderStateBar from "./OrderStateBar";
 import PaymentModalChildren from "./Modal/PaymentModalChildren";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ButtonDefaultStyle from "../../Components/Buttons/ButtonDefault";
+import { translateLocalCurrency } from "../../utils/helper/translateLocalCurrency";
+import Noimage from "../../Images/Noimage";
 
 const Header = styled.div`
   display: flex;
@@ -77,6 +79,7 @@ export const MinusCountButton = styled(ButtonDefaultStyle)`
 
 const ClientSelectList = () => {
   const navigate = useNavigate();
+  const { userId, storeId } = useParams();
   // order menu list
   const [totalSelectMenu, setTotalSelectMenu] =
     useRecoilState(selectMenuListState);
@@ -159,7 +162,7 @@ const ClientSelectList = () => {
 
       {totalSelectMenu.map((item, i) => (
         <MenuListItem key={`${item.productId}_${i}`}>
-          <img src="" />
+          <Noimage />
           <div>
             <h2>{item.name}</h2>
             {item.option && <p>선택옵션: {item.option}</p>}
@@ -175,7 +178,14 @@ const ClientSelectList = () => {
             </p>
           </div>
           <div>
-            <p>총 가격: {item.totalPrice.toLocaleString()}원</p>
+            <p>
+              총 가격:&nbsp;
+              {translateLocalCurrency(item.totalPrice, "ko-KR", {
+                style: "currency",
+                currency: "KRW",
+              })}
+              원
+            </p>
             <DeleteButton onClick={() => handleDelete(item)}>
               삭제하기
             </DeleteButton>
@@ -193,7 +203,7 @@ const ClientSelectList = () => {
           0
         )}
         label="주문하기"
-        goBack={() => navigate("/client/menu")}
+        goBack={() => navigate(`/client/${userId}/${storeId}/menu`)}
         handler={handlePayment}
       />
     </>

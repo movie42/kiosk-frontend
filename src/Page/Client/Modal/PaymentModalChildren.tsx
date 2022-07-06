@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useRecoilState } from "recoil";
 import { Headline2, SubTitle2, Body1 } from "../../../mixin";
@@ -56,6 +56,7 @@ const PaymentModalChildren: React.FC<IPaymentModalChildrenProps> = ({
   setIsModal,
 }) => {
   const navigate = useNavigate();
+  const { userId, storeId } = useParams();
 
   // paid done
   const [isPaid, setIsPaid] = useState(false);
@@ -75,7 +76,7 @@ const PaymentModalChildren: React.FC<IPaymentModalChildrenProps> = ({
   const [orderList, setOrderList] = useRecoilState(selectMenuListState);
   const confirmOrder = () => {
     setOrderList([]);
-    navigate("/client/main");
+    navigate(`/client/${userId}/${storeId}/main`);
   };
 
   // close the receipt modal automatically in 5 secs

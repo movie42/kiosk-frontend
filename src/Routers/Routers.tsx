@@ -22,6 +22,8 @@ import { userState } from "../state/userState";
 import Logout from "../Page/Admin/Logout";
 import LandingLayout from "../Layouts/LandingLayout";
 import AdminManageProductLayout from "../Layouts/AdminManageProductLayout";
+import AdminLoadingAndGetUser from "../Page/Admin/Login/AdminLoadingAndGetUser";
+import AdminProductDetail from "../Page/Admin/Product/AdminProductDetail";
 
 const Router = () => {
   const { isLogin } = useRecoilValue(userState);
@@ -46,6 +48,7 @@ const Router = () => {
             path="/admin/:userId/store/:storeId/product"
             element={<AdminManageProductLayout />}
           >
+            <Route path=":productId" element={<AdminProductDetail />} />
             <Route path="main" element={<AdminMain />} />
             <Route
               path="manage-product"
@@ -55,21 +58,35 @@ const Router = () => {
             <Route path="add-product" element={<AdminManageProductAddItem />} />
           </Route>
           <Route path="/client" element={<ClientLayout />}>
-            <Route path="" element={<Navigate to="/client/main" />} />
-            <Route path="main" element={<ClientMain />} />
-            <Route path="menu" element={<ClientMenu />} />
-            <Route path="select-list" element={<ClientSelectList />} />
+            <Route path=":userId/:storeId">
+              <Route path="" element={<Navigate to="main" />} />
+              <Route path="main" element={<ClientMain />} />
+              <Route path="menu" element={<ClientMenu />} />
+              <Route path="select-list" element={<ClientSelectList />} />
+            </Route>
           </Route>
         </>
       )}
       {/* TODO: private router로 변경하면 login이 동작하지 않습니다. 왜냐하면
       isLogin이 true이기 때문입니다. login이 전부 끝난 다음에 접근하지 못하도록 변경해야합니다.*/}
-      <Route path="/" element={<ClientLayout />}>
-        <Route path="/" element={<LandingMain />} />
-        <Route path="agreement" element={<Agreement />} />
-        <Route path="signup" element={<SignUp />} />
-        <Route path="login" element={<Login />} />
-        <Route path="logout" element={<Logout />} />
+      <Route path="/" element={<LandingLayout />}>
+        {!isLogin ? (
+          <>
+            <Route path="/" element={<LandingMain />} />
+            <Route path="agreement" element={<Agreement />} />
+            <Route path="signup" element={<SignUp />} />
+          </>
+        ) : (
+          <Route path="/" element={<Navigate to="/admin/:id/store/list" />} />
+        )}
+        <Route
+          path="login"
+          element={!isLogin ? <Login /> : <AdminLoadingAndGetUser />}
+        />
+        <Route
+          path="logout"
+          element={isLogin ? <Logout /> : <Navigate to="/" />}
+        />
       </Route>
       <Route path="*" element={<PageNotFound />} />
     </Routes>
