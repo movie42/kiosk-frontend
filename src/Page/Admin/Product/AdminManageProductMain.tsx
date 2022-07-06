@@ -169,7 +169,7 @@ const AdminManageProductMain = () => {
           setStore({ id, name, address, code, phone, isAvailable });
         }
       },
-    }
+    },
   );
 
   const toggleHandler = () => {
@@ -177,7 +177,7 @@ const AdminManageProductMain = () => {
   };
 
   const linkToCustomerWindowHandler = (
-    e: React.MouseEvent<HTMLButtonElement>
+    e: React.MouseEvent<HTMLButtonElement>,
   ) => {
     const linkName = e.currentTarget.dataset.link;
     if (linkName === "order" && toggleState) {
@@ -185,7 +185,7 @@ const AdminManageProductMain = () => {
     }
 
     if (linkName === "manage-order") {
-      navigate(`/admin/${userId}/store/${storeId}/manage-order`);
+      navigate(`/admin/${userId}/store/${storeId}/product/manage-order`);
     }
 
     if (linkName === "manage-product") {

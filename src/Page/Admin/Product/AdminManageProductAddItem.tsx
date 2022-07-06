@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
@@ -17,6 +17,7 @@ import graphqlReqeustClient from "../../../lib/graphqlRequestClient";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../../state/userState";
 import { useQueryClient } from "react-query";
+import Images from "../../../Components/Images/Images";
 
 const Container = styled.div`
   margin-bottom: 8rem;
@@ -156,7 +157,7 @@ const AdminManageProductAddItem = () => {
   window.Buffer = window.Buffer || require("buffer").Buffer;
   const { storeId } = useParams();
   const { accessToken, refreshToken } = useRecoilValue(userState);
-  const [location, setLocation] = useState("");
+  const [location, setLocation] = useState<string[]>([]);
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const [isModal, setIsModal] = useState(false);
@@ -184,6 +185,8 @@ const AdminManageProductAddItem = () => {
     control,
     formState: { errors },
     setError,
+    setValue,
+    getValues,
   } = useForm<{ product: ProductDefaultValue[] }>({
     defaultValues: {
       product: [
@@ -209,15 +212,16 @@ const AdminManageProductAddItem = () => {
 
   const onSubmit = handleSubmit((data) => {
     handleModal();
+    console.log(data);
     // TODO:mutation값에 options가 없다. 백앤드 반영 후 수정해야한다.
-    setFormData(
-      data.product.map((item) => ({
-        storeId: Number(storeId),
-        name: item.name,
-        price: Number(item.price),
-        description: item.description,
-      })),
-    );
+    // setFormData(
+    //   data.product.map((item) => ({
+    //     storeId: Number(storeId),
+    //     name: item.name,
+    //     price: Number(item.price),
+    //     description: item.description,
+    //   })),
+    // );
   });
 
   const cancelAddProductItems = () => {
@@ -240,12 +244,16 @@ const AdminManageProductAddItem = () => {
     e: React.ChangeEvent<HTMLInputElement>,
     index: number,
   ) => {
+    const accessKeyId = process.env.REACT_APP_AWS_ID as string;
+    const secretAccessKey = process.env.REACT_APP_AWS_KEY as string;
+    const bucketName = process.env.REACT_APP_AWS_BUCKET as string;
+    const region = process.env.REACT_APP_AWS_REGION as string;
     const s3Config = {
-      bucketName: process.env.REACT_APP_AWS_BUCKET as string,
-      region: process.env.REACT_APP_AWS_REGION as string,
+      bucketName,
+      region,
       dirName: "products",
-      accessKeyId: process.env.REACT_APP_AWS_ID as string,
-      secretAccessKey: process.env.REACT_APP_AWS_KEY as string,
+      accessKeyId,
+      secretAccessKey,
     };
 
     const s3 = new ReactS3Client(s3Config);
@@ -258,10 +266,13 @@ const AdminManageProductAddItem = () => {
 
       try {
         const response = await s3.uploadFile(file, filename);
+
         if (response.status >= 400) {
           throw new Error("사진을 업로드할 수 없습니다.");
         }
-        setLocation(response.location);
+
+        setLocation((value) => [...value, response.location]);
+        setValue(`product.${index}.imageUrl`, response.location);
       } catch (error) {
         const errorMessage = error as string;
         setError(`product.${index}.imageUrl`, { message: errorMessage });
@@ -315,23 +326,35 @@ const AdminManageProductAddItem = () => {
         <form onSubmit={onSubmit}>
           {fields.map((item, index) => (
             <fieldset key={item.id}>
-              <button onClick={() => remove(index)}>삭제</button>
-              {location ? (
-                <img src={location} />
+              <button
+                onClick={() => {
+                  setLocation((value) => value.splice(index, 1));
+                  remove(index);
+                }}
+              >
+                삭제
+              </button>
+              {location[index] ? (
+                <Images src={location[index]} />
               ) : (
                 <div>
-                  <Label htmlFor="imageUrl">섬네일</Label>
-                  <AddimageUrlLabel htmlFor="imageUrl">
+                  <Label htmlFor="imageUploader">섬네일</Label>
+                  <AddimageUrlLabel htmlFor="imageUploader">
                     <IoIosAddCircle />
                   </AddimageUrlLabel>
                   <AddimageUrl
-                    id="imageUrl"
+                    id="imageUploader"
                     type="file"
                     accept="image/*"
                     name="imageUrl"
                     placeholder="사진 찾기"
+                    onChange={(e) => uploadFile(e, index)}
+                  />
+                  <AddimageUrl
+                    id="imageUrl"
+                    type="text"
+                    name="imageUrl"
                     register={register}
-                    registerOptions={{ onChange: (e) => uploadFile(e, index) }}
                     fieldName={`product.${index}`}
                   />
                 </div>
