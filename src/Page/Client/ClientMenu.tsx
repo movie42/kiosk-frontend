@@ -152,13 +152,16 @@ const ClientMenu = () => {
               price: value.price,
               imageUrl: value.imageUrl,
               description: value.description,
-              options: value.options,
-            })
+              options: value.options.map((value) => ({
+                id: Number(value.id),
+                name: value.name,
+              })),
+            }),
           );
           setMenuList(productList);
         }
       },
-    }
+    },
   );
 
   return isLoading ? (
