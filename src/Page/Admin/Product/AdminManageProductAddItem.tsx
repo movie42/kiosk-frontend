@@ -155,7 +155,7 @@ interface ProductMutationValue extends ProductDefaultValue {
 
 const AdminManageProductAddItem = () => {
   window.Buffer = window.Buffer || require("buffer").Buffer;
-  const { storeId } = useParams();
+  const { storeId, userId } = useParams();
   const { accessToken, refreshToken } = useRecoilValue(userState);
   const [location, setLocation] = useState<string[]>([]);
   const queryClient = useQueryClient();
@@ -173,11 +173,6 @@ const AdminManageProductAddItem = () => {
   ]);
   const { mutate } = useAddProductsMutation<ProductDefaultValue[]>(
     graphqlReqeustClient(accessToken),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries("getProducts");
-      },
-    },
   );
   const {
     register,
@@ -212,16 +207,15 @@ const AdminManageProductAddItem = () => {
 
   const onSubmit = handleSubmit((data) => {
     handleModal();
-    console.log(data);
-    // TODO:mutation값에 options가 없다. 백앤드 반영 후 수정해야한다.
-    // setFormData(
-    //   data.product.map((item) => ({
-    //     storeId: Number(storeId),
-    //     name: item.name,
-    //     price: Number(item.price),
-    //     description: item.description,
-    //   })),
-    // );
+    setFormData(
+      data.product.map((item) => ({
+        imageUrl: item.imageUrl,
+        storeId: Number(storeId),
+        name: item.name,
+        price: Number(item.price),
+        description: item.description,
+      })),
+    );
   });
 
   const cancelAddProductItems = () => {
@@ -234,7 +228,8 @@ const AdminManageProductAddItem = () => {
       { products: formData },
       {
         onSuccess: () => {
-          navigate(`/admin/1/store/5/product/manage-product`);
+          queryClient.invalidateQueries("getProducts");
+          navigate(`/admin/${userId}/store/${storeId}/product/manage-product`);
         },
       },
     );
@@ -260,9 +255,7 @@ const AdminManageProductAddItem = () => {
 
     if (e.target.files) {
       const [file] = e.target.files;
-      const filename = `${v1().toString().replace("-", "")}.${
-        file.type.split("/")[1]
-      }`;
+      const filename = `${v1().toString().replace("-", "")}`;
 
       try {
         const response = await s3.uploadFile(file, filename);
@@ -271,11 +264,19 @@ const AdminManageProductAddItem = () => {
           throw new Error("사진을 업로드할 수 없습니다.");
         }
 
+        if (location.length !== 0) {
+          setLocation((value) => value.splice(index, 1, response.location));
+          setValue(`product.${index}.imageUrl`, response.location);
+          return;
+        }
+
         setLocation((value) => [...value, response.location]);
         setValue(`product.${index}.imageUrl`, response.location);
       } catch (error) {
         const errorMessage = error as string;
-        setError(`product.${index}.imageUrl`, { message: errorMessage });
+        setError(`product.${index}.imageUrl`, {
+          message: errorMessage,
+        });
       }
     }
   };
@@ -334,31 +335,29 @@ const AdminManageProductAddItem = () => {
               >
                 삭제
               </button>
-              {location[index] ? (
-                <Images src={location[index]} />
-              ) : (
-                <div>
-                  <Label htmlFor="imageUploader">섬네일</Label>
-                  <AddimageUrlLabel htmlFor="imageUploader">
-                    <IoIosAddCircle />
-                  </AddimageUrlLabel>
-                  <AddimageUrl
-                    id="imageUploader"
-                    type="file"
-                    accept="image/*"
-                    name="imageUrl"
-                    placeholder="사진 찾기"
-                    onChange={(e) => uploadFile(e, index)}
-                  />
-                  <AddimageUrl
-                    id="imageUrl"
-                    type="text"
-                    name="imageUrl"
-                    register={register}
-                    fieldName={`product.${index}`}
-                  />
-                </div>
-              )}
+              {location[index] && <Images src={location[index]} />}
+              <div>
+                <Label htmlFor="imageUploader">섬네일</Label>
+                <AddimageUrlLabel htmlFor="imageUploader">
+                  <IoIosAddCircle />
+                </AddimageUrlLabel>
+                <AddimageUrl
+                  id="imageUploader"
+                  type="file"
+                  accept="image/*"
+                  name="imageUrl"
+                  placeholder="사진 찾기"
+                  onChange={(e) => uploadFile(e, index)}
+                />
+                <AddimageUrl
+                  id="imageUrl"
+                  type="text"
+                  name="imageUrl"
+                  register={register}
+                  fieldName={`product.${index}`}
+                />
+              </div>
+
               <div>
                 <Label htmlFor="name">상품 이름</Label>
                 <InputDefault

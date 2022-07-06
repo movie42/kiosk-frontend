@@ -84,6 +84,7 @@ const AdminManageProductItemList = () => {
           const productList = data.store.products.map<ProductListValues>(
             (value) => ({
               id: Number(value.id),
+              isAvailable: value.isAvailable,
               name: value.name,
               price: value.price,
               imageUrl: value.imageUrl,
@@ -103,6 +104,7 @@ const AdminManageProductItemList = () => {
   const handleUpdateItem = () => {
     handleSelectOption({ options: Option.UPDATE });
   };
+
   const handleDeleteItem = () => {
     handleSelectOption({ options: Option.DELETE });
   };

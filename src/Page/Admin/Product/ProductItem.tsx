@@ -1,16 +1,25 @@
 import React, { MouseEvent, ReactNode, useEffect } from "react";
+import { useQueryClient } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import ToggleButton from "../../../Components/Buttons/ToggleButton";
+import Images from "../../../Components/Images/Images";
 import Noimage from "../../../Components/Images/Noimage";
+import { useToggleProductIsAvailableMutation } from "../../../generated/graphql";
+import graphqlReqeustClient from "../../../lib/graphqlRequestClient";
 import { ProductListValues } from "../../../mockup/productList";
 import {
   Option,
   selectOptionState,
   selectProductListState,
 } from "../../../state/productItemState";
+import { userState } from "../../../state/userState";
 import { translateLocalCurrency } from "../../../utils/helper/translateLocalCurrency";
+
+const ItemWrapper = styled.div`
+  position: relative;
+`;
 
 const Item = styled.li<{ selectOption: Option; selected: boolean }>`
   .item-container {
@@ -21,7 +30,7 @@ const Item = styled.li<{ selectOption: Option; selected: boolean }>`
     min-width: 20rem;
     overflow: hidden;
     display: grid;
-    grid-template-rows: minmax(12rem, 0.9fr) 0.8fr;
+    grid-template-rows: minmax(12rem, 0.9fr) 0.7fr;
     border: 1px solid ${({ theme }) => theme.color.gray300};
     border-radius: 0.4rem;
     text-decoration: none;
@@ -67,6 +76,10 @@ const Item = styled.li<{ selectOption: Option; selected: boolean }>`
 `;
 
 const ToggleContainer = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100;
   display: flex;
   font-size: 1.4rem;
   font-weight: 600;
@@ -74,10 +87,6 @@ const ToggleContainer = styled.div`
   align-items: center;
   color: ${({ theme }) => theme.color.fontColorWhite};
   margin: 0.4rem;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 2;
   p {
     margin-left: 0.5rem;
   }
@@ -90,10 +99,21 @@ interface IProductItemProps extends React.HTMLAttributes<HTMLLIElement> {
 const ProductItem = ({ productData }: IProductItemProps) => {
   const navigate = useNavigate();
   const { userId, storeId } = useParams();
+  const queryClient = useQueryClient();
+  const { accessToken } = useRecoilValue(userState);
   const [selectProduct, setSelectProduct] = useRecoilState(
     selectProductListState,
   );
   const selectOption = useRecoilValue(selectOptionState);
+
+  const { mutate: toggleProductValue } = useToggleProductIsAvailableMutation(
+    graphqlReqeustClient(accessToken),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("getProducts");
+      },
+    },
+  );
 
   const handleSelectItem = (
     e: React.MouseEvent<HTMLLIElement>,
@@ -118,44 +138,53 @@ const ProductItem = ({ productData }: IProductItemProps) => {
     const [selectedProduct] = productData.filter(
       (product) => product.id === productId,
     );
-
     setSelectProduct((products) => [...products, selectedProduct]);
   };
 
   return (
     <>
       {productData.map((product) => (
-        <Item
-          key={product.id}
-          data-id={product.id}
-          onClick={(e: React.MouseEvent<HTMLLIElement>) =>
-            handleSelectItem(e, product.id)
-          }
-          selectOption={selectOption.options}
-          selected={selectProduct.some((item) => item.id === product.id)}
-        >
-          <div className="item-container">
-            {selectOption.options !== "none" && (
-              <span className="is-select"></span>
+        <ItemWrapper>
+          <ToggleContainer>
+            <ToggleButton
+              onClick={() => toggleProductValue({ id: product.id })}
+              size={5}
+              isActive={product?.isAvailable}
+            />
+            {product.isAvailable ? (
+              <p>판매 중입니다.</p>
+            ) : (
+              <p>판매가 중단 됐습니다.</p>
             )}
-            <div className="image-container">
-              <ToggleContainer>
-                <ToggleButton size={5} isActive={true} />
-                <p>판매 중입니다.</p>
-              </ToggleContainer>
-              <span className="transparent-box"></span>
-              {product.imageUrl ? (
-                <img src={product.imageUrl} alt={product.name} />
-              ) : (
-                <Noimage />
+          </ToggleContainer>
+          <Item
+            key={product.id}
+            data-id={product.id}
+            onClick={(e: React.MouseEvent<HTMLLIElement>) =>
+              handleSelectItem(e, product.id)
+            }
+            selectOption={selectOption.options}
+            selected={selectProduct.some((item) => item.id === product.id)}
+          >
+            <div className="item-container">
+              {selectOption.options !== "none" && (
+                <span className="is-select"></span>
               )}
+              <div className="image-container">
+                <span className="transparent-box"></span>
+                {product.imageUrl ? (
+                  <Images src={product.imageUrl} alt={product.name} />
+                ) : (
+                  <Noimage />
+                )}
+              </div>
+              <div className="item-info-container">
+                <h3>{product.name}</h3>
+                <h4>가격 {translateLocalCurrency(product.price, "ko-KR")}</h4>
+              </div>
             </div>
-            <div className="item-info-container">
-              <h3>{product.name}</h3>
-              <h4>가격 {translateLocalCurrency(product.price, "ko-KR")}원</h4>
-            </div>
-          </div>
-        </Item>
+          </Item>
+        </ItemWrapper>
       ))}
     </>
   );

@@ -35,6 +35,10 @@ query storeIsAvailable($id: Float!) {
   storeIsAvailable(id: $id)
 }
 
+mutation toggleStoreIsAvailable($id: Float!) {
+  toggleStoreIsAvailable(id: $id)
+}
+
 mutation addStore(
   $name: String!
   $code: String!
