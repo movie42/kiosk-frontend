@@ -241,8 +241,8 @@ const AdminManageProductAddItem = () => {
     index: number,
   ) => {
     const s3Config = {
-      bucketName: "kiosk-photo",
-      region: "ap-northeast-2",
+      bucketName: process.env.REACT_APP_AWS_BUCKET as string,
+      region: process.env.REACT_APP_AWS_REGION as string,
       dirName: "products",
       accessKeyId: process.env.REACT_APP_AWS_ID as string,
       secretAccessKey: process.env.REACT_APP_AWS_KEY as string,

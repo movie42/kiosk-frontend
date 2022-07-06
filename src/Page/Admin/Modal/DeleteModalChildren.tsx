@@ -7,7 +7,7 @@ import {
   Option,
 } from "../../../state/productItemState";
 import styled from "styled-components";
-import Noimage from "../../../Images/Noimage";
+import Noimage from "../../../Components/Images/Noimage";
 import ButtonDefaultStyle from "../../../Components/Buttons/ButtonDefault";
 import { translateLocalCurrency } from "../../../utils/helper/translateLocalCurrency";
 import { useRemoveProductsMutation } from "../../../generated/graphql";

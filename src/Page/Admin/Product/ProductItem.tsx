@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import ToggleButton from "../../../Components/Buttons/ToggleButton";
-import Noimage from "../../../Images/Noimage";
+import Noimage from "../../../Components/Images/Noimage";
 import { ProductListValues } from "../../../mockup/productList";
 import {
   Option,
