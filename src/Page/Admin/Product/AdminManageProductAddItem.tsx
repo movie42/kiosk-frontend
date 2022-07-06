@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
+import ReactS3Client from "react-aws-s3-typescript";
+import { v1 } from "uuid";
 
 import InputDefault from "../../../Components/Form/InputDefault";
 import Label from "../../../Components/Form/LabelDefault";
@@ -151,8 +153,10 @@ interface ProductMutationValue extends ProductDefaultValue {
 }
 
 const AdminManageProductAddItem = () => {
+  window.Buffer = window.Buffer || require("buffer").Buffer;
   const { storeId } = useParams();
   const { accessToken, refreshToken } = useRecoilValue(userState);
+  const [location, setLocation] = useState("");
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const [isModal, setIsModal] = useState(false);
@@ -179,6 +183,7 @@ const AdminManageProductAddItem = () => {
     handleSubmit,
     control,
     formState: { errors },
+    setError,
   } = useForm<{ product: ProductDefaultValue[] }>({
     defaultValues: {
       product: [
@@ -231,6 +236,39 @@ const AdminManageProductAddItem = () => {
     );
   };
 
+  const uploadFile = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+    index: number,
+  ) => {
+    const s3Config = {
+      bucketName: "kiosk-photo",
+      region: "ap-northeast-2",
+      dirName: "products",
+      accessKeyId: process.env.REACT_APP_AWS_ID as string,
+      secretAccessKey: process.env.REACT_APP_AWS_KEY as string,
+    };
+
+    const s3 = new ReactS3Client(s3Config);
+
+    if (e.target.files) {
+      const [file] = e.target.files;
+      const filename = `${v1().toString().replace("-", "")}.${
+        file.type.split("/")[1]
+      }`;
+
+      try {
+        const response = await s3.uploadFile(file, filename);
+        if (response.status >= 400) {
+          throw new Error("사진을 업로드할 수 없습니다.");
+        }
+        setLocation(response.location);
+      } catch (error) {
+        const errorMessage = error as string;
+        setError(`product.${index}.imageUrl`, { message: errorMessage });
+      }
+    }
+  };
+
   return (
     <>
       {isModal && (
@@ -278,21 +316,26 @@ const AdminManageProductAddItem = () => {
           {fields.map((item, index) => (
             <fieldset key={item.id}>
               <button onClick={() => remove(index)}>삭제</button>
-              <div>
-                <Label htmlFor="imageUrl">섬네일</Label>
-                <AddimageUrlLabel htmlFor="imageUrl">
-                  <IoIosAddCircle />
-                </AddimageUrlLabel>
-                <AddimageUrl
-                  id="imageUrl"
-                  type="file"
-                  accept="image/*"
-                  name="imageUrl"
-                  placeholder="사진 찾기"
-                  register={register}
-                  fieldName={`product.${index}`}
-                />
-              </div>
+              {location ? (
+                <img src={location} />
+              ) : (
+                <div>
+                  <Label htmlFor="imageUrl">섬네일</Label>
+                  <AddimageUrlLabel htmlFor="imageUrl">
+                    <IoIosAddCircle />
+                  </AddimageUrlLabel>
+                  <AddimageUrl
+                    id="imageUrl"
+                    type="file"
+                    accept="image/*"
+                    name="imageUrl"
+                    placeholder="사진 찾기"
+                    register={register}
+                    registerOptions={{ onChange: (e) => uploadFile(e, index) }}
+                    fieldName={`product.${index}`}
+                  />
+                </div>
+              )}
               <div>
                 <Label htmlFor="name">상품 이름</Label>
                 <InputDefault
