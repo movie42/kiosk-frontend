@@ -11,6 +11,7 @@ import { ProductListValues } from "../../../mockup/productList";
 import { Option } from "../../../state/productItemState";
 import { userState } from "../../../state/userState";
 import { translateLocalCurrency } from "../../../utils/helper/translateLocalCurrency";
+import Images from "../../../Components/Images/Images";
 
 interface IAdminProductDetailProps {}
 
@@ -123,9 +124,7 @@ const AdminProductDetail = () => {
       <BasicInfoContainer>
         <ImageContainer>
           {product.imageUrl ? (
-            <div>
-              <img src={product.imageUrl} alt={product.name} />
-            </div>
+            <Images src={product.imageUrl} alt={product.name} />
           ) : (
             <Noimage />
           )}

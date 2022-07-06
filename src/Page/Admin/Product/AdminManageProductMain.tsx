@@ -180,7 +180,7 @@ const AdminManageProductMain = () => {
     e: React.MouseEvent<HTMLButtonElement>,
   ) => {
     const linkName = e.currentTarget.dataset.link;
-    if (linkName === "order" && toggleState) {
+    if (linkName === "order" && store.isAvailable) {
       navigate(`/client/${userId}/${storeId}`);
     }
 
@@ -231,7 +231,7 @@ const AdminManageProductMain = () => {
             <p>가게를 열려면 버튼을 누르세요.</p>
           )}
           <ToggleButton
-            isActive={toggleState}
+            isActive={store.isAvailable}
             onClick={toggleHandler}
           ></ToggleButton>
           <LinkToCustomerWindowButton
