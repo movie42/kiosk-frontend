@@ -62,7 +62,6 @@ const ButtonItemWrapper = styled.div`
 
 const CreateProductButton = styled(ButtonDefaultStyle)``;
 const DeleteProductButton = styled(ButtonDefaultStyle)``;
-const UpdateProductButton = styled(ButtonDefaultStyle)``;
 
 const AdminManageProductItemList = () => {
   const { storeId, userId } = useParams();
@@ -101,10 +100,6 @@ const AdminManageProductItemList = () => {
     },
   );
 
-  const handleUpdateItem = () => {
-    handleSelectOption({ options: Option.UPDATE });
-  };
-
   const handleDeleteItem = () => {
     handleSelectOption({ options: Option.DELETE });
   };
@@ -138,10 +133,6 @@ const AdminManageProductItemList = () => {
               >
                 <MdAddCircle />
                 <CreateProductButton>상품등록</CreateProductButton>
-              </ButtonItemWrapper>
-              <ButtonItemWrapper onClick={handleUpdateItem}>
-                <MdCreate />
-                <UpdateProductButton>상품수정</UpdateProductButton>
               </ButtonItemWrapper>
               <ButtonItemWrapper onClick={handleDeleteItem}>
                 <MdDelete />

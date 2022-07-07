@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "styled-components";
+import { motion, Variant, Variants } from "framer-motion";
 
-const Wrapper = styled.div`
+const Wrapper = styled(motion.div)`
   position: relative;
   overflow: hidden;
   width: 100%;
@@ -16,7 +17,10 @@ const Wrapper = styled.div`
   }
 `;
 
-interface IImagesProps extends React.ImgHTMLAttributes<HTMLImageElement> {}
+interface IImagesProps extends React.ImgHTMLAttributes<HTMLImageElement> {
+  variants?: Variant;
+  whileHover?: string;
+}
 
 const Images = ({ ...props }: IImagesProps) => {
   return (

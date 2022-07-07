@@ -1,8 +1,11 @@
+import { motion, Variants } from "framer-motion";
 import React, { MouseEvent, ReactNode, useEffect } from "react";
+import { MdCreate } from "react-icons/md";
 import { useQueryClient } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
+import ButtonDefaultStyle from "../../../Components/Buttons/ButtonDefault";
 import ToggleButton from "../../../Components/Buttons/ToggleButton";
 import Images from "../../../Components/Images/Images";
 import Noimage from "../../../Components/Images/Noimage";
@@ -17,11 +20,11 @@ import {
 import { userState } from "../../../state/userState";
 import { translateLocalCurrency } from "../../../utils/helper/translateLocalCurrency";
 
-const ItemWrapper = styled.div`
+const ItemWrapper = styled(motion.div)`
   position: relative;
 `;
 
-const Item = styled.li<{ selectOption: Option; selected: boolean }>`
+const Item = styled(motion.li)<{ selectOption: Option; selected: boolean }>`
   .item-container {
     position: relative;
     cursor: pointer;
@@ -43,7 +46,7 @@ const Item = styled.li<{ selectOption: Option; selected: boolean }>`
       height: 100%;
       background-color: ${(props) =>
         props.selected ? "unset" : props.theme.color.background80};
-      z-index: 4;
+      z-index: 11;
     }
     .image-container {
       overflow: hidden;
@@ -74,12 +77,18 @@ const Item = styled.li<{ selectOption: Option; selected: boolean }>`
     }
   }
 `;
-
-const ToggleContainer = styled.div`
+const ButtonContainer = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 100;
+  z-index: 11;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const ToggleContainer = styled.div`
   display: flex;
   font-size: 1.4rem;
   font-weight: 600;
@@ -92,10 +101,47 @@ const ToggleContainer = styled.div`
   }
 `;
 
+const UpdateButtonWrapper = styled.div`
+  padding-right: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  color: ${({ theme }) => theme.color.fontColorWhite};
+  font-size: 2.2rem;
+  button {
+    background-color: unset;
+    padding: 0;
+    padding-right: 0.5rem;
+  }
+`;
+
+const UpdateProductButton = styled(ButtonDefaultStyle)`
+  font-size: 1.5rem;
+`;
+
 interface IProductItemProps extends React.HTMLAttributes<HTMLLIElement> {
   productData: ProductListValues[];
 }
 
+const boxVariants: Variants = {
+  init: { scale: 1 },
+  hover: {
+    scale: 1,
+    transition: {
+      duration: 0.4,
+    },
+  },
+};
+
+const imageBoxVariants: Variants = {
+  init: { scale: 1 },
+  hover: {
+    scale: 2,
+    transition: {
+      duration: 0.4,
+    },
+  },
+};
 const ProductItem = ({ productData }: IProductItemProps) => {
   const navigate = useNavigate();
   const { userId, storeId } = useParams();
@@ -141,22 +187,31 @@ const ProductItem = ({ productData }: IProductItemProps) => {
     setSelectProduct((products) => [...products, selectedProduct]);
   };
 
+  const handleUpdateItem = () => {};
+
   return (
     <>
       {productData.map((product) => (
-        <ItemWrapper>
-          <ToggleContainer>
-            <ToggleButton
-              onClick={() => toggleProductValue({ id: product.id })}
-              size={5}
-              isActive={product?.isAvailable}
-            />
-            {product.isAvailable ? (
-              <p>판매 중입니다.</p>
-            ) : (
-              <p>판매가 중단 됐습니다.</p>
-            )}
-          </ToggleContainer>
+        <ItemWrapper
+          variants={boxVariants}
+          initial="init"
+          whileHover="hover"
+          key={product.id}
+        >
+          <ButtonContainer>
+            <ToggleContainer>
+              <ToggleButton
+                onClick={() => toggleProductValue({ id: product.id })}
+                size={5}
+                isActive={product?.isAvailable}
+              />
+              {product.isAvailable ? <p>판매</p> : <p>준비</p>}
+            </ToggleContainer>
+            <UpdateButtonWrapper onClick={handleUpdateItem}>
+              <MdCreate />
+              <UpdateProductButton>수정</UpdateProductButton>
+            </UpdateButtonWrapper>
+          </ButtonContainer>
           <Item
             key={product.id}
             data-id={product.id}
@@ -173,11 +228,14 @@ const ProductItem = ({ productData }: IProductItemProps) => {
               <div className="image-container">
                 <span className="transparent-box"></span>
                 {product.imageUrl ? (
-                  <Images src={product.imageUrl} alt={product.name} />
+                  <motion.div variants={imageBoxVariants} whileHover="hover">
+                    <Images src={product.imageUrl} alt={product.name} />
+                  </motion.div>
                 ) : (
                   <Noimage />
                 )}
               </div>
+
               <div className="item-info-container">
                 <h3>{product.name}</h3>
                 <h4>가격 {translateLocalCurrency(product.price, "ko-KR")}</h4>

@@ -11,7 +11,7 @@ const Wrapper = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 10;
+  z-index: 20;
 `;
 
 const ModalContainer: React.FC<IModalProps> = styled.div<IModalProps>`

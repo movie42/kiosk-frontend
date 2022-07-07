@@ -1,7 +1,7 @@
 export const translateLocalCurrency = (
   price: number,
   locales?: any,
-  options: any = { style: "currency", currency: "KRW" },
+  options?: any,
 ) => {
   return price.toLocaleString(locales, options);
 };
