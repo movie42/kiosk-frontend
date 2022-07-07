@@ -110,6 +110,7 @@ export interface IOrderSelectedItem {
   price: number;
   totalCount: number;
   totalPrice: number;
+  imageUrl?: string | null | undefined;
 }
 
 const ClientMenu = () => {
@@ -126,7 +127,7 @@ const ClientMenu = () => {
   // select menu item & add count (in Modal)
   const [count, setCount] = useState(0);
   const [selectedItem, setSelectedItem] = useState<ProductListValues[]>([]);
-
+  console.log(selectedItem);
   // make order list
   const [orderItem, setOrderItem] = useRecoilState(selectMenuListState);
 
@@ -145,8 +146,8 @@ const ClientMenu = () => {
     {
       onSuccess: (data) => {
         if (data.store?.products) {
-          const productList = data.store.products.map<ProductListValues>(
-            (value) => ({
+          const productList = data.store.products
+            .map<ProductListValues>((value) => ({
               id: Number(value.id),
               name: value.name,
               price: value.price,
@@ -156,12 +157,13 @@ const ClientMenu = () => {
                 id: Number(value.id),
                 name: value.name,
               })),
-            }),
-          );
+              isAvailable: value.isAvailable,
+            }))
+            .filter((value) => value.isAvailable === false);
           setMenuList(productList);
         }
       },
-    },
+    }
   );
 
   return isLoading ? (

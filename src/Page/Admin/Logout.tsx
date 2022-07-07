@@ -13,17 +13,18 @@ const Logout = () => {
   const { removeUser } = useRemoveUserInfoInLocalStorage();
 
   useEffect(() => {
-    setUserInfo({
-      isLogin: false,
-      id: undefined,
-      email: undefined,
-      name: undefined,
-      accessToken: undefined,
-      refreshToken: undefined,
-    });
-    removeUser("kiosk-user");
-
-    setTimeout(() => navigate("/"), 3000);
+    setTimeout(() => {
+      setUserInfo({
+        isLogin: false,
+        id: undefined,
+        email: undefined,
+        name: undefined,
+        accessToken: undefined,
+        refreshToken: undefined,
+      });
+      removeUser("kiosk-user");
+      navigate("/");
+    }, 3000);
   }, []);
 
   return (

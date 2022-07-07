@@ -15,6 +15,16 @@ const Wrapper = styled.div`
     overflow: hidden;
     position: relative;
     height: 15rem;
+    .transparent-box {
+      position: absolute;
+      z-index: 1;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+      background-color: ${({ theme }) => theme.color.backgroundBlack60};
+    }
   }
   .item-info-container {
     align-self: center;
@@ -50,6 +60,7 @@ const OptionButton = styled(ButtonDefaultStyle)<{ selected?: boolean }>`
   background-color: ${(props) =>
     props.selected ? props.theme.color.primary800 : props.theme.color.gray300};
   margin-right: 1rem;
+  font-size: 1.6rem;
   flex-grow: 1;
 `;
 const OrderContainer = styled.div`
@@ -105,10 +116,11 @@ const MenuItemModalChildren: React.FC<IMenuItemModalChildrenProps> = ({
   const orderSelectedItem = () => {
     const [sameMenu] = orderItem.filter(
       (ordered) =>
-        ordered.productId === selected.id && ordered.option === selectedOption,
+        ordered.productId === selected.id && ordered.option === selectedOption
     );
-
-    const { option: hasOption }: any = selected;
+    console.log(orderItem);
+    console.log(sameMenu);
+    const { options: hasOption }: any = selected;
 
     if (count === 0) {
       alert("수량을 선택해주세요");
@@ -137,7 +149,7 @@ const MenuItemModalChildren: React.FC<IMenuItemModalChildrenProps> = ({
             return a?.option > b?.option ? 1 : -1;
           }
           return a.productId - b.productId;
-        }),
+        })
       );
     }
 
@@ -155,7 +167,7 @@ const MenuItemModalChildren: React.FC<IMenuItemModalChildrenProps> = ({
             return a?.option > b?.option ? 1 : -1;
           }
           return a.productId - b.productId;
-        }),
+        })
       );
     }
 
@@ -173,6 +185,7 @@ const MenuItemModalChildren: React.FC<IMenuItemModalChildrenProps> = ({
   return (
     <Wrapper>
       <div className="image-container">
+        <span className="transparent-box"></span>
         <ItemNameContainer>
           <h2>{selected.name}</h2>
         </ItemNameContainer>
@@ -187,11 +200,12 @@ const MenuItemModalChildren: React.FC<IMenuItemModalChildrenProps> = ({
             <OptionContainer>
               {selected.options?.map((item, i) => (
                 <OptionButton
+                  className="noto"
                   key={item.name}
                   selected={selectedOption === item.name ? true : false}
                   onClick={() => setSelectedOption(item.name)}
                 >
-                  {item}
+                  {item.name}
                 </OptionButton>
               ))}
             </OptionContainer>
@@ -199,10 +213,7 @@ const MenuItemModalChildren: React.FC<IMenuItemModalChildrenProps> = ({
         )}
         <Title>
           총 가격&nbsp;
-          {translateLocalCurrency(count * Number(selected.price), "ko-KR", {
-            style: "currency",
-            currency: "KRW",
-          })}
+          {translateLocalCurrency(count * Number(selected.price), "ko-KR")}원
         </Title>
         <OrderContainer>
           <MinusCountButton
