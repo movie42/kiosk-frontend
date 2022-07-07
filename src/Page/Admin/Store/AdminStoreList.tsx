@@ -12,7 +12,7 @@ import {
 } from "../../../generated/graphql";
 import graphqlReqeustClient from "../../../lib/graphqlRequestClient";
 import { storesState, storeStateProps } from "../../../state/storeState";
-import { Headline2 } from "../../../mixin";
+import { Body1, Headline2, Headline3 } from "../../../mixin";
 import { useEffect, useState } from "react";
 import Modal from "../../../Components/Modals/Modal";
 import IsOpenModalChildren from "../Modal/IsOpenModalChildren";
@@ -24,7 +24,16 @@ import ToggleButton from "../../../Components/Buttons/ToggleButton";
 const Wrapper = styled.div``;
 const Header = styled.div`
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
+  ${({ theme }) => theme.device.tablet} {
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+  ${({ theme }) => theme.device.mobile} {
+    flex-direction: column;
+    margin-bottom: 1rem;
+  }
 `;
 
 const AddStoreButton = styled(ButtonDefaultStyle)`
@@ -39,13 +48,22 @@ const AddStoreButton = styled(ButtonDefaultStyle)`
   span {
     margin-left: 0.5rem;
   }
+  ${({ theme }) => theme.device.tablet} {
+    padding: 0;
+  }
+  ${({ theme }) => theme.device.mobile} {
+    align-self: flex-end;
+  }
 `;
 
 const StoreList = styled.ul`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   grid-gap: 1rem;
-  grid-template-rows: minmax(15rem, 15rem);
+  grid-auto-rows: minmax(15rem, 15rem);
+  ${({ theme }) => theme.device.tablet} {
+    grid-template-columns: auto;
+  }
 `;
 
 const Item = styled.li`
@@ -62,7 +80,7 @@ const Item = styled.li`
     color: ${(props) => props.theme.color.fontColorBlack};
   }
   h3 {
-    ${Headline2};
+    ${Headline3};
     padding: 0;
     margin: 0;
   }
@@ -235,7 +253,7 @@ const AdminStoreList = () => {
               <div className="button-container">
                 <div className="toggle-button-box">
                   <ToggleButton
-                    size={3}
+                    size={4}
                     isActive={item.isAvailable}
                     onClick={() => {
                       toggleHandler(item.id);
