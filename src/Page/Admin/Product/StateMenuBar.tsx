@@ -12,25 +12,26 @@ import {
 
 import Modal from "../../../Components/Modals/Modal";
 import DeleteModalChildren from "../Modal/DeleteModalChildren";
-import UpdateModalChildren from "../Modal/UpdateModalChildren";
 import useModalHook from "../../../utils/customHooks/useModalHook";
+import { Headline3, SubTitle2 } from "../../../mixin";
 
 const MenuBarContainer: React.FC<SelectOption> = styled.div<SelectOption>`
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 0 2rem;
-  background-color: ${(props) => props.theme.color.backgroundBlack100};
+  padding: 2rem;
+  background-color: ${(props) => props.theme.color.background100};
+  color: ${(props) => props.theme.color.fontColorBlack};
   height: 6rem;
-
+  z-index: 20;
+  border: 1px solid ${(props) => props.theme.color.gray300};
   h2 {
-    font-size: 2.2rem;
-    font-weight: bold;
-    color: ${(props) => props.theme.color.fontColorWhite};
+    ${SubTitle2}
   }
 
   button {
