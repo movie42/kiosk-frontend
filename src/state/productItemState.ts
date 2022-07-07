@@ -1,4 +1,5 @@
 import { atom } from "recoil";
+import { Z_ASCII } from "zlib";
 import { ProductListValues } from "../mockup/productList";
 import { IOrderSelectedItem } from "../Page/Client/ClientMenu";
 
@@ -36,4 +37,9 @@ export const selectMenuListState = atom({
 export const isCurrentSelectItemState = atom({
   key: "isCurrentSelectItemState",
   default: 0,
+});
+
+export const updateProductState = atom({
+  key: "updateProductState",
+  default: <ProductListValues>{},
 });
