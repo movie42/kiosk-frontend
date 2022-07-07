@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
-import ReactS3Client from "react-aws-s3-typescript";
-import { v1 } from "uuid";
 
 import InputDefault from "../../../Components/Form/InputDefault";
 import Label from "../../../Components/Form/LabelDefault";
@@ -18,6 +16,7 @@ import { useRecoilValue } from "recoil";
 import { userState } from "../../../state/userState";
 import { useQueryClient } from "react-query";
 import Images from "../../../Components/Images/Images";
+import useImageUpload from "../../../utils/customHooks/useImageUpload";
 
 const Container = styled.div`
   margin-bottom: 8rem;
@@ -157,7 +156,8 @@ const AdminManageProductAddItem = () => {
   window.Buffer = window.Buffer || require("buffer").Buffer;
   const { storeId, userId } = useParams();
   const { accessToken, refreshToken } = useRecoilValue(userState);
-  const [location, setLocation] = useState<string[]>([]);
+  const { error, location, uploadFile } = useImageUpload();
+
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const [isModal, setIsModal] = useState(false);
@@ -235,51 +235,19 @@ const AdminManageProductAddItem = () => {
     );
   };
 
-  const uploadFile = async (
-    e: React.ChangeEvent<HTMLInputElement>,
-    index: number,
-  ) => {
-    const accessKeyId = process.env.REACT_APP_AWS_ID as string;
-    const secretAccessKey = process.env.REACT_APP_AWS_KEY as string;
-    const bucketName = process.env.REACT_APP_AWS_BUCKET as string;
-    const region = process.env.REACT_APP_AWS_REGION as string;
-    const s3Config = {
-      bucketName,
-      region,
-      dirName: "products",
-      accessKeyId,
-      secretAccessKey,
-    };
-
-    const s3 = new ReactS3Client(s3Config);
-
-    if (e.target.files) {
-      const [file] = e.target.files;
-      const filename = `${v1().toString().replace("-", "")}`;
-
-      try {
-        const response = await s3.uploadFile(file, filename);
-
-        if (response.status >= 400) {
-          throw new Error("사진을 업로드할 수 없습니다.");
-        }
-
-        if (location.length !== 0) {
-          setLocation((value) => value.splice(index, 1, response.location));
-          setValue(`product.${index}.imageUrl`, response.location);
-          return;
-        }
-
-        setLocation((value) => [...value, response.location]);
-        setValue(`product.${index}.imageUrl`, response.location);
-      } catch (error) {
-        const errorMessage = error as string;
-        setError(`product.${index}.imageUrl`, {
-          message: errorMessage,
-        });
-      }
+  useEffect(() => {
+    if (location) {
+      setValue(`product.0.imageUrl`, location);
     }
-  };
+  }, [location]);
+
+  useEffect(() => {
+    if (error) {
+      setError(`product.0.imageUrl`, {
+        message: error,
+      });
+    }
+  }, [error]);
 
   return (
     <>
@@ -307,7 +275,7 @@ const AdminManageProductAddItem = () => {
       <Container>
         <CreateProductHeader>
           <h2>상품 등록</h2>
-          <div>
+          {/* <div>
             <p>등록할 상품을 추가하려면 오른쪽 버튼을 누르세요.</p>
             <AddProductButton
               onClick={() =>
@@ -322,20 +290,19 @@ const AdminManageProductAddItem = () => {
             >
               <IoIosAddCircle />
             </AddProductButton>
-          </div>
+          </div> */}
         </CreateProductHeader>
         <form onSubmit={onSubmit}>
           {fields.map((item, index) => (
             <fieldset key={item.id}>
-              <button
+              {/* <button
                 onClick={() => {
-                  setLocation((value) => value.splice(index, 1));
                   remove(index);
                 }}
               >
                 삭제
-              </button>
-              {location[index] && <Images src={location[index]} />}
+              </button> */}
+              {location && <Images src={location} />}
               <div>
                 <Label htmlFor="imageUploader">섬네일</Label>
                 <AddimageUrlLabel htmlFor="imageUploader">
@@ -347,7 +314,7 @@ const AdminManageProductAddItem = () => {
                   accept="image/*"
                   name="imageUrl"
                   placeholder="사진 찾기"
-                  onChange={(e) => uploadFile(e, index)}
+                  onChange={(e) => uploadFile(e)}
                 />
                 <AddimageUrl
                   id="imageUrl"
