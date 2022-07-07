@@ -182,7 +182,7 @@ const AdminManageProductMain = () => {
   const [store, setStore] = useRecoilState(storeState);
   const { accessToken, refreshToken } = useRecoilValue(userState);
 
-  const [toggleState, setToggleState] = useState(false);
+  const [toggleState, setToggleState] = useState(store.isAvailable);
   const { id, setId, isModal, setIsModal, confirm, setConfirm } =
     useModalHook();
 
