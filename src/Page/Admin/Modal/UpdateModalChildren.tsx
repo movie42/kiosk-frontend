@@ -1,14 +1,19 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useForm } from "react-hook-form";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { FieldValue, FieldValues, useForm } from "react-hook-form";
+import { useQueryClient } from "react-query";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
+import { Product, useUpdateProductMutation } from "../../../generated/graphql";
+import graphqlReqeustClient from "../../../lib/graphqlRequestClient";
 import { ProductListValues } from "../../../mockup/productList";
 import {
   productListState,
   selectOptionState,
   selectProductListState,
   Option,
+  updateProductState,
 } from "../../../state/productItemState";
+import { userState } from "../../../state/userState";
 
 import UpdateModalForm from "../Product/UpdateModalForm";
 
@@ -55,70 +60,64 @@ interface ISelectModalChildrenProps {
   setIsModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+const updateDefault = {
+  id: 0,
+  name: "",
+  price: 0,
+  isAvailable: false,
+  options: [],
+  imageUrl: "",
+  description: "",
+};
+
 const UpdateModalChildren = ({ setIsModal }: ISelectModalChildrenProps) => {
+  const { accessToken } = useRecoilValue(userState);
+  const queryClient = useQueryClient();
   const setSelectOption = useSetRecoilState(selectOptionState);
-  const [productList, setProductList] = useRecoilState(productListState);
-  const [selectProduct, setSelectProduct] = useRecoilState<ProductListValues[]>(
-    selectProductListState,
+  const { mutate: updateProductMutation } = useUpdateProductMutation(
+    graphqlReqeustClient(accessToken),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("getProducts");
+      },
+    },
   );
+  const [selectUpdateProduct, setSelectUpdateProduct] =
+    useRecoilState<ProductListValues>(updateProductState);
+
   const {
     register,
     formState: { errors },
     handleSubmit,
-  } = useForm();
+    setValue,
+  } = useForm<ProductListValues>();
 
   const onCancel = () => {
-    setSelectProduct([]);
+    setSelectUpdateProduct(updateDefault);
     setSelectOption({ options: Option.NONE });
     setIsModal(false);
   };
 
-  const selectUpdateItemsSubmitHandler = handleSubmit((data: object) => {
-    const dataArray = Object.entries(data);
-
-    let selectValue: {
-      name: string;
-      desc: string;
-      option?: any;
-      price: number;
-      thumbnail?: any;
+  const selectUpdateItemsSubmitHandler = handleSubmit((data) => {
+    console.log(selectUpdateProduct.id);
+    // TODO: productId가 잘못되었습니다. 백앤드에 수정을 요청해야합니다.
+    const updateData = {
+      productId: selectUpdateProduct.id,
+      name: data.name,
+      price: Number(data.price),
+      imageUrl: (data.imageUrl as string) || undefined,
+      description: (data.description as string) || undefined,
     };
-
-    const newProductList: ProductListValues[] = productList.map((product) => {
-      const selectProduct = dataArray.some((updateProduct) => {
-        const [key, value] = updateProduct;
-        selectValue = value;
-        return Number(key) === product.id;
-      });
-
-      if (!selectProduct) {
-        return product;
-      }
-
-      if (selectValue.option !== "") {
-        selectValue.option = selectValue.option.split(",");
-      } else {
-        selectValue.option = [];
-      }
-
-      if (selectValue.thumbnail.length === 0) {
-        selectValue.thumbnail = null;
-      } else {
-        selectValue.thumbnail = selectValue.thumbnail[0].name;
-      }
-
-      return { ...product, ...selectValue, select: false };
-    });
-
-    setProductList(newProductList);
-    setIsModal(false);
-    setSelectProduct([]);
-    setSelectOption({ options: Option.NONE });
+    updateProductMutation(
+      { products: updateData },
+      {
+        onSuccess: () => {
+          setIsModal(false);
+          setSelectUpdateProduct(updateDefault);
+        },
+      },
+    );
   });
-
-  /*
-  TODO: form 필드 선택시 백그라운드를 변경하는 로직 필요
-  */
 
   return (
     <>
@@ -132,16 +131,7 @@ const UpdateModalChildren = ({ setIsModal }: ISelectModalChildrenProps) => {
         </StateInfoContainer>
         <FormContainer>
           <form>
-            {selectProduct?.map((item) => {
-              const fieldName = item.id;
-              return (
-                <UpdateModalForm
-                  fieldName={fieldName.toString()}
-                  register={register}
-                  item={item}
-                />
-              );
-            })}
+            <UpdateModalForm register={register} setValue={setValue} />
           </form>
         </FormContainer>
         <ButtonContainer>

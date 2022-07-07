@@ -8,9 +8,6 @@ import { userState } from "../../../state/userState";
 import {
   useMyStoresQuery,
   useRemoveStoreMutation,
-  useStoreIsAvailableQuery,
-  useStoreQuery,
-  useStoresQuery,
   useToggleStoreIsAvailableMutation,
 } from "../../../generated/graphql";
 import graphqlReqeustClient from "../../../lib/graphqlRequestClient";
@@ -22,6 +19,7 @@ import IsOpenModalChildren from "../Modal/IsOpenModalChildren";
 import { useQueryClient } from "react-query";
 import { MdDelete, MdCreate } from "react-icons/md";
 import useModalHook from "../../../utils/customHooks/useModalHook";
+import ToggleButton from "../../../Components/Buttons/ToggleButton";
 
 const Wrapper = styled.div``;
 const Header = styled.div`
@@ -84,43 +82,6 @@ const Item = styled.li`
     .delete-button {
       margin-left: 1.8rem;
     }
-  }
-`;
-
-const ToggleButton: React.FC<
-  | IAdminMenuProps
-  | React.DetailedHTMLProps<
-      React.HTMLAttributes<HTMLDivElement>,
-      HTMLDivElement
-    >
-> = styled.div<IAdminMenuProps>`
-  position: relative;
-  z-index: 1;
-  width: 3rem;
-  height: 1rem;
-  cursor: pointer;
-  background-color: ${(props) =>
-    props.isActive ? props.theme.color.primary600 : props.theme.color.error500};
-  border: 0;
-  border-radius: 2rem;
-  padding: 0.5rem 0.3rem;
-  margin: 0.5rem;
-  box-shadow: inset 0.1rem 0.15rem 0.2rem
-    ${(props) =>
-      props.isActive
-        ? props.theme.color.primary800
-        : props.theme.color.error800};
-  &::before {
-    position: absolute;
-    top: 50%;
-    left: ${(props) => (props.isActive ? "unset" : "0.2rem")};
-    right: ${(props) => (props.isActive ? "0.2rem" : "unset")};
-    transform: translateY(-50%);
-    width: 1.7rem;
-    height: 1.7rem;
-    border-radius: 2rem;
-    background-color: ${(props) => props.theme.color.background100};
-    content: "";
   }
 `;
 
@@ -274,12 +235,13 @@ const AdminStoreList = () => {
               <div className="button-container">
                 <div className="toggle-button-box">
                   <ToggleButton
+                    size={3}
                     isActive={item.isAvailable}
                     onClick={() => {
                       toggleHandler(item.id);
                       setToggleState(item.isAvailable);
                     }}
-                  ></ToggleButton>
+                  />
                 </div>
                 <div className="various-button-box">
                   <button

@@ -296,6 +296,13 @@ export type AddProductsMutationVariables = Exact<{
 
 export type AddProductsMutation = { __typename?: 'Mutation', addProducts: boolean };
 
+export type UpdateProductMutationVariables = Exact<{
+  products: EditProductInput;
+}>;
+
+
+export type UpdateProductMutation = { __typename?: 'Mutation', updateProduct: boolean };
+
 export type RemoveProductsMutationVariables = Exact<{
   productIds: RemoveProductInput;
 }>;
@@ -438,6 +445,24 @@ export const useAddProductsMutation = <
     useMutation<AddProductsMutation, TError, AddProductsMutationVariables, TContext>(
       ['addProducts'],
       (variables?: AddProductsMutationVariables) => fetcher<AddProductsMutation, AddProductsMutationVariables>(client, AddProductsDocument, variables, headers)(),
+      options
+    );
+export const UpdateProductDocument = `
+    mutation updateProduct($products: EditProductInput!) {
+  updateProduct(products: $products)
+}
+    `;
+export const useUpdateProductMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      client: GraphQLClient,
+      options?: UseMutationOptions<UpdateProductMutation, TError, UpdateProductMutationVariables, TContext>,
+      headers?: RequestInit['headers']
+    ) =>
+    useMutation<UpdateProductMutation, TError, UpdateProductMutationVariables, TContext>(
+      ['updateProduct'],
+      (variables?: UpdateProductMutationVariables) => fetcher<UpdateProductMutation, UpdateProductMutationVariables>(client, UpdateProductDocument, variables, headers)(),
       options
     );
 export const RemoveProductsDocument = `

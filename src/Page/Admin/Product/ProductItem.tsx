@@ -1,5 +1,5 @@
 import { motion, Variants } from "framer-motion";
-import React, { MouseEvent, ReactNode, useEffect } from "react";
+import React, { MouseEvent, ReactNode, useEffect, useState } from "react";
 import { MdCreate } from "react-icons/md";
 import { useQueryClient } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
@@ -9,6 +9,7 @@ import ButtonDefaultStyle from "../../../Components/Buttons/ButtonDefault";
 import ToggleButton from "../../../Components/Buttons/ToggleButton";
 import Images from "../../../Components/Images/Images";
 import Noimage from "../../../Components/Images/Noimage";
+import Modal from "../../../Components/Modals/Modal";
 import { useToggleProductIsAvailableMutation } from "../../../generated/graphql";
 import graphqlReqeustClient from "../../../lib/graphqlRequestClient";
 import { ProductListValues } from "../../../mockup/productList";
@@ -16,9 +17,12 @@ import {
   Option,
   selectOptionState,
   selectProductListState,
+  updateProductState,
 } from "../../../state/productItemState";
 import { userState } from "../../../state/userState";
+import useModalHook from "../../../utils/customHooks/useModalHook";
 import { translateLocalCurrency } from "../../../utils/helper/translateLocalCurrency";
+import UpdateModalChildren from "../Modal/UpdateModalChildren";
 
 const ItemWrapper = styled(motion.div)`
   position: relative;
@@ -150,6 +154,9 @@ const ProductItem = ({ productData }: IProductItemProps) => {
   const [selectProduct, setSelectProduct] = useRecoilState(
     selectProductListState,
   );
+  const [selectUpdateProduct, setSelectUpdateProduct] =
+    useRecoilState(updateProductState);
+  const { isModal, setIsModal } = useModalHook();
   const selectOption = useRecoilValue(selectOptionState);
 
   const { mutate: toggleProductValue } = useToggleProductIsAvailableMutation(
@@ -187,10 +194,19 @@ const ProductItem = ({ productData }: IProductItemProps) => {
     setSelectProduct((products) => [...products, selectedProduct]);
   };
 
-  const handleUpdateItem = () => {};
+  const handleUpdateItem = (id: number) => {
+    const [updateItem] = productData.filter((value) => value.id === id);
+    setSelectUpdateProduct(updateItem);
+    setIsModal(true);
+  };
 
   return (
     <>
+      {isModal && (
+        <Modal strach={true}>
+          <UpdateModalChildren setIsModal={setIsModal} />
+        </Modal>
+      )}
       {productData.map((product) => (
         <ItemWrapper
           variants={boxVariants}
@@ -207,7 +223,7 @@ const ProductItem = ({ productData }: IProductItemProps) => {
               />
               {product.isAvailable ? <p>판매</p> : <p>준비</p>}
             </ToggleContainer>
-            <UpdateButtonWrapper onClick={handleUpdateItem}>
+            <UpdateButtonWrapper onClick={() => handleUpdateItem(product.id)}>
               <MdCreate />
               <UpdateProductButton>수정</UpdateProductButton>
             </UpdateButtonWrapper>
@@ -235,10 +251,9 @@ const ProductItem = ({ productData }: IProductItemProps) => {
                   <Noimage />
                 )}
               </div>
-
               <div className="item-info-container">
                 <h3>{product.name}</h3>
-                <h4>가격 {translateLocalCurrency(product.price, "ko-KR")}</h4>
+                <h4>{translateLocalCurrency(product.price, "ko-KR")}원</h4>
               </div>
             </div>
           </Item>

@@ -9,8 +9,7 @@ import Textarea from "../../../Components/Form/TextareaDefault";
 import ButtonDefaultStyle from "../../../Components/Buttons/ButtonDefault";
 import { IoIosAddCircle } from "react-icons/io";
 import Modal from "../../../Components/Modals/Modal";
-import { usePost } from "../../../utils/customHooks/usePost";
-import { InputMaybe, useAddProductsMutation } from "../../../generated/graphql";
+import { useAddProductsMutation } from "../../../generated/graphql";
 import graphqlReqeustClient from "../../../lib/graphqlRequestClient";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../../state/userState";
@@ -153,7 +152,6 @@ interface ProductMutationValue extends ProductDefaultValue {
 }
 
 const AdminManageProductAddItem = () => {
-  window.Buffer = window.Buffer || require("buffer").Buffer;
   const { storeId, userId } = useParams();
   const { accessToken, refreshToken } = useRecoilValue(userState);
   const { error, location, uploadFile } = useImageUpload();
@@ -181,7 +179,6 @@ const AdminManageProductAddItem = () => {
     formState: { errors },
     setError,
     setValue,
-    getValues,
   } = useForm<{ product: ProductDefaultValue[] }>({
     defaultValues: {
       product: [
@@ -314,7 +311,7 @@ const AdminManageProductAddItem = () => {
                   accept="image/*"
                   name="imageUrl"
                   placeholder="사진 찾기"
-                  onChange={(e) => uploadFile(e)}
+                  onChange={uploadFile}
                 />
                 <AddimageUrl
                   id="imageUrl"

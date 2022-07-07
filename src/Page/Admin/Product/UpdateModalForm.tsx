@@ -1,24 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { FieldValues, UseFormRegister } from "react-hook-form";
+import { FieldValues, UseFormRegister, UseFormSetValue } from "react-hook-form";
 import { IoIosAddCircle } from "react-icons/io";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import InputDefault from "../../../Components/Form/InputDefault";
 import LabelDefault from "../../../Components/Form/LabelDefault";
 import TextareaDefault from "../../../Components/Form/TextareaDefault";
+import Images from "../../../Components/Images/Images";
 import { ProductListValues } from "../../../mockup/productList";
-import { isCurrentSelectItemState } from "../../../state/productItemState";
+import {
+  isCurrentSelectItemState,
+  updateProductState,
+} from "../../../state/productItemState";
+import useImageUpload from "../../../utils/customHooks/useImageUpload";
 
-const FieldSet = styled.fieldset<{ isSelect: boolean }>`
+const FieldSet = styled.fieldset`
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   margin-bottom: 1rem;
   padding: 1rem 1rem;
-  border: ${(props) =>
-    props.isSelect
-      ? ` 4px solid ${props.theme.color.primary700}`
-      : `1px solid ${props.theme.color.gray200}`};
+  border: 1px solid ${(props) => props.theme.color.gray200};
 `;
 
 const FieldContainer = styled.div`
@@ -55,6 +57,11 @@ const FieldContainer = styled.div`
   }
 `;
 
+const ImageContainer = styled.div`
+  margin: 0 auto;
+  width: 50%;
+`;
+
 const AddThumbnail = styled(InputDefault)`
   display: none;
 `;
@@ -65,58 +72,55 @@ const AddThumbnailLabel = styled(LabelDefault)`
 `;
 
 interface IUpdateModalFormProps {
-  fieldName: string;
-  register: UseFormRegister<FieldValues>;
-  item: ProductListValues;
+  register: UseFormRegister<ProductListValues>;
+  setValue: UseFormSetValue<ProductListValues>;
+  fieldName?: string;
 }
 
 const UpdateModalForm = ({
   fieldName,
   register,
-  item,
+  setValue,
 }: IUpdateModalFormProps) => {
-  const [currentItemId, setCurrentItemId] = useRecoilState(
-    isCurrentSelectItemState,
-  );
-  const [isSelect, setIsSelect] = useState(false);
+  const item = useRecoilValue(updateProductState);
+  const [thumbnailImage, setThumbnailImage] = useState(item.imageUrl);
 
-  const toggleSelect = (e: React.MouseEvent<HTMLFieldSetElement>) => {
-    const { id } = e.currentTarget.dataset;
-    setCurrentItemId(Number(id));
-  };
+  const { location, error, uploadFile } = useImageUpload();
 
   useEffect(() => {
-    if (currentItemId === item.id) {
-      setIsSelect(true);
-      return;
+    if (location) {
+      setThumbnailImage(location);
+      setValue("imageUrl", location);
     }
+  }, [location]);
 
-    setIsSelect(false);
-  }, [currentItemId]);
   return (
-    <FieldSet
-      name={fieldName}
-      data-id={item.id}
-      isSelect={isSelect}
-      onClick={toggleSelect}
-    >
+    <FieldSet name={fieldName} data-id={item.id}>
+      {thumbnailImage && (
+        <ImageContainer>
+          <Images src={thumbnailImage} alt={item.name} />
+        </ImageContainer>
+      )}
       <FieldContainer>
-        <LabelDefault htmlFor="file">섬네일</LabelDefault>
-        {item.imageUrl ? (
-          <AddThumbnailLabel>{item.imageUrl}</AddThumbnailLabel>
-        ) : (
-          //TODO: 이미지를 S3에 업로드 해야합니다.
-          <AddThumbnailLabel>
-            <IoIosAddCircle />
-          </AddThumbnailLabel>
-        )}
-        <AddThumbnail
-          id="file"
-          type="file"
-          accept="image/*"
-          name="thumbnail"
+        <LabelDefault>섬네일</LabelDefault>
+        <AddThumbnailLabel htmlFor="imageUploader">
+          <IoIosAddCircle />
+        </AddThumbnailLabel>
+        <InputDefault
+          type="text"
+          id="imageUrl"
+          name="imageUrl"
           fieldName={fieldName}
           register={register}
+          style={{ visibility: "hidden" }}
+        />
+        <AddThumbnail
+          id="imageUploader"
+          type="file"
+          accept="image/*"
+          name="imageUrl"
+          placeholder="사진 찾기"
+          onChange={uploadFile}
         />
       </FieldContainer>
       <FieldContainer>
@@ -128,6 +132,7 @@ const UpdateModalForm = ({
           fieldName={fieldName}
           register={register}
           defaultValue={item.name}
+          onChange={uploadFile}
         />
       </FieldContainer>
       <FieldContainer>
@@ -137,8 +142,8 @@ const UpdateModalForm = ({
           id="price"
           name="price"
           fieldName={fieldName}
-          register={register}
           defaultValue={item.price}
+          register={register}
         />
       </FieldContainer>
       <FieldContainer>
@@ -149,18 +154,19 @@ const UpdateModalForm = ({
           name="option"
           fieldName={fieldName}
           register={register}
-          // defaultValue={item.option}
+          defaultValue={item.options?.join(", ")}
         />
       </FieldContainer>
       <FieldContainer>
-        <LabelDefault htmlFor="desc">상품 정보</LabelDefault>
+        <LabelDefault htmlFor="description">상품 정보</LabelDefault>
         <TextareaDefault
-          id="desc"
-          name="desc"
+          id="description"
+          name="description"
           fieldName={fieldName}
           register={register}
-          // defaultValue={item.desc}
-        />
+        >
+          {item.description}
+        </TextareaDefault>
       </FieldContainer>
     </FieldSet>
   );

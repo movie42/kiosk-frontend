@@ -25,15 +25,16 @@ const TextareaDefault = ({
       <textarea
         {...props}
         {...register(`${fieldName}.${props.name}`, registerOptions)}
-      ></textarea>
+      >
+        {props.children}
+      </textarea>
       {error && <Label>{error}</Label>}
     </>
   ) : (
     <>
-      <textarea
-        {...props}
-        {...register(props.name, registerOptions)}
-      ></textarea>
+      <textarea {...props} {...register(props.name, registerOptions)}>
+        {props.children}
+      </textarea>
       {error && <Label>{error}</Label>}
     </>
   );

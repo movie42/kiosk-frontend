@@ -9,11 +9,14 @@ import {
   useMyStoresQuery,
   useStoreQuery,
   useStoresQuery,
+  useToggleStoreIsAvailableMutation,
 } from "../../../generated/graphql";
 import graphqlReqeustClient from "../../../lib/graphqlRequestClient";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { userState } from "../../../state/userState";
 import { storeState } from "../../../state/storeState";
+import { useQueryClient } from "react-query";
+import ToggleButton from "../../../Components/Buttons/ToggleButton";
 
 const Wrapper = styled.div`
   h2 {
@@ -105,45 +108,6 @@ const LinkToCustomerWindowButton: React.FC<
   }
 `;
 
-const ToggleButton: React.FC<
-  | IAdminMenuProps
-  | React.DetailedHTMLProps<
-      React.HTMLAttributes<HTMLDivElement>,
-      HTMLDivElement
-    >
-> = styled.div<IAdminMenuProps>`
-  position: absolute;
-  z-index: 1;
-  top: 0;
-  right: 0;
-  width: 3rem;
-  height: 1rem;
-  cursor: pointer;
-  background-color: ${(props) =>
-    props.isActive ? props.theme.color.primary600 : props.theme.color.error500};
-  border: 0;
-  border-radius: 2rem;
-  padding: 0.5rem 0.3rem;
-  margin: 0.5rem;
-  box-shadow: inset 0.1rem 0.15rem 0.2rem
-    ${(props) =>
-      props.isActive
-        ? props.theme.color.primary800
-        : props.theme.color.error800};
-  &::before {
-    position: absolute;
-    top: 50%;
-    left: ${(props) => (props.isActive ? "unset" : "0.2rem")};
-    right: ${(props) => (props.isActive ? "0.2rem" : "unset")};
-    transform: translateY(-50%);
-    width: 1.7rem;
-    height: 1.7rem;
-    border-radius: 2rem;
-    background-color: ${(props) => props.theme.color.background100};
-    content: "";
-  }
-`;
-
 interface IAdminMenuProps {
   isActive: boolean;
 }
@@ -151,12 +115,23 @@ interface IAdminMenuProps {
 const AdminManageProductMain = () => {
   const { storeId } = useParams();
   const { id: userId } = useRecoilValue(userState);
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const [store, setStore] = useRecoilState(storeState);
   const { accessToken, refreshToken } = useRecoilValue(userState);
+
   const [toggleState, setToggleState] = useState(false);
   const { id, setId, isModal, setIsModal, confirm, setConfirm } =
     useModalHook();
+
+  const { mutate: toggleStoreAvailableMutate } =
+    useToggleStoreIsAvailableMutation(graphqlReqeustClient(accessToken), {
+      onSuccess: () => {
+        queryClient.invalidateQueries("myStores");
+        queryClient.invalidateQueries("store");
+      },
+    });
+
   const { isSuccess } = useStoreQuery(
     graphqlReqeustClient(accessToken),
     {
@@ -201,6 +176,7 @@ const AdminManageProductMain = () => {
 
   useEffect(() => {
     if (confirm) {
+      toggleStoreAvailableMutate({ id: Number(id) });
       setToggleState((preValue) => !preValue);
       setConfirm(false);
     }
@@ -231,9 +207,10 @@ const AdminManageProductMain = () => {
             <p>가게를 열려면 버튼을 누르세요.</p>
           )}
           <ToggleButton
+            size={3}
             isActive={store.isAvailable}
             onClick={toggleHandler}
-          ></ToggleButton>
+          />
           <LinkToCustomerWindowButton
             data-link="order"
             onClick={linkToCustomerWindowHandler}

@@ -20,6 +20,10 @@ mutation addProducts($products: [AddProductInput!]!) {
   addProducts(products: $products)
 }
 
+mutation updateProduct($products: EditProductInput!) {
+  updateProduct(products: $products)
+}
+
 mutation removeProducts($productIds: removeProductInput!) {
   removeProducts(productIds: $productIds)
 }
