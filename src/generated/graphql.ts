@@ -69,6 +69,8 @@ export type Mutation = {
   removeProducts: Scalars['Boolean'];
   removeStore: Scalars['Boolean'];
   signup: TokenOutput;
+  toggleProductIsAvailable: Scalars['Boolean'];
+  toggleStoreIsAvailable: Scalars['Boolean'];
   updateOrderStatus: Scalars['Boolean'];
   updateProduct: Scalars['Boolean'];
   updateProductOption: Scalars['Boolean'];
@@ -121,6 +123,16 @@ export type MutationRemoveStoreArgs = {
 
 export type MutationSignupArgs = {
   user: SignupInput;
+};
+
+
+export type MutationToggleProductIsAvailableArgs = {
+  id: Scalars['Float'];
+};
+
+
+export type MutationToggleStoreIsAvailableArgs = {
+  id: Scalars['Float'];
 };
 
 
@@ -184,6 +196,7 @@ export type Product = {
   description?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   imageUrl?: Maybe<Scalars['String']>;
+  isAvailable: Scalars['Boolean'];
   name: Scalars['String'];
   options: Array<Option>;
   price: Scalars['Int'];
@@ -195,6 +208,7 @@ export type Query = {
   me: User;
   myStores: Array<Store>;
   orders: Array<Order>;
+  productIsAvailable: Scalars['Boolean'];
   store?: Maybe<Store>;
   storeIsAvailable: Scalars['Boolean'];
   stores: Array<Store>;
@@ -206,6 +220,11 @@ export type QueryOrdersArgs = {
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   storeId: Scalars['Int'];
+};
+
+
+export type QueryProductIsAvailableArgs = {
+  id: Scalars['Float'];
 };
 
 
@@ -268,7 +287,7 @@ export type GetProductsQueryVariables = Exact<{
 }>;
 
 
-export type GetProductsQuery = { __typename?: 'Query', store?: { __typename?: 'Store', id: string, products: Array<{ __typename?: 'Product', id: string, name: string, price: number, imageUrl?: string | null, description?: string | null, options: Array<{ __typename?: 'Option', id: string, name: string }> }> } | null };
+export type GetProductsQuery = { __typename?: 'Query', store?: { __typename?: 'Store', id: string, products: Array<{ __typename?: 'Product', id: string, name: string, price: number, imageUrl?: string | null, description?: string | null, isAvailable: boolean, options: Array<{ __typename?: 'Option', id: string, name: string }> }> } | null };
 
 export type AddProductsMutationVariables = Exact<{
   products: Array<AddProductInput> | AddProductInput;
@@ -370,6 +389,7 @@ export const GetProductsDocument = `
         id
         name
       }
+      isAvailable
     }
   }
 }

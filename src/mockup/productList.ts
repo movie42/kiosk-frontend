@@ -10,6 +10,7 @@ export interface ProductListValues {
   options?: ProductOptions[];
   imageUrl?: string | null | undefined;
   description?: string | null | undefined;
+  isAvailable?: boolean | undefined;
 }
 
 export interface Sales {

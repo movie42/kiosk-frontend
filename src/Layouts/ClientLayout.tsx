@@ -27,7 +27,9 @@ const Header = styled.div`
   }
 `;
 
-const Main = styled.main``;
+const Main = styled.main`
+  padding-bottom: 6rem;
+`;
 
 const ClientLayout = () => {
   return (

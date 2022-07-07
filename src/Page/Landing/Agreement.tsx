@@ -78,21 +78,21 @@ export const ButtonGroup = styled.div`
   }
 `;
 
-const ConfirmButton = styled(ButtonDefaultStyle)<{ option?: boolean }>`
+const ConfirmButton = styled(ButtonDefaultStyle)<{ isAgree?: boolean }>`
   margin-left: 5px;
   color: ${(props) => props.theme.color.fontColorWhite};
   background-color: ${(props) =>
-    props.option === true
+    props.isAgree === true
       ? props.theme.color.primary600
       : props.theme.color.gray300};
 `;
 
-const AgreementButton = styled(ButtonDefaultStyle)<{ option?: boolean }>`
+const AgreementButton = styled(ButtonDefaultStyle)<{ isAgree?: boolean }>`
   font-size: 1.2rem;
   padding: 0.8rem;
   color: ${(props) => props.theme.color.fontColorWhite};
   background-color: ${(props) =>
-    props.option === true
+    props.isAgree === true
       ? props.theme.color.primary600
       : props.theme.color.gray300};
 `;
@@ -111,7 +111,7 @@ const Agreement = () => {
       <Container>
         <TermsContainer>
           <Title>이용약관 동의</Title>
-          <AgreementButton onClick={() => setTerms(true)} option={terms}>
+          <AgreementButton onClick={() => setTerms(true)} isAgree={terms}>
             동의하기
           </AgreementButton>
         </TermsContainer>
@@ -119,7 +119,7 @@ const Agreement = () => {
         <hr />
         <TermsContainer>
           <Title>개인정보 수집 및 이용 동의</Title>
-          <AgreementButton onClick={() => setPrivacy(true)} option={privacy}>
+          <AgreementButton onClick={() => setPrivacy(true)} isAgree={privacy}>
             동의하기
           </AgreementButton>
         </TermsContainer>
@@ -129,13 +129,13 @@ const Agreement = () => {
         <ButtonGroup>
           <span>약관을 모두 동의하셨다면 회원가입 버튼을 누르세요.</span>
           <div>
-            <ConfirmButton onClick={() => navigate("/")} option={false}>
+            <ConfirmButton onClick={() => navigate("/")} isAgree={false}>
               돌아가기
             </ConfirmButton>
             <ConfirmButton
               onClick={() => navigate("/signup")}
               disabled={!terms || !privacy}
-              option={terms && privacy}
+              isAgree={terms && privacy}
             >
               회원가입
             </ConfirmButton>

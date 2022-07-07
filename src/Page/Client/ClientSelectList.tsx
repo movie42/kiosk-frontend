@@ -64,6 +64,9 @@ const MenuListItem = styled.div`
 const DeleteButton = styled(ButtonDefaultStyle)`
   background-color: ${(props) => props.theme.color.gray300};
 `;
+const ResetButton = styled(ButtonDefaultStyle)`
+  background-color: ${(props) => props.theme.color.primary500};
+`;
 export const AddCountButton = styled(ButtonDefaultStyle)`
   background-color: unset;
   color: ${(props) => props.theme.color.primary500};
@@ -148,6 +151,14 @@ const ClientSelectList = () => {
     if (isDelete)
       setTotalSelectMenu((item) => [...item.filter((el) => el !== filtered)]);
   };
+  const deleteAll = () => {
+    const confirm = window.confirm("전체 주문을 취소하시겠습니까?");
+    if (confirm) {
+      setTotalSelectMenu([]);
+      alert("전체 주문이 취소되었습니다");
+      navigate(`/client/${userId}/${storeId}/menu`);
+    }
+  };
 
   return (
     <>
@@ -162,7 +173,11 @@ const ClientSelectList = () => {
 
       {totalSelectMenu.map((item, i) => (
         <MenuListItem key={`${item.productId}_${i}`}>
-          <Noimage />
+          {item.imageUrl ? (
+            <img src={item.imageUrl} alt={item.name} />
+          ) : (
+            <Noimage />
+          )}
           <div>
             <h2>{item.name}</h2>
             {item.option && <p>선택옵션: {item.option}</p>}
@@ -180,11 +195,7 @@ const ClientSelectList = () => {
           <div>
             <p>
               총 가격:&nbsp;
-              {translateLocalCurrency(item.totalPrice, "ko-KR", {
-                style: "currency",
-                currency: "KRW",
-              })}
-              원
+              {translateLocalCurrency(item.totalPrice, "ko-KR")}원
             </p>
             <DeleteButton onClick={() => handleDelete(item)}>
               삭제하기
@@ -192,7 +203,9 @@ const ClientSelectList = () => {
           </div>
         </MenuListItem>
       ))}
-
+      {totalSelectMenu.length !== 0 && (
+        <ResetButton onClick={deleteAll}>전체삭제</ResetButton>
+      )}
       <OrderStateBar
         totalCount={totalSelectMenu.reduce(
           (acc, obj) => acc + obj.totalCount,

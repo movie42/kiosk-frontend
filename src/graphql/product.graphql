@@ -11,6 +11,7 @@ query getProducts($id: Float!) {
         id
         name
       }
+      isAvailable
     }
   }
 }
