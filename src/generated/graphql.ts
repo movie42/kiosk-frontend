@@ -411,6 +411,7 @@ export const GetProductsDocument = `
         id
         name
       }
+      isAvailable
     }
   }
 }
