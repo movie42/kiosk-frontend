@@ -42,6 +42,9 @@ const Container = styled.div`
           border: 0;
           font-size: 2rem;
           align-self: center;
+          &::placeholder {
+            font-size: 2rem;
+          }
         }
       }
     }
@@ -66,13 +69,6 @@ const CreateProductHeader = styled.div`
   }
 `;
 
-const AddProductButton = styled(ButtonDefaultStyle)`
-  background-color: unset;
-  color: ${(props) => props.theme.color.primary500};
-  font-size: 2.3rem;
-  padding: 0;
-`;
-
 const AddimageUrl = styled(InputDefault)`
   display: none;
 `;
@@ -84,6 +80,7 @@ const AddimageUrlLabel = styled(Label)`
 
 const ButtonContainer = styled.div`
   display: flex;
+  flex-wrap: wrap;
   padding: 0.8rem;
   align-items: center;
   justify-content: space-between;
@@ -91,9 +88,12 @@ const ButtonContainer = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
-  color: ${(props) => props.theme.color.fontColorWhite};
+  color: ${(props) => props.theme.color.fontColorBlack};
   font-size: 2rem;
-  background-color: ${(props) => props.theme.color.backgroundBlack100};
+  border-top: 1px solid ${(props) => props.theme.color.gray300};
+  ${({ theme }) => theme.device.mobile} {
+    justify-content: center;
+  }
 `;
 
 const CreateButton = styled(ButtonDefaultStyle)`
@@ -116,7 +116,14 @@ const CancelButton = styled(ButtonDefaultStyle)`
   margin-right: 0.3rem;
 `;
 
+const ModalChildren = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
 const ModalButtonContainer = styled.div`
+  display: flex;
+  align-self: flex-end;
   button {
     cursor: pointer;
     font-size: 2rem;
@@ -250,8 +257,9 @@ const AdminManageProductAddItem = () => {
     <>
       {isModal && (
         <Modal strach={false}>
-          <>
+          <ModalChildren>
             <h2>상품을 등록 하시겠습니까?</h2>
+            <p>상품을 등록하려면 아래 등록하기 버튼을 누르세요.</p>
             <ModalButtonContainer>
               <button
                 className="modal-cancel-button"
@@ -266,7 +274,7 @@ const AdminManageProductAddItem = () => {
                 등록하기
               </button>
             </ModalButtonContainer>
-          </>
+          </ModalChildren>
         </Modal>
       )}
       <Container>
