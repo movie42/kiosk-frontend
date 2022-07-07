@@ -43,6 +43,7 @@ const AddStoreButton = styled(ButtonDefaultStyle)`
   background-color: unset;
   a {
     text-decoration: none;
+    padding-bottom: 0.4rem;
     color: ${(props) => props.theme.color.fontColorBlack};
   }
   span {

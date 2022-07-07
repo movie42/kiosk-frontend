@@ -24,11 +24,11 @@ import useModalHook from "../../../utils/customHooks/useModalHook";
 import { translateLocalCurrency } from "../../../utils/helper/translateLocalCurrency";
 import UpdateModalChildren from "../Modal/UpdateModalChildren";
 
-const ItemWrapper = styled(motion.div)`
+const ItemWrapper = styled(motion.li)`
   position: relative;
 `;
 
-const Item = styled(motion.li)<{ selectOption: Option; selected: boolean }>`
+const Item = styled(motion.div)<{ selectOption: Option; selected: boolean }>`
   .item-container {
     position: relative;
     cursor: pointer;
@@ -69,6 +69,9 @@ const Item = styled(motion.li)<{ selectOption: Option; selected: boolean }>`
     .item-info-container {
       align-self: center;
       padding: 0.8rem;
+      ${({ theme }) => theme.device.tablet} {
+        padding: 2rem;
+      }
       h3 {
         font-size: 3rem;
         font-weight: bold;
@@ -102,6 +105,9 @@ const ToggleContainer = styled.div`
   margin: 0.4rem;
   p {
     margin-left: 0.5rem;
+    ${({ theme }) => theme.device.tablet} {
+      font-size: 2.8rem;
+    }
   }
 `;
 
@@ -112,10 +118,17 @@ const UpdateButtonWrapper = styled.div`
   align-items: center;
   color: ${({ theme }) => theme.color.fontColorWhite};
   font-size: 2.2rem;
+  ${({ theme }) => theme.device.tablet} {
+    font-size: 2.8rem;
+  }
+
   button {
     background-color: unset;
     padding: 0;
     padding-right: 0.5rem;
+    ${({ theme }) => theme.device.tablet} {
+      font-size: 2.8rem;
+    }
   }
 `;
 
@@ -169,7 +182,7 @@ const ProductItem = ({ productData }: IProductItemProps) => {
   );
 
   const handleSelectItem = (
-    e: React.MouseEvent<HTMLLIElement>,
+    e: React.MouseEvent<HTMLDivElement>,
     productId: number,
   ) => {
     if (selectOption?.options === "none") {
@@ -231,7 +244,7 @@ const ProductItem = ({ productData }: IProductItemProps) => {
           <Item
             key={product.id}
             data-id={product.id}
-            onClick={(e: React.MouseEvent<HTMLLIElement>) =>
+            onClick={(e: React.MouseEvent<HTMLDivElement>) =>
               handleSelectItem(e, product.id)
             }
             selectOption={selectOption.options}

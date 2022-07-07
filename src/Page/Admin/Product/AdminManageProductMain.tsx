@@ -81,6 +81,7 @@ const MenuButtonDefault = styled.button<IAdminMenuProps>`
     background-image: ${(props) => `url(${props.image})`};
     background-size: cover;
     background-repeat: no-repeat;
+    background-position: center;
     opacity: 0.4;
     content: "";
     transition: all 0.5s ease-in-out;
