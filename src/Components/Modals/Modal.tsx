@@ -17,8 +17,8 @@ const Wrapper = styled.div`
 const ModalContainer: React.FC<IModalProps> = styled.div<IModalProps>`
   display: flex;
   flex-direction: column;
-  width: 40rem;
-  height: ${(props) => props.strach && "40rem"};
+  width: 60rem;
+  height: ${(props) => props.strach && "60rem"};
   background-color: ${(props) => props.theme.color.background100};
   border-radius: 1rem;
   overflow-y: auto;

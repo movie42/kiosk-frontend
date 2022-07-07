@@ -8,8 +8,10 @@ import { userState } from "../../../state/userState";
 import {
   useMyStoresQuery,
   useRemoveStoreMutation,
+  useStoreIsAvailableQuery,
   useStoreQuery,
   useStoresQuery,
+  useToggleStoreIsAvailableMutation,
 } from "../../../generated/graphql";
 import graphqlReqeustClient from "../../../lib/graphqlRequestClient";
 import { storesState, storeStateProps } from "../../../state/storeState";
@@ -153,6 +155,13 @@ const AdminStoreList = () => {
   const [store, setStore] = useRecoilState(storesState);
   const queryClient = useQueryClient();
 
+  const { mutate: toggleStoreAvailableMutate } =
+    useToggleStoreIsAvailableMutation(graphqlReqeustClient(user.accessToken), {
+      onSuccess: () => {
+        queryClient.invalidateQueries("myStores");
+      },
+    });
+
   const { isSuccess: isStoreRequestSuccess } = useMyStoresQuery(
     graphqlReqeustClient(user.accessToken),
     undefined,
@@ -196,8 +205,7 @@ const AdminStoreList = () => {
 
   useEffect(() => {
     if (toggleConfirm) {
-      //TODO: toggle mutation 필요합니다.
-      setToggleState((preValue) => !preValue);
+      toggleStoreAvailableMutate({ id: Number(toggleId) });
       setToggleConfirm(false);
       setToggleId(null);
     }
