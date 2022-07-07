@@ -19,7 +19,6 @@ time, mark, audio, video {
 	margin: 0;
 	padding: 0;
 	border: 0;
-	font-size: 100%;
 	font: inherit;
 	vertical-align: baseline;
 }
@@ -28,10 +27,11 @@ article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
 	display: block;
 }
-html, body {
-	font-size:10px;
+
+html, body, button, input, textarea, label, select {
 	font-family: "Noto Sans KR", sans-serif;
-	line-height: 1;
+	font-size:10px;
+	box-sizing: border-box;
 	color:${(props) => props.theme.color.fontColorBlack};
 }
 ol, ul {

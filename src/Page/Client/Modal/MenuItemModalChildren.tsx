@@ -7,7 +7,7 @@ import ButtonDefaultStyle from "../../../Components/Buttons/ButtonDefault";
 import { IOrderSelectedItem } from "../ClientMenu";
 import { AddCountButton, MinusCountButton } from "../ClientSelectList";
 import { translateLocalCurrency } from "../../../utils/helper/translateLocalCurrency";
-import Noimage from "../../../Images/Noimage";
+import Noimage from "../../../Components/Images/Noimage";
 const Wrapper = styled.div`
   position: relative;
   color: ${(props) => props.theme.color.fontColorBlack};

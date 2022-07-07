@@ -77,19 +77,13 @@ const StateMenuBar = () => {
 
   return (
     <>
-      {isModal &&
-        (selectOption.options === "delete" ? (
-          <Modal strach={true}>
-            <DeleteModalChildren setIsModal={setIsModal} />
-          </Modal>
-        ) : (
-          <Modal strach={true}>
-            <UpdateModalChildren setIsModal={setIsModal} />
-          </Modal>
-        ))}
-
+      {isModal && selectOption.options === "delete" && (
+        <Modal strach={true}>
+          <DeleteModalChildren setIsModal={setIsModal} />
+        </Modal>
+      )}
       <MenuBarContainer options={selectOption.options}>
-        {selectOption.options === "delete" ? (
+        {selectOption.options === "delete" && (
           <>
             <h2>{selectList.length}개의 상품을 삭제하려면 버튼을 누르세요.</h2>
             <div>
@@ -101,21 +95,6 @@ const StateMenuBar = () => {
               </button>
               <button className="confirm-button" onClick={handleModalAppear}>
                 삭제하기
-              </button>
-            </div>
-          </>
-        ) : (
-          <>
-            <h2>{selectList.length}개의 상품을 수정하려면 버튼을 누르세요.</h2>
-            <div>
-              <button
-                className="cancel-button"
-                onClick={updateSelectOptionToNone}
-              >
-                취소하기
-              </button>
-              <button className="confirm-button" onClick={handleModalAppear}>
-                수정하기
               </button>
             </div>
           </>

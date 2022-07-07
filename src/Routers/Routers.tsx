@@ -83,10 +83,7 @@ const Router = () => {
           path="login"
           element={!isLogin ? <Login /> : <AdminLoadingAndGetUser />}
         />
-        <Route
-          path="logout"
-          element={isLogin ? <Logout /> : <Navigate to="/" />}
-        />
+        <Route path="logout" element={<Logout />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />
     </Routes>

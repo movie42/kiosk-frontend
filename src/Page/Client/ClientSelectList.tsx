@@ -12,7 +12,7 @@ import PaymentModalChildren from "./Modal/PaymentModalChildren";
 import { useNavigate, useParams } from "react-router-dom";
 import ButtonDefaultStyle from "../../Components/Buttons/ButtonDefault";
 import { translateLocalCurrency } from "../../utils/helper/translateLocalCurrency";
-import Noimage from "../../Images/Noimage";
+import Noimage from "../../Components/Images/Noimage";
 
 const Header = styled.div`
   display: flex;
@@ -113,7 +113,7 @@ const ClientSelectList = () => {
           return a?.option > b?.option ? 1 : -1;
         }
         return a.productId - b.productId;
-      })
+      }),
     );
   };
 
@@ -138,14 +138,15 @@ const ClientSelectList = () => {
           return a?.option > b?.option ? 1 : -1;
         }
         return a.productId - b.productId;
-      })
+      }),
     );
   };
 
   // delete item from list
   const handleDelete = (current: IOrderSelectedItem) => {
     const [filtered] = totalSelectMenu.filter(
-      (el) => el.productId === current.productId && el.option === current.option
+      (el) =>
+        el.productId === current.productId && el.option === current.option,
     );
     const isDelete = window.confirm("정말 삭제하시겠습니까?");
     if (isDelete)
@@ -209,11 +210,11 @@ const ClientSelectList = () => {
       <OrderStateBar
         totalCount={totalSelectMenu.reduce(
           (acc, obj) => acc + obj.totalCount,
-          0
+          0,
         )}
         totalPrice={totalSelectMenu.reduce(
           (acc, obj) => acc + obj.totalPrice,
-          0
+          0,
         )}
         label="주문하기"
         goBack={() => navigate(`/client/${userId}/${storeId}/menu`)}
