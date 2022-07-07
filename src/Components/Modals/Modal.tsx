@@ -1,6 +1,13 @@
 import React from "react";
 import styled from "styled-components";
-import { Body1, Headline1, Headline2, SubTitle1, SubTitle2 } from "../../mixin";
+import {
+  Body1,
+  Headline1,
+  Headline2,
+  Headline3,
+  SubTitle1,
+  SubTitle2,
+} from "../../mixin";
 
 const Wrapper = styled.div`
   display: flex;
@@ -33,7 +40,10 @@ const ModalContainer: React.FC<IModalProps> = styled.div<IModalProps>`
     margin-top: 0.7rem;
   }
   h3 {
-    ${SubTitle1};
+    ${Headline3};
+  }
+  button {
+    ${SubTitle2}
   }
   p {
     ${Body1};
