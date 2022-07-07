@@ -17,10 +17,27 @@ import { userState } from "../../../state/userState";
 import { storeState } from "../../../state/storeState";
 import { useQueryClient } from "react-query";
 import ToggleButton from "../../../Components/Buttons/ToggleButton";
+import { Body1, Body2, Headline2 } from "../../../mixin";
+import {
+  customerImage,
+  manageProductImage,
+  orderStateImage,
+} from "../../../lib/images";
+import { transform } from "typescript";
 
 const Wrapper = styled.div`
   h2 {
-    font-size: 2rem;
+    ${Headline2};
+  }
+`;
+
+const Header = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  ${({ theme }) => theme.device.tablet} {
+    align-items: flex-start;
+    flex-direction: column;
   }
 `;
 
@@ -28,75 +45,112 @@ const Menu = styled.div`
   display: grid;
   gap: 1rem;
   margin-top: 2.5rem;
-  grid-template-columns: repeat(3, 20rem);
-  justify-items: center;
-  justify-content: center;
+  grid-template-columns: repeat(3, 1fr);
+
+  .button-wrapper,
+  button {
+    overflow: hidden;
+    width: 100%;
+  }
+  ${({ theme }) => theme.device.tablet} {
+    grid-template-columns: 1fr;
+  }
 `;
 
-const MenuButtonDefault = styled.button`
+const MenuButtonDefault = styled.button<IAdminMenuProps>`
   box-sizing: border-box;
   border: 0;
   border-radius: 0.6rem;
-  width: 20rem;
+  width: 100%;
   height: 70vh;
   cursor: pointer;
-  background-color: ${(props) => props.theme.color.primary600};
   font-size: 3rem;
   font-weight: bold;
   word-break: keep-all;
   color: ${(props) => props.theme.color.fontColorWhite};
+  position: relative;
+  background-color: black;
+
+  &::before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: scale(1);
+    width: 100%;
+    height: 100%;
+    background-image: ${(props) => `url(${props.image})`};
+    background-size: cover;
+    background-repeat: no-repeat;
+    opacity: 0.4;
+    content: "";
+    transition: all 0.5s ease-in-out;
+  }
+
+  &:hover {
+    &::before {
+      transform: scale(1.2);
+    }
+  }
+  ${({ theme }) => theme.device.tablet} {
+    height: 30rem;
+  }
 `;
 
 const MenuButtonWrapper = styled.div`
   position: relative;
-  p {
+  .store-state-container {
+    padding: 1rem;
     position: absolute;
-    top: -1.3rem;
+    top: 0;
     right: 0;
-    font-size: 1rem;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    color: ${(props) => props.theme.color.fontColorWhite};
+    p {
+      margin-right: 1rem;
+      ${Body2}
+    }
   }
+`;
+const BusinessManageButtonWrapper = styled.div`
+  display: grid;
+  grid-template-rows: repeat(auto-fit, 1fr);
+  gap: 0.8rem;
+  overflow: hidden;
 `;
 
 const LinkToStaffWindowButton = styled(MenuButtonDefault)`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: ${(props) => props.theme.color.secondary500};
 `;
 
-const BusinessManageButtonWrapper = styled.div`
-  display: grid;
-  grid-template-rows: repeat(auto-fit, 1fr);
-  gap: 0.8rem;
-`;
-
-const LinkToProductManageWindowButton = styled(MenuButtonDefault)`
-  height: 100%;
-  background-color: ${(props) => props.theme.color.primary800};
-`;
-
-const LinkToCrewMangageWindowButton = styled(MenuButtonDefault)`
-  height: 100%;
-  background-color: ${(props) => props.theme.color.secondary800};
-`;
+const LinkToProductManageWindowButton = styled(MenuButtonDefault)``;
 
 const BusinessInfoContainer = styled.div`
   span {
-    font-size: 1.8rem;
-    margin-right: 1.2rem;
+    ${Body2}
+    &:not(:first-child) {
+      margin-left: 1rem;
+    }
+    strong {
+      font-weight: bold;
+    }
   }
 `;
 
-const LinkToCustomerWindowButton: React.FC<
-  | IAdminMenuProps
-  | React.DetailedHTMLProps<
-      React.HTMLAttributes<HTMLButtonElement>,
-      HTMLButtonElement
-    >
-> = styled(MenuButtonDefault)<IAdminMenuProps>`
+const LinkToCustomerWindowButton = styled(MenuButtonDefault)`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   position: relative;
   background-color: ${(props) =>
-    props.isActive ? props.theme.color.primary600 : props.theme.color.gray300};
+    props.isActive
+      ? props.theme.color.backgroundBlack100
+      : props.theme.color.gray300};
+
   span {
     display: inline-block;
     font-weight: normal;
@@ -106,10 +160,17 @@ const LinkToCustomerWindowButton: React.FC<
       font-weight: bold;
     }
   }
+  &:hover {
+    &::before {
+      ${(props) =>
+        props.isActive ? "transform: scale(1.2)" : "transform:scale(1)"}
+    }
+  }
 `;
 
 interface IAdminMenuProps {
-  isActive: boolean;
+  isActive?: boolean;
+  image?: string;
 }
 
 const AdminManageProductMain = () => {
@@ -193,43 +254,58 @@ const AdminManageProductMain = () => {
           />
         </Modal>
       )}
-      <PageHeaderMessage header="관리자 메뉴" message={store.name} />
-      <BusinessInfoContainer>
-        <span>사업자 번호 : {store.code}</span>
-        <span>주소 : {store.address}</span>
-        <span>대표번호 : {store.phone}</span>
-      </BusinessInfoContainer>
+      <Header>
+        <PageHeaderMessage header="관리자 메뉴" message={store.name} />
+        <BusinessInfoContainer>
+          <span>
+            <strong>사업자 번호</strong> {store.code}
+          </span>
+          <span>
+            <strong>주소</strong> {store.address}
+          </span>
+          <span>
+            <strong>대표번호</strong> {store.phone}
+          </span>
+        </BusinessInfoContainer>
+      </Header>
       <Menu>
-        <MenuButtonWrapper>
-          {store.isAvailable ? (
-            <p>가게를 닫으려면 버튼을 누르세요.</p>
-          ) : (
-            <p>가게를 열려면 버튼을 누르세요.</p>
-          )}
-          <ToggleButton
-            size={3}
-            isActive={store.isAvailable}
-            onClick={toggleHandler}
-          />
+        <MenuButtonWrapper className="button-wrapper">
+          <div className="store-state-container">
+            {store.isAvailable ? (
+              <p>가게를 닫으려면 버튼을 누르세요.</p>
+            ) : (
+              <p>가게를 열려면 버튼을 누르세요.</p>
+            )}
+            <ToggleButton
+              size={5}
+              isActive={store.isAvailable}
+              onClick={toggleHandler}
+            />
+          </div>
           <LinkToCustomerWindowButton
             data-link="order"
             onClick={linkToCustomerWindowHandler}
             isActive={store.isAvailable}
+            image={manageProductImage}
           >
             <span>고객 주문 화면</span>
             {store.isAvailable && <span>현재 주문을 받고 있는 중입니다.</span>}
           </LinkToCustomerWindowButton>
         </MenuButtonWrapper>
-        <LinkToStaffWindowButton
-          data-link="manage-order"
-          onClick={linkToCustomerWindowHandler}
-        >
-          고객 주문 관리하기
-        </LinkToStaffWindowButton>
-        <BusinessManageButtonWrapper>
+        <div className="button-wrapper">
+          <LinkToStaffWindowButton
+            data-link="manage-order"
+            onClick={linkToCustomerWindowHandler}
+            image={customerImage}
+          >
+            고객 주문 관리하기
+          </LinkToStaffWindowButton>
+        </div>
+        <BusinessManageButtonWrapper className="button-wrapper">
           <LinkToProductManageWindowButton
             data-link="manage-product"
             onClick={linkToCustomerWindowHandler}
+            image={orderStateImage}
           >
             상품 관리하기
           </LinkToProductManageWindowButton>
