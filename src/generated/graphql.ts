@@ -69,6 +69,8 @@ export type Mutation = {
   removeProducts: Scalars['Boolean'];
   removeStore: Scalars['Boolean'];
   signup: TokenOutput;
+  toggleProductIsAvailable: Scalars['Boolean'];
+  toggleStoreIsAvailable: Scalars['Boolean'];
   updateOrderStatus: Scalars['Boolean'];
   updateProduct: Scalars['Boolean'];
   updateProductOption: Scalars['Boolean'];
@@ -121,6 +123,16 @@ export type MutationRemoveStoreArgs = {
 
 export type MutationSignupArgs = {
   user: SignupInput;
+};
+
+
+export type MutationToggleProductIsAvailableArgs = {
+  id: Scalars['Float'];
+};
+
+
+export type MutationToggleStoreIsAvailableArgs = {
+  id: Scalars['Float'];
 };
 
 
@@ -184,6 +196,7 @@ export type Product = {
   description?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   imageUrl?: Maybe<Scalars['String']>;
+  isAvailable: Scalars['Boolean'];
   name: Scalars['String'];
   options: Array<Option>;
   price: Scalars['Int'];
@@ -195,6 +208,7 @@ export type Query = {
   me: User;
   myStores: Array<Store>;
   orders: Array<Order>;
+  productIsAvailable: Scalars['Boolean'];
   store?: Maybe<Store>;
   storeIsAvailable: Scalars['Boolean'];
   stores: Array<Store>;
@@ -206,6 +220,11 @@ export type QueryOrdersArgs = {
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
   storeId: Scalars['Int'];
+};
+
+
+export type QueryProductIsAvailableArgs = {
+  id: Scalars['Float'];
 };
 
 
@@ -268,7 +287,7 @@ export type GetProductsQueryVariables = Exact<{
 }>;
 
 
-export type GetProductsQuery = { __typename?: 'Query', store?: { __typename?: 'Store', id: string, products: Array<{ __typename?: 'Product', id: string, name: string, price: number, imageUrl?: string | null, description?: string | null, options: Array<{ __typename?: 'Option', id: string, name: string }> }> } | null };
+export type GetProductsQuery = { __typename?: 'Query', store?: { __typename?: 'Store', id: string, products: Array<{ __typename?: 'Product', id: string, name: string, price: number, imageUrl?: string | null, description?: string | null, isAvailable: boolean, options: Array<{ __typename?: 'Option', id: string, name: string }> }> } | null };
 
 export type AddProductsMutationVariables = Exact<{
   products: Array<AddProductInput> | AddProductInput;
@@ -277,12 +296,26 @@ export type AddProductsMutationVariables = Exact<{
 
 export type AddProductsMutation = { __typename?: 'Mutation', addProducts: boolean };
 
+export type UpdateProductMutationVariables = Exact<{
+  products: EditProductInput;
+}>;
+
+
+export type UpdateProductMutation = { __typename?: 'Mutation', updateProduct: boolean };
+
 export type RemoveProductsMutationVariables = Exact<{
   productIds: RemoveProductInput;
 }>;
 
 
 export type RemoveProductsMutation = { __typename?: 'Mutation', removeProducts: boolean };
+
+export type ToggleProductIsAvailableMutationVariables = Exact<{
+  id: Scalars['Float'];
+}>;
+
+
+export type ToggleProductIsAvailableMutation = { __typename?: 'Mutation', toggleProductIsAvailable: boolean };
 
 export type StoreQueryVariables = Exact<{
   id: Scalars['Float'];
@@ -307,6 +340,13 @@ export type StoreIsAvailableQueryVariables = Exact<{
 
 
 export type StoreIsAvailableQuery = { __typename?: 'Query', storeIsAvailable: boolean };
+
+export type ToggleStoreIsAvailableMutationVariables = Exact<{
+  id: Scalars['Float'];
+}>;
+
+
+export type ToggleStoreIsAvailableMutation = { __typename?: 'Mutation', toggleStoreIsAvailable: boolean };
 
 export type AddStoreMutationVariables = Exact<{
   name: Scalars['String'];
@@ -366,6 +406,7 @@ export const GetProductsDocument = `
       price
       imageUrl
       description
+      isAvailable
       options {
         id
         name
@@ -406,6 +447,24 @@ export const useAddProductsMutation = <
       (variables?: AddProductsMutationVariables) => fetcher<AddProductsMutation, AddProductsMutationVariables>(client, AddProductsDocument, variables, headers)(),
       options
     );
+export const UpdateProductDocument = `
+    mutation updateProduct($products: EditProductInput!) {
+  updateProduct(products: $products)
+}
+    `;
+export const useUpdateProductMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      client: GraphQLClient,
+      options?: UseMutationOptions<UpdateProductMutation, TError, UpdateProductMutationVariables, TContext>,
+      headers?: RequestInit['headers']
+    ) =>
+    useMutation<UpdateProductMutation, TError, UpdateProductMutationVariables, TContext>(
+      ['updateProduct'],
+      (variables?: UpdateProductMutationVariables) => fetcher<UpdateProductMutation, UpdateProductMutationVariables>(client, UpdateProductDocument, variables, headers)(),
+      options
+    );
 export const RemoveProductsDocument = `
     mutation removeProducts($productIds: removeProductInput!) {
   removeProducts(productIds: $productIds)
@@ -422,6 +481,24 @@ export const useRemoveProductsMutation = <
     useMutation<RemoveProductsMutation, TError, RemoveProductsMutationVariables, TContext>(
       ['removeProducts'],
       (variables?: RemoveProductsMutationVariables) => fetcher<RemoveProductsMutation, RemoveProductsMutationVariables>(client, RemoveProductsDocument, variables, headers)(),
+      options
+    );
+export const ToggleProductIsAvailableDocument = `
+    mutation toggleProductIsAvailable($id: Float!) {
+  toggleProductIsAvailable(id: $id)
+}
+    `;
+export const useToggleProductIsAvailableMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      client: GraphQLClient,
+      options?: UseMutationOptions<ToggleProductIsAvailableMutation, TError, ToggleProductIsAvailableMutationVariables, TContext>,
+      headers?: RequestInit['headers']
+    ) =>
+    useMutation<ToggleProductIsAvailableMutation, TError, ToggleProductIsAvailableMutationVariables, TContext>(
+      ['toggleProductIsAvailable'],
+      (variables?: ToggleProductIsAvailableMutationVariables) => fetcher<ToggleProductIsAvailableMutation, ToggleProductIsAvailableMutationVariables>(client, ToggleProductIsAvailableDocument, variables, headers)(),
       options
     );
 export const StoreDocument = `
@@ -519,6 +596,24 @@ export const useStoreIsAvailableQuery = <
     useQuery<StoreIsAvailableQuery, TError, TData>(
       ['storeIsAvailable', variables],
       fetcher<StoreIsAvailableQuery, StoreIsAvailableQueryVariables>(client, StoreIsAvailableDocument, variables, headers),
+      options
+    );
+export const ToggleStoreIsAvailableDocument = `
+    mutation toggleStoreIsAvailable($id: Float!) {
+  toggleStoreIsAvailable(id: $id)
+}
+    `;
+export const useToggleStoreIsAvailableMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      client: GraphQLClient,
+      options?: UseMutationOptions<ToggleStoreIsAvailableMutation, TError, ToggleStoreIsAvailableMutationVariables, TContext>,
+      headers?: RequestInit['headers']
+    ) =>
+    useMutation<ToggleStoreIsAvailableMutation, TError, ToggleStoreIsAvailableMutationVariables, TContext>(
+      ['toggleStoreIsAvailable'],
+      (variables?: ToggleStoreIsAvailableMutationVariables) => fetcher<ToggleStoreIsAvailableMutation, ToggleStoreIsAvailableMutationVariables>(client, ToggleStoreIsAvailableDocument, variables, headers)(),
       options
     );
 export const AddStoreDocument = `

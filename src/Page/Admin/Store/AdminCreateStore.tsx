@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useQueryClient } from "react-query";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import InputDefault from "../../../Components/Form/InputDefault";
@@ -10,19 +10,27 @@ import Loading from "../../../Components/Loading";
 import { useAddStoreMutation } from "../../../generated/graphql";
 import graphqlReqeustClient from "../../../lib/graphqlRequestClient";
 import { ErrorState } from "../../../lib/interface";
-import { SubTitle1, SubTitle2 } from "../../../mixin";
+import {
+  Body1,
+  Headline2,
+  Headline3,
+  SubTitle1,
+  SubTitle2,
+} from "../../../mixin";
 import { userState } from "../../../state/userState";
 import { handleErrorMessage } from "../../../utils/helper/handleErrorMessage";
 
 const Form = styled.form`
   width: 100%;
+  padding: 1rem 0;
 `;
+
 const InputContainer = styled.div`
   display: grid;
   border-bottom: 1px solid ${(props) => props.theme.color.gray300};
   grid-template-columns: repeat(auto-fill, minmax(20%, auto));
   label {
-    grid-column: 1 / 2;
+    grid-column: 1 /2;
     ${SubTitle1};
   }
   input {
@@ -36,6 +44,26 @@ const InputContainer = styled.div`
     ${SubTitle2};
     color: ${(props) => props.theme.color.error500};
   }
+  ${({ theme }) => theme.device.tablet} {
+    padding: 0.8rem 0;
+    label {
+      grid-column: 1 / 10;
+      ${Body1};
+      font-weight: 900;
+    }
+    input {
+      grid-column: 1 / 10;
+      ${SubTitle2};
+      border: unset;
+      outline: unset;
+      padding: 0;
+    }
+    .error-label {
+      grid-column: 1 / 10;
+      ${SubTitle2};
+      color: ${(props) => props.theme.color.error500};
+    }
+  }
 `;
 
 const StatusBar = styled.div`
@@ -44,7 +72,7 @@ const StatusBar = styled.div`
   left: 0;
   right: 0;
   padding: 0 1rem;
-  height: 5rem;
+  height: 8rem;
 
   .status-bar-item-container {
     display: flex;
@@ -54,9 +82,8 @@ const StatusBar = styled.div`
     border-top: 1px solid ${(props) => props.theme.color.gray300};
   }
   .status-message-container {
-    h2 {
-      font-size: 2rem;
-      font-weight: bold;
+    h3 {
+      ${SubTitle1};
       color: ${(props) => props.theme.color.fontColorBlack};
     }
   }
@@ -79,9 +106,17 @@ const StatusBar = styled.div`
       background-color: ${(props) => props.theme.color.primary700};
     }
   }
+  ${({ theme }) => theme.device.tablet} {
+    height: 10rem;
+    .status-bar-item-container {
+      flex-direction: column;
+      justify-content: space-around;
+    }
+  }
 `;
 
 interface IAdminStoreProps {}
+
 interface IStoreFormProps {
   name: string;
   code: string;
@@ -198,7 +233,7 @@ const AdminStore = () => {
       <StatusBar>
         <div className="status-bar-item-container">
           <div className="status-message-container">
-            <h2>입력이 끝나면 등록하기 버튼을 눌러주세요.</h2>
+            <h3>입력이 끝나면 등록하기 버튼을 눌러주세요.</h3>
           </div>
           <div className="status-button-container">
             <button onClick={() => navigate(-1)} className="cancel-button">

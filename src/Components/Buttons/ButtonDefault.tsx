@@ -1,9 +1,9 @@
 import React, { ReactNode } from "react";
 import styled from "styled-components";
 
-const Button: React.FC<IButtonDefaultStyle> = styled.button<IButtonDefaultStyle>`
+const Button = styled.button<IButtonDefaultStyle>`
   cursor: pointer;
-  font-size: 2rem;
+  font-size: 2.5rem;
   border: 0;
   padding: 0.8rem 1.3rem;
   border-radius: 0.3rem;
@@ -12,10 +12,7 @@ const Button: React.FC<IButtonDefaultStyle> = styled.button<IButtonDefaultStyle>
 `;
 
 interface IButtonDefaultStyle
-  extends React.DetailedHTMLProps<
-    React.ButtonHTMLAttributes<HTMLButtonElement>,
-    HTMLButtonElement
-  > {
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
 }
 

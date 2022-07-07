@@ -7,6 +7,7 @@ query getProducts($id: Float!) {
       price
       imageUrl
       description
+      isAvailable
       options {
         id
         name
@@ -19,6 +20,14 @@ mutation addProducts($products: [AddProductInput!]!) {
   addProducts(products: $products)
 }
 
+mutation updateProduct($products: EditProductInput!) {
+  updateProduct(products: $products)
+}
+
 mutation removeProducts($productIds: removeProductInput!) {
   removeProducts(productIds: $productIds)
+}
+
+mutation toggleProductIsAvailable($id: Float!) {
+  toggleProductIsAvailable(id: $id)
 }

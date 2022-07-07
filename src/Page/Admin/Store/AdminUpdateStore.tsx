@@ -123,11 +123,7 @@ const AdminUpdateStore = () => {
   const { accessToken } = useRecoilValue(userState);
   const queryClient = useQueryClient();
 
-  const {
-    data: updateStore,
-
-    isFetched,
-  } = useStoreQuery(
+  const { data: updateStore } = useStoreQuery(
     graphqlReqeustClient(accessToken),
     {
       id: Number(storeId),

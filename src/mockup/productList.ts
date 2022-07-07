@@ -7,6 +7,7 @@ export interface ProductListValues {
   id: number;
   name: string;
   price: number;
+  isAvailable?: boolean;
   options?: ProductOptions[];
   imageUrl?: string | null | undefined;
   description?: string | null | undefined;

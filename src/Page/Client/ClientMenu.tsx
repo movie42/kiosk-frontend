@@ -15,7 +15,7 @@ import { userState } from "../../state/userState";
 import { useGetProductsQuery } from "../../generated/graphql";
 import graphqlReqeustClient from "../../lib/graphqlRequestClient";
 import Loading from "../../Components/Loading";
-import Noimage from "../../Images/Noimage";
+import Noimage from "../../Components/Images/Noimage";
 
 const Header = styled.div`
   display: flex;

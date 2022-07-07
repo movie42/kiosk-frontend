@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 const Toggle = styled.div<IToggleButtonProps>`
   position: relative;
-  z-index: 1;
+  z-index: 10;
   width: ${(props) => `calc(${props.size}rem * 0.9)`};
   height: ${(props) => `calc(${props.size}rem * 0.5)`};
   cursor: pointer;
@@ -20,6 +20,7 @@ const Toggle = styled.div<IToggleButtonProps>`
         : props.theme.color.error800};
   &::before {
     position: absolute;
+    z-index: 10;
     top: 50%;
     left: ${(props) => (props.isActive ? "unset" : "0.2rem")};
     right: ${(props) => (props.isActive ? "0.2rem" : "unset")};
@@ -33,13 +34,13 @@ const Toggle = styled.div<IToggleButtonProps>`
   }
 `;
 
-interface IToggleButtonProps {
-  isActive: boolean;
+interface IToggleButtonProps extends React.HTMLAttributes<HTMLDivElement> {
+  isActive?: boolean;
   size: number;
 }
 
-const ToggleButton = ({ isActive, size }: IToggleButtonProps) => {
-  return <Toggle size={size} isActive={isActive} />;
+const ToggleButton = ({ isActive, size, ...props }: IToggleButtonProps) => {
+  return <Toggle size={size} isActive={isActive} {...props} />;
 };
 
 export default ToggleButton;

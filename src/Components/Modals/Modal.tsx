@@ -1,6 +1,13 @@
 import React from "react";
 import styled from "styled-components";
-import { Body1, Headline1, Headline2, SubTitle1, SubTitle2 } from "../../mixin";
+import {
+  Body1,
+  Headline1,
+  Headline2,
+  Headline3,
+  SubTitle1,
+  SubTitle2,
+} from "../../mixin";
 
 const Wrapper = styled.div`
   display: flex;
@@ -11,14 +18,14 @@ const Wrapper = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 10;
+  z-index: 20;
 `;
 
 const ModalContainer: React.FC<IModalProps> = styled.div<IModalProps>`
   display: flex;
   flex-direction: column;
-  width: 40rem;
-  height: ${(props) => props.strach && "40rem"};
+  width: 60rem;
+  height: ${(props) => props.strach && "60rem"};
   background-color: ${(props) => props.theme.color.background100};
   border-radius: 1rem;
   overflow-y: auto;
@@ -33,7 +40,10 @@ const ModalContainer: React.FC<IModalProps> = styled.div<IModalProps>`
     margin-top: 0.7rem;
   }
   h3 {
-    ${SubTitle1};
+    ${Headline3};
+  }
+  button {
+    ${SubTitle2}
   }
   p {
     ${Body1};

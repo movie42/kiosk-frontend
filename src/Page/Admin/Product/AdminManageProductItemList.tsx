@@ -28,6 +28,12 @@ const Container = styled.div`
     gap: 2rem;
     grid-template-columns: repeat(4, 1fr);
     grid-auto-rows: minmax(20rem, auto);
+    ${({ theme }) => theme.device.tablet} {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    ${({ theme }) => theme.device.mobile} {
+      grid-template-columns: unset;
+    }
   }
 `;
 const ManageOptionContainer = styled.div`
@@ -35,9 +41,12 @@ const ManageOptionContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1rem;
-  h2 {
-    font-size: 2rem;
-    font-weight: bold;
+  ${({ theme }) => theme.device.tablet} {
+    flex-wrap: wrap;
+  }
+  ${({ theme }) => theme.device.mobile} {
+    flex-direction: column;
+    align-items: flex-start;
   }
 `;
 
@@ -48,7 +57,8 @@ const ButtonContainer = styled.div`
 const ButtonItemWrapper = styled.div`
   cursor: pointer;
   display: flex;
-  font-size: 2rem;
+  align-items: center;
+  font-size: 2.5rem;
   &:not(:first-child) {
     margin-left: 0.7rem;
   }
@@ -62,7 +72,6 @@ const ButtonItemWrapper = styled.div`
 
 const CreateProductButton = styled(ButtonDefaultStyle)``;
 const DeleteProductButton = styled(ButtonDefaultStyle)``;
-const UpdateProductButton = styled(ButtonDefaultStyle)``;
 
 const AdminManageProductItemList = () => {
   const { storeId, userId } = useParams();
@@ -84,6 +93,7 @@ const AdminManageProductItemList = () => {
           const productList = data.store.products.map<ProductListValues>(
             (value) => ({
               id: Number(value.id),
+              isAvailable: value.isAvailable,
               name: value.name,
               price: value.price,
               imageUrl: value.imageUrl,
@@ -100,9 +110,6 @@ const AdminManageProductItemList = () => {
     },
   );
 
-  const handleUpdateItem = () => {
-    handleSelectOption({ options: Option.UPDATE });
-  };
   const handleDeleteItem = () => {
     handleSelectOption({ options: Option.DELETE });
   };
@@ -136,10 +143,6 @@ const AdminManageProductItemList = () => {
               >
                 <MdAddCircle />
                 <CreateProductButton>상품등록</CreateProductButton>
-              </ButtonItemWrapper>
-              <ButtonItemWrapper onClick={handleUpdateItem}>
-                <MdCreate />
-                <UpdateProductButton>상품수정</UpdateProductButton>
               </ButtonItemWrapper>
               <ButtonItemWrapper onClick={handleDeleteItem}>
                 <MdDelete />

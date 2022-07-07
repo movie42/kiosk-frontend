@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Headline2, SubTitle1 } from "../mixin";
+import { Headline2, Headline3, SubTitle1 } from "../mixin";
 
 interface IPageMessageHeaderProps {
   header: string;
@@ -11,10 +11,10 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   h2 {
-    ${Headline2}
+    ${Headline3}
   }
   h3 {
-    ${SubTitle1}
+    ${Headline3}
     font-weight:400;
     margin-left: 2rem;
   }

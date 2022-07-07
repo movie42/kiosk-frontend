@@ -8,23 +8,32 @@ import { userState } from "../../../state/userState";
 import {
   useMyStoresQuery,
   useRemoveStoreMutation,
-  useStoreQuery,
-  useStoresQuery,
+  useToggleStoreIsAvailableMutation,
 } from "../../../generated/graphql";
 import graphqlReqeustClient from "../../../lib/graphqlRequestClient";
 import { storesState, storeStateProps } from "../../../state/storeState";
-import { Headline2 } from "../../../mixin";
+import { Body1, Headline2, Headline3 } from "../../../mixin";
 import { useEffect, useState } from "react";
 import Modal from "../../../Components/Modals/Modal";
 import IsOpenModalChildren from "../Modal/IsOpenModalChildren";
 import { useQueryClient } from "react-query";
 import { MdDelete, MdCreate } from "react-icons/md";
 import useModalHook from "../../../utils/customHooks/useModalHook";
+import ToggleButton from "../../../Components/Buttons/ToggleButton";
 
 const Wrapper = styled.div``;
 const Header = styled.div`
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
+  ${({ theme }) => theme.device.tablet} {
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+  ${({ theme }) => theme.device.mobile} {
+    flex-direction: column;
+    margin-bottom: 1rem;
+  }
 `;
 
 const AddStoreButton = styled(ButtonDefaultStyle)`
@@ -34,18 +43,28 @@ const AddStoreButton = styled(ButtonDefaultStyle)`
   background-color: unset;
   a {
     text-decoration: none;
+    padding-bottom: 0.4rem;
     color: ${(props) => props.theme.color.fontColorBlack};
   }
   span {
     margin-left: 0.5rem;
   }
+  ${({ theme }) => theme.device.tablet} {
+    padding: 0;
+  }
+  ${({ theme }) => theme.device.mobile} {
+    align-self: flex-end;
+  }
 `;
 
 const StoreList = styled.ul`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   grid-gap: 1rem;
-  grid-template-rows: minmax(15rem, 15rem);
+  grid-auto-rows: minmax(15rem, 15rem);
+  ${({ theme }) => theme.device.tablet} {
+    grid-template-columns: auto;
+  }
 `;
 
 const Item = styled.li`
@@ -62,7 +81,7 @@ const Item = styled.li`
     color: ${(props) => props.theme.color.fontColorBlack};
   }
   h3 {
-    ${Headline2};
+    ${Headline3};
     padding: 0;
     margin: 0;
   }
@@ -82,43 +101,6 @@ const Item = styled.li`
     .delete-button {
       margin-left: 1.8rem;
     }
-  }
-`;
-
-const ToggleButton: React.FC<
-  | IAdminMenuProps
-  | React.DetailedHTMLProps<
-      React.HTMLAttributes<HTMLDivElement>,
-      HTMLDivElement
-    >
-> = styled.div<IAdminMenuProps>`
-  position: relative;
-  z-index: 1;
-  width: 3rem;
-  height: 1rem;
-  cursor: pointer;
-  background-color: ${(props) =>
-    props.isActive ? props.theme.color.primary600 : props.theme.color.error500};
-  border: 0;
-  border-radius: 2rem;
-  padding: 0.5rem 0.3rem;
-  margin: 0.5rem;
-  box-shadow: inset 0.1rem 0.15rem 0.2rem
-    ${(props) =>
-      props.isActive
-        ? props.theme.color.primary800
-        : props.theme.color.error800};
-  &::before {
-    position: absolute;
-    top: 50%;
-    left: ${(props) => (props.isActive ? "unset" : "0.2rem")};
-    right: ${(props) => (props.isActive ? "0.2rem" : "unset")};
-    transform: translateY(-50%);
-    width: 1.7rem;
-    height: 1.7rem;
-    border-radius: 2rem;
-    background-color: ${(props) => props.theme.color.background100};
-    content: "";
   }
 `;
 
@@ -152,6 +134,13 @@ const AdminStoreList = () => {
   const user = useRecoilValue(userState);
   const [store, setStore] = useRecoilState(storesState);
   const queryClient = useQueryClient();
+
+  const { mutate: toggleStoreAvailableMutate } =
+    useToggleStoreIsAvailableMutation(graphqlReqeustClient(user.accessToken), {
+      onSuccess: () => {
+        queryClient.invalidateQueries("myStores");
+      },
+    });
 
   const { isSuccess: isStoreRequestSuccess } = useMyStoresQuery(
     graphqlReqeustClient(user.accessToken),
@@ -196,8 +185,7 @@ const AdminStoreList = () => {
 
   useEffect(() => {
     if (toggleConfirm) {
-      //TODO: toggle mutation 필요합니다.
-      setToggleState((preValue) => !preValue);
+      toggleStoreAvailableMutate({ id: Number(toggleId) });
       setToggleConfirm(false);
       setToggleId(null);
     }
@@ -266,12 +254,13 @@ const AdminStoreList = () => {
               <div className="button-container">
                 <div className="toggle-button-box">
                   <ToggleButton
+                    size={4}
                     isActive={item.isAvailable}
                     onClick={() => {
                       toggleHandler(item.id);
                       setToggleState(item.isAvailable);
                     }}
-                  ></ToggleButton>
+                  />
                 </div>
                 <div className="various-button-box">
                   <button

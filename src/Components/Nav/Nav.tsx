@@ -44,6 +44,7 @@ const LinkContainer = styled.nav`
   padding: 0.8rem;
   background-color: ${(props) => props.theme.color.background100};
   ul {
+    padding-left: 2rem;
     li {
       a {
         ${Headline2}
@@ -55,6 +56,16 @@ const LinkContainer = styled.nav`
         }
       }
     }
+  }
+  ${({ theme }) => theme.device.tablet} {
+    width: 70vw;
+    min-width: unset;
+    max-width: unset;
+  }
+  ${({ theme }) => theme.device.mobile} {
+    width: 100vw;
+    min-width: unset;
+    max-width: unset;
   }
 `;
 

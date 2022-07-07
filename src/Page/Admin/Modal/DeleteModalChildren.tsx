@@ -7,7 +7,7 @@ import {
   Option,
 } from "../../../state/productItemState";
 import styled from "styled-components";
-import Noimage from "../../../Images/Noimage";
+import Noimage from "../../../Components/Images/Noimage";
 import ButtonDefaultStyle from "../../../Components/Buttons/ButtonDefault";
 import { translateLocalCurrency } from "../../../utils/helper/translateLocalCurrency";
 import { useRemoveProductsMutation } from "../../../generated/graphql";
@@ -16,6 +16,7 @@ import { userState } from "../../../state/userState";
 import { useQueryClient } from "react-query";
 import { motion } from "framer-motion";
 import LoadingBall from "../../../Components/LoadingBall";
+import Images from "../../../Components/Images/Images";
 
 const ItemWrapper = styled.div`
   display: flex;
@@ -184,7 +185,7 @@ const DeleteModalChildren = ({ setIsModal }: IDeleteModalChildrenProps) => {
                 <span className="check-box"></span>
                 <div className="image-container">
                   {item.imageUrl ? (
-                    <img src={`${item.imageUrl}`} alt={item.name} />
+                    <Images src={`${item.imageUrl}`} alt={item.name} />
                   ) : (
                     <Noimage />
                   )}
