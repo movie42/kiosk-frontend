@@ -30,6 +30,9 @@ const MenuBarContainer = styled.div`
     line-height: 2.8rem;
     background-color: ${(props) => props.theme.color.error500};
   }
+  .go-back-button {
+    margin-right: 1.3rem;
+  }
   ${({ theme }) => theme.device.mobile} {
     display: flex;
     flex-direction: column;
@@ -67,7 +70,11 @@ const OrderStateBar: React.FC<ITotalOrderMenu> = ({
           {translateLocalCurrency(totalPrice, "ko-KR")}원
         </h2>
         <div>
-          {goBack && <button onClick={goBack}>돌아가기</button>}
+          {goBack && (
+            <button className="go-back-button" onClick={goBack}>
+              돌아가기
+            </button>
+          )}
           <button onClick={handler}>{label}</button>
         </div>
       </MenuBarContainer>

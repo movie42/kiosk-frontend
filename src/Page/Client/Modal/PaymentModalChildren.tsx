@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useRecoilState } from "recoil";
-import { Headline2, SubTitle2, Body1 } from "../../../mixin";
+import { Headline2, SubTitle2, Body1, SubTitle1 } from "../../../mixin";
 import { selectMenuListState } from "../../../state/productItemState";
 import ButtonDefaultStyle from "../../../Components/Buttons/ButtonDefault";
 import { RequestPayParams, RequestPayResponse } from "../Payment";
@@ -19,6 +19,9 @@ const PaymentBox = styled.div`
     ${Headline2};
   }
   h3 {
+    ${SubTitle1};
+  }
+  h4 {
     ${SubTitle2};
     font-weight: 700;
   }
@@ -43,6 +46,7 @@ const MenuBox = styled.div`
 `;
 const BtnGroup = styled.div`
   text-align: center;
+  margin-top: 1rem;
 `;
 const ConfirmButton = styled(ButtonDefaultStyle)`
   background-color: ${(props) => props.theme.color.primary500};
@@ -145,14 +149,8 @@ const PaymentModalChildren: React.FC<IPaymentModalChildrenProps> = ({
       {!isPaid && (
         <>
           <h2>결제를 진행중입니다</h2>
-          <h3>주문 내용과 금액을 확인해주세요</h3>
-          <p>
-            총 결제&nbsp;
-            {orderList
-              .reduce((acc, obj) => acc + obj.totalPrice, 0)
-              .toLocaleString()}
-            원
-          </p>
+          <h4>주문 내용과 금액을 확인해주세요</h4>
+
           <p>주문 상품</p>
           {orderList.map((el, i) => (
             <MenuBox key={`${el.productId}${el.option}`}>
@@ -163,14 +161,25 @@ const PaymentModalChildren: React.FC<IPaymentModalChildrenProps> = ({
               <span>{el.totalPrice.toLocaleString()}원</span>
             </MenuBox>
           ))}
-          <button onClick={handlePayment}>결제하기</button>
-          <button onClick={() => setIsModal(false)}>취소하기</button>
+          <h3>
+            총 결제&nbsp;
+            {orderList
+              .reduce((acc, obj) => acc + obj.totalPrice, 0)
+              .toLocaleString()}
+            원
+          </h3>
+          <BtnGroup>
+            <ConfirmButton onClick={handlePayment}>결제하기</ConfirmButton>
+            <CancelButton onClick={() => setIsModal(false)}>
+              취소하기
+            </CancelButton>
+          </BtnGroup>
         </>
       )}
       {isPaid && !isPrint && (
         <>
           <h2>결제가 완료되었습니다</h2>
-          <h3>영수증을 출력하시겠습니까?</h3>
+          <h4>영수증을 출력하시겠습니까?</h4>
           <h1>{remain}</h1>
           <span>선택하지 않을 경우 자동으로 출력됩니다</span>
           <BtnGroup>
@@ -186,7 +195,7 @@ const PaymentModalChildren: React.FC<IPaymentModalChildrenProps> = ({
       {isPaid && isPrint && (
         <>
           <h2>주문이 완료되었습니다</h2>
-          <h3>주문 번호를 확인해주세요</h3>
+          <h4>주문 번호를 확인해주세요</h4>
           <BtnGroup>
             <ConfirmButton onClick={confirmOrder}>확인</ConfirmButton>
           </BtnGroup>

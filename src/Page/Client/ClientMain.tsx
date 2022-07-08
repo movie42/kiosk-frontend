@@ -69,13 +69,15 @@ const ClientMain = () => {
               매장 식사
             </OrderingButton>
           </div>
-          <OrderingButton
-            date-type="take-out"
-            onClick={() => navigate(`/client/${userId}/${storeId}/menu`)}
-            image={takeoutImage}
-          >
-            <div className="button-wrapper">포장하기</div>
-          </OrderingButton>
+          <div className="button-wrapper">
+            <OrderingButton
+              date-type="take-out"
+              onClick={() => navigate(`/client/${userId}/${storeId}/menu`)}
+              image={takeoutImage}
+            >
+              포장하기
+            </OrderingButton>
+          </div>
         </OrderingMethod>
       </Wrapper>
     </>
