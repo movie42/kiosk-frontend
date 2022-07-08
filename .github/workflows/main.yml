@@ -11,9 +11,15 @@ jobs:
   build:
     runs-on: ubuntu-latest
     if: github.event.pull_request.merged
-
+    strategy:
+      matrix:
+        node-version: [16.x]
     steps:
       - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
 
       - name: executing remote ssh commands using password
         if: github.event_name == 'pull_request'
@@ -25,7 +31,7 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           script: |
             cd ${{ secrets.WEB_PATH }}
-            git pull origin main
-            npm install
+            git pull
+            npm ci
             npm run build
             service nginx restart
