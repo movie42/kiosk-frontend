@@ -138,6 +138,7 @@ const MenuItemModalChildren: React.FC<IMenuItemModalChildrenProps> = ({
             productId: selected.id,
             name: selected.name,
             option: selectedOption,
+            optionId: selectedOptionId,
             price: selected.price,
             totalCount: count,
             totalPrice: selected.price * count,
@@ -180,6 +181,11 @@ const MenuItemModalChildren: React.FC<IMenuItemModalChildrenProps> = ({
   };
 
   const [selectedOption, setSelectedOption] = useState("");
+  const [selectedOptionId, setSelectedOptionId] = useState(0);
+  const selectOption = (name: string, id: number) => {
+    setSelectedOption(name);
+    setSelectedOptionId(id);
+  };
 
   return (
     <Wrapper>
@@ -202,7 +208,7 @@ const MenuItemModalChildren: React.FC<IMenuItemModalChildrenProps> = ({
                   className="noto"
                   key={item.name}
                   selected={selectedOption === item.name ? true : false}
-                  onClick={() => setSelectedOption(item.name)}
+                  onClick={() => selectOption(item.name, item.id)}
                 >
                   {item.name}
                 </OptionButton>

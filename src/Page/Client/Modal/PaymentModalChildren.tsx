@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { Headline2, SubTitle2, Body1, SubTitle1 } from "../../../mixin";
 import { selectMenuListState } from "../../../state/productItemState";
 import ButtonDefaultStyle from "../../../Components/Buttons/ButtonDefault";
 import { RequestPayParams, RequestPayResponse } from "../Payment";
+import { OrderType, useAddOrderMutation } from "../../../generated/graphql";
+import graphqlReqeustClient from "../../../lib/graphqlRequestClient";
+import { userState } from "../../../state/userState";
+import { orderType } from "../../../state/orderState";
 
 interface IPaymentModalChildrenProps {
   setIsModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -57,15 +61,38 @@ const CancelButton = styled(ButtonDefaultStyle)`
   margin: 0 0.5rem;
 `;
 
+interface OrderProductInput {
+  productId: number;
+  amount: number;
+  productOptionIds: number[];
+}
+
+interface AddOrderInput {
+  storeId: number;
+  products: OrderProductInput[];
+  type: OrderType;
+}
+
+interface ResultOrderItems {
+  [index: number]: {
+    productId?: number;
+    totalPrice: number;
+    optionIds?: number[] | undefined;
+  };
+}
+
 const PaymentModalChildren: React.FC<IPaymentModalChildrenProps> = ({
   setIsModal,
 }) => {
   const navigate = useNavigate();
   const { userId, storeId } = useParams();
+  const { accessToken } = useRecoilValue(userState);
+  const ordertype = useRecoilValue(orderType);
   const impkey = process.env.REACT_APP_IMP as string;
 
   // paid done
   const [isPaid, setIsPaid] = useState(false);
+  const [orderNumber, setOrderNumber] = useState(0);
   // print done
   const [isPrint, setIsPrint] = useState(false);
   // handle print receipt
@@ -92,6 +119,26 @@ const PaymentModalChildren: React.FC<IPaymentModalChildrenProps> = ({
     setPrintReceipt(true);
   };
 
+  // add order mutate
+  const { mutate, isSuccess } = useAddOrderMutation<AddOrderInput>(
+    graphqlReqeustClient(accessToken)
+  );
+  const addOrderItems = (orderProducts: OrderProductInput[]) => {
+    mutate(
+      {
+        order: {
+          storeId: Number(storeId),
+          products: orderProducts,
+          type: ordertype === "go" ? OrderType.Go : OrderType.Here,
+        },
+      },
+      {
+        onSuccess: (data) => {
+          setOrderNumber(data.addOrder);
+        },
+      }
+    );
+  };
   // payment
   const handlePayment = () => {
     window.IMP?.init(impkey);
@@ -100,6 +147,28 @@ const PaymentModalChildren: React.FC<IPaymentModalChildrenProps> = ({
       (acc, obj) => acc + obj.totalPrice,
       0
     );
+
+    const finalOrder = orderList.reduce<ResultOrderItems>((acc, obj) => {
+      const key = obj["productId"];
+      if (acc[key]) {
+        acc[key].optionIds?.push(Number(obj["optionId"]));
+        acc[key]["totalPrice"] = acc[key]["totalPrice"] + obj["totalPrice"];
+      }
+      if (!acc[key]) {
+        acc[key] = { optionIds: [], totalPrice: obj["totalPrice"] };
+        acc[key].optionIds?.push(Number(obj["optionId"]));
+      }
+      return acc;
+    }, {} as ResultOrderItems);
+    const orderProducts = Object.entries(finalOrder).map((item) => {
+      const [productId, obj] = item;
+      return {
+        productId: Number(productId),
+        amount: obj.totalPrice,
+        productOptionIds: obj.optionIds,
+      };
+    });
+
     if (!amount) {
       alert("결제 금액을 확인해주세요");
       return;
@@ -116,7 +185,7 @@ const PaymentModalChildren: React.FC<IPaymentModalChildrenProps> = ({
       const { success, merchant_uid, error_msg, imp_uid, error_code } =
         response;
       if (success) {
-        console.log(response);
+        addOrderItems(orderProducts);
         closeReceipt();
       } else {
         console.log(error_msg, error_code);
@@ -196,6 +265,7 @@ const PaymentModalChildren: React.FC<IPaymentModalChildrenProps> = ({
         <>
           <h2>주문이 완료되었습니다</h2>
           <h4>주문 번호를 확인해주세요</h4>
+          <h1>{orderNumber}</h1>
           <BtnGroup>
             <ConfirmButton onClick={confirmOrder}>확인</ConfirmButton>
           </BtnGroup>

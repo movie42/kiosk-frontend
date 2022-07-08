@@ -76,7 +76,7 @@ const ResetButtonWrapper = styled.div`
   justify-content: flex-end;
 `;
 const ResetButton = styled(ButtonDefaultStyle)`
-  text-algin: center;
+  text-align: center;
   background-color: ${(props) => props.theme.color.primary500};
 `;
 export const AddCountButton = styled(ButtonDefaultStyle)`
