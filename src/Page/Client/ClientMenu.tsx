@@ -16,6 +16,7 @@ import { useGetProductsQuery } from "../../generated/graphql";
 import graphqlReqeustClient from "../../lib/graphqlRequestClient";
 import Loading from "../../Components/Loading";
 import Noimage from "../../Components/Images/Noimage";
+import Images from "../../Components/Images/Images";
 
 const Header = styled.div`
   display: flex;
@@ -127,7 +128,7 @@ const ClientMenu = () => {
   // select menu item & add count (in Modal)
   const [count, setCount] = useState(0);
   const [selectedItem, setSelectedItem] = useState<ProductListValues[]>([]);
-  console.log(selectedItem);
+
   // make order list
   const [orderItem, setOrderItem] = useRecoilState(selectMenuListState);
 
@@ -194,7 +195,7 @@ const ClientMenu = () => {
                 <div className="item-container">
                   <div className="image-container">
                     {item.imageUrl ? (
-                      <img src={item.imageUrl} alt={item.name} />
+                      <Images src={item.imageUrl} alt={item.name} />
                     ) : (
                       <Noimage />
                     )}

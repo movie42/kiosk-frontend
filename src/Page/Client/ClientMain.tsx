@@ -1,7 +1,8 @@
-import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
-import { Headline1 } from "../../mixin";
+import { restaurantImage, takeoutImage } from "../../lib/images";
+import { Headline1, SubTitle1 } from "../../mixin";
+import { MenuButtonDefault } from "../Admin/Product/AdminManageProductMain";
 
 const Header = styled.div`
   display: flex;
@@ -24,7 +25,7 @@ const Header = styled.div`
 `;
 const Wrapper = styled.div`
   h2 {
-    font-size: 2rem;
+    ${SubTitle1}
   }
 `;
 
@@ -32,38 +33,21 @@ const OrderingMethod = styled.div`
   display: grid;
   gap: 1rem;
   margin-top: 2.5rem;
-  grid-template-columns: repeat(2, 20rem);
-  justify-items: center;
-  justify-content: center;
+  grid-template-columns: repeat(2, 1fr);
+  .button-wrapper {
+    overflow: hidden;
+    width: 100%;
+  }
+  ${({ theme }) => theme.device.tablet} {
+    grid-template-columns: 1fr;
+  }
 `;
 
-const MenuButtonDefault = styled.button`
-  box-sizing: border-box;
-  border: 0;
-  border-radius: 0.6rem;
-  width: 20rem;
-  height: 70vh;
-  cursor: pointer;
-  background-color: ${(props) => props.theme.color.primary600};
-  font-size: 3rem;
-  font-weight: bold;
-  word-break: keep-all;
-  color: ${(props) => props.theme.color.fontColorWhite};
-`;
-
-const EatInButton = styled(MenuButtonDefault)`
+const OrderingButton = styled(MenuButtonDefault)`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: ${(props) => props.theme.color.primary800};
 `;
-const TakeOutButton = styled(MenuButtonDefault)`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: ${(props) => props.theme.color.secondary500};
-`;
-
 const ClientMain = () => {
   const navigate = useNavigate();
   const { userId, storeId } = useParams();
@@ -76,18 +60,22 @@ const ClientMain = () => {
       <Wrapper>
         <h2>주문 방법을 선택하세요</h2>
         <OrderingMethod>
-          <EatInButton
-            date-type="eat-in"
-            onClick={() => navigate(`/client/${userId}/${storeId}/menu`)}
-          >
-            매장 식사
-          </EatInButton>
-          <TakeOutButton
+          <div className="button-wrapper">
+            <OrderingButton
+              date-type="eat-in"
+              onClick={() => navigate(`/client/${userId}/${storeId}/menu`)}
+              image={restaurantImage}
+            >
+              매장 식사
+            </OrderingButton>
+          </div>
+          <OrderingButton
             date-type="take-out"
             onClick={() => navigate(`/client/${userId}/${storeId}/menu`)}
+            image={takeoutImage}
           >
-            포장하기
-          </TakeOutButton>
+            <div className="button-wrapper">포장하기</div>
+          </OrderingButton>
         </OrderingMethod>
       </Wrapper>
     </>

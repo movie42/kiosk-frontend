@@ -57,7 +57,7 @@ const Menu = styled.div`
   }
 `;
 
-const MenuButtonDefault = styled.button<IAdminMenuProps>`
+export const MenuButtonDefault = styled.button<IAdminMenuProps>`
   box-sizing: border-box;
   border: 0;
   border-radius: 0.6rem;
@@ -97,7 +97,7 @@ const MenuButtonDefault = styled.button<IAdminMenuProps>`
   }
 `;
 
-const MenuButtonWrapper = styled.div`
+export const MenuButtonWrapper = styled.div`
   position: relative;
   .store-state-container {
     padding: 1rem;
@@ -206,7 +206,7 @@ const AdminManageProductMain = () => {
           setStore({ id, name, address, code, phone, isAvailable });
         }
       },
-    },
+    }
   );
 
   const toggleHandler = () => {
@@ -214,7 +214,7 @@ const AdminManageProductMain = () => {
   };
 
   const linkToCustomerWindowHandler = (
-    e: React.MouseEvent<HTMLButtonElement>,
+    e: React.MouseEvent<HTMLButtonElement>
   ) => {
     const linkName = e.currentTarget.dataset.link;
     if (linkName === "order" && store.isAvailable) {
