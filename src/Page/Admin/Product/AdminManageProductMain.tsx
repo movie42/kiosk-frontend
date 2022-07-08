@@ -287,7 +287,7 @@ const AdminManageProductMain = () => {
             data-link="order"
             onClick={linkToCustomerWindowHandler}
             isActive={store.isAvailable}
-            image={manageProductImage}
+            image={orderStateImage}
           >
             <span>고객 주문 화면</span>
             {store.isAvailable && <span>현재 주문을 받고 있는 중입니다.</span>}
@@ -306,7 +306,7 @@ const AdminManageProductMain = () => {
           <LinkToProductManageWindowButton
             data-link="manage-product"
             onClick={linkToCustomerWindowHandler}
-            image={orderStateImage}
+            image={manageProductImage}
           >
             상품 관리하기
           </LinkToProductManageWindowButton>

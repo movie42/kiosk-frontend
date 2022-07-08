@@ -103,6 +103,32 @@ const Item = styled.li`
     }
   }
 `;
+const ModalChildren = styled.div`
+  display: flex;
+  flex-direction: column;
+  button {
+    cursor: pointer;
+    font-size: 2rem;
+    border: 0;
+    padding: 0.8rem 1.3rem;
+    border-radius: 0.5rem;
+    color: ${(props) => props.theme.color.fontColorWhite};
+    &:not(:first-child) {
+      margin-left: 0.8rem;
+    }
+  }
+  .button-container {
+    display: flex;
+    justify-items: flex-end;
+    align-self: flex-end;
+  }
+  .cancel-button {
+    background-color: ${(props) => props.theme.color.gray400};
+  }
+  .confirm-button {
+    background-color: ${(props) => props.theme.color.error700};
+  }
+`;
 
 interface IAdminMenuProps {
   isActive: boolean;
@@ -212,11 +238,12 @@ const AdminStoreList = () => {
       )}
       {isDeleteModal && (
         <Modal>
-          <>
+          <ModalChildren>
             <h1>삭제하시겠습니까?</h1>
             <p>삭제하면 가게에 등록된 모든 정보가 함께 삭제됩니다.</p>
-            <div>
+            <div className="button-container">
               <button
+                className="cancel-button"
                 onClick={() => {
                   setIsDeleteModal(false);
                   setDeleteItemId(null);
@@ -224,9 +251,14 @@ const AdminStoreList = () => {
               >
                 돌아가기
               </button>
-              <button onClick={() => setDeleteConfirm(true)}>삭제</button>
+              <button
+                className="confirm-button"
+                onClick={() => setDeleteConfirm(true)}
+              >
+                삭제하기
+              </button>
             </div>
-          </>
+          </ModalChildren>
         </Modal>
       )}
       <Header>
