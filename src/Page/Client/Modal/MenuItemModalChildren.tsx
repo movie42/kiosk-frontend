@@ -118,8 +118,7 @@ const MenuItemModalChildren: React.FC<IMenuItemModalChildrenProps> = ({
       (ordered) =>
         ordered.productId === selected.id && ordered.option === selectedOption
     );
-    console.log(orderItem);
-    console.log(sameMenu);
+
     const { options: hasOption }: any = selected;
 
     if (count === 0) {
@@ -143,6 +142,7 @@ const MenuItemModalChildren: React.FC<IMenuItemModalChildrenProps> = ({
             price: selected.price,
             totalCount: count,
             totalPrice: selected.price * count,
+            imageUrl: selected.imageUrl,
           },
         ].sort((a: any, b: any) => {
           if (a.productId === b.productId) {
