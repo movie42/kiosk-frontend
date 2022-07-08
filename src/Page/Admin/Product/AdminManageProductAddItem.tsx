@@ -280,33 +280,10 @@ const AdminManageProductAddItem = () => {
       <Container>
         <CreateProductHeader>
           <h2>상품 등록</h2>
-          {/* <div>
-            <p>등록할 상품을 추가하려면 오른쪽 버튼을 누르세요.</p>
-            <AddProductButton
-              onClick={() =>
-                append({
-                  imageUrl: "",
-                  name: "",
-                  price: 0,
-                  option: "",
-                  description: "",
-                })
-              }
-            >
-              <IoIosAddCircle />
-            </AddProductButton>
-          </div> */}
         </CreateProductHeader>
         <form onSubmit={onSubmit}>
           {fields.map((item, index) => (
             <fieldset key={item.id}>
-              {/* <button
-                onClick={() => {
-                  remove(index);
-                }}
-              >
-                삭제
-              </button> */}
               {location && <Images src={location} />}
               <div>
                 <Label htmlFor="imageUploader">섬네일</Label>

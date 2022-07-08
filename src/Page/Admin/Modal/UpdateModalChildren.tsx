@@ -99,8 +99,6 @@ const UpdateModalChildren = ({ setIsModal }: ISelectModalChildrenProps) => {
   };
 
   const selectUpdateItemsSubmitHandler = handleSubmit((data) => {
-    console.log(selectUpdateProduct.id);
-    // TODO: productId가 잘못되었습니다. 백앤드에 수정을 요청해야합니다.
     const updateData = {
       productId: selectUpdateProduct.id,
       name: data.name,
