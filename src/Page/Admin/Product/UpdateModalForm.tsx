@@ -7,7 +7,7 @@ import InputDefault from "../../../Components/Form/InputDefault";
 import LabelDefault from "../../../Components/Form/LabelDefault";
 import TextareaDefault from "../../../Components/Form/TextareaDefault";
 import Images from "../../../Components/Images/Images";
-import { ProductListValues } from "../../../mockup/productList";
+import { ProductListValues } from "../../../state/productItemState";
 import {
   isCurrentSelectItemState,
   updateProductState,

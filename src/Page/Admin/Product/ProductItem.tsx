@@ -12,7 +12,7 @@ import Noimage from "../../../Components/Images/Noimage";
 import Modal from "../../../Components/Modals/Modal";
 import { useToggleProductIsAvailableMutation } from "../../../generated/graphql";
 import graphqlReqeustClient from "../../../lib/graphqlRequestClient";
-import { ProductListValues } from "../../../mockup/productList";
+import { ProductListValues } from "../../../state/productItemState";
 import {
   Option,
   selectOptionState,

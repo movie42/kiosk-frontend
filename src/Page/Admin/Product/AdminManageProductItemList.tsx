@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import ProductItem from "./ProductItem";
-import { ProductListValues } from "../../../mockup/productList";
+import { ProductListValues } from "../../../state/productItemState";
 import StateMenuBar from "./StateMenuBar";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import ButtonDefaultStyle from "../../../Components/Buttons/ButtonDefault";

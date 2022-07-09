@@ -7,7 +7,7 @@ import { useGetProductsQuery } from "../../../generated/graphql";
 import Noimage from "../../../Components/Images/Noimage";
 import graphqlReqeustClient from "../../../lib/graphqlRequestClient";
 import { Headline2, SubTitle1, SubTitle2 } from "../../../mixin";
-import { ProductListValues } from "../../../mockup/productList";
+import { ProductListValues } from "../../../state/productItemState";
 import { Option } from "../../../state/productItemState";
 import { userState } from "../../../state/userState";
 import { translateLocalCurrency } from "../../../utils/helper/translateLocalCurrency";

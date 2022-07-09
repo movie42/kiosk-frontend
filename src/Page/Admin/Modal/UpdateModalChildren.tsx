@@ -5,7 +5,7 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { Product, useUpdateProductMutation } from "../../../generated/graphql";
 import graphqlReqeustClient from "../../../lib/graphqlRequestClient";
-import { ProductListValues } from "../../../mockup/productList";
+import { ProductListValues } from "../../../state/productItemState";
 import {
   productListState,
   selectOptionState,

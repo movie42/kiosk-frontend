@@ -1,15 +1,15 @@
-import { OrderState } from "../../mockup/orderList";
+import { OrderStatusType } from "../../state/orderState";
 
-export const translateOrderStateFromEngToKo = (state: OrderState) => {
-  if (state === OrderState.ORDER) {
+export const translateOrderStateFromEngToKo = (state: OrderStatusType) => {
+  if (state === OrderStatusType.Ready) {
     return "접수";
   }
 
-  if (state === OrderState.CANCEL) {
+  if (state === OrderStatusType.Canceled) {
     return "취소";
   }
 
-  if (state === OrderState.COMPLETE) {
+  if (state === OrderStatusType.Complete) {
     return "완료";
   }
 
