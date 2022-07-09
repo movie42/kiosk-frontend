@@ -148,7 +148,10 @@ const SignUp = () => {
         refreshToken,
       }));
       alert("정상적으로 회원가입이 완료되었습니다.");
-      refetch();
+      if (checkStore) refetch();
+      if (!checkStore) {
+        navigate("/login");
+      }
     },
     onError: (error) => {
       handleErrorMessage(error, setErrorState);
@@ -180,14 +183,6 @@ const SignUp = () => {
     }
   }, [saveStore]);
 
-  useEffect(() => {
-    if (isSuccess && !checkStore) {
-      setUser(isUser);
-      setTimeout(() => navigate("/login"), 3000);
-    }
-  }, [isSuccess]);
-
-  // submit form
   const onSubmit = (data: ISignUpProps) => {
     const { email, name, password, code, storeName, phone, address } = data;
     setStoreInfo(() => {
@@ -197,7 +192,9 @@ const SignUp = () => {
       { user: { email, name, password } },
       {
         onSuccess: () => {
-          if (checkStore) setSaveStore((prv) => !prv);
+          if (checkStore) {
+            setSaveStore((prv) => !prv);
+          }
         },
       }
     );

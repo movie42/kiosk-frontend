@@ -48,7 +48,7 @@ const TermsContainer = styled.div`
 `;
 
 const TermsText = styled.pre`
-  font-size: 1rem;
+  font-size: 1.2rem;
   white-space: pre-wrap;
   height: 30vh;
   overflow-y: scroll;
@@ -88,7 +88,7 @@ const ConfirmButton = styled(ButtonDefaultStyle)<{ isAgree?: boolean }>`
 `;
 
 const AgreementButton = styled(ButtonDefaultStyle)<{ isAgree?: boolean }>`
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   padding: 0.8rem;
   color: ${(props) => props.theme.color.fontColorWhite};
   background-color: ${(props) =>

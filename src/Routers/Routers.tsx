@@ -74,11 +74,11 @@ const Router = () => {
           <>
             <Route path="/" element={<LandingMain />} />
             <Route path="agreement" element={<Agreement />} />
-            <Route path="signup" element={<SignUp />} />
           </>
         ) : (
           <Route path="/" element={<Navigate to="/admin/:id/store/list" />} />
         )}
+        <Route path="signup" element={<SignUp />} />
         <Route
           path="login"
           element={!isLogin ? <Login /> : <AdminLoadingAndGetUser />}
