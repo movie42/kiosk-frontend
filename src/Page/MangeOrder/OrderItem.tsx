@@ -2,8 +2,7 @@ import React from "react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import ButtonDefaultStyle from "../../Components/Buttons/ButtonDefault";
-import { Order, OrderList, OrderState } from "../../mockup/orderList";
-import { orderState } from "../../state/orderState";
+import { Order, OrderStatusType } from "../../state/orderState";
 import { calculatePrice } from "../../utils/helper/calculatePrice";
 
 const OrderItemContainer = styled.ul`
@@ -23,83 +22,84 @@ const OrderItemContainer = styled.ul`
   }
 `;
 
-const CancelButton = styled(ButtonDefaultStyle)<{ state: OrderState }>`
+const CancelButton = styled(ButtonDefaultStyle)<{ state: OrderStatusType }>`
   background-color: ${(props) =>
-    props.state === "cancel"
+    props.state === "CANCELED"
       ? props.theme.color.error600
       : props.theme.color.gray300};
 `;
-const OrderButton = styled(ButtonDefaultStyle)<{ state: OrderState }>`
+const OrderButton = styled(ButtonDefaultStyle)<{ state: OrderStatusType }>`
   background-color: ${(props) =>
-    props.state === "order"
+    props.state === "READY"
       ? props.theme.color.secondary500
       : props.theme.color.gray300};
 `;
-const CompleteButton = styled(ButtonDefaultStyle)<{ state: OrderState }>`
+const CompleteButton = styled(ButtonDefaultStyle)<{ state: OrderStatusType }>`
   background-color: ${(props) =>
-    props.state === "complete"
+    props.state === "COMPLETE"
       ? props.theme.color.primary500
       : props.theme.color.gray300};
 `;
 
 interface IOrderItemProp {
   orderId: Order["id"];
-  orders: OrderList[];
+  orders: Order[];
 }
 
 const OrderItem = ({ orderId, orders }: IOrderItemProp): JSX.Element => {
-  const setOrderList = useSetRecoilState(orderState);
+  // const setOrderList = useSetRecoilState(orderState);
 
-  const handleOrderState = (selectedOrder: OrderList, newState: OrderState) => {
-    setOrderList((pre) =>
-      pre.map((item) => {
-        if (item.id !== orderId) {
-          return item;
-        }
-
-        const newOrders = item.orders.map((order) => {
-          if (
-            order.optionID === selectedOrder.optionID &&
-            order.productId === selectedOrder.productId
-          ) {
-            return { ...order, state: newState };
-          }
-          return order;
-        });
-
-        return { ...item, orders: newOrders };
-      }),
-    );
+  const handleOrderState = (
+    selectedOrder: Order,
+    newState: OrderStatusType,
+  ) => {
+    // setOrderList((pre) =>
+    //   pre.map((item) => {
+    //     if (item.id !== orderId) {
+    //       return item;
+    //     }
+    // const newOrders = item.orders.map((order) => {
+    //   if (
+    //     order.optionID === selectedOrder.optionID &&
+    //     order.productId === selectedOrder.productId
+    //   ) {
+    //     return { ...order, state: newState };
+    //   }
+    //   return order;
+    // });
+    // return { ...item, orders: newOrders };
+    //   }),
+    // );
   };
 
   return (
     <OrderItemContainer>
       {orders.map((order, index) => (
         <>
-          <li>{order.productName}</li>
+          {/* <li>{order.productName}</li>
           <li>{order.optionID}</li>
-          <li>{order.quantity}</li>
+          <li>{order.quantity}</li> */}
           <li>
-            {order.state === "cancel"
+            {/* {order.state === "cancel"
               ? 0
-              : calculatePrice(order.price, order.quantity)}
+              : calculatePrice(order.price, order.amount)} */}
           </li>
           <li className="order-state-button-container">
             <CancelButton
-              onClick={() => handleOrderState(order, OrderState.CANCEL)}
-              state={order.state}
+              onClick={() => handleOrderState(order, OrderStatusType.Canceled)}
+              state={order.status}
             >
               취소
             </CancelButton>
             <OrderButton
-              onClick={() => handleOrderState(order, OrderState.ORDER)}
-              state={order.state}
+              onClick={() => handleOrderState(order, OrderStatusType.Done)}
+              state={order.status}
             >
               접수
             </OrderButton>
             <CompleteButton
-              onClick={() => handleOrderState(order, OrderState.COMPLETE)}
-              state={order.state}
+              onClick={() => handleOrderState(order, OrderStatusType.Complete)}
+              state={order.status}
             >
               완료
             </CompleteButton>

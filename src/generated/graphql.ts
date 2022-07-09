@@ -19,6 +19,12 @@ export type Scalars = {
   Float: number;
 };
 
+export type AddOrderInput = {
+  products: Array<OrderProductInput>;
+  storeId: Scalars['Int'];
+  type: OrderType;
+};
+
 export type AddProductInput = {
   description?: InputMaybe<Scalars['String']>;
   imageUrl?: InputMaybe<Scalars['String']>;
@@ -60,8 +66,9 @@ export type EditProductOptionInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  addOrder: Scalars['Int'];
   addProductOptions: Scalars['Boolean'];
-  addProducts: Scalars['Boolean'];
+  addProducts: Array<Scalars['Int']>;
   addStore: Scalars['Boolean'];
   addUser: Scalars['Boolean'];
   login: TokenOutput;
@@ -77,6 +84,11 @@ export type Mutation = {
   updateStore: Scalars['Boolean'];
   updateUser: Scalars['Boolean'];
   withdraw: Scalars['Boolean'];
+};
+
+
+export type MutationAddOrderArgs = {
+  order: AddOrderInput;
 };
 
 
@@ -138,7 +150,7 @@ export type MutationToggleStoreIsAvailableArgs = {
 
 export type MutationUpdateOrderStatusArgs = {
   id: Scalars['Int'];
-  status: OrderStatusInput;
+  status: OrderStatusType;
 };
 
 
@@ -174,14 +186,26 @@ export type Order = {
   __typename?: 'Order';
   id: Scalars['ID'];
   number: Scalars['Int'];
+  orderProducts: Array<OrderProduct>;
   price: Scalars['Int'];
   products: Array<Product>;
   status: OrderStatusType;
   storeId: Scalars['Int'];
 };
 
-export type OrderStatusInput = {
-  status: OrderStatusType;
+export type OrderProduct = {
+  __typename?: 'OrderProduct';
+  amount: Scalars['Int'];
+  id: Scalars['ID'];
+  orderId: Scalars['Int'];
+  productId: Scalars['Int'];
+  productOptionIds: Array<Scalars['Int']>;
+};
+
+export type OrderProductInput = {
+  amount: Scalars['Int'];
+  productId: Scalars['Int'];
+  productOptionIds: Array<Scalars['Int']>;
 };
 
 export enum OrderStatusType {
@@ -189,6 +213,11 @@ export enum OrderStatusType {
   Complete = 'COMPLETE',
   Done = 'DONE',
   Ready = 'READY'
+}
+
+export enum OrderType {
+  Go = 'GO',
+  Here = 'HERE'
 }
 
 export type Product = {
@@ -205,6 +234,7 @@ export type Product = {
 
 export type Query = {
   __typename?: 'Query';
+  loginByRefreshToken: TokenOutput;
   me: User;
   myStores: Array<Store>;
   orders: Array<Order>;
@@ -250,6 +280,7 @@ export type Store = {
   id: Scalars['ID'];
   isAvailable: Scalars['Boolean'];
   name: Scalars['String'];
+  orders: Array<Order>;
   ownerId: Scalars['Int'];
   phone: Scalars['String'];
   products: Array<Product>;
@@ -282,6 +313,11 @@ export type RemoveProductOptionInput = {
   OptionIds: Array<Scalars['Int']>;
 };
 
+export type GetOrdersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetOrdersQuery = { __typename?: 'Query', myStores: Array<{ __typename?: 'Store', id: string, products: Array<{ __typename?: 'Product', id: string, name: string, price: number, options: Array<{ __typename?: 'Option', id: string, name: string }> }>, orders: Array<{ __typename?: 'Order', id: string, number: number, price: number, storeId: number, status: OrderStatusType, orderProducts: Array<{ __typename?: 'OrderProduct', orderId: number, productId: number, amount: number, productOptionIds: Array<number> }> }> }> };
+
 export type GetProductsQueryVariables = Exact<{
   id: Scalars['Float'];
 }>;
@@ -294,7 +330,7 @@ export type AddProductsMutationVariables = Exact<{
 }>;
 
 
-export type AddProductsMutation = { __typename?: 'Mutation', addProducts: boolean };
+export type AddProductsMutation = { __typename?: 'Mutation', addProducts: Array<number> };
 
 export type UpdateProductMutationVariables = Exact<{
   products: EditProductInput;
@@ -316,6 +352,13 @@ export type ToggleProductIsAvailableMutationVariables = Exact<{
 
 
 export type ToggleProductIsAvailableMutation = { __typename?: 'Mutation', toggleProductIsAvailable: boolean };
+
+export type AddProductOptionsMutationVariables = Exact<{
+  option: Array<AddProductOptionInput> | AddProductOptionInput;
+}>;
+
+
+export type AddProductOptionsMutation = { __typename?: 'Mutation', addProductOptions: boolean };
 
 export type StoreQueryVariables = Exact<{
   id: Scalars['Float'];
@@ -396,6 +439,49 @@ export type SignupMutationVariables = Exact<{
 export type SignupMutation = { __typename?: 'Mutation', signup: { __typename?: 'TokenOutput', accessToken: string, refreshToken: string } };
 
 
+export const GetOrdersDocument = `
+    query getOrders {
+  myStores {
+    id
+    products {
+      id
+      name
+      price
+      options {
+        id
+        name
+      }
+    }
+    orders {
+      id
+      number
+      price
+      storeId
+      status
+      orderProducts {
+        orderId
+        productId
+        amount
+        productOptionIds
+      }
+    }
+  }
+}
+    `;
+export const useGetOrdersQuery = <
+      TData = GetOrdersQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient,
+      variables?: GetOrdersQueryVariables,
+      options?: UseQueryOptions<GetOrdersQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useQuery<GetOrdersQuery, TError, TData>(
+      variables === undefined ? ['getOrders'] : ['getOrders', variables],
+      fetcher<GetOrdersQuery, GetOrdersQueryVariables>(client, GetOrdersDocument, variables, headers),
+      options
+    );
 export const GetProductsDocument = `
     query getProducts($id: Float!) {
   store(id: $id) {
@@ -500,6 +586,24 @@ export const useToggleProductIsAvailableMutation = <
     useMutation<ToggleProductIsAvailableMutation, TError, ToggleProductIsAvailableMutationVariables, TContext>(
       ['toggleProductIsAvailable'],
       (variables?: ToggleProductIsAvailableMutationVariables) => fetcher<ToggleProductIsAvailableMutation, ToggleProductIsAvailableMutationVariables>(client, ToggleProductIsAvailableDocument, variables, headers)(),
+      options
+    );
+export const AddProductOptionsDocument = `
+    mutation addProductOptions($option: [AddProductOptionInput!]!) {
+  addProductOptions(option: $option)
+}
+    `;
+export const useAddProductOptionsMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      client: GraphQLClient,
+      options?: UseMutationOptions<AddProductOptionsMutation, TError, AddProductOptionsMutationVariables, TContext>,
+      headers?: RequestInit['headers']
+    ) =>
+    useMutation<AddProductOptionsMutation, TError, AddProductOptionsMutationVariables, TContext>(
+      ['addProductOptions'],
+      (variables?: AddProductOptionsMutationVariables) => fetcher<AddProductOptionsMutation, AddProductOptionsMutationVariables>(client, AddProductOptionsDocument, variables, headers)(),
       options
     );
 export const StoreDocument = `

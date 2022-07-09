@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Modal from "../../Components/Modals/Modal";
-import { Order, OrderList, OrderState } from "../../mockup/orderList";
+import { Order, OrderStatusType } from "../../state/orderState";
 import { calculatePrice } from "../../utils/helper/calculatePrice";
 import { translateOrderStateFromEngToKo } from "../../utils/helper/translateOrderStateFromEngToKo";
 
@@ -27,7 +27,7 @@ const ButtonContainer = styled.div<ButtonState>`
     }
     &.confirm-button {
       background-color: ${(props) =>
-        props.state === OrderState.CANCEL
+        props.state === OrderStatusType.Canceled
           ? props.theme.color.error700
           : props.theme.color.primary600};
       color: ${(props) => props.theme.color.fontColorWhite};
@@ -54,15 +54,15 @@ const MordalItem = styled.li`
 `;
 
 interface IOrderModalProps {
-  modalOrder: Order;
-  setModalOrder: React.Dispatch<React.SetStateAction<Order>>;
+  modalOrder: Order[];
+  setModalOrder: React.Dispatch<React.SetStateAction<Order[]>>;
   setIsModal: React.Dispatch<React.SetStateAction<boolean>>;
   modalMessage: string;
-  modalState: OrderList["state"];
+  modalState: Order["status"];
 }
 
 interface ButtonState {
-  state?: OrderList["state"];
+  state?: Order["status"];
 }
 
 const OrderModal = ({
@@ -73,24 +73,24 @@ const OrderModal = ({
   modalState,
 }: IOrderModalProps) => {
   const handleSetState = () => {
-    if (modalState === OrderState.COMPLETE) {
-      const newOrders: OrderList[] = modalOrder.orders.map((value) => {
-        if (value.state !== OrderState.CANCEL) {
-          return { ...value, state: OrderState.COMPLETE };
-        }
-        return value;
-      });
-      setModalOrder((pre) => ({ ...pre, orders: newOrders }));
+    if (modalState === OrderStatusType.Complete) {
+      // const newOrders: OrderList[] = modalOrder.orders.map((value) => {
+      //   if (value.state !== OrderState.CANCELED) {
+      //     return { ...value, state: OrderState.COMPLETE };
+      //   }
+      //   return value;
+      // });
+      // setModalOrder((pre) => ({ ...pre, orders: newOrders }));
       setIsModal(false);
       return;
     }
 
-    if (modalState === OrderState.CANCEL) {
-      const newOrders: OrderList[] = modalOrder.orders.map((value) => ({
-        ...value,
-        state: OrderState.CANCEL,
-      }));
-      setModalOrder((pre) => ({ ...pre, orders: newOrders }));
+    if (modalState === OrderStatusType.Canceled) {
+      // const newOrders: OrderList[] = modalOrder.orders.map((value) => ({
+      //   ...value,
+      //   state: OrderState.CANCELED,
+      // }));
+      // setModalOrder((pre) => ({ ...pre, orders: newOrders }));
       setIsModal(false);
       return;
     }
@@ -99,11 +99,11 @@ const OrderModal = ({
   return (
     <ModalContainer strach={false}>
       <div>
-        <h1>주문번호 {modalOrder?.orderNumber}</h1>
+        {/* <h1>주문번호 {modalOrder?.number}</h1> */}
         <p>{modalMessage}</p>
         <h3>구성</h3>
         <ModalItemContainer>
-          {modalOrder?.orders.map((value) => (
+          {/* {modalOrder?.orders.map((value) => (
             <MordalItem>
               <span>{value.productName} </span>
               <span>{value.optionID} </span>
@@ -116,19 +116,19 @@ const OrderModal = ({
               </span>
               <span>{translateOrderStateFromEngToKo(value.state)}</span>
             </MordalItem>
-          ))}
+          ))} */}
         </ModalItemContainer>
         <OrderStateContainer>
           <PriceContainer>
             <h2>
               총 가격{" "}
-              {modalOrder?.orders
+              {/* {modalOrder?.orders
                 .filter((item) => item.state !== OrderState.CANCEL)
                 .reduce(
                   (acc, current) => acc + current.price * current.quantity,
                   0,
                 )
-                .toLocaleString("ko-KR")}
+                .toLocaleString("ko-KR")} */}
               원
             </h2>
           </PriceContainer>
