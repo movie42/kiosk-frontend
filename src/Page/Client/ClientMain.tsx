@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { restaurantImage, takeoutImage } from "../../lib/images";
 import { Headline1, SubTitle1 } from "../../mixin";
 import { MenuButtonDefault } from "../Admin/Product/AdminManageProductMain";
+import { orderType } from "../../state/orderState";
+import { useSetRecoilState } from "recoil";
 
 const Header = styled.div`
   display: flex;
@@ -51,6 +53,17 @@ const OrderingButton = styled(MenuButtonDefault)`
 const ClientMain = () => {
   const navigate = useNavigate();
   const { userId, storeId } = useParams();
+  const setOrderType = useSetRecoilState(orderType);
+
+  const handleOrderMethod = (ordertype: string) => {
+    if (ordertype === "here") {
+      setOrderType("here");
+    }
+    if (ordertype === "go") {
+      setOrderType("go");
+    }
+    navigate(`/client/${userId}/${storeId}/menu`);
+  };
 
   return (
     <>
@@ -62,20 +75,20 @@ const ClientMain = () => {
         <OrderingMethod>
           <div className="button-wrapper">
             <OrderingButton
-              date-type="eat-in"
-              onClick={() => navigate(`/client/${userId}/${storeId}/menu`)}
+              onClick={() => handleOrderMethod("here")}
               image={restaurantImage}
             >
               매장 식사
             </OrderingButton>
           </div>
-          <OrderingButton
-            date-type="take-out"
-            onClick={() => navigate(`/client/${userId}/${storeId}/menu`)}
-            image={takeoutImage}
-          >
-            <div className="button-wrapper">포장하기</div>
-          </OrderingButton>
+          <div className="button-wrapper">
+            <OrderingButton
+              onClick={() => handleOrderMethod("go")}
+              image={takeoutImage}
+            >
+              포장하기
+            </OrderingButton>
+          </div>
         </OrderingMethod>
       </Wrapper>
     </>

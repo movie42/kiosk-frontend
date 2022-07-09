@@ -107,6 +107,7 @@ const Item = styled.li`
 export interface IOrderSelectedItem {
   productId: number;
   name: string;
+  optionId?: number;
   option?: string;
   price: number;
   totalCount: number;

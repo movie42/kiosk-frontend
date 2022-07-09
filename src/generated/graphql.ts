@@ -1,6 +1,6 @@
 import { GraphQLClient } from 'graphql-request';
 import { RequestInit } from 'graphql-request/dist/types.dom';
-import { useQuery, useMutation, UseQueryOptions, UseMutationOptions } from 'react-query';
+import { useMutation, useQuery, UseMutationOptions, UseQueryOptions } from 'react-query';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -17,6 +17,12 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+};
+
+export type AddOrderInput = {
+  products: Array<OrderProductInput>;
+  storeId: Scalars['Int'];
+  type: OrderType;
 };
 
 export type AddProductInput = {
@@ -60,8 +66,9 @@ export type EditProductOptionInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  addOrder: Scalars['Int'];
   addProductOptions: Scalars['Boolean'];
-  addProducts: Scalars['Boolean'];
+  addProducts: Array<Scalars['Int']>;
   addStore: Scalars['Boolean'];
   addUser: Scalars['Boolean'];
   login: TokenOutput;
@@ -77,6 +84,11 @@ export type Mutation = {
   updateStore: Scalars['Boolean'];
   updateUser: Scalars['Boolean'];
   withdraw: Scalars['Boolean'];
+};
+
+
+export type MutationAddOrderArgs = {
+  order: AddOrderInput;
 };
 
 
@@ -174,10 +186,26 @@ export type Order = {
   __typename?: 'Order';
   id: Scalars['ID'];
   number: Scalars['Int'];
+  orderProducts: Array<OrderProduct>;
   price: Scalars['Int'];
   products: Array<Product>;
   status: OrderStatusType;
   storeId: Scalars['Int'];
+};
+
+export type OrderProduct = {
+  __typename?: 'OrderProduct';
+  amount: Scalars['Int'];
+  id: Scalars['ID'];
+  orderId: Scalars['Int'];
+  productId: Scalars['Int'];
+  productOptionIds: Array<Scalars['Int']>;
+};
+
+export type OrderProductInput = {
+  amount: Scalars['Int'];
+  productId: Scalars['Int'];
+  productOptionIds: Array<Scalars['Int']>;
 };
 
 export type OrderStatusInput = {
@@ -189,6 +217,11 @@ export enum OrderStatusType {
   Complete = 'COMPLETE',
   Done = 'DONE',
   Ready = 'READY'
+}
+
+export enum OrderType {
+  Go = 'GO',
+  Here = 'HERE'
 }
 
 export type Product = {
@@ -250,6 +283,7 @@ export type Store = {
   id: Scalars['ID'];
   isAvailable: Scalars['Boolean'];
   name: Scalars['String'];
+  orders: Array<Order>;
   ownerId: Scalars['Int'];
   phone: Scalars['String'];
   products: Array<Product>;
@@ -282,6 +316,13 @@ export type RemoveProductOptionInput = {
   OptionIds: Array<Scalars['Int']>;
 };
 
+export type AddOrderMutationVariables = Exact<{
+  order: AddOrderInput;
+}>;
+
+
+export type AddOrderMutation = { __typename?: 'Mutation', addOrder: number };
+
 export type GetProductsQueryVariables = Exact<{
   id: Scalars['Float'];
 }>;
@@ -294,7 +335,7 @@ export type AddProductsMutationVariables = Exact<{
 }>;
 
 
-export type AddProductsMutation = { __typename?: 'Mutation', addProducts: boolean };
+export type AddProductsMutation = { __typename?: 'Mutation', addProducts: Array<number> };
 
 export type UpdateProductMutationVariables = Exact<{
   products: EditProductInput;
@@ -396,6 +437,24 @@ export type SignupMutationVariables = Exact<{
 export type SignupMutation = { __typename?: 'Mutation', signup: { __typename?: 'TokenOutput', accessToken: string, refreshToken: string } };
 
 
+export const AddOrderDocument = `
+    mutation addOrder($order: AddOrderInput!) {
+  addOrder(order: $order)
+}
+    `;
+export const useAddOrderMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      client: GraphQLClient,
+      options?: UseMutationOptions<AddOrderMutation, TError, AddOrderMutationVariables, TContext>,
+      headers?: RequestInit['headers']
+    ) =>
+    useMutation<AddOrderMutation, TError, AddOrderMutationVariables, TContext>(
+      ['addOrder'],
+      (variables?: AddOrderMutationVariables) => fetcher<AddOrderMutation, AddOrderMutationVariables>(client, AddOrderDocument, variables, headers)(),
+      options
+    );
 export const GetProductsDocument = `
     query getProducts($id: Float!) {
   store(id: $id) {

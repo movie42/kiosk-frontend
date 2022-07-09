@@ -6,7 +6,7 @@ import { AiFillMinusCircle } from "react-icons/ai";
 import { selectMenuListState } from "../../state/productItemState";
 import { IOrderSelectedItem } from "./ClientMenu";
 import Modal from "../../Components/Modals/Modal";
-import { Headline1 } from "../../mixin";
+import { Headline1, SubTitle1, SubTitle2, Body1 } from "../../mixin";
 import OrderStateBar from "./OrderStateBar";
 import PaymentModalChildren from "./Modal/PaymentModalChildren";
 import { useNavigate, useParams } from "react-router-dom";
@@ -34,7 +34,9 @@ const Header = styled.div`
     background-color: ${(props) => props.theme.color.gray300};
   }
 `;
-
+const MenuListWrapper = styled.div`
+  margin: 1rem 0;
+`;
 const MenuListItem = styled.div`
   display: grid;
   grid-template-columns: 20% 50% 30%;
@@ -49,36 +51,45 @@ const MenuListItem = styled.div`
     padding: 0 0.5rem;
   }
   h2 {
-    font-size: 2rem;
+    ${SubTitle1}
     font-weight: bold;
     padding: 1.3rem 0 0.8rem 0;
   }
   p {
-    font-size: 1.5rem;
+    ${Body1}
     padding: 0.3rem 0;
   }
   span {
     vertical-align: super;
     padding: 0.5rem;
   }
+  .price {
+    margin-top: 1rem;
+    ${SubTitle2}
+  }
 `;
 const DeleteButton = styled(ButtonDefaultStyle)`
   background-color: ${(props) => props.theme.color.gray300};
 `;
+const ResetButtonWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;
 const ResetButton = styled(ButtonDefaultStyle)`
+  text-align: center;
   background-color: ${(props) => props.theme.color.primary500};
 `;
 export const AddCountButton = styled(ButtonDefaultStyle)`
   background-color: unset;
   color: ${(props) => props.theme.color.primary500};
   font-size: 2.3rem;
-  padding: 0;
+  vertical-align: middle;
 `;
 export const MinusCountButton = styled(ButtonDefaultStyle)`
   background-color: unset;
   color: ${(props) => props.theme.color.error500};
   font-size: 2.3rem;
-  padding: 0;
+  vertical-align: middle;
 `;
 
 const ClientSelectList = () => {
@@ -142,7 +153,6 @@ const ClientSelectList = () => {
       })
     );
   };
-
   // delete item from list
   const handleDelete = (current: IOrderSelectedItem) => {
     const [filtered] = totalSelectMenu.filter(
@@ -170,43 +180,46 @@ const ClientSelectList = () => {
       <Header>
         <h1>주문 목록</h1>
       </Header>
-
-      {totalSelectMenu.map((item, i) => (
-        <MenuListItem key={`${item.productId}_${i}`}>
-          {item.imageUrl ? (
-            <div style={{ padding: "0.5rem 1rem" }}>
-              <Images src={item.imageUrl} alt={item.name} />
+      <MenuListWrapper>
+        {totalSelectMenu.map((item, i) => (
+          <MenuListItem key={`${item.productId}_${i}`}>
+            {item.imageUrl ? (
+              <div style={{ padding: "0.5rem 1rem 0.5rem 0" }}>
+                <Images src={item.imageUrl} alt={item.name} />
+              </div>
+            ) : (
+              <Noimage />
+            )}
+            <div>
+              <h2>{item.name}</h2>
+              {item.option && <p>선택옵션: {item.option}</p>}
+              <p>
+                주문수량:
+                <MinusCountButton onClick={() => handleMinusCount(item)}>
+                  <AiFillMinusCircle />
+                </MinusCountButton>
+                {item.totalCount}
+                <AddCountButton onClick={() => handleAddCount(item)}>
+                  <IoIosAddCircle />
+                </AddCountButton>
+              </p>
             </div>
-          ) : (
-            <Noimage />
-          )}
-          <div>
-            <h2>{item.name}</h2>
-            {item.option && <p>선택옵션: {item.option}</p>}
-            <p>
-              주문수량:
-              <MinusCountButton onClick={() => handleMinusCount(item)}>
-                <AiFillMinusCircle />
-              </MinusCountButton>
-              <span>{item.totalCount}</span>
-              <AddCountButton onClick={() => handleAddCount(item)}>
-                <IoIosAddCircle />
-              </AddCountButton>
-            </p>
-          </div>
-          <div>
-            <p>
-              총 가격:&nbsp;
-              {translateLocalCurrency(item.totalPrice, "ko-KR")}원
-            </p>
-            <DeleteButton onClick={() => handleDelete(item)}>
-              삭제하기
-            </DeleteButton>
-          </div>
-        </MenuListItem>
-      ))}
+            <div>
+              <p className="price">
+                총 가격:&nbsp;
+                {translateLocalCurrency(item.totalPrice, "ko-KR")}원
+              </p>
+              <DeleteButton onClick={() => handleDelete(item)}>
+                삭제하기
+              </DeleteButton>
+            </div>
+          </MenuListItem>
+        ))}
+      </MenuListWrapper>
       {totalSelectMenu.length !== 0 && (
-        <ResetButton onClick={deleteAll}>전체삭제</ResetButton>
+        <ResetButtonWrapper>
+          <ResetButton onClick={deleteAll}>전체삭제</ResetButton>
+        </ResetButtonWrapper>
       )}
       <OrderStateBar
         totalCount={totalSelectMenu.reduce(

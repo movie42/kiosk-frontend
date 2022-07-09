@@ -8,13 +8,14 @@ import { IOrderSelectedItem } from "../ClientMenu";
 import { AddCountButton, MinusCountButton } from "../ClientSelectList";
 import { translateLocalCurrency } from "../../../utils/helper/translateLocalCurrency";
 import Noimage from "../../../Components/Images/Noimage";
+import { SubTitle2 } from "../../../mixin";
 const Wrapper = styled.div`
   position: relative;
   color: ${(props) => props.theme.color.fontColorBlack};
   .image-container {
     overflow: hidden;
     position: relative;
-    height: 15rem;
+    height: 25rem;
     .transparent-box {
       position: absolute;
       z-index: 1;
@@ -28,11 +29,9 @@ const Wrapper = styled.div`
   }
   .item-info-container {
     align-self: center;
-    padding: 1rem;
-    h3 {
-      font-size: 3rem;
-      font-weight: bold;
-      margin-bottom: 0.6rem;
+    padding: 2rem;
+    .item-title {
+      ${SubTitle2}
     }
     h4 {
       font-size: 2rem;
@@ -139,6 +138,7 @@ const MenuItemModalChildren: React.FC<IMenuItemModalChildrenProps> = ({
             productId: selected.id,
             name: selected.name,
             option: selectedOption,
+            optionId: selectedOptionId,
             price: selected.price,
             totalCount: count,
             totalPrice: selected.price * count,
@@ -181,6 +181,11 @@ const MenuItemModalChildren: React.FC<IMenuItemModalChildrenProps> = ({
   };
 
   const [selectedOption, setSelectedOption] = useState("");
+  const [selectedOptionId, setSelectedOptionId] = useState(0);
+  const selectOption = (name: string, id: number) => {
+    setSelectedOption(name);
+    setSelectedOptionId(id);
+  };
 
   return (
     <Wrapper>
@@ -193,7 +198,7 @@ const MenuItemModalChildren: React.FC<IMenuItemModalChildrenProps> = ({
       </div>
       <div className="item-info-container">
         <Title composition={true}>구성</Title>
-        <p>{selected.name} 1개</p>
+        <p className="item-title">{selected.name} 1개</p>
         {selected.options && (
           <>
             <Title>상품옵션</Title>
@@ -203,7 +208,7 @@ const MenuItemModalChildren: React.FC<IMenuItemModalChildrenProps> = ({
                   className="noto"
                   key={item.name}
                   selected={selectedOption === item.name ? true : false}
-                  onClick={() => setSelectedOption(item.name)}
+                  onClick={() => selectOption(item.name, item.id)}
                 >
                   {item.name}
                 </OptionButton>
