@@ -9,26 +9,31 @@ import Textarea from "../../../Components/Form/TextareaDefault";
 import ButtonDefaultStyle from "../../../Components/Buttons/ButtonDefault";
 import { IoIosAddCircle } from "react-icons/io";
 import Modal from "../../../Components/Modals/Modal";
-import { useAddProductsMutation } from "../../../generated/graphql";
+import {
+  useAddProductOptionsMutation,
+  useAddProductsMutation,
+} from "../../../generated/graphql";
 import graphqlReqeustClient from "../../../lib/graphqlRequestClient";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../../state/userState";
 import { useQueryClient } from "react-query";
 import Images from "../../../Components/Images/Images";
 import useImageUpload from "../../../utils/customHooks/useImageUpload";
+import { Option } from "../../../state/productItemState";
 
 const Container = styled.div`
   margin-bottom: 8rem;
   form {
     fieldset {
-      border: 1px solid ${(props) => props.theme.color.gray300};
       padding: 0.8rem;
       margin-bottom: 1rem;
       div {
         display: grid;
         grid-template-columns: 20% 80%;
         padding: 1rem 0;
-        border-bottom: 1px solid ${(props) => props.theme.color.gray300};
+        &:not(:last-child) {
+          border-bottom: 1px solid ${(props) => props.theme.color.gray300};
+        }
         label {
           font-size: 2rem;
           align-self: center;
@@ -37,11 +42,20 @@ const Container = styled.div`
           font-size: 2rem;
           border: 0;
           align-self: center;
+          outline: none;
+        }
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
         }
         textarea {
           border: 0;
           font-size: 2rem;
           align-self: center;
+          resize: none;
+          height: 40vh;
+          outline: none;
           &::placeholder {
             font-size: 2rem;
           }
@@ -91,28 +105,25 @@ const ButtonContainer = styled.div`
   color: ${(props) => props.theme.color.fontColorBlack};
   font-size: 2rem;
   border-top: 1px solid ${(props) => props.theme.color.gray300};
+  button {
+    cursor: pointer;
+    border: 0;
+    font-size: 2rem;
+    color: ${(props) => props.theme.color.fontColorWhite};
+    border-radius: 0.3rem;
+    line-height: 2.8rem;
+  }
   ${({ theme }) => theme.device.mobile} {
     justify-content: center;
   }
 `;
 
 const CreateButton = styled(ButtonDefaultStyle)`
-  cursor: pointer;
-  border: 0;
-  font-size: 2rem;
-  color: ${(props) => props.theme.color.fontColorWhite};
-  border-radius: 0.3rem;
-  line-height: 2.8rem;
   background-color: ${(props) => props.theme.color.primary600};
 `;
 
 const CancelButton = styled(ButtonDefaultStyle)`
-  cursor: pointer;
-  border: 0;
-  font-size: 2rem;
   color: ${(props) => props.theme.color.fontColorWhite};
-  border-radius: 0.3rem;
-  line-height: 2.8rem;
   margin-right: 0.3rem;
 `;
 
@@ -150,7 +161,6 @@ interface ProductDefaultValue {
   imageUrl?: string;
   name: string;
   price: number;
-  option?: string;
   description?: string;
 }
 
@@ -172,13 +182,19 @@ const AdminManageProductAddItem = () => {
       imageUrl: "",
       name: "",
       price: 0,
-      option: "",
       description: "",
     },
   ]);
-  const { mutate } = useAddProductsMutation<ProductDefaultValue[]>(
+
+  const [options, setOptions] = useState("");
+  const { mutate: addProductMutate } = useAddProductsMutation<
+    ProductDefaultValue[]
+  >(graphqlReqeustClient(accessToken));
+
+  const { mutate: addProductOptionMutate } = useAddProductOptionsMutation(
     graphqlReqeustClient(accessToken),
   );
+
   const {
     register,
     handleSubmit,
@@ -193,7 +209,6 @@ const AdminManageProductAddItem = () => {
           imageUrl: "",
           name: "",
           price: 0,
-          option: "",
           description: "",
         },
       ],
@@ -228,12 +243,33 @@ const AdminManageProductAddItem = () => {
   };
 
   const confirmAddProductItems = () => {
-    mutate(
+    addProductMutate(
       { products: formData },
       {
-        onSuccess: () => {
-          queryClient.invalidateQueries("getProducts");
-          navigate(`/admin/${userId}/store/${storeId}/product/manage-product`);
+        onSuccess: (data) => {
+          if (!options) {
+            queryClient.invalidateQueries("getProducts");
+            navigate(
+              `/admin/${userId}/store/${storeId}/product/manage-product`,
+            );
+            return;
+          }
+
+          const addOptions = options.split(",").map((value) => ({
+            productId: data.addProducts[0],
+            name: value,
+          }));
+          addProductOptionMutate(
+            { option: addOptions },
+            {
+              onSuccess: () => {
+                queryClient.invalidateQueries("getProducts");
+                navigate(
+                  `/admin/${userId}/store/${storeId}/product/manage-product`,
+                );
+              },
+            },
+          );
         },
       },
     );
@@ -340,10 +376,10 @@ const AdminManageProductAddItem = () => {
                 <InputDefault
                   id="option"
                   type="text"
-                  placeholder="상품 옵션을 입력해주세요. 옵션은 반드시 ,로 구분해주세요."
+                  placeholder="옵션은 반드시 ,로 구분해주세요."
                   name="option"
-                  register={register}
-                  fieldName={`product.${index}`}
+                  value={options}
+                  onChange={(e) => setOptions(e.target.value)}
                 />
               </div>
               <div>
