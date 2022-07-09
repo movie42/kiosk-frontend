@@ -14,8 +14,9 @@ import Modal from "../../../Components/Modals/Modal";
 import DeleteModalChildren from "../Modal/DeleteModalChildren";
 import useModalHook from "../../../utils/customHooks/useModalHook";
 import { Headline3, SubTitle2 } from "../../../mixin";
+import ButtonDefaultStyle from "../../../Components/Buttons/ButtonDefault";
 
-const MenuBarContainer: React.FC<SelectOption> = styled.div<SelectOption>`
+const MenuBarContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -25,6 +26,7 @@ const MenuBarContainer: React.FC<SelectOption> = styled.div<SelectOption>`
   left: 0;
   right: 0;
   padding: 2rem;
+
   background-color: ${(props) => props.theme.color.background100};
   color: ${(props) => props.theme.color.fontColorBlack};
   height: 6rem;
@@ -36,24 +38,22 @@ const MenuBarContainer: React.FC<SelectOption> = styled.div<SelectOption>`
 
   button {
     cursor: pointer;
-    padding: 0.7rem 2rem;
     border: 0;
-    font-size: 2.4rem;
+    font-size: 2rem;
     color: ${(props) => props.theme.color.fontColorWhite};
     border-radius: 0.3rem;
     line-height: 2.8rem;
-
-    &.confirm-button {
-      background-color: ${(props) =>
-        props.options === "delete"
-          ? props.theme.color.error500
-          : props.theme.color.secondary500};
-    }
-    &.cancel-button {
-      margin-right: 1.3rem;
-      background-color: ${(props) => props.theme.color.gray400};
-    }
   }
+`;
+
+const ConfirmButton = styled(ButtonDefaultStyle)`
+  background-color: ${(props) => props.theme.color.error500};
+`;
+
+const CancelButton = styled(ButtonDefaultStyle)`
+  background-color: ${(props) => props.theme.color.gray400};
+  color: ${(props) => props.theme.color.fontColorWhite};
+  margin-right: 0.3rem;
 `;
 
 const StateMenuBar = () => {
@@ -83,23 +83,14 @@ const StateMenuBar = () => {
           <DeleteModalChildren setIsModal={setIsModal} />
         </Modal>
       )}
-      <MenuBarContainer options={selectOption.options}>
-        {selectOption.options === "delete" && (
-          <>
-            <h2>{selectList.length}개의 상품을 삭제하려면 버튼을 누르세요.</h2>
-            <div>
-              <button
-                className="cancel-button"
-                onClick={updateSelectOptionToNone}
-              >
-                취소하기
-              </button>
-              <button className="confirm-button" onClick={handleModalAppear}>
-                삭제하기
-              </button>
-            </div>
-          </>
-        )}
+      <MenuBarContainer>
+        <h2>{selectList.length}개의 상품을 삭제하려면 버튼을 누르세요.</h2>
+        <div>
+          <CancelButton onClick={updateSelectOptionToNone}>
+            취소하기
+          </CancelButton>
+          <ConfirmButton onClick={handleModalAppear}>삭제하기</ConfirmButton>
+        </div>
       </MenuBarContainer>
     </>
   );
