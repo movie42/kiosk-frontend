@@ -79,3 +79,8 @@ export const getOrderForFrontend = selector<NewOrder[]>({
     }
   },
 });
+
+export const orderType = atom({
+  key: "orderType",
+  default: "",
+});

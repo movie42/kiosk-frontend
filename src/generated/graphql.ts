@@ -1,6 +1,6 @@
 import { GraphQLClient } from 'graphql-request';
 import { RequestInit } from 'graphql-request/dist/types.dom';
-import { useQuery, useMutation, UseQueryOptions, UseMutationOptions } from 'react-query';
+import { useMutation, useQuery, UseMutationOptions, UseQueryOptions } from 'react-query';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -208,6 +208,10 @@ export type OrderProductInput = {
   productOptionIds: Array<Scalars['Int']>;
 };
 
+export type OrderStatusInput = {
+  status: OrderStatusType;
+};
+
 export enum OrderStatusType {
   Canceled = 'CANCELED',
   Complete = 'COMPLETE',
@@ -317,6 +321,12 @@ export type GetOrdersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetOrdersQuery = { __typename?: 'Query', myStores: Array<{ __typename?: 'Store', id: string, products: Array<{ __typename?: 'Product', id: string, name: string, price: number, options: Array<{ __typename?: 'Option', id: string, name: string }> }>, orders: Array<{ __typename?: 'Order', id: string, number: number, price: number, storeId: number, status: OrderStatusType, orderProducts: Array<{ __typename?: 'OrderProduct', orderId: number, productId: number, amount: number, productOptionIds: Array<number> }> }> }> };
+export type AddOrderMutationVariables = Exact<{
+  order: AddOrderInput;
+}>;
+
+
+export type AddOrderMutation = { __typename?: 'Mutation', addOrder: number };
 
 export type GetProductsQueryVariables = Exact<{
   id: Scalars['Float'];
@@ -480,6 +490,22 @@ export const useGetOrdersQuery = <
     useQuery<GetOrdersQuery, TError, TData>(
       variables === undefined ? ['getOrders'] : ['getOrders', variables],
       fetcher<GetOrdersQuery, GetOrdersQueryVariables>(client, GetOrdersDocument, variables, headers),
+export const AddOrderDocument = `
+    mutation addOrder($order: AddOrderInput!) {
+  addOrder(order: $order)
+}
+    `;
+export const useAddOrderMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      client: GraphQLClient,
+      options?: UseMutationOptions<AddOrderMutation, TError, AddOrderMutationVariables, TContext>,
+      headers?: RequestInit['headers']
+    ) =>
+    useMutation<AddOrderMutation, TError, AddOrderMutationVariables, TContext>(
+      ['addOrder'],
+      (variables?: AddOrderMutationVariables) => fetcher<AddOrderMutation, AddOrderMutationVariables>(client, AddOrderDocument, variables, headers)(),
       options
     );
 export const GetProductsDocument = `

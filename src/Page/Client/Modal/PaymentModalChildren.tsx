@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
-import { useRecoilState } from "recoil";
-import { Headline2, SubTitle2, Body1 } from "../../../mixin";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { Headline2, SubTitle2, Body1, SubTitle1 } from "../../../mixin";
 import { selectMenuListState } from "../../../state/productItemState";
 import ButtonDefaultStyle from "../../../Components/Buttons/ButtonDefault";
 import { RequestPayParams, RequestPayResponse } from "../Payment";
+import { OrderType, useAddOrderMutation } from "../../../generated/graphql";
+import graphqlReqeustClient from "../../../lib/graphqlRequestClient";
+import { userState } from "../../../state/userState";
+import { orderType } from "../../../state/orderState";
 
 interface IPaymentModalChildrenProps {
   setIsModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -19,6 +23,9 @@ const PaymentBox = styled.div`
     ${Headline2};
   }
   h3 {
+    ${SubTitle1};
+  }
+  h4 {
     ${SubTitle2};
     font-weight: 700;
   }
@@ -43,6 +50,7 @@ const MenuBox = styled.div`
 `;
 const BtnGroup = styled.div`
   text-align: center;
+  margin-top: 1rem;
 `;
 const ConfirmButton = styled(ButtonDefaultStyle)`
   background-color: ${(props) => props.theme.color.primary500};
@@ -53,15 +61,38 @@ const CancelButton = styled(ButtonDefaultStyle)`
   margin: 0 0.5rem;
 `;
 
+interface OrderProductInput {
+  productId: number;
+  amount: number;
+  productOptionIds: number[];
+}
+
+interface AddOrderInput {
+  storeId: number;
+  products: OrderProductInput[];
+  type: OrderType;
+}
+
+interface ResultOrderItems {
+  [index: number]: {
+    productId?: number;
+    totalCount: number;
+    optionIds?: number[] | undefined;
+  };
+}
+
 const PaymentModalChildren: React.FC<IPaymentModalChildrenProps> = ({
   setIsModal,
 }) => {
   const navigate = useNavigate();
   const { userId, storeId } = useParams();
+  const { accessToken } = useRecoilValue(userState);
+  const ordertype = useRecoilValue(orderType);
   const impkey = process.env.REACT_APP_IMP as string;
 
   // paid done
   const [isPaid, setIsPaid] = useState(false);
+  const [orderNumber, setOrderNumber] = useState(0);
   // print done
   const [isPrint, setIsPrint] = useState(false);
   // handle print receipt
@@ -88,6 +119,27 @@ const PaymentModalChildren: React.FC<IPaymentModalChildrenProps> = ({
     setPrintReceipt(true);
   };
 
+  // add order mutate
+  const { mutate, isSuccess } = useAddOrderMutation<AddOrderInput>(
+    graphqlReqeustClient(accessToken)
+  );
+  const addOrderItems = (orderProducts: OrderProductInput[]) => {
+    mutate(
+      {
+        order: {
+          storeId: Number(storeId),
+          products: orderProducts,
+          type: ordertype === "go" ? OrderType.Go : OrderType.Here,
+        },
+      },
+      {
+        onSuccess: (data) => {
+          setOrderNumber(data.addOrder);
+          closeReceipt();
+        },
+      }
+    );
+  };
   // payment
   const handlePayment = () => {
     window.IMP?.init(impkey);
@@ -96,6 +148,28 @@ const PaymentModalChildren: React.FC<IPaymentModalChildrenProps> = ({
       (acc, obj) => acc + obj.totalPrice,
       0
     );
+
+    const finalOrder = orderList.reduce<ResultOrderItems>((acc, obj) => {
+      const key = obj["productId"];
+      if (acc[key]) {
+        acc[key].optionIds?.push(Number(obj["optionId"]));
+        acc[key]["totalCount"] = acc[key]["totalCount"] + obj["totalCount"];
+      }
+      if (!acc[key]) {
+        acc[key] = { optionIds: [], totalCount: obj["totalCount"] };
+        acc[key].optionIds?.push(Number(obj["optionId"]));
+      }
+      return acc;
+    }, {} as ResultOrderItems);
+    const orderProducts = Object.entries(finalOrder).map((item) => {
+      const [productId, obj] = item;
+      return {
+        productId: Number(productId),
+        amount: obj.totalCount,
+        productOptionIds: obj.optionIds,
+      };
+    });
+    console.log(orderProducts);
     if (!amount) {
       alert("결제 금액을 확인해주세요");
       return;
@@ -112,8 +186,7 @@ const PaymentModalChildren: React.FC<IPaymentModalChildrenProps> = ({
       const { success, merchant_uid, error_msg, imp_uid, error_code } =
         response;
       if (success) {
-        console.log(response);
-        closeReceipt();
+        addOrderItems(orderProducts);
       } else {
         console.log(error_msg, error_code);
       }
@@ -145,14 +218,8 @@ const PaymentModalChildren: React.FC<IPaymentModalChildrenProps> = ({
       {!isPaid && (
         <>
           <h2>결제를 진행중입니다</h2>
-          <h3>주문 내용과 금액을 확인해주세요</h3>
-          <p>
-            총 결제&nbsp;
-            {orderList
-              .reduce((acc, obj) => acc + obj.totalPrice, 0)
-              .toLocaleString()}
-            원
-          </p>
+          <h4>주문 내용과 금액을 확인해주세요</h4>
+
           <p>주문 상품</p>
           {orderList.map((el, i) => (
             <MenuBox key={`${el.productId}${el.option}`}>
@@ -163,14 +230,25 @@ const PaymentModalChildren: React.FC<IPaymentModalChildrenProps> = ({
               <span>{el.totalPrice.toLocaleString()}원</span>
             </MenuBox>
           ))}
-          <button onClick={handlePayment}>결제하기</button>
-          <button onClick={() => setIsModal(false)}>취소하기</button>
+          <h3>
+            총 결제&nbsp;
+            {orderList
+              .reduce((acc, obj) => acc + obj.totalPrice, 0)
+              .toLocaleString()}
+            원
+          </h3>
+          <BtnGroup>
+            <ConfirmButton onClick={handlePayment}>결제하기</ConfirmButton>
+            <CancelButton onClick={() => setIsModal(false)}>
+              취소하기
+            </CancelButton>
+          </BtnGroup>
         </>
       )}
       {isPaid && !isPrint && (
         <>
           <h2>결제가 완료되었습니다</h2>
-          <h3>영수증을 출력하시겠습니까?</h3>
+          <h4>영수증을 출력하시겠습니까?</h4>
           <h1>{remain}</h1>
           <span>선택하지 않을 경우 자동으로 출력됩니다</span>
           <BtnGroup>
@@ -186,7 +264,8 @@ const PaymentModalChildren: React.FC<IPaymentModalChildrenProps> = ({
       {isPaid && isPrint && (
         <>
           <h2>주문이 완료되었습니다</h2>
-          <h3>주문 번호를 확인해주세요</h3>
+          <h4>주문 번호를 확인해주세요</h4>
+          <h1>{orderNumber}</h1>
           <BtnGroup>
             <ConfirmButton onClick={confirmOrder}>확인</ConfirmButton>
           </BtnGroup>

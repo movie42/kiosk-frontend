@@ -24,4 +24,6 @@ query getOrders {
       }
     }
   }
+mutation addOrder($order: AddOrderInput!) {
+  addOrder(order: $order)
 }
