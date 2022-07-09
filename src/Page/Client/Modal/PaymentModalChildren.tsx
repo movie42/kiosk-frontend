@@ -76,7 +76,7 @@ interface AddOrderInput {
 interface ResultOrderItems {
   [index: number]: {
     productId?: number;
-    totalPrice: number;
+    totalCount: number;
     optionIds?: number[] | undefined;
   };
 }
@@ -135,6 +135,7 @@ const PaymentModalChildren: React.FC<IPaymentModalChildrenProps> = ({
       {
         onSuccess: (data) => {
           setOrderNumber(data.addOrder);
+          closeReceipt();
         },
       }
     );
@@ -152,10 +153,10 @@ const PaymentModalChildren: React.FC<IPaymentModalChildrenProps> = ({
       const key = obj["productId"];
       if (acc[key]) {
         acc[key].optionIds?.push(Number(obj["optionId"]));
-        acc[key]["totalPrice"] = acc[key]["totalPrice"] + obj["totalPrice"];
+        acc[key]["totalCount"] = acc[key]["totalCount"] + obj["totalCount"];
       }
       if (!acc[key]) {
-        acc[key] = { optionIds: [], totalPrice: obj["totalPrice"] };
+        acc[key] = { optionIds: [], totalCount: obj["totalCount"] };
         acc[key].optionIds?.push(Number(obj["optionId"]));
       }
       return acc;
@@ -164,11 +165,11 @@ const PaymentModalChildren: React.FC<IPaymentModalChildrenProps> = ({
       const [productId, obj] = item;
       return {
         productId: Number(productId),
-        amount: obj.totalPrice,
+        amount: obj.totalCount,
         productOptionIds: obj.optionIds,
       };
     });
-
+    console.log(orderProducts);
     if (!amount) {
       alert("결제 금액을 확인해주세요");
       return;
@@ -186,7 +187,6 @@ const PaymentModalChildren: React.FC<IPaymentModalChildrenProps> = ({
         response;
       if (success) {
         addOrderItems(orderProducts);
-        closeReceipt();
       } else {
         console.log(error_msg, error_code);
       }
