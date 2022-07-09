@@ -150,7 +150,7 @@ export type MutationToggleStoreIsAvailableArgs = {
 
 export type MutationUpdateOrderStatusArgs = {
   id: Scalars['Int'];
-  status: OrderStatusInput;
+  status: OrderStatusType;
 };
 
 
@@ -238,6 +238,7 @@ export type Product = {
 
 export type Query = {
   __typename?: 'Query';
+  loginByRefreshToken: TokenOutput;
   me: User;
   myStores: Array<Store>;
   orders: Array<Order>;
@@ -316,6 +317,10 @@ export type RemoveProductOptionInput = {
   OptionIds: Array<Scalars['Int']>;
 };
 
+export type GetOrdersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetOrdersQuery = { __typename?: 'Query', myStores: Array<{ __typename?: 'Store', id: string, products: Array<{ __typename?: 'Product', id: string, name: string, price: number, options: Array<{ __typename?: 'Option', id: string, name: string }> }>, orders: Array<{ __typename?: 'Order', id: string, number: number, price: number, storeId: number, status: OrderStatusType, orderProducts: Array<{ __typename?: 'OrderProduct', orderId: number, productId: number, amount: number, productOptionIds: Array<number> }> }> }> };
 export type AddOrderMutationVariables = Exact<{
   order: AddOrderInput;
 }>;
@@ -357,6 +362,13 @@ export type ToggleProductIsAvailableMutationVariables = Exact<{
 
 
 export type ToggleProductIsAvailableMutation = { __typename?: 'Mutation', toggleProductIsAvailable: boolean };
+
+export type AddProductOptionsMutationVariables = Exact<{
+  option: Array<AddProductOptionInput> | AddProductOptionInput;
+}>;
+
+
+export type AddProductOptionsMutation = { __typename?: 'Mutation', addProductOptions: boolean };
 
 export type StoreQueryVariables = Exact<{
   id: Scalars['Float'];
@@ -437,6 +449,47 @@ export type SignupMutationVariables = Exact<{
 export type SignupMutation = { __typename?: 'Mutation', signup: { __typename?: 'TokenOutput', accessToken: string, refreshToken: string } };
 
 
+export const GetOrdersDocument = `
+    query getOrders {
+  myStores {
+    id
+    products {
+      id
+      name
+      price
+      options {
+        id
+        name
+      }
+    }
+    orders {
+      id
+      number
+      price
+      storeId
+      status
+      orderProducts {
+        orderId
+        productId
+        amount
+        productOptionIds
+      }
+    }
+  }
+}
+    `;
+export const useGetOrdersQuery = <
+      TData = GetOrdersQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient,
+      variables?: GetOrdersQueryVariables,
+      options?: UseQueryOptions<GetOrdersQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useQuery<GetOrdersQuery, TError, TData>(
+      variables === undefined ? ['getOrders'] : ['getOrders', variables],
+      fetcher<GetOrdersQuery, GetOrdersQueryVariables>(client, GetOrdersDocument, variables, headers),
 export const AddOrderDocument = `
     mutation addOrder($order: AddOrderInput!) {
   addOrder(order: $order)
@@ -559,6 +612,24 @@ export const useToggleProductIsAvailableMutation = <
     useMutation<ToggleProductIsAvailableMutation, TError, ToggleProductIsAvailableMutationVariables, TContext>(
       ['toggleProductIsAvailable'],
       (variables?: ToggleProductIsAvailableMutationVariables) => fetcher<ToggleProductIsAvailableMutation, ToggleProductIsAvailableMutationVariables>(client, ToggleProductIsAvailableDocument, variables, headers)(),
+      options
+    );
+export const AddProductOptionsDocument = `
+    mutation addProductOptions($option: [AddProductOptionInput!]!) {
+  addProductOptions(option: $option)
+}
+    `;
+export const useAddProductOptionsMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      client: GraphQLClient,
+      options?: UseMutationOptions<AddProductOptionsMutation, TError, AddProductOptionsMutationVariables, TContext>,
+      headers?: RequestInit['headers']
+    ) =>
+    useMutation<AddProductOptionsMutation, TError, AddProductOptionsMutationVariables, TContext>(
+      ['addProductOptions'],
+      (variables?: AddProductOptionsMutationVariables) => fetcher<AddProductOptionsMutation, AddProductOptionsMutationVariables>(client, AddProductOptionsDocument, variables, headers)(),
       options
     );
 export const StoreDocument = `

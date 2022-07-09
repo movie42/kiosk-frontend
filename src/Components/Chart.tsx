@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { productSalesInfo, Sales, SalesInfo } from "../mockup/productList";
 import Graph from "react-apexcharts";
+import { Sales } from "../state/productItemState";
 
 interface IChartProps {}
 
 const Chart = () => {
-  const [salesInfo, setSalesInfo] = useState(productSalesInfo);
+  const [salesInfo, setSalesInfo] = useState([]);
   const [chartOption, setChartOption] = useState("today");
   const [selectedSalesInfo, setSelectedSalesInfo] = useState<Sales[]>([
     {
@@ -36,55 +36,55 @@ const Chart = () => {
     ],
   });
 
-  const handleSelectedSalesInfo = (option: string) => {
-    if (option === "today") {
-      const today = salesInfo.sales.filter((value) => {
-        const now = Date.now();
-        const today = new Date(now).toDateString();
-        const createDate = new Date(value.createdAt).toDateString();
-        return today === createDate;
-      });
-      setSelectedSalesInfo(today);
-    }
-  };
+  // const handleSelectedSalesInfo = (option: string) => {
+  //   if (option === "today") {
+  //     const today = salesInfo.sales.filter((value) => {
+  //       const now = Date.now();
+  //       const today = new Date(now).toDateString();
+  //       const createDate = new Date(value.createdAt).toDateString();
+  //       return today === createDate;
+  //     });
+  //     setSelectedSalesInfo(today);
+  //   }
+  // };
 
-  useEffect(() => {
-    handleSelectedSalesInfo(chartOption);
-  }, [chartOption]);
+  // useEffect(() => {
+  //   handleSelectedSalesInfo(chartOption);
+  // }, [chartOption]);
 
-  useEffect(() => {
-    setChartState({
-      options: {
-        chart: {
-          id: chartOption,
-        },
-        xaxis: {
-          type: "datetime",
-          categories: selectedSalesInfo.map((item) => item.createdAt),
-          labels: {
-            formatter: (value) =>
-              new Date(value).toLocaleTimeString("ko-KR", {
-                hour: "numeric",
-                minute: "numeric",
-                hour12: false,
-              }),
-          },
-        },
-        stroke: {
-          curve: "straight",
-          lineCap: "square",
-          width: 3,
-          colors: ["#000000"],
-        },
-      },
-      series: [
-        {
-          name: "주문",
-          data: selectedSalesInfo.map((item) => item.quantity),
-        },
-      ],
-    });
-  }, [selectedSalesInfo]);
+  // useEffect(() => {
+  //   setChartState({
+  //     options: {
+  //       chart: {
+  //         id: chartOption,
+  //       },
+  //       xaxis: {
+  //         type: "datetime",
+  //         categories: selectedSalesInfo.map((item) => item.createdAt),
+  //         labels: {
+  //           formatter: (value) =>
+  //             new Date(value).toLocaleTimeString("ko-KR", {
+  //               hour: "numeric",
+  //               minute: "numeric",
+  //               hour12: false,
+  //             }),
+  //         },
+  //       },
+  //       stroke: {
+  //         curve: "straight",
+  //         lineCap: "square",
+  //         width: 3,
+  //         colors: ["#000000"],
+  //       },
+  //     },
+  //     series: [
+  //       {
+  //         name: "주문",
+  //         data: selectedSalesInfo.map((item) => item.quantity),
+  //       },
+  //     ],
+  //   });
+  // }, [selectedSalesInfo]);
 
   return (
     <>

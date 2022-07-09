@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import ProductItem from "./ProductItem";
-import { ProductListValues } from "../../../mockup/productList";
+import { ProductListValues } from "../../../state/productItemState";
 import StateMenuBar from "./StateMenuBar";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import ButtonDefaultStyle from "../../../Components/Buttons/ButtonDefault";
@@ -22,7 +22,8 @@ import Loading from "../../../Components/Loading";
 import { theme } from "../../../theme";
 import { MdAddCircle, MdDelete, MdCreate } from "react-icons/md";
 
-const Container = styled.div`
+const Container = styled.div<{ selectOption: boolean }>`
+  padding-bottom: ${({ selectOption }) => (selectOption ? `12rem;` : `3rem`)};
   ul.productList {
     display: grid;
     gap: 2rem;
@@ -129,7 +130,7 @@ const AdminManageProductItemList = () => {
     <Loading title="등록한 상품을 불러오고 있습니다." />
   ) : (
     <>
-      <Container>
+      <Container selectOption={selectOption.options !== "none"}>
         <ManageOptionContainer>
           <PageHeaderMessage header="상품 관리" message={store.name} />
           {selectOption.options === "none" && (

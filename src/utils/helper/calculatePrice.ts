@@ -1,9 +1,5 @@
-import { OrderList } from "../../mockup/orderList";
+import { Order } from "../../state/orderState";
 
-export const calculatePrice = (
-  price: OrderList["price"],
-  quantity: OrderList["quantity"],
-) => {
-  const wholePrice = price * quantity;
-  return wholePrice.toLocaleString("ko-KR");
+export const calculatePrice = (price: Order["price"]) => {
+  return price.toLocaleString("ko-KR");
 };

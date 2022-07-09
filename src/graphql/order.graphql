@@ -1,3 +1,29 @@
+query getOrders {
+  myStores {
+    id
+    products {
+      id
+      name
+      price
+      options {
+        id
+        name
+      }
+    }
+    orders {
+      id
+      number
+      price
+      storeId
+      status
+      orderProducts {
+        orderId
+        productId
+        amount
+        productOptionIds
+      }
+    }
+  }
 mutation addOrder($order: AddOrderInput!) {
   addOrder(order: $order)
 }
