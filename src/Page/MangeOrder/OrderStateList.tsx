@@ -18,9 +18,7 @@ const List = styled.ul`
   li {
     padding: 1rem 0;
     display: grid;
-    &.list-header {
-      grid-template-columns: 1fr repeat(5, 1fr);
-    }
+
     &.list-container {
       align-items: flex-start;
       grid-template-columns: 1fr 5fr;

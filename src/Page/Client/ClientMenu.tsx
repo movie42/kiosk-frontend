@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Modal from "../../Components/Modals/Modal";
 import OrderStateBar from "./OrderStateBar";
 import MenuItemModalChildren from "./Modal/MenuItemModalChildren";
-import { ProductListValues } from "../../mockup/productList";
+import { ProductListValues } from "../../state/productItemState";
 import {
   productListState,
   selectMenuListState,
@@ -165,7 +165,7 @@ const ClientMenu = () => {
           setMenuList(productList);
         }
       },
-    }
+    },
   );
 
   return isLoading ? (
