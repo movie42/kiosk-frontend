@@ -2,7 +2,7 @@ import {
   AnimateSharedLayout,
   motion,
   useTransform,
-  useViewportScroll,
+  useViewportScroll
 } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -15,11 +15,13 @@ import { Headline2, Headline3 } from "../../mixin";
 import { orderStatusState, OrderStatusType } from "../../state/orderState";
 
 const OptionContainer = styled(motion.div)`
+  position: relative;
   display: grid;
   align-items: center;
   grid-template-columns: 1fr 2fr 3fr;
   padding-bottom: 1.5rem;
   background-color: ${(props) => props.theme.color.background100};
+  z-index: 10;
   h2 {
     ${Headline2}
   }
@@ -86,16 +88,16 @@ interface IOptionsContainerProps {
 
 const OptionsContainer = ({
   setSearchTerm,
-  stickyPos,
+  stickyPos
 }: IOptionsContainerProps) => {
   const { scrollY } = useViewportScroll();
   const y = useTransform(scrollY, [0, stickyPos, stickyPos + 1], [0, 0, 1], {
-    clamp: false,
+    clamp: false
   });
   const borderTick = useTransform(
     scrollY,
     [0, stickyPos, stickyPos + 1],
-    ["unset", "unset", `3px solid #575757`],
+    ["unset", "unset", `3px solid #575757`]
   );
 
   const { register, handleSubmit } = useForm();
@@ -159,19 +161,19 @@ const OptionsContainer = ({
             {orderStatus === "ALL" && <Underline layoutId="underline" />}
           </WholeOrderStateButton>
           <OrderStateButton onClick={showReady}>
-            접수
+            주문접수
             {orderStatus === "READY" && <Underline layoutId="underline" />}
           </OrderStateButton>
           <OrderStateButton onClick={showDone}>
-            수령대기
+            준비완료
             {orderStatus === "DONE" && <Underline layoutId="underline" />}
           </OrderStateButton>
           <CompleteOrderStateButton onClick={showCompleteOrders}>
-            완료
+            주문완료
             {orderStatus === "COMPLETE" && <Underline layoutId="underline" />}
           </CompleteOrderStateButton>
           <CancelOrderStateButton onClick={showCancelOrders}>
-            취소
+            주문취소
             {orderStatus === "CANCELED" && <Underline layoutId="underline" />}
           </CancelOrderStateButton>
         </ButtonContainer>
