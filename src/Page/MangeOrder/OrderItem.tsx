@@ -2,10 +2,10 @@ import React from "react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import ButtonDefaultStyle from "../../Components/Buttons/ButtonDefault";
-import { Order, OrderStatusType } from "../../state/orderState";
+import { NewOrder, Order, OrderStatusType } from "../../state/orderState";
 import { calculatePrice } from "../../utils/helper/calculatePrice";
 
-const OrderItemContainer = styled.ul`
+const OrderItemContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   align-items: center;
@@ -43,10 +43,10 @@ const CompleteButton = styled(ButtonDefaultStyle)<{ state: OrderStatusType }>`
 
 interface IOrderItemProp {
   orderId: Order["id"];
-  orders: Order[];
+  order: NewOrder;
 }
 
-const OrderItem = ({ orderId, orders }: IOrderItemProp): JSX.Element => {
+const OrderItem = ({ orderId, order }: IOrderItemProp): JSX.Element => {
   // const setOrderList = useSetRecoilState(orderState);
 
   const handleOrderState = (
@@ -74,38 +74,36 @@ const OrderItem = ({ orderId, orders }: IOrderItemProp): JSX.Element => {
 
   return (
     <OrderItemContainer>
-      {orders.map((order, index) => (
-        <>
-          {/* <li>{order.productName}</li>
-          <li>{order.optionID}</li>
-          <li>{order.quantity}</li> */}
-          <li>
-            {/* {order.state === "cancel"
+      <>
+        {/* <li>{order.}</li>
+        <li>{order.optionID}</li>
+        <li>{order.quantity}</li> */}
+        <li>
+          {/* {order.state === "cancel"
               ? 0
               : calculatePrice(order.price, order.amount)} */}
-          </li>
-          <li className="order-state-button-container">
-            <CancelButton
-              onClick={() => handleOrderState(order, OrderStatusType.Canceled)}
-              state={order.status}
-            >
-              취소
-            </CancelButton>
-            <OrderButton
-              onClick={() => handleOrderState(order, OrderStatusType.Done)}
-              state={order.status}
-            >
-              접수
-            </OrderButton>
-            <CompleteButton
-              onClick={() => handleOrderState(order, OrderStatusType.Complete)}
-              state={order.status}
-            >
-              완료
-            </CompleteButton>
-          </li>
-        </>
-      ))}
+        </li>
+        <li className="order-state-button-container">
+          {/* <CancelButton
+            // onClick={() => handleOrderState(order, OrderStatusType.Canceled)}
+            state={order}
+          >
+            취소
+          </CancelButton>
+          <OrderButton
+            onClick={() => handleOrderState(order, OrderStatusType.Done)}
+            state={order.status}
+          >
+            접수
+          </OrderButton>
+          <CompleteButton
+            onClick={() => handleOrderState(order, OrderStatusType.Complete)}
+            state={order.status}
+          >
+            완료
+          </CompleteButton> */}
+        </li>
+      </>
     </OrderItemContainer>
   );
 };

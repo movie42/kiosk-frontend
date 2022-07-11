@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
@@ -12,12 +12,15 @@ import graphqlReqeustClient from "../../lib/graphqlRequestClient";
 import { useParams } from "react-router-dom";
 import { OrderProducts } from "../../state/orderState";
 import OptionsContainer from "./OptionsContainer";
+import { motion, useTransform, useViewportScroll } from "framer-motion";
 
 const Wrapper = styled.div``;
 
 const OrderStateContainer = styled.div``;
 
 const MangeOrderMain = () => {
+  const sticky = useRef<HTMLDivElement>(null);
+  const [stickyPos, setStickyPos] = useState<number>(0);
   const { accessToken } = useRecoilValue(userState);
   const { storeId } = useParams();
   const [searchTerm, setSearchTerm] = useState("");
@@ -78,9 +81,21 @@ const MangeOrderMain = () => {
     },
   );
 
+  useEffect(() => {
+    if (sticky.current) {
+      const offsetTop = sticky.current.offsetTop as number;
+      setStickyPos(offsetTop);
+    }
+  }, [sticky.current]);
+
   return (
     <Wrapper>
-      <OptionsContainer setSearchTerm={setSearchTerm} />
+      <div ref={sticky}>
+        <OptionsContainer
+          setSearchTerm={setSearchTerm}
+          stickyPos={stickyPos as number}
+        />
+      </div>
       <OrderStateContainer>
         <OrderStateList />
       </OrderStateContainer>

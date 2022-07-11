@@ -11,58 +11,81 @@ import {
   OrderStatusType,
 } from "../../state/orderState";
 import useModalHook from "../../utils/customHooks/useModalHook";
+import { translateLocalCurrency } from "../../utils/helper/translateLocalCurrency";
 import OrderItem from "./OrderItem";
 import OrderModal from "./OrderModal";
 
 const List = styled.ul`
-  li {
-    padding: 1rem 0;
-    display: grid;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: minmax(20rem, 40rem);
+  gap: 2rem;
+  ${({ theme }) => theme.device.tablet} {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  ${({ theme }) => theme.device.mobile} {
+    grid-template-columns: unset;
+  }
 
+  li {
+    box-sizing: border-box;
+    overflow-y: auto;
+    padding: 1rem 0;
     &.list-container {
       align-items: flex-start;
-      grid-template-columns: 1fr 5fr;
       margin-bottom: 0.8rem;
-      border-bottom: 1px solid ${(props) => props.theme.color.gray300};
-    }
-    h3 {
-      ${Headline3}
-      font-weight: 900;
-      ${({ theme }) => theme.device.tablet} {
-        font-size: 2rem;
-      }
-      ${({ theme }) => theme.device.mobile} {
-        font-size: 1.5rem;
-      }
-    }
-    div {
-      display: grid;
-      align-items: center;
-      span {
-        ${SubTitle1}
+      border: 1px solid ${(props) => props.theme.color.gray300};
+      border-radius: 1rem;
+      padding: 1rem;
+      .list-header {
         display: flex;
-        justify-content: flex-start;
-        &.order-button-container {
-          align-items: flex-start;
-          display: flex;
-          flex-direction: column;
+        span {
+          &:not(:first-child) {
+            margin-left: 1rem;
+          }
+          ${SubTitle2}
+          font-weight:900;
+          strong {
+            display: block;
+            font-size: 1.6rem;
+            font-weight: 300;
+          }
         }
       }
     }
   }
 `;
 
-const CompleteAllOrderButton = styled(ButtonDefaultStyle)`
-  font-size: 1.2rem;
-  padding: 0.8rem;
-  margin-bottom: 0.3rem;
+const OrderProductInfoContainer = styled.div`
+  ul {
+    li {
+      display: flex;
+      flex-direction: column;
+      span {
+        ${SubTitle2}
+        font-weight:900;
+        strong {
+          display: block;
+          font-size: 1.6rem;
+          font-weight: 300;
+        }
+      }
+    }
+  }
 `;
 
-const CancelAllOrderButton = styled(ButtonDefaultStyle)`
+const defaultButtonStyle = styled.button`
   font-size: 1.2rem;
-  padding: 0.8rem;
+  padding: 0 0.8rem;
   margin-bottom: 0.3rem;
+  width: 5rem;
+  height: 5rem;
+  border-radius: 100%;
 `;
+
+const CompleteAllOrderButton = styled(defaultButtonStyle)``;
+
+const CancelAllOrderButton = styled(defaultButtonStyle)``;
 
 interface IOrderProps {}
 
@@ -106,7 +129,7 @@ const OrderStateList = () => {
     //     return order;
     //   }),
     // );
-  }, [modalOrder]);
+  }, []);
 
   return (
     <>
@@ -131,29 +154,66 @@ const OrderStateList = () => {
       <List>
         {orders.map((order) => (
           <li className="list-container" key={order.id} data-id={order.id}>
-            <div>
+            <div className="list-header">
               <span>
                 <strong>주문번호</strong>
+                {order.number}
               </span>
-              <span>{order.number}</span>
-              <span className="order-button-container">
-                <CompleteAllOrderButton
-                  onClick={(e) =>
-                    handleSetModalItem(e, OrderStatusType.Complete)
-                  }
-                >
-                  주문완료
-                </CompleteAllOrderButton>
-                <CancelAllOrderButton
-                  onClick={(e) =>
-                    handleSetModalItem(e, OrderStatusType.Canceled)
-                  }
-                >
-                  주문취소
-                </CancelAllOrderButton>
+              <span>
+                <strong>총 금액</strong>
+                {translateLocalCurrency(order.price)}원
               </span>
             </div>
-            {/* <OrderItem orders={orders} orderId={order.id} /> */}
+            <OrderProductInfoContainer>
+              <div>
+                <ul>
+                  {order.orderProducts.map((product) => (
+                    <li data-orderid={product?.orderId} key={product?.orderId}>
+                      <span data-productid={product?.productId}>
+                        <strong>상품 이름</strong>
+                        {product?.productName}
+                      </span>
+                      <span>
+                        <strong>가격</strong>
+                        {product?.productPrice &&
+                          translateLocalCurrency(product?.productPrice)}
+                        원
+                      </span>
+                      <span>
+                        <strong>주문 수량</strong>
+                        {product?.amount}
+                      </span>
+                      <span data-optionid={product?.optionId}>
+                        <strong>옵션</strong>
+                        {product?.optionName}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </OrderProductInfoContainer>
+            <span className="order-button-container">
+              <CompleteAllOrderButton
+                onClick={(e) => handleSetModalItem(e, OrderStatusType.Complete)}
+              >
+                주문접수
+              </CompleteAllOrderButton>
+              <CompleteAllOrderButton
+                onClick={(e) => handleSetModalItem(e, OrderStatusType.Complete)}
+              >
+                준비완료
+              </CompleteAllOrderButton>
+              <CompleteAllOrderButton
+                onClick={(e) => handleSetModalItem(e, OrderStatusType.Complete)}
+              >
+                주문완료
+              </CompleteAllOrderButton>
+              <CancelAllOrderButton
+                onClick={(e) => handleSetModalItem(e, OrderStatusType.Canceled)}
+              >
+                주문취소
+              </CancelAllOrderButton>
+            </span>
           </li>
         ))}
       </List>
