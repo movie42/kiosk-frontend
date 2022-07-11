@@ -1,8 +1,12 @@
+import { NonNullTypeNode } from "graphql";
 import React, { useState } from "react";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import Modal from "../../Components/Modals/Modal";
-import { Order, OrderStatusType } from "../../state/orderState";
+import { getOrderForFrontend, NewOrder, Order } from "../../state/orderState";
+import { OrderStatusType } from "../../generated/graphql";
 import { calculatePrice } from "../../utils/helper/calculatePrice";
+import { translateLocalCurrency } from "../../utils/helper/translateLocalCurrency";
 import { translateOrderStateFromEngToKo } from "../../utils/helper/translateOrderStateFromEngToKo";
 
 const ModalContainer = styled(Modal)``;
@@ -27,7 +31,7 @@ const ButtonContainer = styled.div<ButtonState>`
     }
     &.confirm-button {
       background-color: ${(props) =>
-        props.state === OrderStatusType.Canceled
+        props.status === OrderStatusType.Canceled
           ? props.theme.color.error700
           : props.theme.color.primary600};
       color: ${(props) => props.theme.color.fontColorWhite};
@@ -53,91 +57,81 @@ const MordalItem = styled.li`
   }
 `;
 
+const MODAL_MESSAGE = {
+  READY: "주문을 접수하시겠습니까?",
+  DONE: "모든 상품이 준비되었나요?",
+  COMPLETE: "주문을 완료하시겠어요?",
+  CANCELED: "주문을 취소하시겠습니까?"
+};
+const CONFIRM_BUTTON_NAME = {
+  READY: "주문접수",
+  DONE: "준비완료",
+  COMPLETE: "주문완료",
+  CANCELED: "주문취소"
+};
+
 interface IOrderModalProps {
-  modalOrder: Order[];
-  setModalOrder: React.Dispatch<React.SetStateAction<Order[]>>;
+  orderId: string;
   setIsModal: React.Dispatch<React.SetStateAction<boolean>>;
-  modalMessage: string;
-  modalState: Order["status"];
+  setConfirm: React.Dispatch<React.SetStateAction<boolean>>;
+  setOrderStatus: React.Dispatch<React.SetStateAction<OrderStatusType | null>>;
+  status: OrderStatusType;
 }
 
 interface ButtonState {
-  state?: Order["status"];
+  status?: OrderStatusType;
 }
 
 const OrderModal = ({
-  modalOrder,
-  setModalOrder,
+  orderId,
   setIsModal,
-  modalMessage,
-  modalState,
+  setConfirm,
+  setOrderStatus,
+  status
 }: IOrderModalProps) => {
-  const handleSetState = () => {
-    if (modalState === OrderStatusType.Complete) {
-      // const newOrders: OrderList[] = modalOrder.orders.map((value) => {
-      //   if (value.state !== OrderState.CANCELED) {
-      //     return { ...value, state: OrderState.COMPLETE };
-      //   }
-      //   return value;
-      // });
-      // setModalOrder((pre) => ({ ...pre, orders: newOrders }));
-      setIsModal(false);
-      return;
-    }
+  const orders = useRecoilValue(getOrderForFrontend);
+  const [selectOrder] = orders.filter((order) => order.id === orderId);
 
-    if (modalState === OrderStatusType.Canceled) {
-      // const newOrders: OrderList[] = modalOrder.orders.map((value) => ({
-      //   ...value,
-      //   state: OrderState.CANCELED,
-      // }));
-      // setModalOrder((pre) => ({ ...pre, orders: newOrders }));
-      setIsModal(false);
-      return;
-    }
+  const handleConfirm = () => {
+    setConfirm(true);
+    setIsModal(false);
   };
 
   return (
     <ModalContainer strach={false}>
       <div>
-        {/* <h1>주문번호 {modalOrder?.number}</h1> */}
-        <p>{modalMessage}</p>
+        <h1>주문번호 {selectOrder?.number}</h1>
+        <p>{MODAL_MESSAGE[status]}</p>
         <h3>구성</h3>
         <ModalItemContainer>
-          {/* {modalOrder?.orders.map((value) => (
+          {selectOrder?.orderProducts.map((value) => (
             <MordalItem>
-              <span>{value.productName} </span>
-              <span>{value.optionID} </span>
-              <span>{value.quantity}개</span>
+              <span>{value?.productName} </span>
+              <span>{value?.optionName} </span>
+              <span>{value?.amount}개</span>
               <span>
-                {value.state === OrderState.CANCEL
-                  ? 0
-                  : calculatePrice(value.price, value.quantity)}
-                원
+                {calculatePrice(value?.productPrice, value?.amount)}원
               </span>
-              <span>{translateOrderStateFromEngToKo(value.state)}</span>
+              <span>{translateOrderStateFromEngToKo(status)}</span>
             </MordalItem>
-          ))} */}
+          ))}
         </ModalItemContainer>
         <OrderStateContainer>
           <PriceContainer>
             <h2>
-              총 가격{" "}
-              {/* {modalOrder?.orders
-                .filter((item) => item.state !== OrderState.CANCEL)
-                .reduce(
-                  (acc, current) => acc + current.price * current.quantity,
-                  0,
-                )
-                .toLocaleString("ko-KR")} */}
+              총 가격
+              {selectOrder.price
+                ? translateLocalCurrency(selectOrder.price)
+                : 0}
               원
             </h2>
           </PriceContainer>
-          <ButtonContainer state={modalState}>
+          <ButtonContainer>
             <button className="cancel-button" onClick={() => setIsModal(false)}>
               돌아가기
             </button>
-            <button className="confirm-button" onClick={handleSetState}>
-              주문{translateOrderStateFromEngToKo(modalState)}
+            <button className="confirm-button" onClick={handleConfirm}>
+              {CONFIRM_BUTTON_NAME[status]}
             </button>
           </ButtonContainer>
         </OrderStateContainer>

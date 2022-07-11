@@ -325,6 +325,14 @@ export type AddOrderMutationVariables = Exact<{
 
 export type AddOrderMutation = { __typename?: 'Mutation', addOrder: number };
 
+export type UpdateOrderStatusMutationVariables = Exact<{
+  id: Scalars['Int'];
+  status: OrderStatusType;
+}>;
+
+
+export type UpdateOrderStatusMutation = { __typename?: 'Mutation', updateOrderStatus: boolean };
+
 export type GetProductsQueryVariables = Exact<{
   id: Scalars['Float'];
 }>;
@@ -505,6 +513,24 @@ export const useAddOrderMutation = <
     useMutation<AddOrderMutation, TError, AddOrderMutationVariables, TContext>(
       ['addOrder'],
       (variables?: AddOrderMutationVariables) => fetcher<AddOrderMutation, AddOrderMutationVariables>(client, AddOrderDocument, variables, headers)(),
+      options
+    );
+export const UpdateOrderStatusDocument = `
+    mutation updateOrderStatus($id: Int!, $status: OrderStatusType!) {
+  updateOrderStatus(id: $id, status: $status)
+}
+    `;
+export const useUpdateOrderStatusMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      client: GraphQLClient,
+      options?: UseMutationOptions<UpdateOrderStatusMutation, TError, UpdateOrderStatusMutationVariables, TContext>,
+      headers?: RequestInit['headers']
+    ) =>
+    useMutation<UpdateOrderStatusMutation, TError, UpdateOrderStatusMutationVariables, TContext>(
+      ['updateOrderStatus'],
+      (variables?: UpdateOrderStatusMutationVariables) => fetcher<UpdateOrderStatusMutation, UpdateOrderStatusMutationVariables>(client, UpdateOrderStatusDocument, variables, headers)(),
       options
     );
 export const GetProductsDocument = `

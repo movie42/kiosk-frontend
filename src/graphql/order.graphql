@@ -29,3 +29,7 @@ query getOrders {
 mutation addOrder($order: AddOrderInput!) {
   addOrder(order: $order)
 }
+
+mutation updateOrderStatus($id: Int!, $status: OrderStatusType!) {
+  updateOrderStatus(id: $id, status: $status)
+}

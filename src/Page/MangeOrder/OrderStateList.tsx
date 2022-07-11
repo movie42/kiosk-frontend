@@ -1,21 +1,19 @@
 import { motion, Variants } from "framer-motion";
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import React, { Dispatch, SetStateAction, useState } from "react";
+import { useQueryClient } from "react-query";
 import styled from "styled-components";
-import ButtonDefaultStyle from "../../Components/Buttons/ButtonDefault";
-import { Headline2, Headline3, SubTitle1, SubTitle2 } from "../../mixin";
-import {
-  getOrderForFrontend,
-  NewOrder,
-  Order,
-  orderStateForFrontend,
-  OrderStatusType
-} from "../../state/orderState";
-import { theme } from "../../theme";
+import { useRecoilValue } from "recoil";
+
+import { useUpdateOrderStatusMutation } from "../../generated/graphql";
+import graphqlReqeustClient from "../../lib/graphqlRequestClient";
+import { getOrderForFrontend, NewOrder, Order } from "../../state/orderState";
+import { OrderStatusType } from "../../generated/graphql";
+import { Headline2 } from "../../mixin";
+import { userState } from "../../state/userState";
 import useModalHook from "../../utils/customHooks/useModalHook";
 import { translateLocalCurrency } from "../../utils/helper/translateLocalCurrency";
-import OrderItem from "./OrderItem";
 import OrderModal from "./OrderModal";
+import { useEffect } from "react";
 
 const List = styled.ul`
   display: grid;
@@ -95,7 +93,7 @@ const OrderProductInfoContainer = styled.div`
   }
 `;
 
-const OrderInfoHeader = styled(motion.div)<{ status: string }>`
+const OrderInfoHeader = styled(motion.div)`
   position: sticky;
   height: 15.5rem;
   top: 0;
@@ -107,51 +105,6 @@ const OrderInfoHeader = styled(motion.div)<{ status: string }>`
   .order-button-container {
     display: flex;
     justify-content: space-between;
-    .ready {
-      ${({ status, theme }) =>
-        status === "READY"
-          ? `background-color: ${theme.color.secondary300};
-              color:${theme.color.fontColorWhite};
-            `
-          : `background-color: ${theme.color.gray300};
-            color:${theme.color.fontColorBlack};
-            border:1px solid #000;
-          `};
-    }
-    .done {
-      ${({ status, theme }) =>
-        status === "DONE"
-          ? `background-color: ${theme.color.secondary600};
-              color:${theme.color.fontColorWhite};
-            `
-          : `background-color: ${theme.color.gray300};
-            color:${theme.color.fontColorBlack};
-            border:1px solid #000;
-          `};
-    }
-    .complete {
-      ${({ status, theme }) =>
-        status === "COMPLETE"
-          ? `background-color: ${theme.color.primary500};
-              color:${theme.color.fontColorWhite};
-              border:1px solid #000;
-            `
-          : `background-color: ${theme.color.gray300};
-            color:${theme.color.fontColorBlack};
-            border:1px solid #000;
-          `};
-    }
-    .canceled {
-      ${({ status, theme }) =>
-        status === "CANCELED"
-          ? `background-color: ${theme.color.error300};
-              color:${theme.color.fontColorWhite};
-            `
-          : `background-color: ${theme.color.gray300};
-            color:${theme.color.fontColorBlack};
-            border:1px solid #000;
-          `};
-    }
   }
 `;
 
@@ -164,7 +117,8 @@ const buttonBlinkVariants: Variants = {
   }
 };
 
-const defaultButtonStyle = styled(motion.button)`
+const defaultButtonStyle = styled(motion.button)<{ status: string }>`
+  cursor: pointer;
   font-size: 1.2rem;
   padding: 0 0.8rem;
   margin-bottom: 0.3rem;
@@ -174,83 +128,116 @@ const defaultButtonStyle = styled(motion.button)`
   border: 1px solid #fff;
 `;
 
-const CompleteAllOrderButton = styled(defaultButtonStyle)``;
-
-const CancelAllOrderButton = styled(defaultButtonStyle)``;
+const ReadyOrderButton = styled(defaultButtonStyle)`
+  ${({ status, theme }) =>
+    status === "READY"
+      ? `background-color: ${theme.color.secondary300};
+              color:${theme.color.fontColorWhite};
+            `
+      : `background-color: ${theme.color.gray300};
+            color:${theme.color.fontColorBlack};
+            border:1px solid #000;
+          `};
+`;
+const DoneOrderButton = styled(defaultButtonStyle)`
+  ${({ status, theme }) =>
+    status === "DONE"
+      ? `background-color: ${theme.color.secondary600};
+              color:${theme.color.fontColorWhite};
+            `
+      : `background-color: ${theme.color.gray300};
+            color:${theme.color.fontColorBlack};
+            border:1px solid #000;
+          `};
+`;
+const CompleteOrderButton = styled(defaultButtonStyle)`
+  ${({ status, theme }) =>
+    status === "COMPLETE"
+      ? `background-color: ${theme.color.primary500};
+              color:${theme.color.fontColorWhite};
+              border:1px solid #000;
+            `
+      : `background-color: ${theme.color.gray300};
+            color:${theme.color.fontColorBlack};
+            border:1px solid #000;
+          `};
+`;
+const CancelOrderButton = styled(defaultButtonStyle)`
+  ${({ status, theme }) =>
+    status === "CANCELED"
+      ? `background-color: ${theme.color.error700};
+              color:${theme.color.fontColorWhite};
+            `
+      : `background-color: ${theme.color.gray300};
+            color:${theme.color.fontColorBlack};
+            border:1px solid #000;
+          `};
+`;
 
 interface IOrderProps {}
 
 const OrderStateList = () => {
+  const queryClient = useQueryClient();
+  const { accessToken } = useRecoilValue(userState);
   const orders = useRecoilValue(getOrderForFrontend);
-
   const { id, setId, isModal, setIsModal, confirm, setConfirm } =
     useModalHook();
-  const [isCancelModal, setIsCancelModal] = useState(false);
-  const [isCompleteModal, setIsCompleteModal] = useState(false);
-  const [modalOrder, setModalOrder] = useState<Order[]>();
+  const { mutate: updateOrderStatusMutate } = useUpdateOrderStatusMutation(
+    graphqlReqeustClient(accessToken)
+  );
+  const [orderStatus, setOrderStatus] = useState<OrderStatusType | null>(null);
 
   const handleSetModalItem = (
     e: React.MouseEvent<HTMLButtonElement>,
-    state: OrderStatusType
+    status: OrderStatusType
   ) => {
-    const id = e.currentTarget.closest("li")?.dataset.id;
-    const [selectedItem] = orders.filter(
-      (order) => Number(order.id) === Number(id)
-    );
+    const orderId = String(e.currentTarget.closest("li")?.dataset.id);
 
-    // setModalOrder(selectedItem);
-
-    if (state === OrderStatusType.Canceled) {
-      setIsCancelModal(true);
-      return;
-    }
-
-    if (state === OrderStatusType.Complete) {
-      setIsCompleteModal(true);
-      return;
+    if (orderId && status) {
+      setId(() => orderId);
+      setIsModal(() => true);
+      setOrderStatus(() => status);
     }
   };
 
-  const handleProductOrderState = (e: React.MouseEvent<HTMLSpanElement>) => {
-    const id = e.currentTarget.dataset.productid;
-    console.log(id);
+  const handleProductState = (e: React.MouseEvent<HTMLSpanElement>) => {
+    const productId = e.currentTarget.dataset.productid;
+    console.log(productId);
   };
 
   useEffect(() => {
-    // setOrderList((orders) =>
-    //   orders.map((order) => {
-    //     if (order.id === modalOrder.id) {
-    //       return modalOrder;
-    //     }
-    //     return order;
-    //   }),
-    // );
-  }, []);
+    if (confirm) {
+      const orderId = Number(id);
+
+      updateOrderStatusMutate(
+        { id: orderId, status: orderStatus as OrderStatusType },
+        {
+          onSuccess: () => {
+            console.log("success");
+            setOrderStatus(null);
+            setConfirm(false);
+            queryClient.invalidateQueries("getOrders");
+          }
+        }
+      );
+    }
+  }, [confirm]);
 
   return (
     <>
-      {isCompleteModal && (
+      {isModal && (
         <OrderModal
-          modalOrder={modalOrder as Order[]}
-          setModalOrder={setModalOrder as Dispatch<SetStateAction<Order[]>>}
-          setIsModal={setIsCompleteModal}
-          modalState={OrderStatusType.Complete}
-          modalMessage="주문을 완료하시겠습니까?"
-        />
-      )}
-      {isCancelModal && (
-        <OrderModal
-          modalOrder={modalOrder as Order[]}
-          setModalOrder={setModalOrder as Dispatch<SetStateAction<Order[]>>}
-          setIsModal={setIsCancelModal}
-          modalState={OrderStatusType.Canceled}
-          modalMessage="주문을 취소하시겠습니까?"
+          orderId={id as string}
+          setIsModal={setIsModal}
+          setConfirm={setConfirm}
+          setOrderStatus={setOrderStatus}
+          status={orderStatus as OrderStatusType}
         />
       )}
       <List>
         {orders.map((order) => (
           <li className="list-container" key={order.id} data-id={order.id}>
-            <OrderInfoHeader status={order.status}>
+            <OrderInfoHeader>
               <div className="list-header">
                 <span>
                   <strong>주문번호</strong>
@@ -262,40 +249,36 @@ const OrderStateList = () => {
                 </span>
               </div>
               <div className="order-button-container">
-                <CompleteAllOrderButton
+                <ReadyOrderButton
+                  onClick={(e) => handleSetModalItem(e, OrderStatusType.Ready)}
                   variants={buttonBlinkVariants}
                   animate={order.status === "READY" && "animation"}
-                  className="ready"
-                  onClick={(e) =>
-                    handleSetModalItem(e, OrderStatusType.Complete)
-                  }
+                  status={order.status}
                 >
                   주문접수
-                </CompleteAllOrderButton>
-                <CompleteAllOrderButton
-                  className="done"
-                  onClick={(e) =>
-                    handleSetModalItem(e, OrderStatusType.Complete)
-                  }
+                </ReadyOrderButton>
+                <DoneOrderButton
+                  onClick={(e) => handleSetModalItem(e, OrderStatusType.Done)}
+                  status={order.status}
                 >
                   준비완료
-                </CompleteAllOrderButton>
-                <CompleteAllOrderButton
+                </DoneOrderButton>
+                <CompleteOrderButton
                   onClick={(e) =>
                     handleSetModalItem(e, OrderStatusType.Complete)
                   }
-                  className="complete"
+                  status={order.status}
                 >
                   주문완료
-                </CompleteAllOrderButton>
-                <CancelAllOrderButton
+                </CompleteOrderButton>
+                <CancelOrderButton
                   onClick={(e) =>
                     handleSetModalItem(e, OrderStatusType.Canceled)
                   }
-                  className="canceled"
+                  status={order.status}
                 >
                   주문취소
-                </CancelAllOrderButton>
+                </CancelOrderButton>
               </div>
             </OrderInfoHeader>
             <OrderProductInfoContainer>
@@ -308,7 +291,7 @@ const OrderStateList = () => {
                     >
                       <span
                         data-productid={`${product?.orderId}-${product?.productId}-${index}`}
-                        onClick={handleProductOrderState}
+                        onClick={handleProductState}
                       >
                         <strong>상품 이름</strong>
                         {product?.productName}

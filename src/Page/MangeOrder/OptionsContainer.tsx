@@ -1,13 +1,14 @@
+import React from "react";
 import {
   AnimateSharedLayout,
   motion,
   useTransform,
   useViewportScroll
 } from "framer-motion";
-import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
+
 import ButtonDefaultStyle from "../../Components/Buttons/ButtonDefault";
 import InputDefault from "../../Components/Form/InputDefault";
 import PageHeaderMessage from "../../Components/PageHeader";
@@ -126,21 +127,6 @@ const OptionsContainer = ({
   const showCancelOrders = () => {
     setOrderStatus(OrderStatusType.Canceled);
   };
-
-  // useEffect(() => {
-  //   setSortOrders(orders);
-  // }, [orders]);
-
-  // useEffect(() => {
-  //   if (searchTerm === "") {
-  //     setSortOrders(orders);
-  //     return;
-  //   }
-  //   const selectedSearchTermList = orders.filter(
-  //     (order) => Number(order.number) === Number(searchTerm),
-  //   );
-  //   setSortOrders(selectedSearchTermList);
-  // }, [searchTerm]);
 
   return (
     <OptionContainer style={{ y, borderBottom: borderTick }}>
