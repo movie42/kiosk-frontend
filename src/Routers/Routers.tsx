@@ -76,7 +76,10 @@ const Router = () => {
             <Route path="agreement" element={<Agreement />} />
           </>
         ) : (
-          <Route path="/" element={<Navigate to="/admin/:id/store/list" />} />
+          <Route
+            path="/"
+            element={<Navigate to="/admin/:userId/store/list" />}
+          />
         )}
         <Route path="signup" element={<SignUp />} />
         <Route
