@@ -24,9 +24,11 @@ import LandingLayout from "../Layouts/LandingLayout";
 import AdminManageProductLayout from "../Layouts/AdminManageProductLayout";
 import AdminLoadingAndGetUser from "../Page/Admin/Login/AdminLoadingAndGetUser";
 import AdminProductDetail from "../Page/Admin/Product/AdminProductDetail";
+import { storeState } from "../state/storeState";
 
 const Router = () => {
   const { isLogin } = useRecoilValue(userState);
+  const store = useRecoilValue(storeState);
 
   return (
     <Routes>
@@ -57,14 +59,16 @@ const Router = () => {
             <Route path="manage-order" element={<MangeOrderMain />} />
             <Route path="add-product" element={<AdminManageProductAddItem />} />
           </Route>
-          <Route path="/client" element={<ClientLayout />}>
-            <Route path=":userId/:storeId">
-              <Route path="" element={<Navigate to="main" />} />
-              <Route path="main" element={<ClientMain />} />
-              <Route path="menu" element={<ClientMenu />} />
-              <Route path="select-list" element={<ClientSelectList />} />
+          {store.isAvailable && (
+            <Route path="/client" element={<ClientLayout />}>
+              <Route path=":userId/:storeId">
+                <Route path="" element={<Navigate to="main" />} />
+                <Route path="main" element={<ClientMain />} />
+                <Route path="menu" element={<ClientMenu />} />
+                <Route path="select-list" element={<ClientSelectList />} />
+              </Route>
             </Route>
-          </Route>
+          )}
         </>
       )}
       {/* TODO: private router로 변경하면 login이 동작하지 않습니다. 왜냐하면
