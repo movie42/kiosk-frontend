@@ -6,10 +6,8 @@ import IsOpenModalChildren from "../Modal/IsOpenModalChildren";
 import useModalHook from "../../../utils/customHooks/useModalHook";
 import PageHeaderMessage from "../../../Components/PageHeader";
 import {
-  useMyStoresQuery,
   useStoreQuery,
-  useStoresQuery,
-  useToggleStoreIsAvailableMutation,
+  useToggleStoreIsAvailableMutation
 } from "../../../generated/graphql";
 import graphqlReqeustClient from "../../../lib/graphqlRequestClient";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -17,13 +15,12 @@ import { userState } from "../../../state/userState";
 import { storeState } from "../../../state/storeState";
 import { useQueryClient } from "react-query";
 import ToggleButton from "../../../Components/Buttons/ToggleButton";
-import { Body1, Body2, Headline2 } from "../../../mixin";
+import { Body2, Headline2 } from "../../../mixin";
 import {
   customerImage,
   manageProductImage,
-  orderStateImage,
+  orderStateImage
 } from "../../../lib/images";
-import { transform } from "typescript";
 
 const Wrapper = styled.div`
   h2 {
@@ -191,13 +188,13 @@ const AdminManageProductMain = () => {
       onSuccess: () => {
         queryClient.invalidateQueries("myStores");
         queryClient.invalidateQueries("store");
-      },
+      }
     });
 
   const { isSuccess } = useStoreQuery(
     graphqlReqeustClient(accessToken),
     {
-      id: Number(id),
+      id: Number(id)
     },
     {
       onSuccess: (data) => {
@@ -205,8 +202,8 @@ const AdminManageProductMain = () => {
           const { id, name, code, address, phone, isAvailable } = data.store;
           setStore({ id, name, address, code, phone, isAvailable });
         }
-      },
-    },
+      }
+    }
   );
 
   const toggleHandler = () => {
@@ -214,7 +211,7 @@ const AdminManageProductMain = () => {
   };
 
   const linkToCustomerWindowHandler = (
-    e: React.MouseEvent<HTMLButtonElement>,
+    e: React.MouseEvent<HTMLButtonElement>
   ) => {
     const linkName = e.currentTarget.dataset.link;
     if (linkName === "order" && store.isAvailable) {

@@ -8,13 +8,19 @@ import { OrderStatusType } from "../../generated/graphql";
 import { calculatePrice } from "../../utils/helper/calculatePrice";
 import { translateLocalCurrency } from "../../utils/helper/translateLocalCurrency";
 import { translateOrderStateFromEngToKo } from "../../utils/helper/translateOrderStateFromEngToKo";
+import { SubTitle2 } from "../../mixin";
 
 const ModalContainer = styled(Modal)``;
+
+const Wrapper = styled.div`
+  display: grid;
+  grid-template-rows: 1fr 3fr 1fr;
+`;
 
 const OrderStateContainer = styled.div`
   display: flex;
   align-self: flex-end;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
 `;
 
@@ -39,7 +45,21 @@ const ButtonContainer = styled.div<ButtonState>`
   }
 `;
 
-const PriceContainer = styled.div``;
+const PriceContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  h3 {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+    span {
+      font-size: 1.8rem;
+      font-weight: 400;
+    }
+    font-size: 2.3rem;
+  }
+`;
 
 const ModalItemContainer = styled.ul`
   margin: 1rem 0;
@@ -49,11 +69,20 @@ const ModalItemContainer = styled.ul`
 `;
 
 const MordalItem = styled.li`
-  display: flex;
+  display: grid;
   align-items: center;
-  font-size: 1.8rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px dotted ${(props) => props.theme.color.gray300};
+  grid-template-columns: 2.5fr 1.8fr 1.3fr 2fr;
   span {
+    display: flex;
+    flex-direction: column;
     margin-right: 1.2rem;
+    font-size: 1.5rem;
+    strong {
+      ${SubTitle2}
+      font-weight: 600;
+    }
   }
 `;
 
@@ -74,7 +103,6 @@ interface IOrderModalProps {
   orderId: string;
   setIsModal: React.Dispatch<React.SetStateAction<boolean>>;
   setConfirm: React.Dispatch<React.SetStateAction<boolean>>;
-  setOrderStatus: React.Dispatch<React.SetStateAction<OrderStatusType | null>>;
   status: OrderStatusType;
 }
 
@@ -86,7 +114,6 @@ const OrderModal = ({
   orderId,
   setIsModal,
   setConfirm,
-  setOrderStatus,
   status
 }: IOrderModalProps) => {
   const orders = useRecoilValue(getOrderForFrontend);
@@ -98,34 +125,50 @@ const OrderModal = ({
   };
 
   return (
-    <ModalContainer strach={false}>
-      <div>
-        <h1>주문번호 {selectOrder?.number}</h1>
-        <p>{MODAL_MESSAGE[status]}</p>
-        <h3>구성</h3>
-        <ModalItemContainer>
-          {selectOrder?.orderProducts.map((value) => (
-            <MordalItem>
-              <span>{value?.productName} </span>
-              <span>{value?.optionName} </span>
-              <span>{value?.amount}개</span>
-              <span>
-                {calculatePrice(value?.productPrice, value?.amount)}원
-              </span>
-              <span>{translateOrderStateFromEngToKo(status)}</span>
-            </MordalItem>
-          ))}
-        </ModalItemContainer>
-        <OrderStateContainer>
+    <ModalContainer strach={true}>
+      <Wrapper>
+        <div>
           <PriceContainer>
-            <h2>
-              총 가격
+            <h1>주문번호 {selectOrder?.number}</h1>
+            <h3>
+              <span>총 가격</span>
               {selectOrder.price
                 ? translateLocalCurrency(selectOrder.price)
                 : 0}
               원
-            </h2>
+            </h3>
           </PriceContainer>
+          <p>{MODAL_MESSAGE[status]}</p>
+        </div>
+        <ModalItemContainer>
+          <MordalItem>
+            <span>상품이름</span>
+            <span>옵션</span>
+            <span>주문 수량</span>
+            <span>가격</span>
+          </MordalItem>
+          {selectOrder?.orderProducts.map((value) => (
+            <MordalItem>
+              <span>
+                <strong>{value?.productName}</strong>
+              </span>
+              <span>
+                <strong>
+                  {value?.optionName ? value?.optionName : "기본"}
+                </strong>
+              </span>
+              <span>
+                <strong>{value?.amount}개</strong>
+              </span>
+              <span>
+                <strong>
+                  {calculatePrice(value?.productPrice, value?.amount)}원
+                </strong>
+              </span>
+            </MordalItem>
+          ))}
+        </ModalItemContainer>
+        <OrderStateContainer>
           <ButtonContainer>
             <button className="cancel-button" onClick={() => setIsModal(false)}>
               돌아가기
@@ -135,7 +178,7 @@ const OrderModal = ({
             </button>
           </ButtonContainer>
         </OrderStateContainer>
-      </div>
+      </Wrapper>
     </ModalContainer>
   );
 };
