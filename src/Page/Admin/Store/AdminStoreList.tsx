@@ -8,7 +8,7 @@ import { userState } from "../../../state/userState";
 import {
   useMyStoresQuery,
   useRemoveStoreMutation,
-  useToggleStoreIsAvailableMutation,
+  useToggleStoreIsAvailableMutation
 } from "../../../generated/graphql";
 import graphqlReqeustClient from "../../../lib/graphqlRequestClient";
 import { storesState, storeStateProps } from "../../../state/storeState";
@@ -31,7 +31,6 @@ const Header = styled.div`
     flex-wrap: wrap;
   }
   ${({ theme }) => theme.device.mobile} {
-    flex-direction: column;
     margin-bottom: 1rem;
   }
 `;
@@ -54,6 +53,7 @@ const AddStoreButton = styled(ButtonDefaultStyle)`
   }
   ${({ theme }) => theme.device.mobile} {
     align-self: flex-end;
+    font-size: 2rem;
   }
 `;
 
@@ -68,6 +68,7 @@ const StoreList = styled.ul`
 `;
 
 const Item = styled.li`
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -84,6 +85,9 @@ const Item = styled.li`
     ${Headline3};
     padding: 0;
     margin: 0;
+    ${({ theme }) => theme.device.mobile} {
+      font-size: 2.4rem;
+    }
   }
   .button-container {
     display: flex;
@@ -144,7 +148,7 @@ const AdminStoreList = () => {
     confirm: toggleConfirm,
     setConfirm: setToggleConfirm,
     isModal: isToggleModal,
-    setIsModal: setIsToggleModal,
+    setIsModal: setIsToggleModal
   } = useModalHook();
 
   const {
@@ -153,7 +157,7 @@ const AdminStoreList = () => {
     confirm: deleteConfirm,
     setConfirm: setDeleteConfirm,
     isModal: isDeleteModal,
-    setIsModal: setIsDeleteModal,
+    setIsModal: setIsDeleteModal
   } = useModalHook();
 
   const navigate = useNavigate();
@@ -165,7 +169,7 @@ const AdminStoreList = () => {
     useToggleStoreIsAvailableMutation(graphqlReqeustClient(user.accessToken), {
       onSuccess: () => {
         queryClient.invalidateQueries("myStores");
-      },
+      }
     });
 
   const { isSuccess: isStoreRequestSuccess } = useMyStoresQuery(
@@ -179,12 +183,12 @@ const AdminStoreList = () => {
           code: value?.code,
           address: value?.address,
           phone: value?.phone,
-          isAvailable: value?.isAvailable,
+          isAvailable: value?.isAvailable
         }));
 
         setStore(stores);
-      },
-    },
+      }
+    }
   );
 
   const { mutate: deleteMutate } = useRemoveStoreMutation(
@@ -192,8 +196,8 @@ const AdminStoreList = () => {
     {
       onSuccess: () => {
         queryClient.invalidateQueries("myStores");
-      },
-    },
+      }
+    }
   );
   const toggleHandler = (id: string | undefined) => {
     if (id) {
