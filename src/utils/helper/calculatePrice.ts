@@ -1,5 +1,11 @@
-import { Order } from "../../state/orderState";
+import { ProductInfo } from "../../state/orderState";
 
-export const calculatePrice = (price: Order["price"]) => {
-  return price.toLocaleString("ko-KR");
+export const calculatePrice = (
+  price?: ProductInfo["productPrice"],
+  amount?: ProductInfo["amount"]
+) => {
+  if (price && amount) {
+    const wholePrice = price * amount;
+    return wholePrice.toLocaleString("ko-KR");
+  }
 };

@@ -60,8 +60,6 @@ export const getOrderForFrontend = selector<NewOrder[]>({
     const orderStatus = get(orderStatusState);
 
     switch (orderStatus) {
-      case "ALL":
-        return orders.filter((item) => item.status === OrderStatusType.All);
       case "READY":
         return orders.filter((item) => item.status === OrderStatusType.Ready);
       case "DONE":

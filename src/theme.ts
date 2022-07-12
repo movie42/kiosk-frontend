@@ -29,7 +29,7 @@ export const theme: DefaultTheme = {
     error700: "#e1252b",
     error800: "#d41c23",
     error900: "#c60215",
-    gray100: "#≈",
+    gray100: "#eeeeee",
     gray200: "#e2e2e2",
     gray300: "#d0d0d0",
     gray400: "#ababab",
@@ -59,11 +59,11 @@ export const theme: DefaultTheme = {
     backgroundBlack20: "rgba(0,0,0,0.2)",
     backgroundBlack10: "rgba(0,0,0,0.1)",
     fontColorBlack: "#000000",
-    fontColorWhite: "#ffffff",
+    fontColorWhite: "#ffffff"
   },
   device: {
     desktop: "@media screen and (min-width: 1241px)",
     tablet: "@media screen and (max-width: 1240px)",
-    mobile: "@media screen and (max-width: 500px)",
-  },
+    mobile: "@media screen and (max-width: 500px)"
+  }
 };

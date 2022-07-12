@@ -1,20 +1,28 @@
-import { AnimateSharedLayout, motion } from "framer-motion";
-import React, { useState } from "react";
+import React from "react";
+import {
+  AnimateSharedLayout,
+  motion,
+  useTransform,
+  useViewportScroll
+} from "framer-motion";
 import { useForm } from "react-hook-form";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
+
 import ButtonDefaultStyle from "../../Components/Buttons/ButtonDefault";
 import InputDefault from "../../Components/Form/InputDefault";
 import PageHeaderMessage from "../../Components/PageHeader";
 import { Headline2, Headline3 } from "../../mixin";
 import { orderStatusState, OrderStatusType } from "../../state/orderState";
 
-const OptionContainer = styled.div`
+const OptionContainer = styled(motion.div)`
+  position: relative;
   display: grid;
   align-items: center;
   grid-template-columns: 1fr 2fr 3fr;
-  border-bottom: 1px solid ${(props) => props.theme.color.gray300};
   padding-bottom: 1.5rem;
+  background-color: ${(props) => props.theme.color.background100};
+  z-index: 10;
   h2 {
     ${Headline2}
   }
@@ -76,9 +84,23 @@ const Underline = styled(motion.div)`
 
 interface IOptionsContainerProps {
   setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
+  stickyPos: number;
 }
 
-const OptionsContainer = ({ setSearchTerm }: IOptionsContainerProps) => {
+const OptionsContainer = ({
+  setSearchTerm,
+  stickyPos
+}: IOptionsContainerProps) => {
+  const { scrollY } = useViewportScroll();
+  const y = useTransform(scrollY, [0, stickyPos, stickyPos + 1], [0, 0, 1], {
+    clamp: false
+  });
+  const borderTick = useTransform(
+    scrollY,
+    [0, stickyPos, stickyPos + 1],
+    ["unset", "unset", `3px solid #575757`]
+  );
+
   const { register, handleSubmit } = useForm();
   const [orderStatus, setOrderStatus] = useRecoilState(orderStatusState);
 
@@ -106,23 +128,8 @@ const OptionsContainer = ({ setSearchTerm }: IOptionsContainerProps) => {
     setOrderStatus(OrderStatusType.Canceled);
   };
 
-  // useEffect(() => {
-  //   setSortOrders(orders);
-  // }, [orders]);
-
-  // useEffect(() => {
-  //   if (searchTerm === "") {
-  //     setSortOrders(orders);
-  //     return;
-  //   }
-  //   const selectedSearchTermList = orders.filter(
-  //     (order) => Number(order.number) === Number(searchTerm),
-  //   );
-  //   setSortOrders(selectedSearchTermList);
-  // }, [searchTerm]);
-
   return (
-    <OptionContainer>
+    <OptionContainer style={{ y, borderBottom: borderTick }}>
       <PageHeaderMessage header="주문관리" />
       <form onSubmit={searchOrder}>
         <SearchingInput
@@ -140,19 +147,19 @@ const OptionsContainer = ({ setSearchTerm }: IOptionsContainerProps) => {
             {orderStatus === "ALL" && <Underline layoutId="underline" />}
           </WholeOrderStateButton>
           <OrderStateButton onClick={showReady}>
-            접수
+            주문접수
             {orderStatus === "READY" && <Underline layoutId="underline" />}
           </OrderStateButton>
           <OrderStateButton onClick={showDone}>
-            수령대기
+            준비완료
             {orderStatus === "DONE" && <Underline layoutId="underline" />}
           </OrderStateButton>
           <CompleteOrderStateButton onClick={showCompleteOrders}>
-            완료
+            주문완료
             {orderStatus === "COMPLETE" && <Underline layoutId="underline" />}
           </CompleteOrderStateButton>
           <CancelOrderStateButton onClick={showCancelOrders}>
-            취소
+            주문취소
             {orderStatus === "CANCELED" && <Underline layoutId="underline" />}
           </CancelOrderStateButton>
         </ButtonContainer>
