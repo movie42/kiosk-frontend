@@ -7,7 +7,7 @@ import MenuItemModalChildren from "./Modal/MenuItemModalChildren";
 import { ProductListValues } from "../../state/productItemState";
 import {
   productListState,
-  selectMenuListState,
+  selectMenuListState
 } from "../../state/productItemState";
 import { Headline1 } from "../../mixin";
 import { useNavigate, useParams } from "react-router-dom";
@@ -23,9 +23,12 @@ const Header = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  height: 5rem;
   h1 {
     ${Headline1}
+    line-height: 1;
+    ${({ theme }) => theme.device.mobile} {
+      font-size: 4.2rem;
+    }
   }
   button {
     cursor: pointer;
@@ -143,7 +146,7 @@ const ClientMenu = () => {
   const { isLoading } = useGetProductsQuery(
     graphqlReqeustClient(accessToken),
     {
-      id: Number(storeId),
+      id: Number(storeId)
     },
     {
       onSuccess: (data) => {
@@ -157,15 +160,15 @@ const ClientMenu = () => {
               description: value.description,
               options: value.options.map((value) => ({
                 id: Number(value.id),
-                name: value.name,
+                name: value.name
               })),
-              isAvailable: value.isAvailable,
+              isAvailable: value.isAvailable
             }))
             .filter((value) => value.isAvailable === true);
           setMenuList(productList);
         }
-      },
-    },
+      }
+    }
   );
 
   return isLoading ? (

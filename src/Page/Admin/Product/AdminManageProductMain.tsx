@@ -22,11 +22,7 @@ import {
   orderStateImage
 } from "../../../lib/images";
 
-const Wrapper = styled.div`
-  h2 {
-    ${Headline2};
-  }
-`;
+const Wrapper = styled.div``;
 
 const Header = styled.div`
   display: flex;
@@ -134,6 +130,21 @@ const BusinessInfoContainer = styled.div`
     }
     strong {
       font-weight: bold;
+    }
+  }
+  ${(props) => props.theme.device.mobile} {
+    display: grid;
+    span {
+      &:first-child {
+        grid-column: 1/2;
+      }
+      &:nth-child(2) {
+        grid-column: 2/2;
+      }
+      &:last-child {
+        grid-column: 1 / span 2;
+        margin-left: 0;
+      }
     }
   }
 `;

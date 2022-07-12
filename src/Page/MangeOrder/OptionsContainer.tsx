@@ -67,6 +67,11 @@ const ButtonContainer = styled(motion.div)`
       padding: 0.2rem 1.5rem 0 0;
       margin-left: 0;
     }
+    ${({ theme }) => theme.device.mobile} {
+      font-size: 1.8rem;
+      padding: 0.2rem 1rem 0 0;
+      margin-left: 0;
+    }
   }
 `;
 
