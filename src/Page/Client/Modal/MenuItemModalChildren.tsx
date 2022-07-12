@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { IoIosAddCircle } from "react-icons/io";
 import { AiFillMinusCircle } from "react-icons/ai";
-import { ProductListValues } from "../../../mockup/productList";
+import { ProductListValues } from "../../../state/productItemState";
 import ButtonDefaultStyle from "../../../Components/Buttons/ButtonDefault";
 import { IOrderSelectedItem } from "../ClientMenu";
 import { AddCountButton, MinusCountButton } from "../ClientSelectList";
 import { translateLocalCurrency } from "../../../utils/helper/translateLocalCurrency";
 import Noimage from "../../../Components/Images/Noimage";
 import { SubTitle2 } from "../../../mixin";
+import Images from "../../../Components/Images/Images";
 const Wrapper = styled.div`
   position: relative;
   color: ${(props) => props.theme.color.fontColorBlack};
@@ -194,7 +195,11 @@ const MenuItemModalChildren: React.FC<IMenuItemModalChildrenProps> = ({
         <ItemNameContainer>
           <h2>{selected.name}</h2>
         </ItemNameContainer>
-        <Noimage />
+        {selected.imageUrl ? (
+          <Images src={selected.imageUrl} alt={selected.name} />
+        ) : (
+          <Noimage />
+        )}
       </div>
       <div className="item-info-container">
         <Title composition={true}>구성</Title>

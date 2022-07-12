@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Modal from "../../Components/Modals/Modal";
 import OrderStateBar from "./OrderStateBar";
 import MenuItemModalChildren from "./Modal/MenuItemModalChildren";
-import { ProductListValues } from "../../mockup/productList";
+import { ProductListValues } from "../../state/productItemState";
 import {
   productListState,
   selectMenuListState,
@@ -161,7 +161,7 @@ const ClientMenu = () => {
               })),
               isAvailable: value.isAvailable,
             }))
-            .filter((value) => value.isAvailable === false);
+            .filter((value) => value.isAvailable === true);
           setMenuList(productList);
         }
       },
