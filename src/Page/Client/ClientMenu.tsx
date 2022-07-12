@@ -161,7 +161,7 @@ const ClientMenu = () => {
               })),
               isAvailable: value.isAvailable,
             }))
-            .filter((value) => value.isAvailable === false);
+            .filter((value) => value.isAvailable === true);
           setMenuList(productList);
         }
       },
