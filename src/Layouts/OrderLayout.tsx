@@ -14,9 +14,12 @@ const Header = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  height: 5rem;
   h1 {
     ${Headline1}
+    line-height: 1;
+    ${({ theme }) => theme.device.mobile} {
+      font-size: 4.2rem;
+    }
   }
   button {
     cursor: pointer;

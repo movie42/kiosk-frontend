@@ -60,7 +60,7 @@ const OrderStateBar: React.FC<ITotalOrderMenu> = ({
   totalPrice = 0,
   label,
   goBack,
-  handler,
+  handler
 }) => {
   return (
     <div>

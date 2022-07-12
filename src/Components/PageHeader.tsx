@@ -18,6 +18,17 @@ const Wrapper = styled.div`
     font-weight:400;
     margin-left: 2rem;
   }
+  ${({ theme }) => theme.device.mobile} {
+    flex-wrap: wrap;
+    h2,
+    h3 {
+      font-size: 2rem;
+    }
+    h3 {
+      font-weight: 400;
+      margin-left: 2rem;
+    }
+  }
 `;
 
 const PageHeaderMessage = ({ header, message }: IPageMessageHeaderProps) => {
