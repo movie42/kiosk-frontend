@@ -1,7 +1,7 @@
 import { motion, Variants } from "framer-motion";
 import React, { Dispatch, SetStateAction, useState } from "react";
 import { useQueryClient } from "react-query";
-import styled from "styled-components";
+import styled, { DefaultTheme } from "styled-components";
 import { useRecoilValue } from "recoil";
 
 import { useUpdateOrderStatusMutation } from "../../generated/graphql";
@@ -125,53 +125,46 @@ const defaultButtonStyle = styled(motion.button)<{ status: string }>`
   width: 5rem;
   height: 5rem;
   border-radius: 100%;
-  border: 1px solid #fff;
+  border: 2px solid #fff;
+`;
+
+const buttonFalse = (theme: DefaultTheme) => `
+    background-color: ${theme.color.gray300};
+    color:${theme.color.fontColorBlack};
+    border:1px solid #000;
 `;
 
 const ReadyOrderButton = styled(defaultButtonStyle)`
   ${({ status, theme }) =>
     status === "READY"
       ? `background-color: ${theme.color.secondary300};
-              color:${theme.color.fontColorWhite};
+         color:${theme.color.fontColorWhite};
             `
-      : `background-color: ${theme.color.gray300};
-            color:${theme.color.fontColorBlack};
-            border:1px solid #000;
-          `};
+      : `${buttonFalse(theme)}`};
 `;
 const DoneOrderButton = styled(defaultButtonStyle)`
   ${({ status, theme }) =>
     status === "DONE"
       ? `background-color: ${theme.color.secondary600};
-              color:${theme.color.fontColorWhite};
+         color:${theme.color.fontColorWhite};
             `
-      : `background-color: ${theme.color.gray300};
-            color:${theme.color.fontColorBlack};
-            border:1px solid #000;
-          `};
+      : `${buttonFalse(theme)}`};
 `;
 const CompleteOrderButton = styled(defaultButtonStyle)`
   ${({ status, theme }) =>
     status === "COMPLETE"
       ? `background-color: ${theme.color.primary500};
-              color:${theme.color.fontColorWhite};
-              border:1px solid #000;
-            `
-      : `background-color: ${theme.color.gray300};
-            color:${theme.color.fontColorBlack};
-            border:1px solid #000;
-          `};
+         color:${theme.color.fontColorWhite};
+        `
+      : `${buttonFalse(theme)}`};
 `;
 const CancelOrderButton = styled(defaultButtonStyle)`
   ${({ status, theme }) =>
     status === "CANCELED"
       ? `background-color: ${theme.color.error700};
-              color:${theme.color.fontColorWhite};
+         color:${theme.color.fontColorWhite};
             `
-      : `background-color: ${theme.color.gray300};
-            color:${theme.color.fontColorBlack};
-            border:1px solid #000;
-          `};
+      : `${buttonFalse(theme)}`};
 `;
 
 interface IOrderProps {}
@@ -230,7 +223,6 @@ const OrderStateList = () => {
           orderId={id as string}
           setIsModal={setIsModal}
           setConfirm={setConfirm}
-          setOrderStatus={setOrderStatus}
           status={orderStatus as OrderStatusType}
         />
       )}

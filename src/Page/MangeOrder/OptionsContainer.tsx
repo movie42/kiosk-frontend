@@ -71,13 +71,9 @@ const ButtonContainer = styled(motion.div)`
 `;
 
 const WholeOrderStateButton = styled(ButtonDefaultStyle)``;
-
 const OrderStateButton = styled(ButtonDefaultStyle)``;
-
 const CancelOrderStateButton = styled(ButtonDefaultStyle)``;
-
 const CompleteOrderStateButton = styled(ButtonDefaultStyle)``;
-
 const Underline = styled(motion.div)`
   border-bottom: 3px solid ${(props) => props.theme.color.primary700};
 `;
@@ -134,11 +130,16 @@ const OptionsContainer = ({
       <form onSubmit={searchOrder}>
         <SearchingInput
           register={register}
-          registerOptions={{ max: 3000, min: 0 }}
+          registerOptions={{
+            max: 3000,
+            min: 0,
+            onChange: (e) => setSearchTerm(e.currentTarget.value)
+          }}
           type="number"
           name="searchOrder"
           placeholder="주문번호를 입력해주세요."
         />
+        <button style={{ visibility: "hidden" }}>제출</button>
       </form>
       <AnimateSharedLayout>
         <ButtonContainer>
