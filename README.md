@@ -1,290 +1,63 @@
-# 누구나 키오스크 프로젝트
-
-프로젝트 진행 전에 꼭 읽어보세요!
-다른 문의 사항은 채팅방에 남기거나 이슈로 남겨야할 사항은 이슈로 남겨주세요.
-
-## 목차
-
-- [누구나 키오스크 프로젝트](#누구나-키오스크-프로젝트)
-  - [목차](#목차)
-  - [개요](#개요)
-  - [시작하기](#시작하기)
-  - [Commit Rule && Setting](#commit-rule--setting)
-  - [PR 하기](#pr-하기)
-  - [리뷰 하기](#리뷰-하기)
-  - [GrpahQL](#grpahql)
-  - [Style Guide](#style-guide)
-    - [🌈Color](#color)
-    - [Font](#font)
-  - [MEET UP](#meet-up)
-
-## 개요
-
-웹을 통해 키오스크를 만들어 언제 어디서 누구나 쉽게 사용할 수 있는 키오스크 웹 어플리케이션을 만듭니다.
-
-1. Front
-   - React v17.0.2
-   - React Dom v17.0.2
-   - NodeJS 16.14.2
-
-## 시작하기
-
-1. github에서 프로젝트 팀원 초대롤 승인합니다.
-2. repository를 folk를 합니다.
-3. 자신의 저장소에서 project를 clone합니다.
-
-```shell
-$ git clone https://github.com/<자신의 브랜치 이름>/kiosk
-```
-
-4. develop 브랜치로 checkout합니다.
-
-```shell
-$ git checkout develop
-```
-
-6. github project 탭을 확인합니다.
-7. 팀원과 협의하여 자신이 진행할 아이템을 확인합니다.
-8. 브랜치를 한번 더 만듭니다.
-   - 기능 : feature/기능/이슈
-
-```shell
-$ git checkout -b feature/기능/이슈
-```
-
-6.  자신의 코드를 작성합니다.
-
-- 기능 요구사항을 잘 확인해주세요.
-- 프로젝트 기본적인 디자인은 [피그마](https://www.figma.com/file/0bv2rseEAQqo8x87zefSyx/everyone-kiosk?node-id=0%3A1)에서 확인하실 수 있습니다.
-
-## Commit Rule && Setting
-
-커밋 규칙은 인터넷에 있는 [Udacity의 Commit Rule](https://udacity.github.io/git-styleguide/)을 참고했습니다.
-커밋 메시지 세팅 방법은 [Git commit message template 만들기](https://ujuc.github.io/2020/02/02/git-commit-message-template-man-deul-gi/)라는 글을 참고했습니다.
-
-1. 터미널에 다음과 같이 입력합니다.
-
-```shell
-$ git config --global commit.template ~/.gitmessage
-$ code ~/.gitmessage
-```
-
-2. 만약에 깃 커밋 메시지를 글로벌하게 세팅하고 싶지 않다면 아래와 같이 명령어를 입력하세요.
-
-```shell
-git config commit.template ./path/to/.gitmessage
-```
-
-3. vscode에서 .gitmessage파일이 열린것을 확인할 수 있습니다. 아래 규칙을 덮어쓰기하세요.
-
-```
-# type: 제목을 작성하세요. 50자 이내 핵심만 써주세요.
-#  '#'이 표시된 곳은 주석처리됩니다. 지우고 커밋을 작성하면 해당 부분은 기록으로 남습니다.
-# body 본문을 작성하세요.
-# 제목과 본문은 한칸 띄우고 작성해주세요.
-# 본문에는 무엇을 어떻게 했는지를 중심으로 작성해주세요.
-
-# footer 이슈 번호를 등록해주세요.
-
-# 자신에게 알맞은 type을 골라 기록하세요
-# _______________________________________
-# feat: 새로운 기능을 추가했을 떄.
-# fix: 버그를 고쳤을 때
-# docs: README와 같은 팀 전체가 공유하고 있는 문서를 수정하거나 새롭게 추가했을 때
-# style: 기능외에 코드 스타일을 추가했을 때
-# refactor: 코드를 리펙토링 했을 때
-# test: 테스트를 진행했을 때, 또는 테스트 코드를 작성했을 때
-# chore: Updating build tasks, package manager configs, etc; no production code change
-# _______________________________________
-#
-# Remember me ~
-#   Capitalize the subject line
-#     제목줄은 대문자로 시작한다.
-#   Use the imperative mood in the subject line
-#     제목줄은 명령어로 작성한다.
-#   Do not end the subject line with a period
-#     제목줄은 마침표로 끝내지 않는다.
-#   Separate subject from body with a blank line
-#     본문과 제목에는 빈줄을 넣어서 구분한다.
-#   Use the body to explain what and why vs. how
-#     본문에는 "어떻게" 보다는 "왜"와 "무엇을" 설명한다.
-#   Can use multiple lines with "-" for bullet points in body
-#     본문에 목록을 나타낼때는 "-"로 시작한다.
-#
-```
-
-4. 저장하고 종료합니다.
-5. 설정이 제대로 되었는지 확인하려면 commit을 직접 해보거나 명령어를 입력해서 \[commit\] 부분에 자신이 설정한대로 저장되었는지 확인합니다.
-
-```shell
-// global로 commit message를 입력했다면
-$ git config --global -e
-
-// local에 설정했다면
-$ git config -e
-```
-
-6. commit 메시지를 작성할 때 commit만 입력합니다. vi 편집기가 열립니다. 만약 vi 편집기가 익숙하지 않다면 [아티클](https://rottk.tistory.com/entry/VS-Code-%EB%A5%BC-Git-%ED%8E%B8%EC%A7%91%EA%B8%B0%EB%A1%9C-%ED%99%9C%EC%9A%A9)을 읽어보고 vscode를 git 기본 편집기로 설정합니다.
-
-7. 커밋합니다.
-
-```
-$ git commit
-```
-
-## PR 하기
+![header](https://capsule-render.vercel.app/api?type=transparent&color=002fe3&height=300&section=header&text=누구나%20키오스크&fontSize=90)
 
-1. PR은 자주 해주세요.
-2. PR은 main 브랜치로 날려주세요.
-3. 자신이 만든 기능을 서버에서 테스트 해보고 싶을 경우에는 develop 브랜치로 push 해주세요.
-4. PR은 개요, 한일, 스크린 샷으로 나뉩니다.
+## 😃 개요
 
-- 개요 : 자신이 한 일의 개요를 작성합니다.
-- 한일 : 무엇을 했는지 다른 팀원이 이해할 수 있게 작성합니다.
-- 스크린 샷 : UI의 변화, 에러 등의 스크린샷을 촬영해서 올려주세요.
+[누구나 키오스크](https://everyonekiosk.com)는,
 
-참고 : 🎥[Github으로 팀 프로젝트 하기 1편 | Pull request 코드리뷰 개발자](https://www.youtube.com/watch?v=9FZaYz0s8s4)
+- 키오스크 기계 없이 가입만 하면 웹에서 바로 사용이 가능합니다.
+- 누구나 쉽게 자신의 가게를 등록할 수 있습니다.(여러개 등록 가능)
+- 등록한 가게마다 상품을 등록하고 판매 할 수 있습니다.
+- 고객의 주문 상태를 관리하여 가게의 혼잡한 상황을 최소화 할 수 있습니다.
 
-## 리뷰 하기
+지금 바로
+<a href="https://everyonekiosk.com">
+<img src="https://img.shields.io/badge/누구나 키오스크-61DAFB?style=for-the-badge&logoColor=white" />
+</a> 데모를 만나보세요.
 
-1. 리뷰는 24시간 안에 합니다.
-2. 리뷰를 할 때는 코드에 대한 질문이나 제안 등을 작성해주세요.
-   - 질문하고 싶은 코드로 마우스를 가져가면 +가 나타납니다.
-   - +를 누르면 comment를 작성할 수 있습니다.
-   - 작성을 다 마치고 Start a review 버튼을 누릅니다.
-   - 리뷰를 마쳤다면 오른쪽 viewed에 체크를 합니다.
-3. 리뷰할 것이 없다면 따로 코멘트를 작성하지 않아도 됩니다.
-4. 리뷰를 다 마쳤다면 Review changes를 누르고 코멘트를 작성하거나 작성할 코멘트가 없다면 approve를 해주세요.
-
-참고 : 🎥[Github으로 팀 프로젝트 하기 1편 | Pull request 코드리뷰 개발자](https://www.youtube.com/watch?v=9FZaYz0s8s4)
-
-## GrpahQL
-
-1. query문 작성은 src/graphql 폴더 안에 작성합니다.
-
-2. query
-
-```gql
-query store($id: Int!) {
-  store(id: $id) {
-    id
-    name
-    code
-    address
-    phone
-    ownerId
-    products
-  }
-}
-```
-
-3. mutation
-
-```gql
-mutation login($email: email, $password: password) {
-  login(email: $email, password: $password) {
-    accessToken
-    refreshToken
-  }
-}
-```
-
-4. npm run generate 명령어를 실행합니다.
-
-```shell
-$ npm run generate
-```
-
-5. 성공적으로 generate를 마쳤다면 src/graphql.ts 파일을 열어봅니다. 파일 안에 자신이 작성한 query가 React Query에서 사용 가능하도록 커스텀 훅이 생성된 것을 볼 수 있습니다.
-
-6. Hook을 사용하여 서버에 요청할 코드를 작성합니다.
-
-## Style Guide
-
-### 🌈Color
-
-컬러를 지정할 때 지정된 컬러를 사용해주세요.
-
-- Primary = primary600
-- Primary Hover = primary800
-- Primary Active = primary400
-- Secondary = secondary500
-- Secondary Hover = secondary700
-- Secondary Active = secondary300
-- Error, Warn = error500
-- Error, Warn Hover = error800
-- Error, Warn Active = error300
-- Line default = gray200
-- Button default = gray 300
-- Background default = background100
-- Transparent Background default = backgroundBlack70
-- Font Color default = fontColorBlack
-
-색상이 지정되지 않은 버튼 등을 구분해야할 때 Primary와 Secondary에서 결정해주세요. Color Step을 300의 간격으로 설정해주세요.
-
-error100~900은 경고나 에러에만 사용하려고 합니다. UI가 경고의 의미가 아닌 것은 사용하지 않습니다.
-
-### Font
-
-1. Basic Font
-
-   - Noto Sans KR
-
-2. Default Font Style
-
-변경하고 싶은 사항이 있으면 언제든지 알려주세요!
-
-- mixin.ts
-
-```ts
-export const Headline1 = styled.h1`
-  font-size: 5rem;
-  font-weight: 900;
-  line-height: 2;
-  letter-spacing: -0.2;
-`;
-
-export const Headline2 = styled.h2`
-  font-size: 3rem;
-  font-weight: 900;
-  line-height: 2;
-  letter-spacing: -0.2;
-`;
-
-export const SubTitle1 = styled.h3`
-  font-size: 2.4rem;
-  font-weight: 700;
-  line-height: 1.7;
-  letter-spacing: -0.1;
-`;
-
-export const SubTitle2 = styled.h4`
-  font-size: 2rem;
-  font-weight: 400;
-  line-height: 1.7;
-  letter-spacing: -0.1;
-`;
-
-export const Body1 = styled.p`
-  font-size: 1.6rem;
-  font-weight: 400;
-  line-height: 1.5;
-  letter-spacing: -0.1;
-`;
-```
-
-## MEET UP
-
-1. 매주 수요일 8시
-
-   - 프로젝트 피드백
-     - 좋은거, 불만 사항, 개선 사항 협의 등
-   - 개인 회고
-     - 자신이 배운거, 겪고 있는 이슈 공유 등
-   - 계획
-     - 현재 진행된 정도에 따라 앞으로 어느정도까지 완성될 수 있을지
-
-2. 매주 일요일 8시
-   - 프로젝트 동작 눈으로 보고 확인하기
-     - 확인되는 버그, 따로 작업한 사항 연결할 부분 찾기 등
-     - 확인된 사항을 바탕으로 역할 정하기
+## ✍️ 주요 기능
+
+### 🦸🏽‍♂️ 회원가입/로그인
+
+### 📇 가게 등록 및 관리
+
+### 🌽 상품 등록 및 관리
+
+### 👨🏻‍🌾 고객 주문 관리
+
+### 🖥 고객 주문 화면
+
+## 📀 프로젝트 기술스택
+
+### 프론트 앤드
+
+<img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=white" />&nbsp;<img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=TypeScript&logoColor=white" />
+<img src="https://img.shields.io/badge/React Query-FF4154?style=for-the-badge&logo=React Query&logoColor=white" />&nbsp;<img src="https://img.shields.io/badge/Recoil-1414A0?style=for-the-badge&logo=Recoil&logoColor=white" />
+<img src="https://img.shields.io/badge/FramerMotion-0055FF?style=for-the-badge&logo=Framer&logoColor=white" />&nbsp;<img src="https://img.shields.io/badge/StyledComponents-DB7093?style=for-the-badge&logo=Framer&logoColor=white" />&nbsp;<img src="https://img.shields.io/badge/Code gen-FAFAFA?style=for-the-badge&logo=Code gen&logoColor=white" />&nbsp;<img src="https://img.shields.io/badge/GraphQL-E10098?style=for-the-badge&logo=GraphQL&logoColor=white" />&nbsp;<img src="https://img.shields.io/badge/ReactHookForm-DB7093?style=for-the-badge&logo=ReactHookForm&logoColor=white" />
+
+### 백앤드
+
+<img src="https://img.shields.io/badge/NestJS-E0234E?style=for-the-badge&logo=NestJS&logoColor=white" />
+<img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=TypeScript&logoColor=white" />
+<img src="https://img.shields.io/badge/jwt-3178C6?style=for-the-badge&logo=jwt&logoColor=white" />
+<img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=MySQL&logoColor=white" />
+<img src="https://img.shields.io/badge/ApolloGraphQL-311C87?style=for-the-badge&logo=ApolloGraphQL&logoColor=white" />
+<img src="https://img.shields.io/badge/Node.js 16.x-339933?style=for-the-badge&logo=Node.js&logoColor=white" />
+
+### 형상관리
+
+<img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=Git&logoColor=white">
+
+### 인프라
+
+<img src="https://img.shields.io/badge/Amazon EC2-FF9900?style=for-the-badge&logo=Amazon EC2&logoColor=white" />&nbsp;<img src="https://img.shields.io/badge/Amazon S3-569A31?style=for-the-badge&logo=Amazon S3&logoColor=white" />&nbsp;<img src="https://img.shields.io/badge/Ubuntu 20.x-E95420?style=for-the-badge&logo=Ubuntu&logoColor=white" />&nbsp;<img src="https://img.shields.io/badge/NGINX-009639?style=for-the-badge&logo=NGINX&logoColor=white" />&nbsp;<img src="https://img.shields.io/badge/GitHub Actions-2088FF?style=for-the-badge&logo=GitHub Actions&logoColor=white">
+
+## 👨‍👩‍👧‍👧 누구나 키오스크 팀
+
+|                                          Frontend                                          |                                          Frontend                                          |                                          Backend                                           |                                          Backend                                           |
+| :----------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------: |
+| <img src="https://avatars.githubusercontent.com/u/44064122?v=4" width=400px alt="고현수"/> | <img src="https://avatars.githubusercontent.com/u/95143138?v=4" width=400px alt="조서연"/> | <img src="https://avatars.githubusercontent.com/u/39974627?v=4" width=400px alt="정선교"/> | <img src="https://avatars.githubusercontent.com/u/56436283?v=4" width=400px alt="조민수"/> |
+|                            [고현수](https://github.com/movie42)                            |                            [조서연](https://github.com/sycho09)                            |                           [정선교](https://github.com/tjsry0466)                           |                          [조민수](https://github.com/minsoo0715)                           |
+
+## 🕹 아키텍쳐
+
+## 🛠 CI/CD
