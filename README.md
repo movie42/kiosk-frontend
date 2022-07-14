@@ -56,7 +56,7 @@
 
 ### 백앤드
 
-<img src="https://img.shields.io/badge/NestJS-E0234E?style=for-the-badge&logo=NestJS&logoColor=white" />&nbsp;<img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=TypeScript&logoColor=white" />&nbsp;<img src="https://img.shields.io/badge/jwt-3178C6?style=for-the-badge&logo=jwt&logoColor=white" />&nbsp;<img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=MySQL&logoColor=white" />&nbsp;<img src="https://img.shields.io/badge/ApolloGraphQL-311C87?style=for-the-badge&logo=ApolloGraphQL&logoColor=white" />&nbsp;<img src="https://img.shields.io/badge/Node.js 16.x-339933?style=for-the-badge&logo=Node.js&logoColor=white" />
+<img src="https://img.shields.io/badge/NestJS-E0234E?style=for-the-badge&logo=NestJS&logoColor=white" />&nbsp;<img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=TypeScript&logoColor=white" />&nbsp;<img src="https://img.shields.io/badge/jwt-3178C6?style=for-the-badge&logo=jwt&logoColor=white" />&nbsp;<img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=MySQL&logoColor=white" />&nbsp;<img src="https://img.shields.io/badge/GraphQL-E10098?style=for-the-badge&logo=GraphQL&logoColor=white" />&nbsp;<img src="https://img.shields.io/badge/Node.js 16.x-339933?style=for-the-badge&logo=Node.js&logoColor=white" />&nbsp;<img src="https://img.shields.io/badge/typeorm-262627?style=for-the-badge&logo=typeorm&logoColor=white" />
 
 ### 형상관리
 
