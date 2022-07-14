@@ -64,11 +64,13 @@ const CancelButton = styled(ButtonDefaultStyle)`
 interface OrderProductInput {
   productId: number;
   amount: number;
-  productOptionIds: number[];
+  productOptionId: number;
 }
 
 interface AddOrderInput {
   storeId: number;
+  imp_uid: string;
+  merchant_uid: string;
   products: OrderProductInput[];
   type: OrderType;
 }
@@ -123,11 +125,17 @@ const PaymentModalChildren: React.FC<IPaymentModalChildrenProps> = ({
   const { mutate, isSuccess } = useAddOrderMutation<AddOrderInput>(
     graphqlReqeustClient(accessToken)
   );
-  const addOrderItems = (orderProducts: OrderProductInput[]) => {
+  const addOrderItems = (
+    orderProducts: OrderProductInput[],
+    imp: string,
+    merchant: string
+  ) => {
     mutate(
       {
         order: {
           storeId: Number(storeId),
+          imp_uid: imp,
+          merchant_uid: merchant,
           products: orderProducts,
           type: ordertype === "go" ? OrderType.Go : OrderType.Here,
         },
@@ -149,27 +157,14 @@ const PaymentModalChildren: React.FC<IPaymentModalChildrenProps> = ({
       0
     );
 
-    const finalOrder = orderList.reduce<ResultOrderItems>((acc, obj) => {
-      const key = obj["productId"];
-      if (acc[key]) {
-        acc[key].optionIds?.push(Number(obj["optionId"]));
-        acc[key]["totalCount"] = acc[key]["totalCount"] + obj["totalCount"];
-      }
-      if (!acc[key]) {
-        acc[key] = { optionIds: [], totalCount: obj["totalCount"] };
-        acc[key].optionIds?.push(Number(obj["optionId"]));
-      }
-      return acc;
-    }, {} as ResultOrderItems);
-    const orderProducts = Object.entries(finalOrder).map((item) => {
-      const [productId, obj] = item;
+    const orderProducts = orderList.map((item) => {
       return {
-        productId: Number(productId),
-        amount: obj.totalCount,
-        productOptionIds: obj.optionIds,
+        productId: item.productId,
+        amount: item.totalCount,
+        productOptionId: item.optionId,
       };
     });
-    console.log(orderProducts);
+
     if (!amount) {
       alert("결제 금액을 확인해주세요");
       return;
@@ -186,7 +181,7 @@ const PaymentModalChildren: React.FC<IPaymentModalChildrenProps> = ({
       const { success, merchant_uid, error_msg, imp_uid, error_code } =
         response;
       if (success) {
-        addOrderItems(orderProducts);
+        addOrderItems(orderProducts, imp_uid, merchant_uid);
       } else {
         console.log(error_msg, error_code);
       }

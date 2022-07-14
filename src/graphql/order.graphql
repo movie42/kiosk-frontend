@@ -20,7 +20,7 @@ query getOrders {
         orderId
         productId
         amount
-        productOptionIds
+        productOptionId
       }
     }
   }

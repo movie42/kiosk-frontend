@@ -20,9 +20,17 @@ export type Scalars = {
 };
 
 export type AddOrderInput = {
-  products: Array<OrderProductInput>;
+  imp_uid: Scalars['String'];
+  merchant_uid: Scalars['String'];
+  products: Array<AddOrderProductInput>;
   storeId: Scalars['Int'];
   type: OrderType;
+};
+
+export type AddOrderProductInput = {
+  amount: Scalars['Int'];
+  productId: Scalars['Int'];
+  productOptionId: Scalars['Int'];
 };
 
 export type AddProductInput = {
@@ -72,12 +80,14 @@ export type Mutation = {
   addStore: Scalars['Boolean'];
   addUser: Scalars['Boolean'];
   login: TokenOutput;
+  removeOrderProducts: Scalars['Boolean'];
   removeProductOptions: Scalars['Boolean'];
   removeProducts: Scalars['Boolean'];
   removeStore: Scalars['Boolean'];
   signup: TokenOutput;
   toggleProductIsAvailable: Scalars['Boolean'];
   toggleStoreIsAvailable: Scalars['Boolean'];
+  updateOrder: Scalars['Boolean'];
   updateOrderStatus: Scalars['Boolean'];
   updateProduct: Scalars['Boolean'];
   updateProductOption: Scalars['Boolean'];
@@ -118,6 +128,11 @@ export type MutationLoginArgs = {
 };
 
 
+export type MutationRemoveOrderProductsArgs = {
+  removeOrderProduct: RemoveOrderProductInput;
+};
+
+
 export type MutationRemoveProductOptionsArgs = {
   optionIds: RemoveProductOptionInput;
 };
@@ -145,6 +160,11 @@ export type MutationToggleProductIsAvailableArgs = {
 
 export type MutationToggleStoreIsAvailableArgs = {
   id: Scalars['Float'];
+};
+
+
+export type MutationUpdateOrderArgs = {
+  updateOrderProduct: UpdateOrderInput;
 };
 
 
@@ -185,6 +205,8 @@ export type Option = {
 export type Order = {
   __typename?: 'Order';
   id: Scalars['ID'];
+  imp_uid: Scalars['String'];
+  merchant_uid: Scalars['String'];
   number: Scalars['Int'];
   orderProducts: Array<OrderProduct>;
   price: Scalars['Int'];
@@ -199,13 +221,7 @@ export type OrderProduct = {
   id: Scalars['ID'];
   orderId: Scalars['Int'];
   productId: Scalars['Int'];
-  productOptionIds: Array<Scalars['Int']>;
-};
-
-export type OrderProductInput = {
-  amount: Scalars['Int'];
-  productId: Scalars['Int'];
-  productOptionIds: Array<Scalars['Int']>;
+  productOptionId: Scalars['Int'];
 };
 
 export enum OrderStatusType {
@@ -242,6 +258,7 @@ export type Query = {
   store?: Maybe<Store>;
   storeIsAvailable: Scalars['Boolean'];
   stores: Array<Store>;
+  todayOrders: Array<Order>;
   users: Array<Maybe<User>>;
 };
 
@@ -265,6 +282,17 @@ export type QueryStoreArgs = {
 
 export type QueryStoreIsAvailableArgs = {
   id: Scalars['Float'];
+};
+
+
+export type QueryTodayOrdersArgs = {
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+};
+
+export type RemoveOrderProductInput = {
+  orderId: Scalars['Int'];
+  orderProductIds: Array<Scalars['Int']>;
 };
 
 export type SignupInput = {
@@ -292,6 +320,18 @@ export type TokenOutput = {
   refreshToken: Scalars['String'];
 };
 
+export type UpdateOrderInput = {
+  orderId: Scalars['Int'];
+  orderProducts: Array<UpdateOrderProductInput>;
+};
+
+export type UpdateOrderProductInput = {
+  amount: Scalars['Int'];
+  id?: InputMaybe<Scalars['Int']>;
+  productId?: InputMaybe<Scalars['Int']>;
+  productOptionId?: InputMaybe<Scalars['Int']>;
+};
+
 export type UpdateStoreInput = {
   address: Scalars['String'];
   name: Scalars['String'];
@@ -316,7 +356,7 @@ export type RemoveProductOptionInput = {
 export type GetOrdersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetOrdersQuery = { __typename?: 'Query', myStores: Array<{ __typename?: 'Store', id: string, products: Array<{ __typename?: 'Product', id: string, name: string, price: number, options: Array<{ __typename?: 'Option', id: string, name: string }> }>, orders: Array<{ __typename?: 'Order', id: string, number: number, price: number, storeId: number, status: OrderStatusType, orderProducts: Array<{ __typename?: 'OrderProduct', orderId: number, productId: number, amount: number, productOptionIds: Array<number> }> }> }> };
+export type GetOrdersQuery = { __typename?: 'Query', myStores: Array<{ __typename?: 'Store', id: string, products: Array<{ __typename?: 'Product', id: string, name: string, price: number, options: Array<{ __typename?: 'Option', id: string, name: string }> }>, orders: Array<{ __typename?: 'Order', id: string, number: number, price: number, storeId: number, status: OrderStatusType, orderProducts: Array<{ __typename?: 'OrderProduct', orderId: number, productId: number, amount: number, productOptionId: number }> }> }> };
 
 export type AddOrderMutationVariables = Exact<{
   order: AddOrderInput;
@@ -477,7 +517,7 @@ export const GetOrdersDocument = `
         orderId
         productId
         amount
-        productOptionIds
+        productOptionId
       }
     }
   }

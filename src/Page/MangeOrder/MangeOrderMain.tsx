@@ -6,7 +6,7 @@ import OrderStateList from "./OrderStateList";
 import {
   GetOrdersQuery,
   OrderStatusType,
-  useGetOrdersQuery
+  useGetOrdersQuery,
 } from "../../generated/graphql";
 import { userState } from "../../state/userState";
 import graphqlReqeustClient from "../../lib/graphqlRequestClient";
@@ -63,7 +63,7 @@ const handleDataToNew = (data: SelectOrder, term?: string) => {
           productName: "",
           productPrice: 0,
           optionId: "",
-          optionName: ""
+          optionName: "",
         };
       }
 
@@ -78,9 +78,9 @@ const handleDataToNew = (data: SelectOrder, term?: string) => {
         productName: selectProduct.name,
         productPrice: selectProduct.price,
         optionId: selectOption?.id ? selectOption.id : "",
-        optionName: selectOption?.name ? selectOption.name : ""
+        optionName: selectOption?.name ? selectOption.name : "",
       };
-    })
+    }),
   }));
 
   if (term) {
@@ -91,52 +91,52 @@ const handleDataToNew = (data: SelectOrder, term?: string) => {
 };
 
 const MangeOrderMain = () => {
-  const sticky = useRef<HTMLDivElement>(null);
-  const [stickyPos, setStickyPos] = useState<number>(0);
-  const { accessToken } = useRecoilValue(userState);
-  const { storeId } = useParams();
-  const [searchTerm, setSearchTerm] = useState("");
-  const setOrders = useSetRecoilState(orderStateForFrontend);
+  // const sticky = useRef<HTMLDivElement>(null);
+  // const [stickyPos, setStickyPos] = useState<number>(0);
+  // const { accessToken } = useRecoilValue(userState);
+  // const { storeId } = useParams();
+  // const [searchTerm, setSearchTerm] = useState("");
+  // const setOrders = useSetRecoilState(orderStateForFrontend);
 
-  const { data, isSuccess } = useGetOrdersQuery(
-    graphqlReqeustClient(accessToken),
-    undefined,
-    {
-      select: (data) => {
-        const [selectStore] = data.myStores.filter(
-          (value) => value.id === storeId
-        );
-        return selectStore;
-      },
-      onSuccess: (data) => {
-        const orders = handleDataToNew(data);
-        setOrders(orders);
-      }
-    }
-  );
+  // const { data, isSuccess } = useGetOrdersQuery(
+  //   graphqlReqeustClient(accessToken),
+  //   undefined,
+  //   {
+  //     select: (data) => {
+  //       const [selectStore] = data.myStores.filter(
+  //         (value) => value.id === storeId
+  //       );
+  //       return selectStore;
+  //     },
+  //     onSuccess: (data) => {
+  //       const orders = handleDataToNew(data);
+  //       setOrders(orders);
+  //     }
+  //   }
+  // );
 
-  useEffect(() => {
-    if (sticky.current) {
-      const offsetTop = sticky.current.offsetTop as number;
-      setStickyPos(offsetTop);
-    }
-  }, [sticky.current]);
+  // useEffect(() => {
+  //   if (sticky.current) {
+  //     const offsetTop = sticky.current.offsetTop as number;
+  //     setStickyPos(offsetTop);
+  //   }
+  // }, [sticky.current]);
 
-  useEffect(() => {
-    if (searchTerm && isSuccess) {
-      const orders = handleDataToNew(data, searchTerm);
-      setOrders(orders);
-    }
+  // useEffect(() => {
+  //   if (searchTerm && isSuccess) {
+  //     const orders = handleDataToNew(data, searchTerm);
+  //     setOrders(orders);
+  //   }
 
-    if (!searchTerm && isSuccess) {
-      const orders = handleDataToNew(data);
-      setOrders(orders);
-    }
-  }, [searchTerm, isSuccess]);
+  //   if (!searchTerm && isSuccess) {
+  //     const orders = handleDataToNew(data);
+  //     setOrders(orders);
+  //   }
+  // }, [searchTerm, isSuccess]);
 
   return (
     <Wrapper>
-      <div ref={sticky}>
+      {/* <div ref={sticky}>
         <OptionsContainer
           setSearchTerm={setSearchTerm}
           stickyPos={stickyPos as number}
@@ -144,7 +144,7 @@ const MangeOrderMain = () => {
       </div>
       <OrderStateContainer>
         <OrderStateList />
-      </OrderStateContainer>
+      </OrderStateContainer> */}
     </Wrapper>
   );
 };

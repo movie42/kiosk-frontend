@@ -7,7 +7,7 @@ import MenuItemModalChildren from "./Modal/MenuItemModalChildren";
 import { ProductListValues } from "../../state/productItemState";
 import {
   productListState,
-  selectMenuListState
+  selectMenuListState,
 } from "../../state/productItemState";
 import { Headline1 } from "../../mixin";
 import { useNavigate, useParams } from "react-router-dom";
@@ -110,7 +110,7 @@ const Item = styled.li`
 export interface IOrderSelectedItem {
   productId: number;
   name: string;
-  optionId?: number;
+  optionId: number;
   option?: string;
   price: number;
   totalCount: number;
@@ -146,7 +146,7 @@ const ClientMenu = () => {
   const { isLoading } = useGetProductsQuery(
     graphqlReqeustClient(accessToken),
     {
-      id: Number(storeId)
+      id: Number(storeId),
     },
     {
       onSuccess: (data) => {
@@ -160,14 +160,14 @@ const ClientMenu = () => {
               description: value.description,
               options: value.options.map((value) => ({
                 id: Number(value.id),
-                name: value.name
+                name: value.name,
               })),
-              isAvailable: value.isAvailable
+              isAvailable: value.isAvailable,
             }))
             .filter((value) => value.isAvailable === true);
           setMenuList(productList);
         }
-      }
+      },
     }
   );
 
