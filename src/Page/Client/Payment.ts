@@ -42,7 +42,7 @@ export interface RequestPayResponse extends RequestPayAdditionalResponse {
   success: boolean;
   error_code: string;
   error_msg: string;
-  imp_uid: string | null;
+  imp_uid: string;
   merchant_uid: string;
   pay_method?: string;
   paid_amount?: number;
