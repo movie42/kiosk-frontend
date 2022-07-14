@@ -21,6 +21,10 @@ const Wrapper = styled.div`
   width: 100%;
   height: calc(100vh - 7rem);
   grid-template-columns: 1fr 1fr;
+  ${({ theme }) => theme.device.tablet} {
+    display: block;
+    grid-template-columns: unset;
+  }
 `;
 
 const ContainerDefaultStyle = styled.div`
@@ -62,6 +66,13 @@ const ContainerDefaultStyle = styled.div`
 const BasicInfoContainer = styled.div`
   display: grid;
   grid-template-rows: 1fr 1fr;
+  ${({ theme }) => theme.device.tablet} {
+    grid-template-rows: unset;
+    grid-auto-rows: minmax(30rem, auto);
+  }
+  ${({ theme }) => theme.device.mobile} {
+    grid-auto-rows: unset;
+  }
 `;
 
 const ImageContainer = styled.div`
@@ -72,7 +83,31 @@ const ImageContainer = styled.div`
     border-radius: 2rem;
   }
 `;
-const InfoContainer = styled(ContainerDefaultStyle)``;
+
+const InfoContainer = styled(ContainerDefaultStyle)`
+  .info-box {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    ul {
+      display: flex;
+      li {
+        font-weight: 700;
+        font-size: 2.4rem;
+        &:not(:first-child) {
+          margin-left: 1.4rem;
+        }
+      }
+    }
+    span {
+      font-size: 2rem;
+      strong {
+        font-size: 2.4rem;
+        font-weight: 700;
+      }
+    }
+  }
+`;
 const SalesInfoContainer = styled(BasicInfoContainer)``;
 const SalesInfoSummuryContainer = styled(ContainerDefaultStyle)`
   div:first-child {
@@ -89,7 +124,7 @@ const AdminProductDetail = () => {
     price: 0,
     options: [],
     imageUrl: "",
-    description: "",
+    description: ""
   });
   const { storeId, productId } = useParams();
   const productQuery = useGetProductsQuery(
@@ -107,16 +142,16 @@ const AdminProductDetail = () => {
                 price: item.price,
                 options: item.options.map((value) => ({
                   id: Number(value.id),
-                  name: value.name,
+                  name: value.name
                 })),
                 imageUrl: item.imageUrl,
-                description: item.description,
+                description: item.description
               };
             });
           setProduct(product);
         }
-      },
-    },
+      }
+    }
   );
 
   return (
@@ -132,20 +167,21 @@ const AdminProductDetail = () => {
         <InfoContainer>
           <h2>상품 기본정보</h2>
           <div className="info-box">
-            <h3>이름</h3>
-            <span>{product.name}</span>
+            <span>이름</span>
+            <span>
+              <strong>{product.name}</strong>
+            </span>
           </div>
           <div className="info-box">
-            <h3>등록 날짜</h3>
-            {/*TODO: 상품이 등록된 날짜가 제공되어야합니다.*/}
-            <span>2022년 1월 27일</span>
+            <span>가격</span>
+            <span>
+              <strong>
+                {translateLocalCurrency(product.price, "ko-KR")}원
+              </strong>
+            </span>
           </div>
           <div className="info-box">
-            <h3>가격</h3>
-            <span>{translateLocalCurrency(product.price, "ko-KR")}</span>
-          </div>
-          <div className="info-box">
-            <h3>옵션</h3>
+            <span>옵션</span>
             <ul>
               {product.options?.length !== 0
                 ? product.options?.map((value) => (
@@ -157,11 +193,13 @@ const AdminProductDetail = () => {
             </ul>
           </div>
           <div className="info-box">
-            <h3>정보</h3>
+            <span>정보</span>
             <span>
-              {product?.description
-                ? product.description
-                : "상품의 정보가 없습니다."}
+              <strong>
+                {product?.description
+                  ? product.description
+                  : "상품의 정보가 없습니다."}
+              </strong>
             </span>
           </div>
         </InfoContainer>
