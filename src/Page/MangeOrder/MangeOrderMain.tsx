@@ -7,6 +7,8 @@ import {
   GetOrdersQuery,
   OrderStatusType,
   useGetOrdersQuery,
+  useGetProductsQuery,
+  useTodayOrdersQuery
 } from "../../generated/graphql";
 import { userState } from "../../state/userState";
 import graphqlReqeustClient from "../../lib/graphqlRequestClient";
@@ -19,68 +21,90 @@ const Wrapper = styled.div``;
 const OrderStateContainer = styled.div``;
 
 interface SelectOrder {
-  id: string;
-  products: Array<{
-    __typename?: "Product";
-    id: string;
-    name: string;
-    price: number;
-    options: Array<{ __typename?: "Option"; id: string; name: string }>;
-  }>;
-  orders: Array<{
+  __typename?: "Query";
+  todayOrders: Array<{
     __typename?: "Order";
     id: string;
     number: number;
     price: number;
     storeId: number;
+    imp_uid: string;
+    merchant_uid: string;
     status: OrderStatusType;
     orderProducts: Array<{
       __typename?: "OrderProduct";
+      id: string;
       orderId: number;
       productId: number;
       amount: number;
-      productOptionIds: Array<number>;
+      productOptionId: number;
     }>;
   }>;
 }
 
-const handleDataToNew = (data: SelectOrder, term?: string) => {
-  const orders = data.orders.map((order) => ({
+interface ProductQuery {
+  __typename?: "Query";
+  store?: {
+    __typename?: "Store";
+    id: string;
+    products: Array<{
+      __typename?: "Product";
+      id: string;
+      name: string;
+      price: number;
+      imageUrl?: string | null;
+      description?: string | null;
+      isAvailable: boolean;
+      options: Array<{ __typename?: "Option"; id: string; name: string }>;
+    }>;
+  } | null;
+}
+
+const handleDataToNew = (
+  todayOrdersData: SelectOrder,
+  getProduct: ProductQuery,
+  term?: string
+) => {
+  const orders = todayOrdersData.todayOrders.map((order) => ({
     id: order.id,
     storeId: order.storeId,
     number: order.number,
     price: order.price,
     status: order.status,
     orderProducts: order.orderProducts.map((orderProduct) => {
-      const [selectProduct] = data.products.filter(
-        (product) => product.id === String(orderProduct.productId)
-      );
-      if (!selectProduct) {
-        return {
-          productId: 0,
-          orderId: 0,
-          amount: 0,
-          productName: "",
-          productPrice: 0,
-          optionId: "",
-          optionName: "",
-        };
-      }
+      if (getProduct.store) {
+        const [selectProduct] = getProduct.store?.products.filter(
+          (product) => product.id === String(orderProduct.productId)
+        );
 
-      const optionId = orderProduct.productOptionIds[0];
-      const [selectOption] = selectProduct.options.filter(
-        (option) => option.id === String(optionId)
-      );
+        const [selectOption] = selectProduct.options.filter(
+          (option) => option.id === String(orderProduct.productOptionId)
+        );
+
+        if (selectOption) {
+          return {
+            id: orderProduct.id,
+            productId: orderProduct.productId,
+            orderId: orderProduct.orderId,
+            amount: orderProduct.amount,
+            productName: selectProduct.name,
+            productPrice: selectProduct.price,
+            productOptionId: selectOption.id,
+            optionName: selectOption.name
+          };
+        }
+      }
       return {
+        id: orderProduct.id,
         productId: orderProduct.productId,
         orderId: orderProduct.orderId,
         amount: orderProduct.amount,
-        productName: selectProduct.name,
-        productPrice: selectProduct.price,
-        optionId: selectOption?.id ? selectOption.id : "",
-        optionName: selectOption?.name ? selectOption.name : "",
+        productName: "언노운",
+        productPrice: 0,
+        productOptionId: "언노운",
+        optionName: "언노운"
       };
-    }),
+    })
   }));
 
   if (term) {
@@ -91,52 +115,46 @@ const handleDataToNew = (data: SelectOrder, term?: string) => {
 };
 
 const MangeOrderMain = () => {
-  // const sticky = useRef<HTMLDivElement>(null);
-  // const [stickyPos, setStickyPos] = useState<number>(0);
-  // const { accessToken } = useRecoilValue(userState);
-  // const { storeId } = useParams();
-  // const [searchTerm, setSearchTerm] = useState("");
-  // const setOrders = useSetRecoilState(orderStateForFrontend);
+  const { storeId } = useParams();
+  const sticky = useRef<HTMLDivElement>(null);
+  const [stickyPos, setStickyPos] = useState<number>(0);
+  const { accessToken } = useRecoilValue(userState);
+  const [searchTerm, setSearchTerm] = useState("");
+  const setOrders = useSetRecoilState(orderStateForFrontend);
 
-  // const { data, isSuccess } = useGetOrdersQuery(
-  //   graphqlReqeustClient(accessToken),
-  //   undefined,
-  //   {
-  //     select: (data) => {
-  //       const [selectStore] = data.myStores.filter(
-  //         (value) => value.id === storeId
-  //       );
-  //       return selectStore;
-  //     },
-  //     onSuccess: (data) => {
-  //       const orders = handleDataToNew(data);
-  //       setOrders(orders);
-  //     }
-  //   }
-  // );
+  const { data: getProduct, isSuccess: isGetProductSuccess } =
+    useGetProductsQuery(graphqlReqeustClient(accessToken), {
+      id: Number(storeId)
+    });
 
-  // useEffect(() => {
-  //   if (sticky.current) {
-  //     const offsetTop = sticky.current.offsetTop as number;
-  //     setStickyPos(offsetTop);
-  //   }
-  // }, [sticky.current]);
+  const { data: todayOrdersData, isSuccess: isTodayOrdersQuerySuccess } =
+    useTodayOrdersQuery(graphqlReqeustClient(accessToken), {
+      offset: 0,
+      limit: 10
+    });
 
-  // useEffect(() => {
-  //   if (searchTerm && isSuccess) {
-  //     const orders = handleDataToNew(data, searchTerm);
-  //     setOrders(orders);
-  //   }
+  useEffect(() => {
+    if (sticky.current) {
+      const offsetTop = sticky.current.offsetTop as number;
+      setStickyPos(offsetTop);
+    }
+  }, [sticky.current]);
 
-  //   if (!searchTerm && isSuccess) {
-  //     const orders = handleDataToNew(data);
-  //     setOrders(orders);
-  //   }
-  // }, [searchTerm, isSuccess]);
+  useEffect(() => {
+    if (searchTerm && isGetProductSuccess && isTodayOrdersQuerySuccess) {
+      const orders = handleDataToNew(todayOrdersData, getProduct, searchTerm);
+      setOrders(orders);
+    }
+
+    if (!searchTerm && isGetProductSuccess && isTodayOrdersQuerySuccess) {
+      const orders = handleDataToNew(todayOrdersData, getProduct);
+      setOrders(orders);
+    }
+  }, [searchTerm, isGetProductSuccess, isTodayOrdersQuerySuccess]);
 
   return (
     <Wrapper>
-      {/* <div ref={sticky}>
+      <div ref={sticky}>
         <OptionsContainer
           setSearchTerm={setSearchTerm}
           stickyPos={stickyPos as number}
@@ -144,7 +162,7 @@ const MangeOrderMain = () => {
       </div>
       <OrderStateContainer>
         <OrderStateList />
-      </OrderStateContainer> */}
+      </OrderStateContainer>
     </Wrapper>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "../Page/Admin/Login/AdminLogin";
 import AdminManageProductAddItem from "../Page/Admin/Product/AdminManageProductAddItem";
@@ -6,7 +6,7 @@ import AdminManageProductItemList from "../Page/Admin/Product/AdminManageProduct
 import AdminMain from "../Page/Admin/Product/AdminManageProductMain";
 import AdminLayout from "../Layouts/AdminLayout";
 import PageNotFound from "../Page/Errors/404";
-// import MangeOrderMain from "../Page/MangeOrder/MangeOrderMain";
+import MangeOrderMain from "../Page/MangeOrder/MangeOrderMain";
 import ClientLayout from "../Layouts/ClientLayout";
 import ClientMain from "../Page/Client/ClientMain";
 import ClientMenu from "../Page/Client/ClientMenu";
@@ -28,6 +28,7 @@ import { storeState } from "../state/storeState";
 
 const Router = () => {
   const { isLogin } = useRecoilValue(userState);
+
   const store = useRecoilValue(storeState);
 
   return (
@@ -56,7 +57,7 @@ const Router = () => {
               path="manage-product"
               element={<AdminManageProductItemList />}
             />
-            {/* <Route path="manage-order" element={<MangeOrderMain />} /> */}
+            <Route path="manage-order" element={<MangeOrderMain />} />
             <Route path="add-product" element={<AdminManageProductAddItem />} />
           </Route>
           {store.isAvailable && (
