@@ -14,6 +14,8 @@
 <img src="https://img.shields.io/badge/누구나 키오스크-61DAFB?style=for-the-badge&logoColor=white" />
 </a> 데모를 만나보세요.
 
+개발 과정에 대한 자세한 이야기는 [위키](https://github.com/movie42/kiosk-frontend/wiki)에서 만나보세요!
+
 ## ✍️ 주요 기능
 
 ### Easy Start
