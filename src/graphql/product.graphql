@@ -36,3 +36,11 @@ mutation toggleProductIsAvailable($id: Float!) {
 mutation addProductOptions($option: [AddProductOptionInput!]!) {
   addProductOptions(option: $option)
 }
+
+mutation removeProductOptions($optionIds: removeProductOptionInput!) {
+  removeProductOptions(optionIds: $optionIds)
+}
+
+mutation updateProductOption($option: EditProductOptionInput!) {
+  updateProductOption(option: $option)
+}

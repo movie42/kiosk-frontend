@@ -1,17 +1,29 @@
 import React, { useEffect, useState } from "react";
-import { FieldValues, UseFormRegister, UseFormSetValue } from "react-hook-form";
-import { IoIosAddCircle } from "react-icons/io";
-import { useRecoilState, useRecoilValue } from "recoil";
+import {
+  DeepRequired,
+  FieldArrayWithId,
+  FieldErrorsImpl,
+  UseFieldArrayAppend,
+  UseFieldArrayRemove,
+  UseFormRegister,
+  UseFormSetValue
+} from "react-hook-form";
+import { IoIosAddCircle, IoIosRemoveCircle } from "react-icons/io";
+import { useQueryClient } from "react-query";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import InputDefault from "../../../Components/Form/InputDefault";
 import LabelDefault from "../../../Components/Form/LabelDefault";
 import TextareaDefault from "../../../Components/Form/TextareaDefault";
 import Images from "../../../Components/Images/Images";
-import { ProductListValues } from "../../../state/productItemState";
+import { useRemoveProductOptionsMutation } from "../../../generated/graphql";
+import graphqlReqeustClient from "../../../lib/graphqlRequestClient";
 import {
-  isCurrentSelectItemState,
-  updateProductState,
+  ProductListValues,
+  ProductOptions
 } from "../../../state/productItemState";
+import { updateProductState } from "../../../state/productItemState";
+import { userState } from "../../../state/userState";
 import useImageUpload from "../../../utils/customHooks/useImageUpload";
 
 const FieldSet = styled.fieldset`
@@ -57,6 +69,88 @@ const FieldContainer = styled.div`
   }
 `;
 
+const OptionFieldContainer = styled.div`
+  .option-input-container,
+  .add-option-button-container {
+    display: grid;
+    grid-template-columns: 20% 80%;
+    padding: 1rem 0;
+    button {
+      cursor: pointer;
+      text-align: left;
+      padding: 0;
+      margin: 0;
+      &:hover {
+        color: ${(props) => props.theme.color.primary300};
+      }
+    }
+    &:not(:first-child) {
+      border-bottom: 1px solid ${(props) => props.theme.color.gray300};
+    }
+    label {
+      font-size: 1.8rem;
+      align-self: center;
+    }
+    input {
+      font-size: 1.8rem;
+      border: 0;
+      align-self: center;
+      outline: none;
+    }
+
+    .option-label-button-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      button {
+        cursor: pointer;
+        font-size: 1.8rem;
+        text-align: left;
+        border: 0;
+        background-color: unset;
+        padding: 0;
+        margin: 0;
+        color: ${(props) => props.theme.color.error500};
+        &:hover {
+          color: ${(props) => props.theme.color.error900};
+        }
+        span {
+          position: absolute;
+          margin: -1px;
+          top: 0;
+          left: 0;
+          visibility: hidden;
+        }
+      }
+    }
+  }
+
+  .add-button {
+    cursor: pointer;
+    border: unset;
+    background-color: unset;
+    font-size: 2rem;
+    color: ${(props) => props.theme.color.primary700};
+    span {
+      visibility: hidden;
+    }
+  }
+  ${({ theme }) => theme.device.mobile} {
+    .option-input-container,
+    .add-option-button-container {
+      label {
+        font-size: 1.6rem;
+      }
+      input {
+        font-size: 1.6rem;
+      }
+    }
+    .option-input-container {
+      grid-template-columns: 30% 70%;
+    }
+  }
+`;
+
 const ImageContainer = styled.div`
   margin: 0 auto;
   width: 50%;
@@ -74,18 +168,92 @@ const AddThumbnailLabel = styled(LabelDefault)`
 interface IUpdateModalFormProps {
   register: UseFormRegister<ProductListValues>;
   setValue: UseFormSetValue<ProductListValues>;
+  optionsFields: FieldArrayWithId<
+    {
+      options: {
+        optionId: number;
+        name: string;
+      }[];
+    },
+    "options",
+    "id"
+  >[];
+  optionsRegister: UseFormRegister<{
+    options: {
+      optionId: number;
+      name: string;
+    }[];
+  }>;
+  optionsError: FieldErrorsImpl<
+    DeepRequired<{
+      options: {
+        optionId: number;
+        name: string;
+      }[];
+    }>
+  >;
+  optionsAppend: UseFieldArrayAppend<
+    {
+      options: {
+        optionId: number;
+        name: string;
+      }[];
+    },
+    "options"
+  >;
+  optionsRemove: UseFieldArrayRemove;
   fieldName?: string;
 }
 
+interface getProductListValues {
+  id: string;
+  name: string;
+  price: number;
+  options?: ProductOptions[];
+  imageUrl?: string | null | undefined;
+  description?: string | null | undefined;
+  isAvailable?: boolean | undefined;
+}
+
 const UpdateModalForm = ({
-  fieldName,
   register,
   setValue,
+  optionsRegister,
+  optionsError,
+  optionsFields,
+  optionsAppend,
+  optionsRemove,
+  fieldName
 }: IUpdateModalFormProps) => {
-  const item = useRecoilValue(updateProductState);
-  const [thumbnailImage, setThumbnailImage] = useState(item.imageUrl);
+  const queryClient = useQueryClient();
+  const { accessToken } = useRecoilValue(userState);
 
-  const { location, error, uploadFile } = useImageUpload();
+  const productData = useRecoilValue(updateProductState);
+
+  const [thumbnailImage, setThumbnailImage] = useState(productData.imageUrl);
+
+  const { location, uploadFile } = useImageUpload();
+
+  const { mutate: removeProductOptionMutate } = useRemoveProductOptionsMutation(
+    graphqlReqeustClient(accessToken),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("getProducts");
+      }
+    }
+  );
+
+  const handleRemoveOption = (
+    e: React.MouseEvent<HTMLButtonElement>,
+    index: number
+  ) => {
+    const parentsDiv = e.currentTarget.closest(
+      ".option-input-container"
+    ) as HTMLDivElement;
+    const optionId = parentsDiv.dataset.optionid;
+    removeProductOptionMutate({ optionIds: { OptionIds: [Number(optionId)] } });
+    optionsRemove(index);
+  };
 
   useEffect(() => {
     if (location) {
@@ -95,10 +263,10 @@ const UpdateModalForm = ({
   }, [location]);
 
   return (
-    <FieldSet name={fieldName} data-id={item.id}>
+    <FieldSet name={fieldName} data-id={productData?.id}>
       {thumbnailImage && (
         <ImageContainer>
-          <Images src={thumbnailImage} alt={item.name} />
+          <Images src={thumbnailImage} alt={productData?.name} />
         </ImageContainer>
       )}
       <FieldContainer>
@@ -131,7 +299,7 @@ const UpdateModalForm = ({
           name="name"
           fieldName={fieldName}
           register={register}
-          defaultValue={item.name}
+          defaultValue={productData?.name}
           onChange={uploadFile}
         />
       </FieldContainer>
@@ -142,31 +310,66 @@ const UpdateModalForm = ({
           id="price"
           name="price"
           fieldName={fieldName}
-          defaultValue={item.price}
+          defaultValue={productData?.price}
           register={register}
         />
       </FieldContainer>
-      <FieldContainer>
-        <LabelDefault htmlFor="option">상품 옵션</LabelDefault>
-        <InputDefault
-          type="text"
-          id="option"
-          name="option"
-          fieldName={fieldName}
-          register={register}
-          defaultValue={item.options?.join(", ")}
-        />
-      </FieldContainer>
+      <OptionFieldContainer>
+        <div className="add-option-button-container">
+          <LabelDefault>상품 옵션</LabelDefault>
+          <button
+            type="button"
+            className="add-button"
+            onClick={() =>
+              optionsAppend({
+                optionId: undefined,
+                name: "옵션을 입력해주세요."
+              })
+            }
+          >
+            <IoIosAddCircle />
+            <span>옵션 추가</span>
+          </button>
+        </div>
+        {optionsFields.map((optionField, index) => (
+          <div
+            className="option-input-container"
+            data-optionid={optionField.optionId}
+          >
+            <div className="option-label-button-container">
+              <LabelDefault htmlFor="option">
+                상품 옵션 {index + 1}
+              </LabelDefault>
+              <button
+                type="button"
+                onClick={(e) => handleRemoveOption(e, index)}
+              >
+                <IoIosRemoveCircle />
+                <span>삭제</span>
+              </button>
+            </div>
+            <InputDefault
+              id="option"
+              type="text"
+              name="name"
+              register={optionsRegister}
+              fieldName={`options.${index}`}
+              placeholder="옵션의 이름을 입력해주세요"
+              defaultValue={optionField.name}
+            />
+          </div>
+        ))}
+        {optionsError.options && <p>{optionsError.options.message}</p>}
+      </OptionFieldContainer>
       <FieldContainer>
         <LabelDefault htmlFor="description">상품 정보</LabelDefault>
         <TextareaDefault
           id="description"
           name="description"
           fieldName={fieldName}
+          defaultValue={productData?.description as string}
           register={register}
-        >
-          {item.description}
-        </TextareaDefault>
+        />
       </FieldContainer>
     </FieldSet>
   );

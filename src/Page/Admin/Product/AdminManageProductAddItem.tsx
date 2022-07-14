@@ -268,7 +268,7 @@ interface ProductMutationValue extends ProductDefaultValue {
 
 const AdminManageProductAddItem = () => {
   const { storeId, userId } = useParams();
-  const { accessToken, refreshToken } = useRecoilValue(userState);
+  const { accessToken } = useRecoilValue(userState);
   const { error, location, uploadFile } = useImageUpload();
 
   const queryClient = useQueryClient();
@@ -284,7 +284,6 @@ const AdminManageProductAddItem = () => {
     }
   ]);
 
-  const [options, setOptions] = useState("");
   const { mutate: addProductMutate } = useAddProductsMutation<
     ProductDefaultValue[]
   >(graphqlReqeustClient(accessToken));
@@ -315,7 +314,6 @@ const AdminManageProductAddItem = () => {
 
   const {
     register: optionRegister,
-    handleSubmit: optionHandleSubmit,
     control: optionControl,
     formState: { errors: optionErrors },
     setError: optionSetError,
@@ -537,9 +535,9 @@ const AdminManageProductAddItem = () => {
               <div className="product-input-container">
                 <Label htmlFor="infomation">상품 정보</Label>
                 <Textarea
-                  id="infomation"
+                  id="description"
                   placeholder="상세 정보를 입력해주세요."
-                  name="infomation"
+                  name="description"
                   register={register}
                   fieldName={`product.${index}`}
                 />

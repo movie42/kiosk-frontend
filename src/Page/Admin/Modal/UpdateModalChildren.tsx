@@ -1,17 +1,19 @@
-import React, { useEffect, useRef, useState } from "react";
-import { FieldValue, FieldValues, useForm } from "react-hook-form";
+import React, { useEffect } from "react";
+import { useFieldArray, useForm } from "react-hook-form";
 import { useQueryClient } from "react-query";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { Product, useUpdateProductMutation } from "../../../generated/graphql";
+import {
+  useAddProductOptionsMutation,
+  useUpdateProductMutation,
+  useUpdateProductOptionMutation
+} from "../../../generated/graphql";
 import graphqlReqeustClient from "../../../lib/graphqlRequestClient";
 import { ProductListValues } from "../../../state/productItemState";
 import {
-  productListState,
   selectOptionState,
-  selectProductListState,
   Option,
-  updateProductState,
+  updateProductState
 } from "../../../state/productItemState";
 import { userState } from "../../../state/userState";
 
@@ -67,21 +69,31 @@ const updateDefault = {
   isAvailable: false,
   options: [],
   imageUrl: "",
-  description: "",
+  description: ""
 };
 
 const UpdateModalChildren = ({ setIsModal }: ISelectModalChildrenProps) => {
   const { accessToken } = useRecoilValue(userState);
   const queryClient = useQueryClient();
   const setSelectOption = useSetRecoilState(selectOptionState);
+
   const { mutate: updateProductMutation } = useUpdateProductMutation(
     graphqlReqeustClient(accessToken),
     {
       onSuccess: () => {
         queryClient.invalidateQueries("getProducts");
-      },
-    },
+      }
+    }
   );
+
+  const { isSuccess: isAddOptionSuccess, mutate: addProductOptionMutate } =
+    useAddProductOptionsMutation(graphqlReqeustClient(accessToken));
+
+  const {
+    isSuccess: isUpdateProductSuccess,
+    mutate: updateProductOptionMutate
+  } = useUpdateProductOptionMutation(graphqlReqeustClient(accessToken));
+
   const [selectUpdateProduct, setSelectUpdateProduct] =
     useRecoilState<ProductListValues>(updateProductState);
 
@@ -89,8 +101,31 @@ const UpdateModalChildren = ({ setIsModal }: ISelectModalChildrenProps) => {
     register,
     formState: { errors },
     handleSubmit,
-    setValue,
+    setValue
   } = useForm<ProductListValues>();
+
+  const {
+    register: optionRegister,
+    control: optionControl,
+    formState: { errors: optionErrors },
+    setValue: setOptionValue,
+    setError: optionSetError,
+    getValues: optionValue
+  } = useForm<{
+    options: {
+      optionId: number;
+      name: string;
+    }[];
+  }>();
+
+  const {
+    fields: optionsFields,
+    append: optionsAppend,
+    remove: optionsRemove
+  } = useFieldArray({
+    control: optionControl,
+    name: "options"
+  });
 
   const onCancel = () => {
     setSelectUpdateProduct(updateDefault);
@@ -99,23 +134,59 @@ const UpdateModalChildren = ({ setIsModal }: ISelectModalChildrenProps) => {
   };
 
   const selectUpdateItemsSubmitHandler = handleSubmit((data) => {
-    const updateData = {
-      productId: selectUpdateProduct.id,
-      name: data.name,
-      price: Number(data.price),
-      imageUrl: (data.imageUrl as string) || undefined,
-      description: (data.description as string) || undefined,
-    };
-    updateProductMutation(
-      { products: updateData },
-      {
-        onSuccess: () => {
-          setIsModal(false);
-          setSelectUpdateProduct(updateDefault);
-        },
-      },
+    const options = optionValue("options");
+
+    const addOptions = options
+      .filter((value) => value.optionId === undefined)
+      .map((item) => ({ productId: selectUpdateProduct.id, name: item.name }));
+
+    const updateOptions = options.filter(
+      (value) => value.optionId !== undefined
     );
+    if (options.length !== 0) {
+      const updateData = {
+        productId: selectUpdateProduct.id,
+        name: data.name,
+        price: Number(data.price),
+        imageUrl: (data.imageUrl as string) || undefined,
+        description: (data.description as string) || undefined
+      };
+      updateProductMutation(
+        { products: updateData },
+        {
+          onSuccess: () => {
+            // updateProductOptionMutate();
+            addProductOptionMutate({ option: addOptions });
+          }
+        }
+      );
+      return;
+    }
+
+    optionSetError("options", {
+      message: "반드시 하나 이상의 옵션이 있어야합니다."
+    });
   });
+
+  useEffect(() => {
+    if (selectUpdateProduct.options) {
+      const setOptions = selectUpdateProduct.options.map((value) => ({
+        optionId: value.id,
+        name: value.name
+      }));
+
+      setOptionValue("options", setOptions);
+    }
+  }, []);
+
+  useEffect(() => {
+    // TODO: isUpdateProductSuccess를 조건문에 반드시 추가해야합니다.(지금은 불가능.)
+    if (isAddOptionSuccess) {
+      setIsModal(false);
+      setSelectUpdateProduct(updateDefault);
+      queryClient.invalidateQueries("getProducts");
+    }
+  }, [isAddOptionSuccess]);
 
   return (
     <>
@@ -129,7 +200,15 @@ const UpdateModalChildren = ({ setIsModal }: ISelectModalChildrenProps) => {
         </StateInfoContainer>
         <FormContainer>
           <form>
-            <UpdateModalForm register={register} setValue={setValue} />
+            <UpdateModalForm
+              register={register}
+              setValue={setValue}
+              optionsFields={optionsFields}
+              optionsRegister={optionRegister}
+              optionsError={optionErrors}
+              optionsAppend={optionsAppend}
+              optionsRemove={optionsRemove}
+            />
           </form>
         </FormContainer>
         <ButtonContainer>

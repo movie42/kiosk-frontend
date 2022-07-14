@@ -3,7 +3,7 @@ import React, { MouseEvent, ReactNode, useEffect, useState } from "react";
 import { MdCreate } from "react-icons/md";
 import { useQueryClient } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import ButtonDefaultStyle from "../../../Components/Buttons/ButtonDefault";
 import ToggleButton from "../../../Components/Buttons/ToggleButton";
@@ -17,7 +17,7 @@ import {
   Option,
   selectOptionState,
   selectProductListState,
-  updateProductState,
+  updateProductState
 } from "../../../state/productItemState";
 import { userState } from "../../../state/userState";
 import useModalHook from "../../../utils/customHooks/useModalHook";
@@ -145,9 +145,9 @@ const boxVariants: Variants = {
   hover: {
     scale: 1,
     transition: {
-      duration: 0.4,
-    },
-  },
+      duration: 0.4
+    }
+  }
 };
 
 const imageBoxVariants: Variants = {
@@ -155,9 +155,9 @@ const imageBoxVariants: Variants = {
   hover: {
     scale: 2,
     transition: {
-      duration: 0.4,
-    },
-  },
+      duration: 0.4
+    }
+  }
 };
 const ProductItem = ({ productData }: IProductItemProps) => {
   const navigate = useNavigate();
@@ -165,10 +165,10 @@ const ProductItem = ({ productData }: IProductItemProps) => {
   const queryClient = useQueryClient();
   const { accessToken } = useRecoilValue(userState);
   const [selectProduct, setSelectProduct] = useRecoilState(
-    selectProductListState,
+    selectProductListState
   );
-  const [selectUpdateProduct, setSelectUpdateProduct] =
-    useRecoilState(updateProductState);
+  const setSelectUpdateProduct = useSetRecoilState(updateProductState);
+
   const { isModal, setIsModal } = useModalHook();
   const selectOption = useRecoilValue(selectOptionState);
 
@@ -177,13 +177,13 @@ const ProductItem = ({ productData }: IProductItemProps) => {
     {
       onSuccess: () => {
         queryClient.invalidateQueries("getProducts");
-      },
-    },
+      }
+    }
   );
 
   const handleSelectItem = (
     e: React.MouseEvent<HTMLDivElement>,
-    productId: number,
+    productId: number
   ) => {
     if (selectOption?.options === "none") {
       navigate(`/admin/${userId}/store/${storeId}/product/${productId}`);
@@ -191,18 +191,18 @@ const ProductItem = ({ productData }: IProductItemProps) => {
     }
 
     const hasProduct = selectProduct.find(
-      (product) => product.id === productId,
+      (product) => product.id === productId
     );
 
     if (hasProduct) {
       setSelectProduct((products) =>
-        products.filter((product) => product.id !== productId),
+        products.filter((product) => product.id !== productId)
       );
       return;
     }
 
     const [selectedProduct] = productData.filter(
-      (product) => product.id === productId,
+      (product) => product.id === productId
     );
     setSelectProduct((products) => [...products, selectedProduct]);
   };

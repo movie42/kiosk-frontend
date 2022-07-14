@@ -26,6 +26,25 @@ query getOrders {
   }
 }
 
+query todayOrders($offset: Int, $limit: Int) {
+  todayOrders(offset: $offset, limit: $limit) {
+    id
+    number
+    price
+    storeId
+    imp_uid
+    merchant_uid
+    status
+    orderProducts {
+      id
+      orderId
+      productId
+      amount
+      productOptionId
+    }
+  }
+}
+
 mutation addOrder($order: AddOrderInput!) {
   addOrder(order: $order)
 }
