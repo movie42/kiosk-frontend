@@ -2,7 +2,7 @@
 
 ## 😃 개요
 
-[누구나 키오스크](https://everyonekiosk.com)는,
+[누구나 키오스크](https://www.everyonekiosk.com)는,
 
 - 키오스크 기계 없이 가입만 하면 웹에서 바로 사용이 가능합니다.
 - 누구나 쉽게 자신의 가게를 등록할 수 있습니다.(여러개 등록 가능)
@@ -10,7 +10,7 @@
 - 고객의 주문 상태를 관리하여 가게의 혼잡한 상황을 최소화 할 수 있습니다.
 
 지금 바로
-<a href="https://everyonekiosk.com">
+<a href="https://www.everyonekiosk.com">
 <img src="https://img.shields.io/badge/누구나 키오스크-61DAFB?style=for-the-badge&logoColor=white" />
 </a> 데모를 만나보세요.
 
