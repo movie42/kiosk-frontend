@@ -33,7 +33,7 @@ export interface SalesInfo {
 export enum Option {
   NONE = "none",
   DELETE = "delete",
-  UPDATE = "update",
+  UPDATE = "update"
 }
 
 export interface SelectOption {
@@ -42,31 +42,31 @@ export interface SelectOption {
 
 export const productListState = atom({
   key: "productList",
-  default: <ProductListValues[]>[],
+  default: <ProductListValues[]>[]
 });
 
 export const selectProductListState = atom({
   key: "selectProductList",
-  default: <ProductListValues[]>[],
+  default: <ProductListValues[]>[]
 });
 
 export const selectOptionState = atom<SelectOption>({
   key: "selectOption",
-  default: { options: Option.NONE },
+  default: { options: Option.NONE }
 });
 
 // client
 export const selectMenuListState = atom({
   key: "selectMenuListState",
-  default: <IOrderSelectedItem[]>[],
+  default: <IOrderSelectedItem[]>[]
 });
 
 export const isCurrentSelectItemState = atom({
   key: "isCurrentSelectItemState",
-  default: 0,
+  default: 0
 });
 
 export const updateProductState = atom({
   key: "updateProductState",
-  default: <ProductListValues>{},
+  default: <ProductListValues>{}
 });

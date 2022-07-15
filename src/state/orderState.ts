@@ -5,7 +5,7 @@ export enum OrderStatusType {
   Canceled = "CANCELED",
   Complete = "COMPLETE",
   Done = "DONE",
-  Ready = "READY",
+  Ready = "READY"
 }
 
 export interface OrderProducts {
@@ -25,12 +25,13 @@ export interface Order {
 }
 
 export interface ProductInfo {
+  id: string;
   productId: number;
   orderId: number;
   amount: number;
   productName: string;
   productPrice: number;
-  optionId: string;
+  productOptionId: string;
   optionName: string;
 }
 
@@ -45,12 +46,12 @@ export interface NewOrder {
 
 export const orderStatusState = atom<OrderStatusType>({
   key: "orderStatusState",
-  default: OrderStatusType.Ready,
+  default: OrderStatusType.Ready
 });
 
 export const orderStateForFrontend = atom<NewOrder[]>({
   key: "orderStateForFrontend",
-  default: [],
+  default: []
 });
 
 export const getOrderForFrontend = selector<NewOrder[]>({
@@ -66,19 +67,19 @@ export const getOrderForFrontend = selector<NewOrder[]>({
         return orders.filter((item) => item.status === OrderStatusType.Done);
       case "COMPLETE":
         return orders.filter(
-          (item) => item.status === OrderStatusType.Complete,
+          (item) => item.status === OrderStatusType.Complete
         );
       case "CANCELED":
         return orders.filter(
-          (item) => item.status === OrderStatusType.Canceled,
+          (item) => item.status === OrderStatusType.Canceled
         );
       default:
         return orders;
     }
-  },
+  }
 });
 
 export const orderType = atom({
   key: "orderType",
-  default: "",
+  default: ""
 });

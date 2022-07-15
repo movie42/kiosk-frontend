@@ -175,9 +175,11 @@ const OrderStateList = () => {
   const orders = useRecoilValue(getOrderForFrontend);
   const { id, setId, isModal, setIsModal, confirm, setConfirm } =
     useModalHook();
+
   const { mutate: updateOrderStatusMutate } = useUpdateOrderStatusMutation(
     graphqlReqeustClient(accessToken)
   );
+
   const [orderStatus, setOrderStatus] = useState<OrderStatusType | null>(null);
 
   const handleSetModalItem = (
@@ -209,7 +211,7 @@ const OrderStateList = () => {
             console.log("success");
             setOrderStatus(null);
             setConfirm(false);
-            queryClient.invalidateQueries("getOrders");
+            queryClient.invalidateQueries("todayOrders");
           }
         }
       );
@@ -298,7 +300,7 @@ const OrderStateList = () => {
                         <strong>주문 수량</strong>
                         {product?.amount}
                       </span>
-                      <span data-optionid={product?.optionId}>
+                      <span data-optionid={product?.productOptionId}>
                         <strong>옵션</strong>
                         {product?.optionName}
                       </span>

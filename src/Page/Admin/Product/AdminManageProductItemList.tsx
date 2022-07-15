@@ -10,7 +10,7 @@ import {
   SelectOption,
   Option,
   selectOptionState,
-  selectProductListState,
+  selectProductListState
 } from "../../../state/productItemState";
 import { useNavigate, useParams } from "react-router-dom";
 import PageHeaderMessage from "../../../Components/PageHeader";
@@ -86,7 +86,7 @@ const AdminManageProductItemList = () => {
   const { isLoading } = useGetProductsQuery(
     graphqlReqeustClient(accessToken),
     {
-      id: Number(storeId),
+      id: Number(storeId)
     },
     {
       onSuccess: (data) => {
@@ -101,14 +101,15 @@ const AdminManageProductItemList = () => {
               description: value.description,
               options: value.options.map((item) => ({
                 id: Number(item.id),
-                name: item.name,
-              })),
-            }),
+                name: item.name
+              }))
+            })
           );
+
           setProductList(productList);
         }
-      },
-    },
+      }
+    }
   );
 
   const handleDeleteItem = () => {
@@ -138,7 +139,7 @@ const AdminManageProductItemList = () => {
               <ButtonItemWrapper
                 onClick={() =>
                   navigate(
-                    `/admin/${userId}/store/${storeId}/product/add-product`,
+                    `/admin/${userId}/store/${storeId}/product/add-product`
                   )
                 }
               >

@@ -358,6 +358,14 @@ export type GetOrdersQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetOrdersQuery = { __typename?: 'Query', myStores: Array<{ __typename?: 'Store', id: string, products: Array<{ __typename?: 'Product', id: string, name: string, price: number, options: Array<{ __typename?: 'Option', id: string, name: string }> }>, orders: Array<{ __typename?: 'Order', id: string, number: number, price: number, storeId: number, status: OrderStatusType, orderProducts: Array<{ __typename?: 'OrderProduct', orderId: number, productId: number, amount: number, productOptionId: number }> }> }> };
 
+export type TodayOrdersQueryVariables = Exact<{
+  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type TodayOrdersQuery = { __typename?: 'Query', todayOrders: Array<{ __typename?: 'Order', id: string, number: number, price: number, storeId: number, imp_uid: string, merchant_uid: string, status: OrderStatusType, orderProducts: Array<{ __typename?: 'OrderProduct', id: string, orderId: number, productId: number, amount: number, productOptionId: number }> }> };
+
 export type AddOrderMutationVariables = Exact<{
   order: AddOrderInput;
 }>;
@@ -414,6 +422,20 @@ export type AddProductOptionsMutationVariables = Exact<{
 
 
 export type AddProductOptionsMutation = { __typename?: 'Mutation', addProductOptions: boolean };
+
+export type RemoveProductOptionsMutationVariables = Exact<{
+  optionIds: RemoveProductOptionInput;
+}>;
+
+
+export type RemoveProductOptionsMutation = { __typename?: 'Mutation', removeProductOptions: boolean };
+
+export type UpdateProductOptionMutationVariables = Exact<{
+  option: EditProductOptionInput;
+}>;
+
+
+export type UpdateProductOptionMutation = { __typename?: 'Mutation', updateProductOption: boolean };
 
 export type StoreQueryVariables = Exact<{
   id: Scalars['Float'];
@@ -535,6 +557,40 @@ export const useGetOrdersQuery = <
     useQuery<GetOrdersQuery, TError, TData>(
       variables === undefined ? ['getOrders'] : ['getOrders', variables],
       fetcher<GetOrdersQuery, GetOrdersQueryVariables>(client, GetOrdersDocument, variables, headers),
+      options
+    );
+export const TodayOrdersDocument = `
+    query todayOrders($offset: Int, $limit: Int) {
+  todayOrders(offset: $offset, limit: $limit) {
+    id
+    number
+    price
+    storeId
+    imp_uid
+    merchant_uid
+    status
+    orderProducts {
+      id
+      orderId
+      productId
+      amount
+      productOptionId
+    }
+  }
+}
+    `;
+export const useTodayOrdersQuery = <
+      TData = TodayOrdersQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient,
+      variables?: TodayOrdersQueryVariables,
+      options?: UseQueryOptions<TodayOrdersQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useQuery<TodayOrdersQuery, TError, TData>(
+      variables === undefined ? ['todayOrders'] : ['todayOrders', variables],
+      fetcher<TodayOrdersQuery, TodayOrdersQueryVariables>(client, TodayOrdersDocument, variables, headers),
       options
     );
 export const AddOrderDocument = `
@@ -695,6 +751,42 @@ export const useAddProductOptionsMutation = <
     useMutation<AddProductOptionsMutation, TError, AddProductOptionsMutationVariables, TContext>(
       ['addProductOptions'],
       (variables?: AddProductOptionsMutationVariables) => fetcher<AddProductOptionsMutation, AddProductOptionsMutationVariables>(client, AddProductOptionsDocument, variables, headers)(),
+      options
+    );
+export const RemoveProductOptionsDocument = `
+    mutation removeProductOptions($optionIds: removeProductOptionInput!) {
+  removeProductOptions(optionIds: $optionIds)
+}
+    `;
+export const useRemoveProductOptionsMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      client: GraphQLClient,
+      options?: UseMutationOptions<RemoveProductOptionsMutation, TError, RemoveProductOptionsMutationVariables, TContext>,
+      headers?: RequestInit['headers']
+    ) =>
+    useMutation<RemoveProductOptionsMutation, TError, RemoveProductOptionsMutationVariables, TContext>(
+      ['removeProductOptions'],
+      (variables?: RemoveProductOptionsMutationVariables) => fetcher<RemoveProductOptionsMutation, RemoveProductOptionsMutationVariables>(client, RemoveProductOptionsDocument, variables, headers)(),
+      options
+    );
+export const UpdateProductOptionDocument = `
+    mutation updateProductOption($option: EditProductOptionInput!) {
+  updateProductOption(option: $option)
+}
+    `;
+export const useUpdateProductOptionMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      client: GraphQLClient,
+      options?: UseMutationOptions<UpdateProductOptionMutation, TError, UpdateProductOptionMutationVariables, TContext>,
+      headers?: RequestInit['headers']
+    ) =>
+    useMutation<UpdateProductOptionMutation, TError, UpdateProductOptionMutationVariables, TContext>(
+      ['updateProductOption'],
+      (variables?: UpdateProductOptionMutationVariables) => fetcher<UpdateProductOptionMutation, UpdateProductOptionMutationVariables>(client, UpdateProductOptionDocument, variables, headers)(),
       options
     );
 export const StoreDocument = `
