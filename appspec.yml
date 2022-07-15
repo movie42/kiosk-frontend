@@ -2,10 +2,10 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /home/ubuntu/build
+    destination: /home/ubuntu/client
     overwrite: yes
 permissions:
-  - object: /home/ubuntu/build
+  - object: /home/ubuntu/client
     owner: ubuntu
     group: ubuntu
     mode: 755
