@@ -1,0 +1,47 @@
+name: Depoly
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - run: npm install
+    - run: npm run build --if-present
+    - name: zip create
+      run: zip -qq -r ./kiosk-fe.zip
+      shell: bash
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGOIN }}
+    - name: Upload to S3
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
+      run: |
+        aws s3 cp --region ap-northeast-2 ./kiosk-fe.zip
+    - name: Depoly EC2
+      run: aws deploy create-deployment 
+        --kiosk-code-depoly 
+        --deployment-config-name CodeDeployDefault.AllAtOnce 
+        --kiosk-front-depoly
+        --s3-location bucket=kiosk-photo,key=ec2/kiosk-fe.zip,bundleType=zip
+      
