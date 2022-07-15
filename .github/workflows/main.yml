@@ -1,42 +1,42 @@
-name: Kiosk-front
+# name: Kiosk-front
 
-on:
-  pull_request:
-    types: [closed]
-    branches: [main]
+# on:
+#   pull_request:
+#     types: [closed]
+#     branches: [main]
 
-  workflow_dispatch:
+#   workflow_dispatch:
 
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    if: github.event.pull_request.merged
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
+#     if: github.event.pull_request.merged
 
-    strategy:
-      matrix:
-        node-version: [16.x]
+#     strategy:
+#       matrix:
+#         node-version: [16.x]
 
-    steps:
-      - name: Check Actions
-        uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
+#     steps:
+#       - name: Check Actions
+#         uses: actions/checkout@v3
+#       - name: Use Node.js ${{ matrix.node-version }}
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: ${{ matrix.node-version }}
 
-      - name: executing remote ssh commands using password
-        if: github.event_name == 'pull_request'
-        uses: appleboy/ssh-action@v0.1.4
-        with:
-          host: ${{ secrets.HOST }}
-          port: ${{ secrets.PORT }}
-          username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.PASSWORD }}
-          script: |
-            cd ${{ secrets.WEB_PATH }}
-            git pull
-            export NVM_DIR="$HOME/.nvm"
-            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-            npm ci
-            npm run build
-            service nginx restart
+#       - name: executing remote ssh commands using password
+#         if: github.event_name == 'pull_request'
+#         uses: appleboy/ssh-action@v0.1.4
+#         with:
+#           host: ${{ secrets.HOST }}
+#           port: ${{ secrets.PORT }}
+#           username: ${{ secrets.USERNAME }}
+#           password: ${{ secrets.PASSWORD }}
+#           script: |
+#             cd ${{ secrets.WEB_PATH }}
+#             git pull
+#             export NVM_DIR="$HOME/.nvm"
+#             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+#             npm ci
+#             npm run build
+#             service nginx restart
