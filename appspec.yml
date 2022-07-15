@@ -6,11 +6,11 @@ files:
     overwrite: yes
 permissions:
   - object: /home/ubuntu/build
-    owner: root
-    group: root
+    owner: ubuntu
+    group: ubuntu
     mode: 755
 hooks:
   AfterInstall:
-    - location: deploy.sh
-      timeout: 60
-      runas: root
+    - location: scripts/after-fedeploy.sh
+      timeout: 180
+      runas: ubuntu
