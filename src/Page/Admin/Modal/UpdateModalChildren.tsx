@@ -6,7 +6,7 @@ import styled from "styled-components";
 import {
   useAddProductOptionsMutation,
   useUpdateProductMutation,
-  useUpdateProductOptionMutation
+  useUpdateProductOptionsMutation
 } from "../../../generated/graphql";
 import graphqlReqeustClient from "../../../lib/graphqlRequestClient";
 import { ProductListValues } from "../../../state/productItemState";
@@ -91,8 +91,8 @@ const UpdateModalChildren = ({ setIsModal }: ISelectModalChildrenProps) => {
 
   const {
     isSuccess: isUpdateProductSuccess,
-    mutate: updateProductOptionMutate
-  } = useUpdateProductOptionMutation(graphqlReqeustClient(accessToken));
+    mutate: updateProductOptionsMutate
+  } = useUpdateProductOptionsMutation(graphqlReqeustClient(accessToken));
 
   const [selectUpdateProduct, setSelectUpdateProduct] =
     useRecoilState<ProductListValues>(updateProductState);
@@ -143,6 +143,7 @@ const UpdateModalChildren = ({ setIsModal }: ISelectModalChildrenProps) => {
     const updateOptions = options.filter(
       (value) => value.optionId !== undefined
     );
+
     if (options.length !== 0) {
       const updateData = {
         productId: selectUpdateProduct.id,
@@ -155,7 +156,7 @@ const UpdateModalChildren = ({ setIsModal }: ISelectModalChildrenProps) => {
         { products: updateData },
         {
           onSuccess: () => {
-            // updateProductOptionMutate();
+            updateProductOptionsMutate({ option: updateOptions });
             addProductOptionMutate({ option: addOptions });
           }
         }
@@ -180,13 +181,12 @@ const UpdateModalChildren = ({ setIsModal }: ISelectModalChildrenProps) => {
   }, []);
 
   useEffect(() => {
-    // TODO: isUpdateProductSuccess를 조건문에 반드시 추가해야합니다.(지금은 불가능.)
-    if (isAddOptionSuccess) {
+    if (isAddOptionSuccess && isUpdateProductSuccess) {
       setIsModal(false);
       setSelectUpdateProduct(updateDefault);
       queryClient.invalidateQueries("getProducts");
     }
-  }, [isAddOptionSuccess]);
+  }, [isAddOptionSuccess, isUpdateProductSuccess]);
 
   return (
     <>

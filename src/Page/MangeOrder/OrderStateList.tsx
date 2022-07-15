@@ -1,12 +1,12 @@
 import { motion, Variants } from "framer-motion";
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { useState } from "react";
 import { useQueryClient } from "react-query";
 import styled, { DefaultTheme } from "styled-components";
 import { useRecoilValue } from "recoil";
 
 import { useUpdateOrderStatusMutation } from "../../generated/graphql";
 import graphqlReqeustClient from "../../lib/graphqlRequestClient";
-import { getOrderForFrontend, NewOrder, Order } from "../../state/orderState";
+import { getOrderForFrontend } from "../../state/orderState";
 import { OrderStatusType } from "../../generated/graphql";
 import { Headline2 } from "../../mixin";
 import { userState } from "../../state/userState";
@@ -177,7 +177,12 @@ const OrderStateList = () => {
     useModalHook();
 
   const { mutate: updateOrderStatusMutate } = useUpdateOrderStatusMutation(
-    graphqlReqeustClient(accessToken)
+    graphqlReqeustClient(accessToken),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("todayOrders");
+      }
+    }
   );
 
   const [orderStatus, setOrderStatus] = useState<OrderStatusType | null>(null);
@@ -208,10 +213,8 @@ const OrderStateList = () => {
         { id: orderId, status: orderStatus as OrderStatusType },
         {
           onSuccess: () => {
-            console.log("success");
             setOrderStatus(null);
             setConfirm(false);
-            queryClient.invalidateQueries("todayOrders");
           }
         }
       );

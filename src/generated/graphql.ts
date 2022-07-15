@@ -90,7 +90,7 @@ export type Mutation = {
   updateOrder: Scalars['Boolean'];
   updateOrderStatus: Scalars['Boolean'];
   updateProduct: Scalars['Boolean'];
-  updateProductOption: Scalars['Boolean'];
+  updateProductOptions: Scalars['Boolean'];
   updateStore: Scalars['Boolean'];
   updateUser: Scalars['Boolean'];
   withdraw: Scalars['Boolean'];
@@ -179,8 +179,8 @@ export type MutationUpdateProductArgs = {
 };
 
 
-export type MutationUpdateProductOptionArgs = {
-  option: EditProductOptionInput;
+export type MutationUpdateProductOptionsArgs = {
+  option: Array<EditProductOptionInput>;
 };
 
 
@@ -220,6 +220,7 @@ export type OrderProduct = {
   amount: Scalars['Int'];
   id: Scalars['ID'];
   orderId: Scalars['Int'];
+  product: Product;
   productId: Scalars['Int'];
   productOptionId: Scalars['Int'];
 };
@@ -430,12 +431,12 @@ export type RemoveProductOptionsMutationVariables = Exact<{
 
 export type RemoveProductOptionsMutation = { __typename?: 'Mutation', removeProductOptions: boolean };
 
-export type UpdateProductOptionMutationVariables = Exact<{
-  option: EditProductOptionInput;
+export type UpdateProductOptionsMutationVariables = Exact<{
+  option: Array<EditProductOptionInput> | EditProductOptionInput;
 }>;
 
 
-export type UpdateProductOptionMutation = { __typename?: 'Mutation', updateProductOption: boolean };
+export type UpdateProductOptionsMutation = { __typename?: 'Mutation', updateProductOptions: boolean };
 
 export type StoreQueryVariables = Exact<{
   id: Scalars['Float'];
@@ -771,22 +772,22 @@ export const useRemoveProductOptionsMutation = <
       (variables?: RemoveProductOptionsMutationVariables) => fetcher<RemoveProductOptionsMutation, RemoveProductOptionsMutationVariables>(client, RemoveProductOptionsDocument, variables, headers)(),
       options
     );
-export const UpdateProductOptionDocument = `
-    mutation updateProductOption($option: EditProductOptionInput!) {
-  updateProductOption(option: $option)
+export const UpdateProductOptionsDocument = `
+    mutation updateProductOptions($option: [EditProductOptionInput!]!) {
+  updateProductOptions(option: $option)
 }
     `;
-export const useUpdateProductOptionMutation = <
+export const useUpdateProductOptionsMutation = <
       TError = unknown,
       TContext = unknown
     >(
       client: GraphQLClient,
-      options?: UseMutationOptions<UpdateProductOptionMutation, TError, UpdateProductOptionMutationVariables, TContext>,
+      options?: UseMutationOptions<UpdateProductOptionsMutation, TError, UpdateProductOptionsMutationVariables, TContext>,
       headers?: RequestInit['headers']
     ) =>
-    useMutation<UpdateProductOptionMutation, TError, UpdateProductOptionMutationVariables, TContext>(
-      ['updateProductOption'],
-      (variables?: UpdateProductOptionMutationVariables) => fetcher<UpdateProductOptionMutation, UpdateProductOptionMutationVariables>(client, UpdateProductOptionDocument, variables, headers)(),
+    useMutation<UpdateProductOptionsMutation, TError, UpdateProductOptionsMutationVariables, TContext>(
+      ['updateProductOptions'],
+      (variables?: UpdateProductOptionsMutationVariables) => fetcher<UpdateProductOptionsMutation, UpdateProductOptionsMutationVariables>(client, UpdateProductOptionsDocument, variables, headers)(),
       options
     );
 export const StoreDocument = `

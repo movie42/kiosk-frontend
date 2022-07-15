@@ -41,6 +41,6 @@ mutation removeProductOptions($optionIds: removeProductOptionInput!) {
   removeProductOptions(optionIds: $optionIds)
 }
 
-mutation updateProductOption($option: EditProductOptionInput!) {
-  updateProductOption(option: $option)
+mutation updateProductOptions($option: [EditProductOptionInput!]!) {
+  updateProductOptions(option: $option)
 }

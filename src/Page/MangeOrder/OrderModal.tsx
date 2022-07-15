@@ -1,20 +1,21 @@
-import { NonNullTypeNode } from "graphql";
-import React, { useState } from "react";
+import React from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import Modal from "../../Components/Modals/Modal";
-import { getOrderForFrontend, NewOrder, Order } from "../../state/orderState";
+import { getOrderForFrontend } from "../../state/orderState";
 import { OrderStatusType } from "../../generated/graphql";
 import { calculatePrice } from "../../utils/helper/calculatePrice";
 import { translateLocalCurrency } from "../../utils/helper/translateLocalCurrency";
-import { translateOrderStateFromEngToKo } from "../../utils/helper/translateOrderStateFromEngToKo";
 import { SubTitle2 } from "../../mixin";
 
 const ModalContainer = styled(Modal)``;
 
 const Wrapper = styled.div`
   display: grid;
-  grid-template-rows: 1fr 3fr 1fr;
+  grid-template-rows: 0.8fr 3fr 0.05fr;
+  ${({ theme }) => theme.device.mobile} {
+    grid-template-rows: 1fr 5fr 0.5fr;
+  }
 `;
 
 const OrderStateContainer = styled.div`
@@ -53,11 +54,19 @@ const PriceContainer = styled.div`
     display: flex;
     flex-direction: column;
     line-height: 1.2;
+    font-size: 2.3rem;
     span {
       font-size: 1.8rem;
       font-weight: 400;
     }
-    font-size: 2.3rem;
+  }
+  ${({ theme }) => theme.device.mobile} {
+    h1 {
+      font-size: 4rem;
+    }
+    h3 {
+      font-size: 1.6rem;
+    }
   }
 `;
 
@@ -81,7 +90,17 @@ const MordalItem = styled.li`
     font-size: 1.5rem;
     strong {
       ${SubTitle2}
+      word-break: keep-all;
       font-weight: 600;
+    }
+  }
+  ${({ theme }) => theme.device.mobile} {
+    grid-template-columns: 2.3fr 1.7fr 1.5fr 2fr;
+    span {
+      strong {
+        word-break: keep-all;
+        font-size: 1.5rem;
+      }
     }
   }
 `;

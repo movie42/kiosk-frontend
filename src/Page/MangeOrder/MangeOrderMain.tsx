@@ -122,16 +122,22 @@ const MangeOrderMain = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const setOrders = useSetRecoilState(orderStateForFrontend);
 
-  const { data: getProduct, isSuccess: isGetProductSuccess } =
-    useGetProductsQuery(graphqlReqeustClient(accessToken), {
-      id: Number(storeId)
-    });
+  const {
+    data: getProduct,
+    isSuccess: isGetProductSuccess,
+    isRefetching: isGetProductRefetcing
+  } = useGetProductsQuery(graphqlReqeustClient(accessToken), {
+    id: Number(storeId)
+  });
 
-  const { data: todayOrdersData, isSuccess: isTodayOrdersQuerySuccess } =
-    useTodayOrdersQuery(graphqlReqeustClient(accessToken), {
-      offset: 0,
-      limit: 10
-    });
+  const {
+    data: todayOrdersData,
+    isSuccess: isTodayOrdersQuerySuccess,
+    isRefetching: isTodayOrdersRefetcing
+  } = useTodayOrdersQuery(graphqlReqeustClient(accessToken), {
+    offset: 0,
+    limit: 10
+  });
 
   useEffect(() => {
     if (sticky.current) {
@@ -141,16 +147,34 @@ const MangeOrderMain = () => {
   }, [sticky.current]);
 
   useEffect(() => {
-    if (searchTerm && isGetProductSuccess && isTodayOrdersQuerySuccess) {
+    if (
+      searchTerm &&
+      isGetProductSuccess &&
+      isTodayOrdersQuerySuccess &&
+      !isGetProductRefetcing &&
+      !isTodayOrdersRefetcing
+    ) {
       const orders = handleDataToNew(todayOrdersData, getProduct, searchTerm);
       setOrders(orders);
     }
 
-    if (!searchTerm && isGetProductSuccess && isTodayOrdersQuerySuccess) {
+    if (
+      !searchTerm &&
+      isGetProductSuccess &&
+      isTodayOrdersQuerySuccess &&
+      !isGetProductRefetcing &&
+      !isTodayOrdersRefetcing
+    ) {
       const orders = handleDataToNew(todayOrdersData, getProduct);
       setOrders(orders);
     }
-  }, [searchTerm, isGetProductSuccess, isTodayOrdersQuerySuccess]);
+  }, [
+    searchTerm,
+    isGetProductSuccess,
+    isTodayOrdersQuerySuccess,
+    isGetProductRefetcing,
+    isTodayOrdersRefetcing
+  ]);
 
   return (
     <Wrapper>
