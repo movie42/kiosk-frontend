@@ -38,7 +38,7 @@ jobs:
 
       - name: Depoly EC2
         run: aws deploy create-deployment
-          --kiosk-code-depoly
-          --deployment-config-name CodeDeployDefault.AllAtOnce
-          --kiosk-front-depoly
+          --application-name kiosk-code-depoly
+          --deployment-config-name CodeDeployDefault.OneAtATime
+          --deployment-group-name kiosk-front-depoly
           --s3-location bucket=kiosk-photo,key=ec2/kiosk-fe.zip,bundleType=zip
