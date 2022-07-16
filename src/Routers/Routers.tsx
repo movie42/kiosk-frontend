@@ -27,10 +27,8 @@ import AdminProductDetail from "../Page/Admin/Product/AdminProductDetail";
 import { storeState } from "../state/storeState";
 
 const Router = () => {
-  const { isLogin } = useRecoilValue(userState);
-
+  const { isLogin, id: userId } = useRecoilValue(userState);
   const store = useRecoilValue(storeState);
-
   return (
     <Routes>
       {isLogin && (
@@ -82,8 +80,8 @@ const Router = () => {
           </>
         ) : (
           <Route
-            path="/"
-            element={<Navigate to="/admin/:userId/store/list" />}
+            path=""
+            element={<Navigate to={`/admin/${userId}/store/list`} />}
           />
         )}
         <Route path="signup" element={<SignUp />} />
