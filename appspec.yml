@@ -10,6 +10,10 @@ permissions:
     group: ubuntu
     mode: 755
 hooks:
+  BeforeInstall:
+    - location: scripts/before-fedeploy.sh
+      timeout: 180
+      runas: ubuntu
   AfterInstall:
     - location: scripts/after-fedeploy.sh
       timeout: 180
