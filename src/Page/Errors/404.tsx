@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import ButtonDefaultStyle from "../../Components/Buttons/ButtonDefault";
-import { SubTitle2 } from "../../mixin";
+import { SubTitle2 } from "../../lib/styles/mixin";
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
