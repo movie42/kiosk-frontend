@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { IoIosAddCircle } from "react-icons/io";
 import { AiFillMinusCircle } from "react-icons/ai";
-import { ProductListValues } from "../../../state/productItemState";
+import { ProductListValues } from "../../../lib/state/productItemState";
 import ButtonDefaultStyle from "../../../Components/Buttons/ButtonDefault";
 import { IOrderSelectedItem } from "../ClientMenu";
 import { AddCountButton, MinusCountButton } from "../ClientSelectList";
-import { translateLocalCurrency } from "../../../utils/helper/translateLocalCurrency";
+import { translateLocalCurrency } from "../../../lib/utils/helper/translateLocalCurrency";
 import Noimage from "../../../Components/Images/Noimage";
-import { SubTitle2 } from "../../../mixin";
+import { SubTitle2 } from "../../../lib/styles/mixin";
 import Images from "../../../Components/Images/Images";
 const Wrapper = styled.div`
   position: relative;
@@ -110,13 +110,13 @@ const MenuItemModalChildren: React.FC<IMenuItemModalChildrenProps> = ({
   count,
   setCount,
   orderItem,
-  setOrderItem,
+  setOrderItem
 }) => {
   const [selected] = selectedItem;
   const orderSelectedItem = () => {
     const [sameMenu] = orderItem.filter(
       (ordered) =>
-        ordered.productId === selected.id && ordered.option === selectedOption,
+        ordered.productId === selected.id && ordered.option === selectedOption
     );
 
     const { options: hasOption }: any = selected;
@@ -143,14 +143,14 @@ const MenuItemModalChildren: React.FC<IMenuItemModalChildrenProps> = ({
             price: selected.price,
             totalCount: count,
             totalPrice: selected.price * count,
-            imageUrl: selected.imageUrl,
-          },
+            imageUrl: selected.imageUrl
+          }
         ].sort((a: any, b: any) => {
           if (a.productId === b.productId) {
             return a?.option > b?.option ? 1 : -1;
           }
           return a.productId - b.productId;
-        }),
+        })
       );
     }
 
@@ -161,14 +161,14 @@ const MenuItemModalChildren: React.FC<IMenuItemModalChildrenProps> = ({
           {
             ...sameMenu,
             totalCount: sameMenu.totalCount + count,
-            totalPrice: sameMenu.totalPrice + sameMenu.price * count,
-          },
+            totalPrice: sameMenu.totalPrice + sameMenu.price * count
+          }
         ].sort((a: any, b: any) => {
           if (a.productId === b.productId) {
             return a?.option > b?.option ? 1 : -1;
           }
           return a.productId - b.productId;
-        }),
+        })
       );
     }
 

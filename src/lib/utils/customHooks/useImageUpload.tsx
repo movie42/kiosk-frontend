@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import ReactS3Client from "react-aws-s3-typescript";
 import { v1 } from "uuid";
 
-interface IuseImageUploadProps {}
-
 const useImageUpload = () => {
   window.Buffer = window.Buffer || require("buffer").Buffer;
   const [location, setLocation] = useState("");
@@ -19,7 +17,7 @@ const useImageUpload = () => {
       region,
       dirName: "products",
       accessKeyId,
-      secretAccessKey,
+      secretAccessKey
     };
 
     const s3 = new ReactS3Client(s3Config);

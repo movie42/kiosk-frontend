@@ -1,9 +1,9 @@
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { restaurantImage, takeoutImage } from "../../lib/images";
-import { Headline1, SubTitle1 } from "../../mixin";
+import { Headline1, SubTitle1 } from "../../lib/styles/mixin";
 import { MenuButtonDefault } from "../Admin/Product/AdminManageProductMain";
-import { orderType } from "../../state/orderState";
+import { orderType } from "../../lib/state/orderState";
 import { useSetRecoilState } from "recoil";
 
 const Header = styled.div`

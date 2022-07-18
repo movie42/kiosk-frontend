@@ -6,12 +6,12 @@ import styled from "styled-components";
 import InputDefault from "../../../Components/Form/InputDefault";
 import Label from "../../../Components/Form/LabelDefault";
 
-import { SubTitle1, SubTitle2 } from "../../../mixin";
+import { SubTitle1, SubTitle2 } from "../../../lib/styles/mixin";
 import { useRecoilState } from "recoil";
-import { userState } from "../../../state/userState";
-import { useLoginMutation } from "../../../generated/graphql";
+import { userState } from "../../../lib/state/userState";
+import { useLoginMutation } from "../../../lib/generated/graphql";
 import graphqlReqeustClient from "../../../lib/graphqlRequestClient";
-import { handleErrorMessage } from "../../../utils/helper/handleErrorMessage";
+import { handleErrorMessage } from "../../../lib/utils/helper/handleErrorMessage";
 import { useQueryClient } from "react-query";
 import AdminLoadingAndGetUser from "./AdminLoadingAndGetUser";
 import PageHeaderMessage from "../../../Components/PageHeader";
@@ -96,7 +96,7 @@ export interface ErrorState {
             name: string;
           };
         };
-      },
+      }
     ];
     data: null;
     status: number;
@@ -111,14 +111,14 @@ const AdminMain = () => {
   const { mutate } = useLoginMutation<Error>(graphqlReqeustClient(), {
     onSuccess: (data) => {
       const {
-        login: { accessToken, refreshToken },
+        login: { accessToken, refreshToken }
       } = data;
 
       setIsUser((pre) => ({
         ...pre,
         isLogin: true,
         accessToken,
-        refreshToken,
+        refreshToken
       }));
       queryClient.invalidateQueries("me");
     },
@@ -135,14 +135,14 @@ const AdminMain = () => {
         const error = message.extensions.exception.response.error;
         setError("loginFail", { message: error });
       }
-    },
+    }
   });
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-    setError,
+    setError
   } = useForm<IUserProps>();
 
   const onSubmit = handleSubmit(async (data: IUserProps) => {
@@ -166,8 +166,8 @@ const AdminMain = () => {
               pattern: {
                 value:
                   /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                message: "이메일이 아닙니다.",
-              },
+                message: "이메일이 아닙니다."
+              }
             }}
             error={errors.email?.message}
           />
@@ -180,7 +180,7 @@ const AdminMain = () => {
             typeof="password"
             register={register}
             registerOptions={{
-              required: "비밀번호를 입력해주세요.",
+              required: "비밀번호를 입력해주세요."
             }}
             error={errors.password?.message}
           />

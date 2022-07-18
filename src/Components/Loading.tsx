@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Headline1, SubTitle2 } from "../mixin";
+import { Headline1, SubTitle2 } from "../lib/styles/mixin";
 import { motion, Variants } from "framer-motion";
 import LoadingBall from "./LoadingBall";
 
@@ -44,19 +44,19 @@ const SubTitle = styled(motion.p)`
 
 const loadingBackgroundVariants: Variants = {
   init: {
-    opacity: 1,
+    opacity: 1
   },
   animate: {
     opacity: 1,
     transition: {
       duration: 1,
       delayChildren: 1,
-      staggerChildren: 0.5,
-    },
+      staggerChildren: 0.5
+    }
   },
   exit: {
-    opacity: 1,
-  },
+    opacity: 1
+  }
 };
 
 interface ILoadingProps {

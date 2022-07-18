@@ -1,25 +1,24 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 
 import InputDefault from "../../../Components/Form/InputDefault";
 import Label from "../../../Components/Form/LabelDefault";
 import Textarea from "../../../Components/Form/TextareaDefault";
 import ButtonDefaultStyle from "../../../Components/Buttons/ButtonDefault";
-import { IoIosAddCircle, IoIosRemove, IoIosRemoveCircle } from "react-icons/io";
+import { IoIosAddCircle, IoIosRemoveCircle } from "react-icons/io";
 import Modal from "../../../Components/Modals/Modal";
 import {
   useAddProductOptionsMutation,
   useAddProductsMutation
-} from "../../../generated/graphql";
+} from "../../../lib/generated/graphql";
 import graphqlReqeustClient from "../../../lib/graphqlRequestClient";
 import { useRecoilValue } from "recoil";
-import { userState } from "../../../state/userState";
+import { userState } from "../../../lib/state/userState";
 import { useQueryClient } from "react-query";
 import Images from "../../../Components/Images/Images";
-import useImageUpload from "../../../utils/customHooks/useImageUpload";
-import { Option } from "../../../state/productItemState";
+import useImageUpload from "../../../lib/utils/customHooks/useImageUpload";
 
 const Container = styled.div`
   margin-bottom: 8rem;
@@ -333,7 +332,7 @@ const AdminManageProductAddItem = () => {
     name: "options"
   });
 
-  const { fields, append, remove } = useFieldArray({
+  const { fields } = useFieldArray({
     control,
     name: "product"
   });

@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { motion, Variant, Variants } from "framer-motion";
+import { motion, Variant } from "framer-motion";
 
 const Wrapper = styled(motion.div)`
   position: relative;

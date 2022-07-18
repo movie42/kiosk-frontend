@@ -4,21 +4,21 @@ import ButtonDefaultStyle from "../../../Components/Buttons/ButtonDefault";
 import { MdAddCircle } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { userState } from "../../../state/userState";
+import { userState } from "../../../lib/state/userState";
 import {
   useMyStoresQuery,
   useRemoveStoreMutation,
   useToggleStoreIsAvailableMutation
-} from "../../../generated/graphql";
+} from "../../../lib/generated/graphql";
 import graphqlReqeustClient from "../../../lib/graphqlRequestClient";
-import { storesState, storeStateProps } from "../../../state/storeState";
-import { Body1, Headline2, Headline3 } from "../../../mixin";
+import { storesState, storeStateProps } from "../../../lib/state/storeState";
+import { Headline3 } from "../../../lib/styles/mixin";
 import { useEffect, useState } from "react";
 import Modal from "../../../Components/Modals/Modal";
 import IsOpenModalChildren from "../Modal/IsOpenModalChildren";
 import { useQueryClient } from "react-query";
 import { MdDelete, MdCreate } from "react-icons/md";
-import useModalHook from "../../../utils/customHooks/useModalHook";
+import useModalHook from "../../../lib/utils/customHooks/useModalHook";
 import ToggleButton from "../../../Components/Buttons/ToggleButton";
 
 const Wrapper = styled.div``;
@@ -134,12 +134,6 @@ const ModalChildren = styled.div`
   }
 `;
 
-interface IAdminMenuProps {
-  isActive: boolean;
-}
-
-interface IAdminStoreListProps {}
-
 const AdminStoreList = () => {
   const [toggleState, setToggleState] = useState<boolean | undefined>(false);
   const {
@@ -219,7 +213,13 @@ const AdminStoreList = () => {
       setToggleConfirm(false);
       setToggleId(null);
     }
-  }, [toggleConfirm]);
+  }, [
+    toggleConfirm,
+    toggleStoreAvailableMutate,
+    setToggleConfirm,
+    setToggleId,
+    toggleId
+  ]);
 
   useEffect(() => {
     if (deleteConfirm) {
@@ -227,7 +227,13 @@ const AdminStoreList = () => {
       setDeleteItemId(null);
       setIsDeleteModal(false);
     }
-  }, [deleteConfirm]);
+  }, [
+    deleteConfirm,
+    deleteMutate,
+    setDeleteItemId,
+    setIsDeleteModal,
+    deleteItemId
+  ]);
 
   return (
     <Wrapper>

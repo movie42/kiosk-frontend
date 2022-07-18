@@ -1,5 +1,5 @@
+import React from "react";
 import { motion, Variants } from "framer-motion";
-import React, { MouseEvent, ReactNode, useEffect, useState } from "react";
 import { MdCreate } from "react-icons/md";
 import { useQueryClient } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
@@ -10,18 +10,18 @@ import ToggleButton from "../../../Components/Buttons/ToggleButton";
 import Images from "../../../Components/Images/Images";
 import Noimage from "../../../Components/Images/Noimage";
 import Modal from "../../../Components/Modals/Modal";
-import { useToggleProductIsAvailableMutation } from "../../../generated/graphql";
+import { useToggleProductIsAvailableMutation } from "../../../lib/generated/graphql";
 import graphqlReqeustClient from "../../../lib/graphqlRequestClient";
-import { ProductListValues } from "../../../state/productItemState";
+import { ProductListValues } from "../../../lib/state/productItemState";
 import {
   Option,
   selectOptionState,
   selectProductListState,
   updateProductState
-} from "../../../state/productItemState";
-import { userState } from "../../../state/userState";
-import useModalHook from "../../../utils/customHooks/useModalHook";
-import { translateLocalCurrency } from "../../../utils/helper/translateLocalCurrency";
+} from "../../../lib/state/productItemState";
+import { userState } from "../../../lib/state/userState";
+import useModalHook from "../../../lib/utils/customHooks/useModalHook";
+import { translateLocalCurrency } from "../../../lib/utils/helper/translateLocalCurrency";
 import UpdateModalChildren from "../Modal/UpdateModalChildren";
 
 const ItemWrapper = styled(motion.li)`

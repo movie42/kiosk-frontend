@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useQueryClient } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
@@ -8,16 +8,14 @@ import InputDefault from "../../../Components/Form/InputDefault";
 import LabelDefault from "../../../Components/Form/LabelDefault";
 import Loading from "../../../Components/Loading";
 import {
-  useAddStoreMutation,
   useStoreQuery,
-  useUpdateStoreMutation,
-} from "../../../generated/graphql";
+  useUpdateStoreMutation
+} from "../../../lib/generated/graphql";
 import graphqlReqeustClient from "../../../lib/graphqlRequestClient";
 import { ErrorState } from "../../../lib/interface";
-import { SubTitle1, SubTitle2 } from "../../../mixin";
-import { storeStateProps } from "../../../state/storeState";
-import { userState } from "../../../state/userState";
-import { handleErrorMessage } from "../../../utils/helper/handleErrorMessage";
+import { SubTitle1, SubTitle2 } from "../../../lib/styles/mixin";
+import { userState } from "../../../lib/state/userState";
+import { handleErrorMessage } from "../../../lib/utils/helper/handleErrorMessage";
 
 const Form = styled.form`
   width: 100%;
@@ -91,8 +89,6 @@ const StatusBar = styled.div`
   }
 `;
 
-interface IAdminStoreProps {}
-
 interface IStoreFormProps {
   name: string;
   code?: string;
@@ -113,7 +109,7 @@ const AdminUpdateStore = () => {
     name: "",
     phone: "",
     code: "",
-    address: "",
+    address: ""
   });
 
   const { storeId } = useParams();
@@ -126,7 +122,7 @@ const AdminUpdateStore = () => {
   const { data: updateStore } = useStoreQuery(
     graphqlReqeustClient(accessToken),
     {
-      id: Number(storeId),
+      id: Number(storeId)
     },
     {
       onSuccess: (data) => {
@@ -134,15 +130,15 @@ const AdminUpdateStore = () => {
           const { name, code, address, phone } = data.store;
           setStore({ name, code, address, phone });
         }
-      },
-    },
+      }
+    }
   );
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-    setError,
+    setError
   } = useForm<IStoreFormProps>();
 
   const { mutate, data, isSuccess } = useUpdateStoreMutation<Error>(
@@ -159,8 +155,8 @@ const AdminUpdateStore = () => {
           setError("addFail", { message: error });
           setIsLoading(false);
         }
-      },
-    },
+      }
+    }
   );
 
   const onSubmit = handleSubmit((data) => {
@@ -169,7 +165,7 @@ const AdminUpdateStore = () => {
       id: Number(updateStore?.store?.id),
       name: data.name,
       address: data.address,
-      phone: data.phone,
+      phone: data.phone
     });
     setIsLoading(true);
   });
@@ -183,7 +179,7 @@ const AdminUpdateStore = () => {
       }, 3000);
     }
     return () => time && clearTimeout(time);
-  }, [isSuccess, data]);
+  }, [isSuccess, data, navigate, user.id]);
 
   return (
     <>
@@ -217,7 +213,7 @@ const AdminUpdateStore = () => {
                 register={register}
                 defaultValue={store.name}
                 registerOptions={{
-                  required: "가게 이름이 꼭 있어야합니다.",
+                  required: "가게 이름이 꼭 있어야합니다."
                 }}
                 error={errors.name?.message}
               />
@@ -231,7 +227,7 @@ const AdminUpdateStore = () => {
                 defaultValue={store.address}
                 register={register}
                 registerOptions={{
-                  required: "주소가 꼭 있어야합니다.",
+                  required: "주소가 꼭 있어야합니다."
                 }}
                 error={errors.address?.message}
               />
@@ -245,7 +241,7 @@ const AdminUpdateStore = () => {
                 defaultValue={store.phone}
                 register={register}
                 registerOptions={{
-                  required: "대표 번호가 꼭 필요합니다.",
+                  required: "대표 번호가 꼭 필요합니다."
                 }}
                 error={errors.phone?.message}
               />

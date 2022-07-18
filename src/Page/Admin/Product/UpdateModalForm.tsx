@@ -16,15 +16,12 @@ import InputDefault from "../../../Components/Form/InputDefault";
 import LabelDefault from "../../../Components/Form/LabelDefault";
 import TextareaDefault from "../../../Components/Form/TextareaDefault";
 import Images from "../../../Components/Images/Images";
-import { useRemoveProductOptionsMutation } from "../../../generated/graphql";
+import { useRemoveProductOptionsMutation } from "../../../lib/generated/graphql";
 import graphqlReqeustClient from "../../../lib/graphqlRequestClient";
-import {
-  ProductListValues,
-  ProductOptions
-} from "../../../state/productItemState";
-import { updateProductState } from "../../../state/productItemState";
-import { userState } from "../../../state/userState";
-import useImageUpload from "../../../utils/customHooks/useImageUpload";
+import { ProductListValues } from "../../../lib/state/productItemState";
+import { updateProductState } from "../../../lib/state/productItemState";
+import { userState } from "../../../lib/state/userState";
+import useImageUpload from "../../../lib/utils/customHooks/useImageUpload";
 
 const FieldSet = styled.fieldset`
   box-sizing: border-box;
@@ -203,16 +200,6 @@ interface IUpdateModalFormProps {
   >;
   optionsRemove: UseFieldArrayRemove;
   fieldName?: string;
-}
-
-interface getProductListValues {
-  id: string;
-  name: string;
-  price: number;
-  options?: ProductOptions[];
-  imageUrl?: string | null | undefined;
-  description?: string | null | undefined;
-  isAvailable?: boolean | undefined;
 }
 
 const UpdateModalForm = ({

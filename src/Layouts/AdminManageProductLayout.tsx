@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { NavLink, Outlet, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Nav from "../Components/Nav/Nav";
-import { Headline1 } from "../mixin";
+import { Headline1 } from "../lib/styles/mixin";
 import { GiHamburgerMenu } from "react-icons/gi";
-import { useRecoilValue } from "recoil";
-import { userState } from "../state/userState";
 
 const Wrapper = styled.div`
   padding: 1rem 2rem;
@@ -36,7 +34,7 @@ const Link = styled(NavLink)``;
 const Main = styled.main``;
 
 const AdminManageProductLayout = () => {
-  const { storeId, userId } = useParams();
+  const { userId } = useParams();
   const [isMenu, setIsMenu] = useState(false);
 
   useEffect(() => {

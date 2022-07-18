@@ -1,9 +1,6 @@
-import React from "react";
-import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import ButtonDefaultStyle from "../../Components/Buttons/ButtonDefault";
-import { NewOrder, Order, OrderStatusType } from "../../state/orderState";
-import { calculatePrice } from "../../utils/helper/calculatePrice";
+import { NewOrder, Order, OrderStatusType } from "../../lib/state/orderState";
 
 const OrderItemContainer = styled.div`
   display: grid;
@@ -51,7 +48,7 @@ const OrderItem = ({ orderId, order }: IOrderItemProp): JSX.Element => {
 
   const handleOrderState = (
     selectedOrder: Order,
-    newState: OrderStatusType,
+    newState: OrderStatusType
   ) => {
     // setOrderList((pre) =>
     //   pre.map((item) => {

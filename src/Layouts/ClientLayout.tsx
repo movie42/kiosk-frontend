@@ -1,7 +1,6 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 import styled from "styled-components";
-import { Headline1 } from "../mixin";
 
 const Wrapper = styled.div`
   padding: 1rem 2rem;

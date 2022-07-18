@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
@@ -7,18 +7,12 @@ import styled from "styled-components";
 import InputDefault from "../../../Components/Form/InputDefault";
 import LabelDefault from "../../../Components/Form/LabelDefault";
 import Loading from "../../../Components/Loading";
-import { useAddStoreMutation } from "../../../generated/graphql";
+import { useAddStoreMutation } from "../../../lib/generated/graphql";
 import graphqlReqeustClient from "../../../lib/graphqlRequestClient";
 import { ErrorState } from "../../../lib/interface";
-import {
-  Body1,
-  Headline2,
-  Headline3,
-  SubTitle1,
-  SubTitle2,
-} from "../../../mixin";
-import { userState } from "../../../state/userState";
-import { handleErrorMessage } from "../../../utils/helper/handleErrorMessage";
+import { Body1, SubTitle1, SubTitle2 } from "../../../lib/styles/mixin";
+import { userState } from "../../../lib/state/userState";
+import { handleErrorMessage } from "../../../lib/utils/helper/handleErrorMessage";
 
 const Form = styled.form`
   width: 100%;
@@ -115,8 +109,6 @@ const StatusBar = styled.div`
   }
 `;
 
-interface IAdminStoreProps {}
-
 interface IStoreFormProps {
   name: string;
   code: string;
@@ -136,7 +128,7 @@ const AdminStore = () => {
     register,
     handleSubmit,
     formState: { errors },
-    setError,
+    setError
   } = useForm<IStoreFormProps>();
 
   const { mutate, data, isSuccess } = useAddStoreMutation<Error>(
@@ -152,8 +144,8 @@ const AdminStore = () => {
           const error = message.extensions.exception.response.error;
           setError("addFail", { message: error });
         }
-      },
-    },
+      }
+    }
   );
 
   const onSubmit = handleSubmit((data) => {
@@ -170,7 +162,7 @@ const AdminStore = () => {
       }, 3000);
     }
     return () => time && clearTimeout(time);
-  }, [isSuccess, data]);
+  }, [isSuccess, data, user.id]);
 
   return (
     <>
