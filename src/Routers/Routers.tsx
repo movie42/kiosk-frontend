@@ -1,30 +1,31 @@
-import React, { useEffect, useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import { userState } from "../lib/state/userState";
+import { storeState } from "../lib/state/storeState";
+
+import AdminLayout from "../Layouts/AdminLayout";
+import ClientLayout from "../Layouts/ClientLayout";
+import LandingLayout from "../Layouts/LandingLayout";
+import AdminManageProductLayout from "../Layouts/AdminManageProductLayout";
+
 import Login from "../Page/Admin/Login/AdminLogin";
 import AdminManageProductAddItem from "../Page/Admin/Product/AdminManageProductAddItem";
 import AdminManageProductItemList from "../Page/Admin/Product/AdminManageProductItemList";
 import AdminMain from "../Page/Admin/Product/AdminManageProductMain";
-import AdminLayout from "../Layouts/AdminLayout";
-import PageNotFound from "../Page/Errors/404";
+import AdminStoreList from "../Page/Admin/Store/AdminStoreList";
+import AdminCreateStore from "../Page/Admin/Store/AdminCreateStore";
+import AdminUpdateStore from "../Page/Admin/Store/AdminUpdateStore";
+import AdminLoadingAndGetUser from "../Page/Admin/Login/AdminLoadingAndGetUser";
+import Logout from "../Page/Admin/Logout";
+import AdminProductDetail from "../Page/Admin/Product/AdminProductDetail";
 import MangeOrderMain from "../Page/MangeOrder/MangeOrderMain";
-import ClientLayout from "../Layouts/ClientLayout";
 import ClientMain from "../Page/Client/ClientMain";
 import ClientMenu from "../Page/Client/ClientMenu";
 import ClientSelectList from "../Page/Client/ClientSelectList";
 import LandingMain from "../Page/Landing/LandingMain";
 import SignUp from "../Page/Landing/SignUp";
 import Agreement from "../Page/Landing/Agreement";
-import AdminStoreList from "../Page/Admin/Store/AdminStoreList";
-import AdminCreateStore from "../Page/Admin/Store/AdminCreateStore";
-import AdminUpdateStore from "../Page/Admin/Store/AdminUpdateStore";
-import { useRecoilValue } from "recoil";
-import { userState } from "../state/userState";
-import Logout from "../Page/Admin/Logout";
-import LandingLayout from "../Layouts/LandingLayout";
-import AdminManageProductLayout from "../Layouts/AdminManageProductLayout";
-import AdminLoadingAndGetUser from "../Page/Admin/Login/AdminLoadingAndGetUser";
-import AdminProductDetail from "../Page/Admin/Product/AdminProductDetail";
-import { storeState } from "../state/storeState";
+import PageNotFound from "../Page/Errors/404";
 
 const Router = () => {
   const { isLogin, id: userId } = useRecoilValue(userState);

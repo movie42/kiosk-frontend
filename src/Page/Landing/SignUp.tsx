@@ -4,21 +4,20 @@ import styled from "styled-components";
 import InputDefault from "../../Components/Form/InputDefault";
 import ButtonDefaultStyle from "../../Components/Buttons/ButtonDefault";
 import { Wrapper, Header, Title, Container, ButtonGroup } from "./Agreement";
-import { SubTitle2, Body1 } from "../../mixin";
+import { SubTitle2, Body1 } from "../../lib/styles/mixin";
 import { useNavigate } from "react-router-dom";
 import graphqlReqeustClient from "../../lib/graphqlRequestClient";
 import {
   MeQuery,
   useAddStoreMutation,
   useMeQuery,
-  useSignupMutation,
-} from "../../generated/graphql";
-import { handleErrorMessage } from "../../utils/helper/handleErrorMessage";
+  useSignupMutation
+} from "../../lib/generated/graphql";
+import { handleErrorMessage } from "../../lib/utils/helper/handleErrorMessage";
 import { ErrorState } from "../Admin/Login/AdminLogin";
 import { useRecoilState } from "recoil";
-import { userState } from "../../state/userState";
+import { userState } from "../../lib/state/userState";
 import { useQueryClient } from "react-query";
-import useSetUserInfoToLocalStorage from "../../utils/customHooks/useSetUser";
 
 const FormContainer = styled.form`
   height: inherit;
@@ -107,7 +106,7 @@ const SignUp = () => {
     register,
     handleSubmit,
     watch,
-    formState: { errors },
+    formState: { errors }
   } = useForm<ISignUpProps>({ mode: "onSubmit" });
 
   // display store & type & store mutate trigger
@@ -118,12 +117,12 @@ const SignUp = () => {
   // registration & error
   const [errorState, setErrorState] = useState<ErrorState>();
   const [isUser, setIsUser] = useRecoilState(userState);
-  const { setUser } = useSetUserInfoToLocalStorage();
+
   const password = useRef({});
   password.current = watch("password", "");
 
   // query
-  const { isSuccess, refetch } = useMeQuery<MeQuery, Error>(
+  const { refetch } = useMeQuery<MeQuery, Error>(
     graphqlReqeustClient(isUser.accessToken),
     undefined,
     {
@@ -131,7 +130,7 @@ const SignUp = () => {
       onSuccess: (data) => {
         const { id, email, name } = data.me;
         setIsUser((pre) => ({ ...pre, id, email, name }));
-      },
+      }
     }
   );
 
@@ -139,13 +138,13 @@ const SignUp = () => {
   const { mutate } = useSignupMutation<Error>(graphqlReqeustClient(), {
     onSuccess: (data) => {
       const {
-        signup: { accessToken, refreshToken },
+        signup: { accessToken, refreshToken }
       } = data;
       setIsUser((pre) => ({
         ...pre,
         isLogin: true,
         accessToken,
-        refreshToken,
+        refreshToken
       }));
       alert("정상적으로 회원가입이 완료되었습니다.");
       if (checkStore) refetch();
@@ -158,7 +157,7 @@ const SignUp = () => {
       if (errorState) {
         console.log(errorState);
       }
-    },
+    }
   });
   const { mutate: mutateStore } = useAddStoreMutation<Error>(
     graphqlReqeustClient(isUser.accessToken),
@@ -172,7 +171,7 @@ const SignUp = () => {
         if (errorState) {
           console.log(errorState);
         }
-      },
+      }
     }
   );
 
@@ -181,7 +180,7 @@ const SignUp = () => {
     if (checkStore && saveStore && storeInfo) {
       mutateStore({ ...storeInfo });
     }
-  }, [saveStore]);
+  }, [saveStore, checkStore, storeInfo, mutateStore]);
 
   const onSubmit = (data: ISignUpProps) => {
     const { email, name, password, code, storeName, phone, address } = data;
@@ -195,7 +194,7 @@ const SignUp = () => {
           if (checkStore) {
             setSaveStore((prv) => !prv);
           }
-        },
+        }
       }
     );
   };
@@ -228,8 +227,8 @@ const SignUp = () => {
                 pattern: {
                   value:
                     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                  message: "이메일이 아닙니다.",
-                },
+                  message: "이메일이 아닙니다."
+                }
               }}
             />
             <ErrorMessage>{errors.email?.message}</ErrorMessage>
@@ -260,7 +259,7 @@ const SignUp = () => {
               register={register}
               registerOptions={{
                 validate: (value) =>
-                  value === password.current || "비밀번호가 일치하지 않습니다.",
+                  value === password.current || "비밀번호가 일치하지 않습니다."
               }}
               required
             />

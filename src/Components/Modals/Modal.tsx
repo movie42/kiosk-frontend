@@ -5,9 +5,8 @@ import {
   Headline1,
   Headline2,
   Headline3,
-  SubTitle1,
-  SubTitle2,
-} from "../../mixin";
+  SubTitle2
+} from "../../lib/styles/mixin";
 
 const Wrapper = styled.div`
   display: flex;

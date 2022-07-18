@@ -4,14 +4,14 @@ import { useQueryClient } from "react-query";
 import styled, { DefaultTheme } from "styled-components";
 import { useRecoilValue } from "recoil";
 
-import { useUpdateOrderStatusMutation } from "../../generated/graphql";
+import { useUpdateOrderStatusMutation } from "../../lib/generated/graphql";
 import graphqlReqeustClient from "../../lib/graphqlRequestClient";
-import { getOrderForFrontend } from "../../state/orderState";
-import { OrderStatusType } from "../../generated/graphql";
-import { Headline2 } from "../../mixin";
-import { userState } from "../../state/userState";
-import useModalHook from "../../utils/customHooks/useModalHook";
-import { translateLocalCurrency } from "../../utils/helper/translateLocalCurrency";
+import { getOrderForFrontend } from "../../lib/state/orderState";
+import { OrderStatusType } from "../../lib/generated/graphql";
+import { Headline2 } from "../../lib/styles/mixin";
+import { userState } from "../../lib/state/userState";
+import useModalHook from "../../lib/utils/customHooks/useModalHook";
+import { translateLocalCurrency } from "../../lib/utils/helper/translateLocalCurrency";
 import OrderModal from "./OrderModal";
 import { useEffect } from "react";
 
@@ -167,8 +167,6 @@ const CancelOrderButton = styled(defaultButtonStyle)`
       : `${buttonFalse(theme)}`};
 `;
 
-interface IOrderProps {}
-
 const OrderStateList = () => {
   const queryClient = useQueryClient();
   const { accessToken } = useRecoilValue(userState);
@@ -219,7 +217,7 @@ const OrderStateList = () => {
         }
       );
     }
-  }, [confirm]);
+  }, [confirm, id, orderStatus, setConfirm, updateOrderStatusMutate]);
 
   return (
     <>

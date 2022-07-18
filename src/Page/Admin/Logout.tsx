@@ -1,11 +1,9 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import Loading from "../../Components/Loading";
-import { userState } from "../../state/userState";
-import useRemoveUserInfoInLocalStorage from "../../utils/customHooks/useRemoveUserInfoInLocalStorage";
-
-interface ILogoutProps {}
+import { userState } from "../../lib/state/userState";
+import useRemoveUserInfoInLocalStorage from "../../lib/utils/customHooks/useRemoveUserInfoInLocalStorage";
 
 const Logout = () => {
   const navigate = useNavigate();
@@ -20,7 +18,7 @@ const Logout = () => {
         email: undefined,
         name: undefined,
         accessToken: undefined,
-        refreshToken: undefined,
+        refreshToken: undefined
       });
       removeUser("kiosk-user");
       navigate("/");

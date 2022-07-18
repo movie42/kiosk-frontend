@@ -7,15 +7,15 @@ import {
   useAddProductOptionsMutation,
   useUpdateProductMutation,
   useUpdateProductOptionsMutation
-} from "../../../generated/graphql";
+} from "../../../lib/generated/graphql";
 import graphqlReqeustClient from "../../../lib/graphqlRequestClient";
-import { ProductListValues } from "../../../state/productItemState";
+import { ProductListValues } from "../../../lib/state/productItemState";
 import {
   selectOptionState,
   Option,
   updateProductState
-} from "../../../state/productItemState";
-import { userState } from "../../../state/userState";
+} from "../../../lib/state/productItemState";
+import { userState } from "../../../lib/state/userState";
 
 import UpdateModalForm from "../Product/UpdateModalForm";
 
@@ -97,12 +97,7 @@ const UpdateModalChildren = ({ setIsModal }: ISelectModalChildrenProps) => {
   const [selectUpdateProduct, setSelectUpdateProduct] =
     useRecoilState<ProductListValues>(updateProductState);
 
-  const {
-    register,
-    formState: { errors },
-    handleSubmit,
-    setValue
-  } = useForm<ProductListValues>();
+  const { register, handleSubmit, setValue } = useForm<ProductListValues>();
 
   const {
     register: optionRegister,

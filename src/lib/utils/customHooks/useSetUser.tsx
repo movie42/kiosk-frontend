@@ -1,9 +1,4 @@
-import React from "react";
-import { useRecoilValue } from "recoil";
-
-import { userState, UserState } from "../../state/userState";
-
-interface IuseSetUserInfoToLocalStroageProps {}
+import { UserState } from "../../state/userState";
 
 const useSetUserInfoToLocalStorage = () => {
   const setUser = (user: UserState) => {

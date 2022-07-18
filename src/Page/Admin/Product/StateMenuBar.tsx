@@ -1,19 +1,17 @@
-import React, { useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { ProductListValues } from "../../../state/productItemState";
+import { ProductListValues } from "../../../lib/state/productItemState";
 import {
   productListState,
   selectOptionState,
   selectProductListState,
-  Option,
-  SelectOption,
-} from "../../../state/productItemState";
+  Option
+} from "../../../lib/state/productItemState";
 
 import Modal from "../../../Components/Modals/Modal";
 import DeleteModalChildren from "../Modal/DeleteModalChildren";
-import useModalHook from "../../../utils/customHooks/useModalHook";
-import { Headline3, SubTitle2 } from "../../../mixin";
+import useModalHook from "../../../lib/utils/customHooks/useModalHook";
+import { SubTitle2 } from "../../../lib/styles/mixin";
 import ButtonDefaultStyle from "../../../Components/Buttons/ButtonDefault";
 
 const MenuBarContainer = styled.div`
@@ -60,7 +58,7 @@ const StateMenuBar = () => {
   const [selectOption, setSelectOption] = useRecoilState(selectOptionState);
   const { isModal, setIsModal } = useModalHook();
   const [selectList, setSelectList] = useRecoilState<ProductListValues[]>(
-    selectProductListState,
+    selectProductListState
   );
   const setProductList = useSetRecoilState(productListState);
 
@@ -71,7 +69,7 @@ const StateMenuBar = () => {
   const updateSelectOptionToNone = () => {
     setSelectOption({ options: Option.NONE });
     setProductList((preValue) => [
-      ...preValue.map((item) => ({ ...item, select: false })),
+      ...preValue.map((item) => ({ ...item, select: false }))
     ]);
     setSelectList([]);
   };

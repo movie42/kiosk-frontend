@@ -2,12 +2,10 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import Loading from "../../../Components/Loading";
-import { MeQuery, useMeQuery } from "../../../generated/graphql";
+import { MeQuery, useMeQuery } from "../../../lib/generated/graphql";
 import graphqlReqeustClient from "../../../lib/graphqlRequestClient";
-import { userState } from "../../../state/userState";
-import useSetUserInfoToLocalStorage from "../../../utils/customHooks/useSetUser";
-
-interface IAdminLoadingAndGetUserProps {}
+import { userState } from "../../../lib/state/userState";
+import useSetUserInfoToLocalStorage from "../../../lib/utils/customHooks/useSetUser";
 
 const AdminLoadingAndGetUser = () => {
   const navigate = useNavigate();
@@ -21,8 +19,8 @@ const AdminLoadingAndGetUser = () => {
       onSuccess: (data) => {
         const { id, email, name } = data.me;
         setIsUser((pre) => ({ ...pre, id, email, name }));
-      },
-    },
+      }
+    }
   );
 
   useEffect(() => {

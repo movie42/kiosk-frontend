@@ -1,16 +1,14 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { orderStateForFrontend } from "../../state/orderState";
+import { orderStateForFrontend } from "../../lib/state/orderState";
 import OrderStateList from "./OrderStateList";
 import {
-  GetOrdersQuery,
   OrderStatusType,
-  useGetOrdersQuery,
   useGetProductsQuery,
   useTodayOrdersQuery
-} from "../../generated/graphql";
-import { userState } from "../../state/userState";
+} from "../../lib/generated/graphql";
+import { userState } from "../../lib/state/userState";
 import graphqlReqeustClient from "../../lib/graphqlRequestClient";
 import { useParams } from "react-router-dom";
 
@@ -144,7 +142,7 @@ const MangeOrderMain = () => {
       const offsetTop = sticky.current.offsetTop as number;
       setStickyPos(offsetTop);
     }
-  }, [sticky.current]);
+  }, [sticky]);
 
   useEffect(() => {
     if (
@@ -169,6 +167,9 @@ const MangeOrderMain = () => {
       setOrders(orders);
     }
   }, [
+    todayOrdersData,
+    getProduct,
+    setOrders,
     searchTerm,
     isGetProductSuccess,
     isTodayOrdersQuerySuccess,

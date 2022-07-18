@@ -1,6 +1,5 @@
-import React from "react";
 import styled from "styled-components";
-import { Headline2, Headline3, SubTitle1 } from "../mixin";
+import { Headline3 } from "../lib/styles/mixin";
 
 interface IPageMessageHeaderProps {
   header: string;
