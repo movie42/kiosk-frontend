@@ -5,5 +5,4 @@ if [ -d /home/ubuntu/client/ ]; then
 fi
 mkdir -vp /home/ubuntu/client/
 
-
-echo "> location server file delete"
+echo "> location file delete"

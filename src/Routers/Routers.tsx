@@ -28,10 +28,8 @@ import Agreement from "../Page/Landing/Agreement";
 import PageNotFound from "../Page/Errors/404";
 
 const Router = () => {
-  const { isLogin } = useRecoilValue(userState);
-
+  const { isLogin, id: userId } = useRecoilValue(userState);
   const store = useRecoilValue(storeState);
-
   return (
     <Routes>
       {isLogin && (
@@ -83,8 +81,8 @@ const Router = () => {
           </>
         ) : (
           <Route
-            path="/"
-            element={<Navigate to="/admin/:userId/store/list" />}
+            path=""
+            element={<Navigate to={`/admin/${userId}/store/list`} />}
           />
         )}
         <Route path="signup" element={<SignUp />} />
