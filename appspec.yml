@@ -2,10 +2,10 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /home/ubuntu/deploy/client
+    destination: /home/ubuntu/deploy/client/
     overwrite: yes
 permissions:
-  - object: /home/ubuntu/deploy/client
+  - object: /home/ubuntu/deploy/client/
     owner: ubuntu
     group: ubuntu
     mode: 755
