@@ -2,11 +2,11 @@ import { GraphQLClient } from "graphql-request";
 
 const graphqlReqeustClient = (token?: string) =>
   token
-    ? new GraphQLClient("http://www.everyonekiosk.com:3100/graphql", {
+    ? new GraphQLClient("https://everyonekiosk.com/graphql", {
         headers: {
           authorization: `Bearer ${token}`
         }
       })
-    : new GraphQLClient("http://www.everyonekiosk.com:3100/graphql");
+    : new GraphQLClient("https://everyonekiosk.com/graphql");
 
 export default graphqlReqeustClient;
