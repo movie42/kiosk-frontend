@@ -76,5 +76,8 @@
 |                            [고현수](https://github.com/movie42)                            |                            [조서연](https://github.com/sycho09)                            |                           [정선교](https://github.com/tjsry0466)                           |                          [조민수](https://github.com/minsoo0715)                           |
 
 ## 🕹 아키텍쳐
+![아키텍쳐](https://user-images.githubusercontent.com/44064122/180215835-3dc96d91-f7cb-4638-ae55-4e851a4d481c.png)
 
 ## 🛠 CI/CD
+![CICD](https://user-images.githubusercontent.com/44064122/180215824-6e7a9b14-f44f-493e-97c2-251092bb4769.png)
+
