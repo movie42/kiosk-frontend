@@ -3,7 +3,7 @@ name: Depoly
 on:
   pull_request:
     types: [closed]
-    branches: ["main"]
+    branches: [main]
 
 jobs:
   build:
@@ -14,16 +14,6 @@ jobs:
         node-version: [16.x]
 
     steps:
-      - name: setting .env
-        run: |
-          touch .env
-          echo "REACT_APP_AWS_ID=${{ secrets.REACT_APP_AWS_ID }}" >> .env
-          echo "REACT_APP_AWS_KEY=${{ secrets.REACT_APP_AWS_KEY }}" >> .env
-          echo "REACT_APP_AWS_BUCKET=${{ secrets.REACT_APP_AWS_BUCKET }}" >> .env
-          echo "REACT_APP_AWS_REGION=${{ secrets.REACT_APP_AWS_REGION }}" >> .env
-          echo "REACT_APP_IMP=${{ secrets.REACT_APP_IMP }}" >> .env
-          cat .env
-
       - uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
