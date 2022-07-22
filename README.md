@@ -1,4 +1,5 @@
-![header](https://capsule-render.vercel.app/api?type=transparent&color=002fe3&height=300&section=header&text=누구나%20키오스크&fontSize=90)
+![HEADER](https://user-images.githubusercontent.com/44064122/180398132-4a3d6328-f638-4d82-b4ab-22b1ae069af9.png)
+
 
 ## 😃 개요
 
