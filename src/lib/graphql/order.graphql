@@ -1,27 +1,18 @@
-query getOrders {
-  myStores {
+query getOrders($storeId: Int!, $offset: Int, $limit: Int) {
+  orders(storeId: $storeId, offset: $offset, limit: $limit) {
     id
-    products {
+    number
+    price
+    storeId
+    imp_uid
+    merchant_uid
+    status
+    orderProducts {
       id
-      name
-      price
-      options {
-        id
-        name
-      }
-    }
-    orders {
-      id
-      number
-      price
-      storeId
-      status
-      orderProducts {
-        orderId
-        productId
-        amount
-        productOptionId
-      }
+      orderId
+      productId
+      amount
+      productOptionId
     }
   }
 }
