@@ -26,6 +26,13 @@ pw : 123qwe!@
 
 ## ✍️ 주요 기능
 
+### 소개영상 
+
+
+
+https://user-images.githubusercontent.com/44064122/180661805-87a78eb2-ca02-42cd-beb0-8bab98f0021d.mp4
+
+
 ### Easy Start
 
 - 키오스크 기계 없이 컴퓨터 또는 고객의 핸드폰으로 주문을 하고 관리할 수 있습니다.
