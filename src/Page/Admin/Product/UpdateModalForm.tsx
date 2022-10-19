@@ -309,7 +309,7 @@ const UpdateModalForm = ({
             className="add-button"
             onClick={() =>
               optionsAppend({
-                optionId: undefined,
+                optionId: 0,
                 name: "옵션을 입력해주세요."
               })
             }
