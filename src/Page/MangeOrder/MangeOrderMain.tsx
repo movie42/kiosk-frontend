@@ -6,7 +6,7 @@ import OrderStateList from "./OrderStateList";
 import {
   OrderStatusType,
   useGetProductsQuery,
-  useTodayOrdersQuery
+  useGetOrdersQuery,
 } from "../../lib/generated/graphql";
 import { userState } from "../../lib/state/userState";
 import graphqlReqeustClient from "../../lib/graphqlRequestClient";
@@ -20,7 +20,7 @@ const OrderStateContainer = styled.div``;
 
 interface SelectOrder {
   __typename?: "Query";
-  todayOrders: Array<{
+  orders: Array<{
     __typename?: "Order";
     id: string;
     number: number;
@@ -61,9 +61,9 @@ interface ProductQuery {
 const handleDataToNew = (
   todayOrdersData: SelectOrder,
   getProduct: ProductQuery,
-  term?: string
+  term?: string,
 ) => {
-  const orders = todayOrdersData.todayOrders.map((order) => ({
+  const orders = todayOrdersData.orders.map((order) => ({
     id: order.id,
     storeId: order.storeId,
     number: order.number,
@@ -72,11 +72,11 @@ const handleDataToNew = (
     orderProducts: order.orderProducts.map((orderProduct) => {
       if (getProduct.store) {
         const [selectProduct] = getProduct.store?.products.filter(
-          (product) => product.id === String(orderProduct.productId)
+          (product) => product.id === String(orderProduct.productId),
         );
 
         const [selectOption] = selectProduct.options.filter(
-          (option) => option.id === String(orderProduct.productOptionId)
+          (option) => option.id === String(orderProduct.productOptionId),
         );
 
         if (selectOption) {
@@ -88,7 +88,7 @@ const handleDataToNew = (
             productName: selectProduct.name,
             productPrice: selectProduct.price,
             productOptionId: selectOption.id,
-            optionName: selectOption.name
+            optionName: selectOption.name,
           };
         }
       }
@@ -100,9 +100,9 @@ const handleDataToNew = (
         productName: "언노운",
         productPrice: 0,
         productOptionId: "언노운",
-        optionName: "언노운"
+        optionName: "언노운",
       };
-    })
+    }),
   }));
 
   if (term) {
@@ -123,18 +123,19 @@ const MangeOrderMain = () => {
   const {
     data: getProduct,
     isSuccess: isGetProductSuccess,
-    isRefetching: isGetProductRefetcing
+    isRefetching: isGetProductRefetcing,
   } = useGetProductsQuery(graphqlReqeustClient(accessToken), {
-    id: Number(storeId)
+    id: Number(storeId),
   });
 
   const {
     data: todayOrdersData,
     isSuccess: isTodayOrdersQuerySuccess,
-    isRefetching: isTodayOrdersRefetcing
-  } = useTodayOrdersQuery(graphqlReqeustClient(accessToken), {
+    isRefetching: isTodayOrdersRefetcing,
+  } = useGetOrdersQuery(graphqlReqeustClient(accessToken), {
+    storeId: storeId ? Number(storeId) : 1,
     offset: 0,
-    limit: 10
+    limit: 10,
   });
 
   useEffect(() => {
@@ -174,7 +175,7 @@ const MangeOrderMain = () => {
     isGetProductSuccess,
     isTodayOrdersQuerySuccess,
     isGetProductRefetcing,
-    isTodayOrdersRefetcing
+    isTodayOrdersRefetcing,
   ]);
 
   return (

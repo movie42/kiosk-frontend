@@ -31,9 +31,9 @@ query myStores {
   }
 }
 
-query storeIsAvailable($id: Float!) {
-  storeIsAvailable(id: $id)
-}
+# query storeIsAvailable($id: Float!) {
+#   storeIsAvailable(id: $id)
+# }
 
 mutation toggleStoreIsAvailable($id: Float!) {
   toggleStoreIsAvailable(id: $id)
