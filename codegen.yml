@@ -1,4 +1,4 @@
-schema: http://www.everyonekiosk.com:3200/graphql
+schema: http://146.56.137.17:3200/graphql
 documents: "./src/**/*.graphql"
 generates:
   ./src/generated/graphql.ts:

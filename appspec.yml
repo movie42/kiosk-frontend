@@ -1,20 +1,20 @@
-version: 0.0
-os: linux
-files:
-  - source: /
-    destination: /home/ubuntu/deploy/client/
-    overwrite: yes
-permissions:
-  - object: /home/ubuntu/deploy/client/
-    owner: ubuntu
-    group: ubuntu
-    mode: 755
-hooks:
-  BeforeInstall:
-    - location: scripts/before-fedeploy.sh
-      timeout: 180
-      runas: ubuntu
-  AfterInstall:
-    - location: scripts/after-fedeploy.sh
-      timeout: 180
-      runas: ubuntu
+# version: 0.0
+# os: linux
+# files:
+#   - source: /
+#     destination: /home/ubuntu/deploy/client/
+#     overwrite: yes
+# permissions:
+#   - object: /home/ubuntu/deploy/client/
+#     owner: ubuntu
+#     group: ubuntu
+#     mode: 755
+# hooks:
+#   BeforeInstall:
+#     - location: scripts/before-fedeploy.sh
+#       timeout: 180
+#       runas: ubuntu
+#   AfterInstall:
+#     - location: scripts/after-fedeploy.sh
+#       timeout: 180
+#       runas: ubuntu
