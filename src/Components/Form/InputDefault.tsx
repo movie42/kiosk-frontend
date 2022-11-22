@@ -4,7 +4,7 @@ import {
   FieldValues,
   RegisterOptions,
   useForm,
-  UseFormRegister,
+  UseFormRegister
 } from "react-hook-form";
 import Label from "./LabelDefault";
 
@@ -38,7 +38,7 @@ const InputDefault = ({
   if (!fieldName) {
     return (
       <>
-        <input {...props} {...register(`${props.name}`, registerOptions)} />
+        <input {...props} />
         {error && <Label className="error-label">{error}</Label>}
       </>
     );
