@@ -3,119 +3,18 @@ import { useForm } from "react-hook-form";
 import { useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
-import styled from "styled-components";
+
 import InputDefault from "../../../Components/Form/InputDefault";
 import LabelDefault from "../../../Components/Form/LabelDefault";
 import Loading from "../../../Components/Loading";
 import { useAddStoreMutation } from "../../../lib/generated/graphql";
 import graphqlReqeustClient from "../../../lib/graphqlRequestClient";
 import { ErrorState } from "../../../lib/interface";
-import { Body1, SubTitle1, SubTitle2 } from "../../../lib/styles/mixin";
+
 import { userState } from "../../../lib/state/userState";
 import { handleErrorMessage } from "../../../lib/utils/helper/handleErrorMessage";
-
-const Form = styled.form`
-  width: 100%;
-  padding: 1rem 0;
-`;
-
-const InputContainer = styled.div`
-  display: grid;
-  border-bottom: 1px solid ${(props) => props.theme.color.gray300};
-  grid-template-columns: repeat(auto-fill, minmax(20%, auto));
-  label {
-    grid-column: 1 /2;
-    ${SubTitle1};
-  }
-  input {
-    grid-column: 2 / 10;
-    ${SubTitle2};
-    border: unset;
-    outline: unset;
-  }
-  .error-label {
-    grid-column: 2 / 10;
-    ${SubTitle2};
-    color: ${(props) => props.theme.color.error500};
-  }
-  ${({ theme }) => theme.device.tablet} {
-    padding: 0.8rem 0;
-    label {
-      grid-column: 1 / 10;
-      ${Body1};
-      font-weight: 900;
-    }
-    input {
-      grid-column: 1 / 10;
-      ${SubTitle2};
-      border: unset;
-      outline: unset;
-      padding: 0;
-    }
-    .error-label {
-      grid-column: 1 / 10;
-      ${SubTitle2};
-      color: ${(props) => props.theme.color.error500};
-    }
-  }
-`;
-
-const StatusBar = styled.div`
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 0 1rem;
-  height: 8rem;
-
-  .status-bar-item-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 100%;
-    border-top: 1px solid ${(props) => props.theme.color.gray300};
-  }
-  .status-message-container {
-    h3 {
-      ${SubTitle1};
-      color: ${(props) => props.theme.color.fontColorBlack};
-    }
-  }
-  .status-button-container {
-    button {
-      cursor: pointer;
-      padding: 0.5rem 1.8rem;
-      border: 0;
-      font-size: 2rem;
-      color: ${(props) => props.theme.color.fontColorWhite};
-      border-radius: 0.2rem;
-      line-height: 2.8rem;
-    }
-
-    .cancel-button {
-      background-color: ${(props) => props.theme.color.gray300};
-    }
-    .confirm-button {
-      margin-left: 0.5rem;
-      background-color: ${(props) => props.theme.color.primary700};
-    }
-  }
-  ${({ theme }) => theme.device.tablet} {
-    height: 10rem;
-    .status-bar-item-container {
-      flex-direction: column;
-      justify-content: space-around;
-    }
-  }
-`;
-
-interface IStoreFormProps {
-  name: string;
-  code: string;
-  phone: string;
-  address: string;
-  addFail?: string;
-}
+import { IStoreFormProps } from "./interface";
+import { Form, InputContainer, StatusBar } from "./styles";
 
 const AdminStore = () => {
   const user = useRecoilValue(userState);
@@ -149,8 +48,10 @@ const AdminStore = () => {
   );
 
   const onSubmit = handleSubmit((data) => {
-    mutate({ ...data });
-    setIsLoading(true);
+    if (data.code && data.addFail) {
+      mutate({ ...data, code: data.code });
+      setIsLoading(true);
+    }
   });
 
   useEffect(() => {

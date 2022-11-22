@@ -1,11 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
+import { useQueryClient } from "react-query";
+import { useNavigate } from "react-router-dom";
+import { useRecoilState } from "recoil";
+
 import InputDefault from "../../Components/Form/InputDefault";
 import ButtonDefaultStyle from "../../Components/Buttons/ButtonDefault";
 import { Wrapper, Header, Title, Container, ButtonGroup } from "./Agreement";
 import { SubTitle2, Body1 } from "../../lib/styles/mixin";
-import { useNavigate } from "react-router-dom";
 import graphqlReqeustClient from "../../lib/graphqlRequestClient";
 import {
   MeQuery,
@@ -14,10 +17,8 @@ import {
   useSignupMutation
 } from "../../lib/generated/graphql";
 import { handleErrorMessage } from "../../lib/utils/helper/handleErrorMessage";
-import { ErrorState } from "../Admin/Login/AdminLogin";
-import { useRecoilState } from "recoil";
 import { userState } from "../../lib/state/userState";
-import { useQueryClient } from "react-query";
+import { ErrorState } from "../../lib/interface";
 
 const FormContainer = styled.form`
   height: inherit;
