@@ -112,9 +112,9 @@ const buttonBlinkVariants: Variants = {
   animation: {
     backgroundColor: ["#ffe100", "#d0d0d0"],
     transition: {
-      backgroundColor: { yoyo: Infinity, duration: 0.8 },
-    },
-  },
+      backgroundColor: { yoyo: Infinity, duration: 0.8 }
+    }
+  }
 };
 
 const defaultButtonStyle = styled(motion.button)<{ status: string }>`
@@ -179,15 +179,15 @@ const OrderStateList = () => {
     {
       onSuccess: () => {
         queryClient.invalidateQueries("getOrders");
-      },
-    },
+      }
+    }
   );
 
   const [orderStatus, setOrderStatus] = useState<OrderStatusType | null>(null);
 
   const handleSetModalItem = (
     e: React.MouseEvent<HTMLButtonElement>,
-    status: OrderStatusType,
+    status: OrderStatusType
   ) => {
     const orderId = String(e.currentTarget.closest("li")?.dataset.id);
 
@@ -213,8 +213,8 @@ const OrderStateList = () => {
           onSuccess: () => {
             setOrderStatus(null);
             setConfirm(false);
-          },
-        },
+          }
+        }
       );
     }
   }, [confirm, id, orderStatus, setConfirm, updateOrderStatusMutate]);

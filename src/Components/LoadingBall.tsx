@@ -23,35 +23,35 @@ const LoadingImage = styled(motion.div)`
 
 const loadingVariants: Variants = {
   init: {
-    opacity: 1,
+    opacity: 1
   },
   animate: {
     opacity: 1,
     transition: {
       duration: 0.2,
       delayChildren: 0.5,
-      staggerChildren: 0.5,
-    },
+      staggerChildren: 0.5
+    }
   },
   exit: {
-    opacity: 1,
-  },
+    opacity: 1
+  }
 };
 
 const loadingImageVariants: Variants = {
   init: {
-    opacity: 0,
+    opacity: 0
   },
   animate: {
     y: [0, -25],
     opacity: 1,
     transition: {
-      y: { yoyo: Infinity, duration: 1, ease: "easeInOut" },
-    },
+      y: { yoyo: Infinity, duration: 1, ease: "easeInOut" }
+    }
   },
   exit: {
-    opacity: 0,
-  },
+    opacity: 0
+  }
 };
 
 interface ILoadingBallProps {
