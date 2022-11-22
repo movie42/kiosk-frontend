@@ -320,6 +320,7 @@ const UpdateModalForm = ({
         </div>
         {optionsFields.map((optionField, index) => (
           <div
+            key={optionField.id}
             className="option-input-container"
             data-optionid={optionField.optionId}
           >

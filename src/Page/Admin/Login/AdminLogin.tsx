@@ -130,8 +130,7 @@ const AdminMain = () => {
        * 백앤드 개발자에게 에러 메시지를 보낼때 message에 실어 보낼 수 있도록 요청하기.
        */
       if (errorState) {
-        console.log(errorState);
-        const [message] = errorState?.response.errors;
+        const [message] = errorState.response.errors;
         const error = message.extensions.exception.response.error;
         setError("loginFail", { message: error });
       }
@@ -165,7 +164,7 @@ const AdminMain = () => {
               required: "아이디를 입력해주세요.",
               pattern: {
                 value:
-                  /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
                 message: "이메일이 아닙니다."
               }
             }}

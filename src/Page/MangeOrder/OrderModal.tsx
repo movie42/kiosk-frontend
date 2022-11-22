@@ -167,7 +167,7 @@ const OrderModal = ({
             <span>가격</span>
           </MordalItem>
           {selectOrder?.orderProducts.map((value) => (
-            <MordalItem>
+            <MordalItem key={value?.id}>
               <span>
                 <strong>{value?.productName}</strong>
               </span>

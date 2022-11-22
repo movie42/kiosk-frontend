@@ -384,7 +384,7 @@ const AdminManageProductAddItem = () => {
           addProductOptionMutate(
             { option: addOptions },
             {
-              onSuccess: (data) => {
+              onSuccess: () => {
                 queryClient.invalidateQueries("getProducts");
                 navigate(
                   `/admin/${userId}/store/${storeId}/product/manage-product`
@@ -399,13 +399,13 @@ const AdminManageProductAddItem = () => {
 
   useEffect(() => {
     if (location) {
-      setValue(`product.0.imageUrl`, location);
+      setValue("product.0.imageUrl", location);
     }
   }, [location]);
 
   useEffect(() => {
     if (error) {
-      setError(`product.0.imageUrl`, {
+      setError("product.0.imageUrl", {
         message: error
       });
     }
@@ -507,7 +507,7 @@ const AdminManageProductAddItem = () => {
                   </button>
                 </div>
                 {optionsFields.map((optionField, index) => (
-                  <div className="option-input-container">
+                  <div className="option-input-container" key={optionField.id}>
                     <div className="option-label-button-container">
                       <Label htmlFor="option">상품 옵션 {index + 1}</Label>
                       <button

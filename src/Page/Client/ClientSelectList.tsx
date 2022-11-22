@@ -111,10 +111,10 @@ const ClientSelectList = () => {
   };
 
   const handleAddCount = (current: IOrderSelectedItem) => {
-    let [selected] = totalSelectMenu
+    const [selected] = totalSelectMenu
       .filter((menu) => menu.productId === current.productId)
       .filter((menu) => menu.option === current.option);
-    let newCount = selected.totalCount + 1;
+    const newCount = selected.totalCount + 1;
     setTotalSelectMenu((item) =>
       [
         ...item.filter((el) => el !== selected),
@@ -133,10 +133,10 @@ const ClientSelectList = () => {
   };
 
   const handleMinusCount = (current: IOrderSelectedItem) => {
-    let [selected] = totalSelectMenu
+    const [selected] = totalSelectMenu
       .filter((menu) => menu.productId === current.productId)
       .filter((menu) => menu.option === current.option);
-    let newCount = selected.totalCount - 1;
+    const newCount = selected.totalCount - 1;
     if (newCount < 1) {
       return;
     }

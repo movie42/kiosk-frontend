@@ -10,6 +10,7 @@
     "@types/node": "^16.11.26",
     "@types/react": "^17.0.43",
     "@types/react-dom": "^17.0.14",
+    "buffer": "^6.0.3",
     "framer-motion": "^6.2.8",
     "graphql": "^15.8.0",
     "graphql-request": "^4.3.0",

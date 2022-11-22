@@ -99,7 +99,7 @@ const OptionsContainer = ({
   const borderTick = useTransform(
     scrollY,
     [0, stickyPos, stickyPos + 1],
-    ["unset", "unset", `3px solid #575757`]
+    ["unset", "unset", "3px solid #575757"]
   );
 
   const { register, handleSubmit } = useForm();

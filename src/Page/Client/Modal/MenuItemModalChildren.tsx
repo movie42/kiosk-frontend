@@ -208,7 +208,7 @@ const MenuItemModalChildren: React.FC<IMenuItemModalChildrenProps> = ({
           <>
             <Title>상품옵션</Title>
             <OptionContainer>
-              {selected.options?.map((item, i) => (
+              {selected.options?.map((item) => (
                 <OptionButton
                   className="noto"
                   key={item.name}

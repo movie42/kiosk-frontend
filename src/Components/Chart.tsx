@@ -1,11 +1,9 @@
 import { useState } from "react";
 import Graph from "react-apexcharts";
 
-interface IChartProps {}
-
 const Chart = () => {
-  const [chartOption, setChartOption] = useState("today");
-  const [chartState, setChartState] = useState<{
+  const [_, setChartOption] = useState("today");
+  const [chartState, __] = useState<{
     options: ApexCharts.ApexOptions;
     series: ApexAxisChartSeries;
   }>({

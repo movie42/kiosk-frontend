@@ -203,14 +203,14 @@ const DeleteModalChildren = ({ setIsModal }: IDeleteModalChildrenProps) => {
             ))}
           {isSendingItem &&
             finalSelectedProduct.map((item) => (
-              <FinalItem>
+              <FinalItem key={item.id}>
                 <h3>{item.name}</h3>
               </FinalItem>
             ))}
           {isSuccess &&
             !isSendingItem &&
             finalSelectedProduct.map((item) => (
-              <FinalItem>
+              <FinalItem key={item.id}>
                 <h3>{item.name}</h3>
               </FinalItem>
             ))}

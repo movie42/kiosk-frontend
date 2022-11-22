@@ -130,7 +130,7 @@ const AdminProductDetail = () => {
     {
       onSuccess: (data) => {
         if (data.store?.products) {
-          const [product]: ProductListValues[] = data.store?.products
+          const [product]: ProductListValues[] = data.store.products
             .filter((product) => product.id === productId)
             .map((item) => {
               return {

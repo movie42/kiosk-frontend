@@ -71,7 +71,7 @@ const handleDataToNew = (
     status: order.status,
     orderProducts: order.orderProducts.map((orderProduct) => {
       if (getProduct.store) {
-        const [selectProduct] = getProduct.store?.products.filter(
+        const [selectProduct] = getProduct.store.products.filter(
           (product) => product.id === String(orderProduct.productId)
         );
 

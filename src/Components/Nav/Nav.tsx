@@ -73,7 +73,7 @@ interface INavProps {
   children: React.ReactNode;
 }
 
-const Nav = ({ setNavState, children, ...props }: INavProps) => {
+const Nav = ({ setNavState, children }: INavProps) => {
   useEffect(() => {
     return () => setNavState(false);
   }, [setNavState]);

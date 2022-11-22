@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  FieldError,
-  FieldValues,
-  RegisterOptions,
-  useForm,
-  UseFormRegister
-} from "react-hook-form";
+import { RegisterOptions } from "react-hook-form";
 import Label from "./LabelDefault";
 
 interface IInputProps

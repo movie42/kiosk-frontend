@@ -17,7 +17,7 @@ ReactDOM.render(
         <ThemeProvider theme={theme}>
           <GlobalStyle />
           <App />
-          {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+          <ReactQueryDevtools initialIsOpen={false} />
         </ThemeProvider>
       </RecoilRoot>
     </QueryClientProvider>

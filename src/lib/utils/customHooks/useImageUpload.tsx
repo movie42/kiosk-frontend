@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import ReactS3Client from "react-aws-s3-typescript";
-import { v1 } from "uuid";
+import buffer from "buffer";
 
 const useImageUpload = () => {
-  window.Buffer = window.Buffer || require("buffer").Buffer;
+  window.Buffer = window.Buffer || buffer.Buffer;
   const [location, setLocation] = useState("");
   const [error, setError] = useState("");
 
@@ -24,7 +24,7 @@ const useImageUpload = () => {
 
     if (e.target.files) {
       const [file] = e.target.files;
-      const filename = `${v1().toString().replace("-", "")}`;
+      const filename = `${new Date() + file.name}`;
       try {
         const response = await s3.uploadFile(file, filename);
 

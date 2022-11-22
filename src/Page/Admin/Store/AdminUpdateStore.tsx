@@ -150,7 +150,7 @@ const AdminUpdateStore = () => {
       onError: (error) => {
         handleErrorMessage(error, setErrorState);
         if (errorState) {
-          const [message] = errorState?.response.errors;
+          const [message] = errorState.response.errors;
           const error = message.extensions.exception.response.error;
           setError("addFail", { message: error });
           setIsLoading(false);
@@ -160,7 +160,6 @@ const AdminUpdateStore = () => {
   );
 
   const onSubmit = handleSubmit((data) => {
-    console.log(data);
     mutate({
       id: Number(updateStore?.store?.id),
       name: data.name,

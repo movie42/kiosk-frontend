@@ -23,7 +23,7 @@ import Loading from "../../../Components/Loading";
 import { MdAddCircle, MdDelete } from "react-icons/md";
 
 const Container = styled.div<{ selectOption: boolean }>`
-  padding-bottom: ${({ selectOption }) => (selectOption ? `12rem;` : `3rem`)};
+  padding-bottom: ${({ selectOption }) => (selectOption ? "12rem;" : "3rem")};
   ul.productList {
     display: grid;
     gap: 2rem;

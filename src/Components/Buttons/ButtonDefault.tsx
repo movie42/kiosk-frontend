@@ -12,7 +12,7 @@ const Button = styled(motion.button)`
   background-color: ${(props) => props.theme.color.gray300};
 `;
 
-interface IButtonDefaultStyle extends HTMLMotionProps<"button"> {}
+type IButtonDefaultStyle = HTMLMotionProps<"button">;
 
 const ButtonDefaultStyle: React.FC<IButtonDefaultStyle> = ({ ...props }) => {
   return <Button {...props}>{props.children}</Button>;

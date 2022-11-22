@@ -95,11 +95,11 @@ const PaymentModalChildren: React.FC<IPaymentModalChildrenProps> = ({
   // print done
   const [isPrint, setIsPrint] = useState(false);
   // handle print receipt
-  const [printReceipt, setPrintReceipt] = useState<Boolean>(false);
+  const [_, setPrintReceipt] = useState(false);
 
   // set time out
 
-  const handleReceipt = (receipt: Boolean) => {
+  const handleReceipt = (receipt: boolean) => {
     setPrintReceipt(receipt);
     setIsPrint(true);
   };
@@ -179,8 +179,6 @@ const PaymentModalChildren: React.FC<IPaymentModalChildrenProps> = ({
         response;
       if (success) {
         addOrderItems(orderProducts, imp_uid, merchant_uid);
-      } else {
-        console.log(error_msg, error_code);
       }
     };
     window.IMP?.request_pay(data, callback);
@@ -188,7 +186,7 @@ const PaymentModalChildren: React.FC<IPaymentModalChildrenProps> = ({
 
   useEffect(() => {
     if (isPaid) {
-      let closeTimer = setTimeout(() => {
+      const closeTimer = setTimeout(() => {
         setIsPrint(true);
       }, 5000);
 
@@ -198,7 +196,7 @@ const PaymentModalChildren: React.FC<IPaymentModalChildrenProps> = ({
 
   useEffect(() => {
     if (isPaid) {
-      let showTimer = setInterval(() => {
+      const showTimer = setInterval(() => {
         setRemain((prv) => prv - 1);
       }, 1000);
       return () => clearInterval(showTimer);
@@ -213,7 +211,7 @@ const PaymentModalChildren: React.FC<IPaymentModalChildrenProps> = ({
           <h4>주문 내용과 금액을 확인해주세요</h4>
 
           <p>주문 상품</p>
-          {orderList.map((el, i) => (
+          {orderList.map((el) => (
             <MenuBox key={`${el.productId}${el.option}`}>
               <span>
                 {el.name} {el.option}
