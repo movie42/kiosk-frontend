@@ -1,13 +1,12 @@
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 
 import { Loading, LabelDefault, InputDefault } from "@/Components";
-import { useAddStore, useLoadingComplete } from "./hooks";
-import { IStoreFormProps } from "./interface";
-import { Form, InputContainer, StatusBar } from "./styles";
+import { useAddStore, useLoadingComplete } from "../hooks";
+import { IStoreFormProps } from "../interface";
+import { Form, InputContainer } from "../styles";
+import StoreCreateStatusBar from "./StoreCreateStatusBar";
 
-const AdminCreateStore = () => {
-  const navigate = useNavigate();
+const AdminStoreCreate = () => {
   const {
     register,
     handleSubmit,
@@ -17,7 +16,7 @@ const AdminCreateStore = () => {
   const { isComplete, setIsComplete } = useLoadingComplete({ isSuccess });
 
   const onSubmit = handleSubmit((data) => {
-    if (data.code && data.addFail) {
+    if (data.code) {
       mutate({ ...data, code: data.code });
       setIsComplete(false);
     }
@@ -25,12 +24,12 @@ const AdminCreateStore = () => {
 
   return (
     <>
-      {!isComplete && (
+      {!isComplete ? (
         <Loading
           title="가게를 등록 하고있어요."
           subTitle="가게를 등록하신 것을 축하드립니다! 🎉"
         />
-      )}
+      ) : null}
 
       <Form onSubmit={onSubmit}>
         <InputContainer>
@@ -70,23 +69,9 @@ const AdminCreateStore = () => {
       <LabelDefault className="error-label">
         {errors.addFail?.message}
       </LabelDefault>
-      <StatusBar>
-        <div className="status-bar-item-container">
-          <div className="status-message-container">
-            <h3>입력이 끝나면 등록하기 버튼을 눌러주세요.</h3>
-          </div>
-          <div className="status-button-container">
-            <button onClick={() => navigate(-1)} className="cancel-button">
-              돌아가기
-            </button>
-            <button onClick={onSubmit} className="confirm-button">
-              등록하기
-            </button>
-          </div>
-        </div>
-      </StatusBar>
+      <StoreCreateStatusBar onSubmit={onSubmit} />
     </>
   );
 };
 
-export default AdminCreateStore;
+export default AdminStoreCreate;

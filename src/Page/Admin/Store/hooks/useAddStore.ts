@@ -3,7 +3,7 @@ import { useQueryClient } from "react-query";
 import { useRecoilValue } from "recoil";
 import { useAddStoreMutation } from "@/lib/generated/graphql";
 import graphqlReqeustClient from "@/lib/graphqlRequestClient";
-import { userState } from "@/lib/state/userState";
+import { userState } from "@/lib/state";
 
 const useAddStore = () => {
   const queryClient = useQueryClient();
