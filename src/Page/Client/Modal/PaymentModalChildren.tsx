@@ -10,7 +10,10 @@ import {
 } from "../../../lib/styles/mixin";
 import { selectMenuListState } from "../../../lib/state/productItemState";
 import ButtonDefaultStyle from "../../../Components/Buttons/ButtonDefault";
-import { RequestPayParams, RequestPayResponse } from "../Payment";
+import {
+  RequestPayParams,
+  RequestPayResponse
+} from "../../../lib/types/Payment";
 import { OrderType, useAddOrderMutation } from "../../../lib/generated/graphql";
 import graphqlReqeustClient from "../../../lib/graphqlRequestClient";
 import { userState } from "../../../lib/state/userState";

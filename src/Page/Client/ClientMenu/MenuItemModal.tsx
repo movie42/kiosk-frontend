@@ -5,11 +5,12 @@ import { AiFillMinusCircle } from "react-icons/ai";
 import { ProductListValues } from "../../../lib/state/productItemState";
 import ButtonDefaultStyle from "../../../Components/Buttons/ButtonDefault";
 import { IOrderSelectedItem } from "../ClientMenu";
-import { AddCountButton, MinusCountButton } from "../ClientSelectList";
 import { translateLocalCurrency } from "../../../lib/utils/helper/translateLocalCurrency";
 import Noimage from "../../../Components/Images/Noimage";
 import { SubTitle2 } from "../../../lib/styles/mixin";
 import Images from "../../../Components/Images/Images";
+import { AddCountButton, MinusCountButton } from "../ClientSelectList/styles";
+
 const Wrapper = styled.div`
   position: relative;
   color: ${(props) => props.theme.color.fontColorBlack};
@@ -95,7 +96,7 @@ const ProductCount = styled.span`
   text-align: center;
 `;
 
-interface IMenuItemModalChildrenProps {
+interface IMenuItemModalProps {
   setIsModal: React.Dispatch<React.SetStateAction<boolean>>;
   selectedItem: ProductListValues[];
   count: number;
@@ -104,7 +105,7 @@ interface IMenuItemModalChildrenProps {
   setOrderItem: React.Dispatch<React.SetStateAction<IOrderSelectedItem[]>>;
 }
 
-const MenuItemModalChildren: React.FC<IMenuItemModalChildrenProps> = ({
+const MenuItemModal: React.FC<IMenuItemModalProps> = ({
   setIsModal,
   selectedItem,
   count,
@@ -251,4 +252,4 @@ const MenuItemModalChildren: React.FC<IMenuItemModalChildrenProps> = ({
   );
 };
 
-export default MenuItemModalChildren;
+export default MenuItemModal;
