@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { IoIosAddCircle } from "react-icons/io";
 import { AiFillMinusCircle } from "react-icons/ai";
 import { Images, Modal, Noimage } from "../../../Components";
-import PaymentModalChildren from "../Modal/PaymentModalChildren";
+import PaymentModal from "./PaymentModal";
 import { selectMenuListState } from "../../../lib/state/productItemState";
 import { IOrderSelectedItem } from "../ClientMenu";
 import {
@@ -102,7 +102,7 @@ const ClientSelectList = () => {
     <>
       {isModal && (
         <Modal strach={true}>
-          <PaymentModalChildren setIsModal={setIsModal} />
+          <PaymentModal setIsModal={setIsModal} />
         </Modal>
       )}
       <Header>
