@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import ButtonDefaultStyle from "@/Components/Buttons/ButtonDefault";
+import { ButtonDefault } from "@/Components";
 import { Body1, Headline3, SubTitle1, SubTitle2 } from "@/lib/styles/mixin";
 
 export const Wrapper = styled.div``;
@@ -16,7 +16,7 @@ export const Header = styled.div`
   }
 `;
 
-export const AddStoreButton = styled(ButtonDefaultStyle)`
+export const AddStoreButton = styled(ButtonDefault)`
   display: flex;
   align-items: center;
   color: ${(props) => props.theme.color.fontColorBlack};
@@ -70,10 +70,11 @@ export const Item = styled.li`
       font-size: 2.4rem;
     }
   }
-  .button-container {
-    display: flex;
-    justify-content: space-between;
-  }
+`;
+
+export const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
   .various-button-box {
     button {
       cursor: pointer;
@@ -83,10 +84,11 @@ export const Item = styled.li`
       font-size: 2rem;
       color: ${(props) => props.theme.color.gray400};
     }
-    .delete-button {
-      margin-left: 1.8rem;
-    }
   }
+`;
+export const UpdateButton = styled(ButtonDefault)``;
+export const DeleteButton = styled(ButtonDefault)`
+  margin-left: 1.8rem;
 `;
 
 export const Form = styled.form`

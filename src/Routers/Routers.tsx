@@ -14,7 +14,7 @@ import Login from "@/Page/Admin/Login/AdminLogin";
 import AdminManageProductAddItem from "@/Page/Admin/Product/AdminManageProductAddItem";
 import AdminManageProductItemList from "@/Page/Admin/Product/AdminManageProductItemList";
 import AdminMain from "@/Page/Admin/Product/AdminManageProductMain";
-import AdminStoreList from "@/Page/Admin/Store/AdminStoreList";
+import AdminStoreList from "@/Page/Admin/Store/AdminStoreList/AdminStoreList";
 import AdminCreateStore from "@/Page/Admin/Store/AdminCreateStore";
 import AdminUpdateStore from "@/Page/Admin/Store/AdminUpdateStore";
 import AdminLoadingAndGetUser from "@/Page/Admin/Login/AdminLoadingAndGetUser";
