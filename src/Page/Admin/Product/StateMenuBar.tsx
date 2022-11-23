@@ -1,18 +1,18 @@
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { ProductListValues } from "../../../lib/state/productItemState";
+
 import {
+  ProductListValues,
   productListState,
   selectOptionState,
   selectProductListState,
   Option
-} from "../../../lib/state/productItemState";
-
-import Modal from "../../../Components/Modals/Modal";
-import DeleteModalChildren from "../Store/Modals/DeleteModalChildren";
-import useModalHook from "../../../lib/utils/customHooks/useModalHook";
-import { SubTitle2 } from "../../../lib/styles/mixin";
-import ButtonDefaultStyle from "../../../Components/Buttons/ButtonDefault";
+} from "@/lib/state";
+import Modal from "@/Components/Modals/Modal";
+import useModalHook from "@/lib/hooks/useModalHook";
+import { SubTitle2 } from "@/lib/styles/mixin";
+import ButtonDefaultStyle from "@/Components/Buttons/ButtonDefault";
+import DeleteModalChildren from "../Modals/ProductDeleteModal/ProductDeleteModal";
 
 const MenuBarContainer = styled.div`
   display: flex;

@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import styled from "styled-components";
-import Nav from "../Components/Nav/Nav";
-import { Headline1 } from "../lib/styles/mixin";
+import Nav from "../Nav/Nav";
+import { Headline1 } from "../../lib/styles/mixin";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { useRecoilValue } from "recoil";
-import { userState } from "../lib/state/userState";
+import { userState } from "../../lib/state/userState";
 
 const Wrapper = styled.div`
   padding: 1rem 2rem;

@@ -1,4 +1,4 @@
-export const handleErrorMessage = <T>(
+const handleErrorMessage = <T>(
   error: Error,
   setErrorState: React.Dispatch<React.SetStateAction<T>>
 ) => {
@@ -7,3 +7,5 @@ export const handleErrorMessage = <T>(
     setErrorState(JSON.parse(errorList[0]));
   }
 };
+
+export default handleErrorMessage;

@@ -9,11 +9,11 @@ import { useForm } from "react-hook-form";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 
-import ButtonDefaultStyle from "../../Components/Buttons/ButtonDefault";
-import InputDefault from "../../Components/Form/InputDefault";
-import PageHeaderMessage from "../../Components/PageHeader";
-import { Headline2, Headline3 } from "../../lib/styles/mixin";
-import { orderStatusState, OrderStatusType } from "../../lib/state/orderState";
+import ButtonDefaultStyle from "@/Components/Buttons/ButtonDefault";
+import InputDefault from "@/Components/Form/InputDefault";
+import PageHeaderMessage from "@/Components/Layouts/Header/PageHeader";
+import { Headline2, Headline3 } from "@/lib/styles/mixin";
+import { orderStatusState, OrderStatusType } from "@/lib/state";
 
 const OptionContainer = styled(motion.div)`
   position: relative;

@@ -3,14 +3,13 @@ import styled from "styled-components";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useParams } from "react-router-dom";
 
-import { orderStateForFrontend } from "../../lib/state/orderState";
 import {
   OrderStatusType,
   useGetProductsQuery,
   useGetOrdersQuery
-} from "../../lib/generated/graphql";
-import { userState } from "../../lib/state/userState";
-import graphqlReqeustClient from "../../lib/graphqlRequestClient";
+} from "@/lib/generated/graphql";
+import { userState, orderStateForFrontend } from "@/lib/state";
+import graphqlReqeustClient from "@/lib/graphqlRequestClient";
 import OrderStateList from "./OrderStateList";
 import OptionsContainer from "./OptionsContainer";
 

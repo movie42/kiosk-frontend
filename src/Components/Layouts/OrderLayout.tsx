@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom";
 // import { useRecoilState } from "recoil";
 import styled from "styled-components";
 // import { userState } from "../lib/state/userState";
-import { Headline1 } from "../lib/styles/mixin";
+import { Headline1 } from "../../lib/styles/mixin";
 
 const Wrapper = styled.div`
   padding: 1rem 2rem;

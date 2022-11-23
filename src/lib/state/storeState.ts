@@ -1,13 +1,5 @@
 import { atom } from "recoil";
-
-export interface storeStateProps {
-  id?: string | undefined;
-  name: string | undefined;
-  code: string | undefined;
-  address: string | undefined;
-  phone: string | undefined;
-  isAvailable?: boolean | undefined;
-}
+import { storeStateProps } from "./interface";
 
 const initialValue = {
   id: "",

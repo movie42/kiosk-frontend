@@ -1,8 +1,8 @@
 // import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
-import { useLoginMutation } from "../../../../lib/generated/graphql";
-import graphqlReqeustClient from "../../../../lib/graphqlRequestClient";
-import { userState } from "../../../../lib/state/userState";
+import { useLoginMutation } from "@/lib/generated/graphql";
+import graphqlReqeustClient from "@/lib/graphqlRequestClient";
+import { userState } from "@/lib/state/userState";
 
 const useLogin = () => {
   // const queryClient = useQueryClient();

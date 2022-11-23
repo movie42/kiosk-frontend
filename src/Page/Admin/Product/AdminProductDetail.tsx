@@ -2,15 +2,13 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import Chart from "../../../Components/Chart";
-import { useGetProductsQuery } from "../../../lib/generated/graphql";
-import Noimage from "../../../Components/Images/Noimage";
-import graphqlReqeustClient from "../../../lib/graphqlRequestClient";
-import { Headline2, SubTitle2 } from "../../../lib/styles/mixin";
-import { ProductListValues } from "../../../lib/state/productItemState";
-import { userState } from "../../../lib/state/userState";
-import { translateLocalCurrency } from "../../../lib/utils/helper/translateLocalCurrency";
-import Images from "../../../Components/Images/Images";
+
+import { Images, Noimage, Chart } from "@/Components";
+import { useGetProductsQuery } from "@/lib/generated/graphql";
+import graphqlReqeustClient from "@/lib/graphqlRequestClient";
+import { Headline2, SubTitle2 } from "@/lib/styles";
+import { ProductListValues, userState } from "@/lib/state";
+import { translateLocalCurrency } from "@/lib/utils";
 
 const Wrapper = styled.div`
   box-sizing: border-box;

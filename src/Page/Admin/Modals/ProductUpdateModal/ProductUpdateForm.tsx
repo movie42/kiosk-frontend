@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   DeepRequired,
   FieldArrayWithId,
@@ -11,156 +11,24 @@ import {
 import { IoIosAddCircle, IoIosRemoveCircle } from "react-icons/io";
 import { useQueryClient } from "react-query";
 import { useRecoilValue } from "recoil";
-import styled from "styled-components";
-import InputDefault from "../../../Components/Form/InputDefault";
-import LabelDefault from "../../../Components/Form/LabelDefault";
-import TextareaDefault from "../../../Components/Form/TextareaDefault";
-import Images from "../../../Components/Images/Images";
-import { useRemoveProductOptionsMutation } from "../../../lib/generated/graphql";
-import graphqlReqeustClient from "../../../lib/graphqlRequestClient";
-import { ProductListValues } from "../../../lib/state/productItemState";
-import { updateProductState } from "../../../lib/state/productItemState";
-import { userState } from "../../../lib/state/userState";
-import useImageUpload from "../../../lib/utils/customHooks/useImageUpload";
 
-const FieldSet = styled.fieldset`
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 1rem;
-  padding: 1rem 1rem;
-  border: 1px solid ${(props) => props.theme.color.gray200};
-`;
-
-const FieldContainer = styled.div`
-  display: grid;
-  margin-bottom: 0.7rem;
-  &:not(:last-child) {
-    grid-template-columns: 2.5fr 8fr;
-    border-bottom: 1px solid ${(props) => props.theme.color.gray300};
-  }
-  label,
-  input,
-  textarea {
-    margin: 0;
-    padding: 0;
-    font-size: 1.8rem;
-    border: 0;
-    outline: unset;
-  }
-
-  input {
-    width: 100%;
-  }
-
-  input[type="number"]::-webkit-outer-spin-button,
-  input[type="number"]::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-
-  textarea {
-    width: 100%;
-    height: 9rem;
-    resize: none;
-  }
-`;
-
-const OptionFieldContainer = styled.div`
-  .option-input-container,
-  .add-option-button-container {
-    display: grid;
-    grid-template-columns: 20% 80%;
-    padding: 1rem 0;
-    button {
-      cursor: pointer;
-      text-align: left;
-      padding: 0;
-      margin: 0;
-      &:hover {
-        color: ${(props) => props.theme.color.primary300};
-      }
-    }
-    &:not(:first-child) {
-      border-bottom: 1px solid ${(props) => props.theme.color.gray300};
-    }
-    label {
-      font-size: 1.8rem;
-      align-self: center;
-    }
-    input {
-      font-size: 1.8rem;
-      border: 0;
-      align-self: center;
-      outline: none;
-    }
-
-    .option-label-button-container {
-      display: flex;
-      align-items: center;
-      justify-content: space-around;
-      button {
-        cursor: pointer;
-        font-size: 1.8rem;
-        text-align: left;
-        border: 0;
-        background-color: unset;
-        padding: 0;
-        margin: 0;
-        color: ${(props) => props.theme.color.error500};
-        &:hover {
-          color: ${(props) => props.theme.color.error900};
-        }
-        span {
-          position: absolute;
-          margin: -1px;
-          top: 0;
-          left: 0;
-          visibility: hidden;
-        }
-      }
-    }
-  }
-
-  .add-button {
-    cursor: pointer;
-    border: unset;
-    background-color: unset;
-    font-size: 2rem;
-    color: ${(props) => props.theme.color.primary700};
-    span {
-      visibility: hidden;
-    }
-  }
-  ${({ theme }) => theme.device.mobile} {
-    .option-input-container,
-    .add-option-button-container {
-      label {
-        font-size: 1.6rem;
-      }
-      input {
-        font-size: 1.6rem;
-      }
-    }
-    .option-input-container {
-      grid-template-columns: 30% 70%;
-    }
-  }
-`;
-
-const ImageContainer = styled.div`
-  margin: 0 auto;
-  width: 50%;
-`;
-
-const AddThumbnail = styled(InputDefault)`
-  display: none;
-`;
-
-const AddThumbnailLabel = styled(LabelDefault)`
-  cursor: pointer;
-  color: ${(props) => props.theme.color.primary700};
-`;
+import { ProductListValues, updateProductState, userState } from "@/lib/state";
+import graphqlReqeustClient from "@/lib/graphqlRequestClient";
+import { useRemoveProductOptionsMutation } from "@/lib/generated/graphql";
+import {
+  Images,
+  LabelDefault,
+  InputDefault,
+  TextareaDefault
+} from "@/Components";
+import {
+  AddThumbnail,
+  AddThumbnailLabel,
+  FieldContainer,
+  FieldSet,
+  ImageContainer,
+  OptionFieldContainer
+} from "./styles";
 
 interface IUpdateModalFormProps {
   register: UseFormRegister<ProductListValues>;
@@ -204,7 +72,7 @@ interface IUpdateModalFormProps {
 
 const UpdateModalForm = ({
   register,
-  setValue,
+
   optionsRegister,
   optionsError,
   optionsFields,
@@ -217,9 +85,9 @@ const UpdateModalForm = ({
 
   const productData = useRecoilValue(updateProductState);
 
-  const [thumbnailImage, setThumbnailImage] = useState(productData.imageUrl);
+  const [thumbnailImage, _] = useState(productData.imageUrl);
 
-  const { location, uploadFile } = useImageUpload();
+  // const { location, uploadFile } = useImageUpload();
 
   const { mutate: removeProductOptionMutate } = useRemoveProductOptionsMutation(
     graphqlReqeustClient(accessToken),
@@ -242,12 +110,12 @@ const UpdateModalForm = ({
     optionsRemove(index);
   };
 
-  useEffect(() => {
-    if (location) {
-      setThumbnailImage(location);
-      setValue("imageUrl", location);
-    }
-  }, [location]);
+  // useEffect(() => {
+  //   if (location) {
+  //     setThumbnailImage(location);
+  //     setValue("imageUrl", location);
+  //   }
+  // }, [location]);
 
   return (
     <FieldSet name={fieldName} data-id={productData?.id}>
@@ -273,7 +141,7 @@ const UpdateModalForm = ({
           accept="image/*"
           name="imageUrl"
           placeholder="사진 찾기"
-          onChange={uploadFile}
+          // onChange={uploadFile}
         />
       </FieldContainer>
       <FieldContainer>
@@ -281,10 +149,10 @@ const UpdateModalForm = ({
         <InputDefault
           type="text"
           id="name"
-          {...register("name", {
-            value: productData.name,
-            onChange: uploadFile
-          })}
+          // {...register("name", {
+          //   value: productData.name,
+          //   onChange: uploadFile
+          // })}
         />
       </FieldContainer>
       <FieldContainer>

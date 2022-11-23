@@ -4,15 +4,15 @@ import { useRecoilState, useRecoilValue } from "recoil";
 
 import { MdDelete, MdCreate } from "react-icons/md";
 
-import { userState } from "../../../lib/state/userState";
-import { useMyStoresQuery } from "../../../lib/generated/graphql";
-import graphqlReqeustClient from "../../../lib/graphqlRequestClient";
-import { storesState, storeStateProps } from "../../../lib/state/storeState";
-import PageHeaderMessage from "../../../Components/PageHeader";
+import { userState } from "@/lib/state/userState";
+import { useMyStoresQuery } from "@/lib/generated/graphql";
+import graphqlReqeustClient from "@/lib/graphqlRequestClient";
+import { storesState, storeStateProps } from "@/lib/state";
+import PageHeaderMessage from "@/Components/Layouts/Header/PageHeader";
 
 import { StoreOpenCloseModal, StoreDeleteModal } from "../Modals";
-import useModalHook from "../../../lib/utils/customHooks/useModalHook";
-import ToggleButton from "../../../Components/Buttons/ToggleButton";
+import useModalHook from "@/lib/hooks/useModalHook";
+import ToggleButton from "@/Components/Buttons/ToggleButton";
 import { AddStoreButton, Header, Item, StoreList, Wrapper } from "./styles";
 
 const AdminStoreList = () => {

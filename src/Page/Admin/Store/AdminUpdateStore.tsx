@@ -1,9 +1,9 @@
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
-import InputDefault from "../../../Components/Form/InputDefault";
-import LabelDefault from "../../../Components/Form/LabelDefault";
-import Loading from "../../../Components/Loading";
+import InputDefault from "@/Components/Form/InputDefault";
+import LabelDefault from "@/Components/Form/LabelDefault";
+import Loading from "@/Components/Loading/Loading";
 import useGetStore from "./hooks/useGetStore";
 import useLoadingComplete from "./hooks/useLoadingComplete";
 import useUpdateStore from "./hooks/useUpdateStore";

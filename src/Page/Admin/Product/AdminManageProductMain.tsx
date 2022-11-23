@@ -2,24 +2,24 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate, useParams } from "react-router-dom";
 
-import useModalHook from "../../../lib/utils/customHooks/useModalHook";
-import PageHeaderMessage from "../../../Components/PageHeader";
+import useModalHook from "@/lib/hooks/useModalHook";
+import PageHeaderMessage from "@/Components/Layouts/Header/PageHeader";
 import {
   useStoreQuery,
   useToggleStoreIsAvailableMutation
-} from "../../../lib/generated/graphql";
-import graphqlReqeustClient from "../../../lib/graphqlRequestClient";
+} from "@/lib/generated/graphql";
+import graphqlReqeustClient from "@/lib/graphqlRequestClient";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { userState } from "../../../lib/state/userState";
-import { storeState } from "../../../lib/state/storeState";
+import { userState } from "@/lib/state/userState";
+import { storeState } from "@/lib/state/storeState";
 import { useQueryClient } from "react-query";
-import ToggleButton from "../../../Components/Buttons/ToggleButton";
-import { Body2 } from "../../../lib/styles/mixin";
+import ToggleButton from "@/Components/Buttons/ToggleButton";
+import { Body2 } from "@/lib/styles/mixin";
 import {
   customerImage,
   manageProductImage,
   orderStateImage
-} from "../../../lib/images";
+} from "@/lib/images";
 import { StoreOpenCloseModal } from "../Modals";
 
 const Wrapper = styled.div``;

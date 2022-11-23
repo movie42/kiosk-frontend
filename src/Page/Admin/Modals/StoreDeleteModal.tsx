@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import { useQueryClient } from "react-query";
 import { useRecoilValue } from "recoil";
-import Modal from "../../../Components/Modals/Modal";
-import { useRemoveStoreMutation } from "../../../lib/generated/graphql";
-import graphqlReqeustClient from "../../../lib/graphqlRequestClient";
-import { userState } from "../../../lib/state/userState";
-import useModalHook from "../../../lib/utils/customHooks/useModalHook";
+import Modal from "@/Components/Modals/Modal";
+import { useRemoveStoreMutation } from "@/lib/generated/graphql";
+import graphqlReqeustClient from "@/lib/graphqlRequestClient";
+import { userState } from "@/lib/state/userState";
+import useModalHook from "@/lib/hooks/useModalHook";
 import { ModalChildren } from "../Store/styles";
 
 interface IStoreDeleteModalProps {

@@ -1,11 +1,6 @@
 import styled from "styled-components";
-import ButtonDefaultStyle from "../../../Components/Buttons/ButtonDefault";
-import {
-  Body1,
-  Headline3,
-  SubTitle1,
-  SubTitle2
-} from "../../../lib/styles/mixin";
+import ButtonDefaultStyle from "@/Components/Buttons/ButtonDefault";
+import { Body1, Headline3, SubTitle1, SubTitle2 } from "@/lib/styles/mixin";
 
 export const Wrapper = styled.div``;
 export const Header = styled.div`

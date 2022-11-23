@@ -1,13 +1,5 @@
 import { atom } from "recoil";
-
-export interface UserState {
-  id: string | undefined;
-  name: string | undefined;
-  email: string | undefined;
-  isLogin: boolean;
-  accessToken: string | undefined;
-  refreshToken: string | undefined;
-}
+import { UserState } from "./interface";
 
 export const userState = atom<UserState>({
   key: "user",

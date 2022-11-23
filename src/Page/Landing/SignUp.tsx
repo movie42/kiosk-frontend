@@ -5,21 +5,20 @@ import { useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 
-import InputDefault from "../../Components/Form/InputDefault";
-import ButtonDefaultStyle from "../../Components/Buttons/ButtonDefault";
+import { InputDefault, ButtonDefault } from "@/Components";
 import { Wrapper, Header, Title, Container, ButtonGroup } from "./Agreement";
-import { SubTitle2, Body1 } from "../../lib/styles/mixin";
-import graphqlReqeustClient from "../../lib/graphqlRequestClient";
+import { SubTitle2, Body1 } from "@/lib/styles";
+import graphqlReqeustClient from "@/lib/graphqlRequestClient";
 import {
   MeQuery,
   useAddStoreMutation,
   useMeQuery,
   useSignupMutation
-} from "../../lib/generated/graphql";
-import { handleErrorMessage } from "../../lib/utils/helper/handleErrorMessage";
-import { userState } from "../../lib/state/userState";
-import { ErrorState } from "../../lib/interface";
-import { EMAIL_REX } from "../../lib/constant/constant";
+} from "@/lib/generated/graphql";
+import { handleErrorMessage } from "@/lib/utils";
+import { userState } from "@/lib/state/userState";
+import { ErrorState } from "@/lib/interface";
+import { EMAIL_REX } from "@/lib/constant/constant";
 
 const FormContainer = styled.form`
   height: inherit;
@@ -73,7 +72,7 @@ const ErrorMessage = styled.p`
   color: ${(props) => props.theme.color.error500};
 `;
 
-const ActionButton = styled(ButtonDefaultStyle)<{ option?: string }>`
+const ActionButton = styled(ButtonDefault)<{ option?: string }>`
   margin-left: 5px;
   color: ${(props) => props.theme.color.fontColorWhite};
   background-color: ${(props) =>
@@ -117,7 +116,7 @@ const SignUp = () => {
   const [saveStore, setSaveStore] = useState(false);
 
   // registration & error
-  const [errorState, setErrorState] = useState<ErrorState>();
+  const [_, setErrorState] = useState<ErrorState>();
   const [isUser, setIsUser] = useRecoilState(userState);
 
   const password = useRef({});
@@ -156,9 +155,6 @@ const SignUp = () => {
     },
     onError: (error) => {
       handleErrorMessage(error, setErrorState);
-      if (errorState) {
-        console.log(errorState);
-      }
     }
   });
   const { mutate: mutateStore } = useAddStoreMutation<Error>(
@@ -170,9 +166,6 @@ const SignUp = () => {
       },
       onError: (error) => {
         handleErrorMessage(error, setErrorState);
-        if (errorState) {
-          console.log(errorState);
-        }
       }
     }
   );

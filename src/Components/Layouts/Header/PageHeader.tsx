@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Headline3 } from "../lib/styles/mixin";
+import { Headline3 } from "../../../lib/styles/mixin";
 
 interface IPageMessageHeaderProps {
   header: string;

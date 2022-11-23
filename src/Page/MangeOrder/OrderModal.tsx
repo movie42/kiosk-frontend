@@ -1,12 +1,12 @@
 import React from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import Modal from "../../Components/Modals/Modal";
-import { getOrderForFrontend } from "../../lib/state/orderState";
-import { OrderStatusType } from "../../lib/generated/graphql";
-import { calculatePrice } from "../../lib/utils/helper/calculatePrice";
-import { translateLocalCurrency } from "../../lib/utils/helper/translateLocalCurrency";
-import { SubTitle2 } from "../../lib/styles/mixin";
+
+import { Modal } from "@/Components";
+import { getOrderForFrontend } from "@/lib/state/orderState";
+import { OrderStatusType } from "@/lib/generated/graphql";
+import { translateLocalCurrency, calculatePrice } from "@/lib/utils";
+import { SubTitle2 } from "@/lib/styles";
 
 const ModalContainer = styled(Modal)``;
 

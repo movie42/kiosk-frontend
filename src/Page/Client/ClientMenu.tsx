@@ -1,22 +1,20 @@
 import { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
-import Modal from "../../Components/Modals/Modal";
+
 import OrderStateBar from "./OrderStateBar";
 import MenuItemModalChildren from "./Modal/MenuItemModalChildren";
-import { ProductListValues } from "../../lib/state/productItemState";
-import {
-  productListState,
-  selectMenuListState
-} from "../../lib/state/productItemState";
-import { Headline1 } from "../../lib/styles/mixin";
-import { useNavigate, useParams } from "react-router-dom";
-import { userState } from "../../lib/state/userState";
-import { useGetProductsQuery } from "../../lib/generated/graphql";
-import graphqlReqeustClient from "../../lib/graphqlRequestClient";
-import Loading from "../../Components/Loading";
-import Noimage from "../../Components/Images/Noimage";
-import Images from "../../Components/Images/Images";
+import type { ProductListValues } from "@/lib/state";
+import { productListState, selectMenuListState } from "@/lib/state";
+import { Headline1 } from "@/lib/styles/mixin";
+import { userState } from "@/lib/state/userState";
+import { useGetProductsQuery } from "@/lib/generated/graphql";
+import graphqlReqeustClient from "@/lib/graphqlRequestClient";
+import Modal from "@/Components/Modals/Modal";
+import Loading from "@/Components/Loading/Loading";
+import Noimage from "@/Components/Images/Noimage";
+import Images from "@/Components/Images/Images";
 
 const Header = styled.div`
   display: flex;

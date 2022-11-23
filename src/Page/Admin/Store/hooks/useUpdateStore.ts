@@ -1,8 +1,8 @@
 import { useQueryClient } from "react-query";
 import { useRecoilValue } from "recoil";
-import { useUpdateStoreMutation } from "../../../../lib/generated/graphql";
-import graphqlReqeustClient from "../../../../lib/graphqlRequestClient";
-import { userState } from "../../../../lib/state/userState";
+import { useUpdateStoreMutation } from "@/lib/generated/graphql";
+import graphqlReqeustClient from "@/lib/graphqlRequestClient";
+import { userState } from "@/lib/state/userState";
 
 const useUpdateStore = () => {
   const { accessToken } = useRecoilValue(userState);

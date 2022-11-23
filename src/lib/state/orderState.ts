@@ -1,48 +1,5 @@
 import { atom, selector } from "recoil";
-
-export enum OrderStatusType {
-  All = "ALL",
-  Canceled = "CANCELED",
-  Complete = "COMPLETE",
-  Done = "DONE",
-  Ready = "READY"
-}
-
-export interface OrderProducts {
-  productId: number;
-  orderId: number;
-  amount: number;
-  productOptionIds: number[];
-}
-
-export interface Order {
-  id: string;
-  storeId: number;
-  number: number;
-  price: number;
-  status: OrderStatusType;
-  orderProducts: OrderProducts[];
-}
-
-export interface ProductInfo {
-  id: string;
-  productId: number;
-  orderId: number;
-  amount: number;
-  productName: string;
-  productPrice: number;
-  productOptionId: string;
-  optionName: string;
-}
-
-export interface NewOrder {
-  id: string;
-  storeId: number;
-  number: number;
-  price: number;
-  status: OrderStatusType;
-  orderProducts: ProductInfo[] | undefined[];
-}
+import { NewOrder, OrderStatusType } from "./interface";
 
 export const orderStatusState = atom<OrderStatusType>({
   key: "orderStatusState",

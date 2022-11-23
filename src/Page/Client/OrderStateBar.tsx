@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { translateLocalCurrency } from "../../lib/utils/helper/translateLocalCurrency";
+import { translateLocalCurrency } from "@/lib/utils";
 
 const MenuBarContainer = styled.div`
   display: flex;

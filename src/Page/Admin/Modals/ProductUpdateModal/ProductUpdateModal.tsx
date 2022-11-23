@@ -2,61 +2,29 @@ import React, { useEffect } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { useQueryClient } from "react-query";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import styled from "styled-components";
+
 import {
   useAddProductOptionsMutation,
   useUpdateProductMutation,
   useUpdateProductOptionsMutation
-} from "../../../../lib/generated/graphql";
-import graphqlReqeustClient from "../../../../lib/graphqlRequestClient";
-import { ProductListValues } from "../../../../lib/state/productItemState";
+} from "@/lib/generated/graphql";
+import graphqlReqeustClient from "@/lib/graphqlRequestClient";
+
 import {
+  ProductListValues,
   selectOptionState,
   Option,
-  updateProductState
-} from "../../../../lib/state/productItemState";
-import { userState } from "../../../../lib/state/userState";
+  updateProductState,
+  userState
+} from "@/lib/state";
 
-import UpdateModalForm from "../../Product/UpdateModalForm";
-
-const Wrapper = styled.div`
-  display: grid;
-  overflow-y: hidden;
-  grid-template-rows: 1fr 5fr 0.5fr;
-`;
-
-const StateInfoContainer = styled.div`
-  margin-bottom: 1rem;
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  button {
-    cursor: pointer;
-    font-size: 2rem;
-    border: 0;
-    padding: 0.8rem 1.3rem;
-    border-radius: 0.5rem;
-    color: ${(props) => props.theme.color.fontColorWhite};
-    &.cancel-button {
-      background-color: ${(props) => props.theme.color.gray200};
-      margin-right: 0.8rem;
-    }
-    &.confirm-button {
-      background-color: ${(props) => props.theme.color.secondary500};
-    }
-  }
-`;
-
-const FormContainer = styled.div`
-  box-sizing: border-box;
-  overflow-y: auto;
-  form {
-    box-sizing: border-box;
-  }
-`;
+import {
+  ButtonContainer,
+  FormContainer,
+  StateInfoContainer,
+  Wrapper
+} from "./styles";
+import UpdateModalForm from "./ProductUpdateForm";
 
 interface ISelectModalChildrenProps {
   setIsModal: React.Dispatch<React.SetStateAction<boolean>>;

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { NavLink, Outlet, useParams } from "react-router-dom";
 import styled from "styled-components";
-import Nav from "../Components/Nav/Nav";
-import { Headline1 } from "../lib/styles/mixin";
+import Nav from "../Nav/Nav";
+import { Headline1 } from "../../lib/styles/mixin";
 import { GiHamburgerMenu } from "react-icons/gi";
 
 const Wrapper = styled.div`

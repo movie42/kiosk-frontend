@@ -2,11 +2,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
-import Label from "../../../Components/Form/LabelDefault";
-import PageHeaderMessage from "../../../Components/PageHeader";
-
-import { EMAIL_REX } from "../../../lib/constant/constant";
-import { userState } from "../../../lib/state/userState";
+import { LabelDefault, PageHeader } from "@/Components";
+import { EMAIL_REX } from "@/lib/constant/constant";
+import { userState } from "@/lib/state/userState";
 
 import AdminLoadingAndGetUser from "./AdminLoadingAndGetUser";
 import { IUserProps } from "./interface";
@@ -36,7 +34,7 @@ const AdminMain = () => {
 
   return !isUser.isLogin ? (
     <Wrapper>
-      <PageHeaderMessage header="로그인" />
+      <PageHeader header="로그인" />
       <FormContainer>
         <form onSubmit={onSubmit}>
           <LoginLabel htmlFor="email">이메일</LoginLabel>
@@ -62,7 +60,9 @@ const AdminMain = () => {
             })}
           />
           {errors?.loginFail?.message && (
-            <Label className="error-label">{errors?.loginFail?.message}</Label>
+            <LabelDefault className="error-label">
+              {errors?.loginFail?.message}
+            </LabelDefault>
           )}
           <ActionContainer>
             <Link to="#">아이디 또는 비밀번호를 잃어버리셨나요?</Link>

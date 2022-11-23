@@ -2,14 +2,15 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { IoIosAddCircle } from "react-icons/io";
 import { AiFillMinusCircle } from "react-icons/ai";
-import { ProductListValues } from "../../../lib/state/productItemState";
-import ButtonDefaultStyle from "../../../Components/Buttons/ButtonDefault";
+
+import ButtonDefaultStyle from "@/Components/Buttons/ButtonDefault";
 import { IOrderSelectedItem } from "../ClientMenu";
 import { AddCountButton, MinusCountButton } from "../ClientSelectList";
-import { translateLocalCurrency } from "../../../lib/utils/helper/translateLocalCurrency";
-import Noimage from "../../../Components/Images/Noimage";
-import { SubTitle2 } from "../../../lib/styles/mixin";
-import Images from "../../../Components/Images/Images";
+import { translateLocalCurrency } from "@/lib/utils";
+import Noimage from "@/Components/Images/Noimage";
+import { SubTitle2 } from "@/lib/styles/mixin";
+import Images from "@/Components/Images/Images";
+import { ProductListValues } from "@/lib/state";
 const Wrapper = styled.div`
   position: relative;
   color: ${(props) => props.theme.color.fontColorBlack};

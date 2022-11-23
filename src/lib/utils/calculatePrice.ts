@@ -1,6 +1,6 @@
-import { ProductInfo } from "../../state/orderState";
+import { ProductInfo } from "../state";
 
-export const calculatePrice = (
+const calculatePrice = (
   price?: ProductInfo["productPrice"],
   amount?: ProductInfo["amount"]
 ) => {
@@ -9,3 +9,5 @@ export const calculatePrice = (
     return wholePrice.toLocaleString("ko-KR");
   }
 };
+
+export default calculatePrice;

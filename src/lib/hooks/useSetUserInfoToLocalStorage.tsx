@@ -1,4 +1,4 @@
-import { UserState } from "../../state/userState";
+import { UserState } from "@/lib/state";
 
 const useSetUserInfoToLocalStorage = () => {
   const setUser = (user: UserState) => {

@@ -1,39 +1,18 @@
 import React, { useEffect } from "react";
 import { useQueryClient } from "react-query";
 import { useRecoilValue } from "recoil";
-import styled from "styled-components";
-import ButtonDefaultStyle from "../../../Components/Buttons/ButtonDefault";
-import Modal from "../../../Components/Modals/Modal";
-import { useToggleStoreIsAvailableMutation } from "../../../lib/generated/graphql";
-import graphqlReqeustClient from "../../../lib/graphqlRequestClient";
-import { userState } from "../../../lib/state/userState";
-import useModalHook from "../../../lib/utils/customHooks/useModalHook";
 
-const Wrapper = styled.div`
-  display: grid;
-  grid-template-rows: 1fr, 2fr, 1fr;
-  div {
-    &:nth-child(2) {
-      padding: 0.8rem 0 2rem;
-    }
-    &:last-child {
-      display: flex;
-      justify-content: flex-end;
-      button {
-        &:nth-child(2) {
-          margin-left: 1rem;
-        }
-      }
-    }
-  }
-`;
-const CancelButton = styled(ButtonDefaultStyle)``;
-const StopConfirmButton = styled(ButtonDefaultStyle)`
-  background-color: ${(props) => props.theme.color.error500};
-`;
-const StartConfirmButton = styled(ButtonDefaultStyle)`
-  background-color: ${(props) => props.theme.color.primary600};
-`;
+import Modal from "@/Components/Modals/Modal";
+import { useToggleStoreIsAvailableMutation } from "@/lib/generated/graphql";
+import graphqlReqeustClient from "@/lib/graphqlRequestClient";
+import { userState } from "@/lib/state/userState";
+import useModalHook from "@/lib/hooks/useModalHook";
+import {
+  CancelButton,
+  StartConfirmButton,
+  StopConfirmButton,
+  Wrapper
+} from "./styles";
 
 interface IStoreOpenModalProps {
   itemId?: string;

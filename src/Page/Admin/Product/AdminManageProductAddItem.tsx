@@ -1,24 +1,25 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
-
-import InputDefault from "../../../Components/Form/InputDefault";
-import Label from "../../../Components/Form/LabelDefault";
-import Textarea from "../../../Components/Form/TextareaDefault";
-import ButtonDefaultStyle from "../../../Components/Buttons/ButtonDefault";
 import { IoIosAddCircle, IoIosRemoveCircle } from "react-icons/io";
-import Modal from "../../../Components/Modals/Modal";
+import { useQueryClient } from "react-query";
+import { useRecoilValue } from "recoil";
+
+import {
+  InputDefault,
+  LabelDefault,
+  TextareaDefault,
+  ButtonDefault,
+  Modal
+} from "@/Components";
+
 import {
   useAddProductOptionsMutation,
   useAddProductsMutation
-} from "../../../lib/generated/graphql";
-import graphqlReqeustClient from "../../../lib/graphqlRequestClient";
-import { useRecoilValue } from "recoil";
-import { userState } from "../../../lib/state/userState";
-import { useQueryClient } from "react-query";
-import Images from "../../../Components/Images/Images";
-import useImageUpload from "../../../lib/utils/customHooks/useImageUpload";
+} from "@/lib/generated/graphql";
+import graphqlReqeustClient from "@/lib/graphqlRequestClient";
+import { userState } from "@/lib/state";
 
 const Container = styled.div`
   margin-bottom: 8rem;
@@ -102,7 +103,7 @@ const AddimageUrl = styled(InputDefault)`
   display: none;
 `;
 
-const AddimageUrlLabel = styled(Label)`
+const AddimageUrlLabel = styled(LabelDefault)`
   cursor: pointer;
   color: ${(props) => props.theme.color.primary700};
 `;
@@ -133,11 +134,11 @@ const ButtonContainer = styled.div`
   }
 `;
 
-const CreateButton = styled(ButtonDefaultStyle)`
+const CreateButton = styled(ButtonDefault)`
   background-color: ${(props) => props.theme.color.primary600};
 `;
 
-const CancelButton = styled(ButtonDefaultStyle)`
+const CancelButton = styled(ButtonDefault)`
   color: ${(props) => props.theme.color.fontColorWhite};
   margin-right: 0.3rem;
 `;
@@ -268,7 +269,6 @@ interface ProductMutationValue extends ProductDefaultValue {
 const AdminManageProductAddItem = () => {
   const { storeId, userId } = useParams();
   const { accessToken } = useRecoilValue(userState);
-  const { error, location, uploadFile } = useImageUpload();
 
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -295,9 +295,7 @@ const AdminManageProductAddItem = () => {
     register,
     handleSubmit,
     control,
-    formState: { errors },
-    setError,
-    setValue
+    formState: { errors }
   } = useForm<{ product: ProductDefaultValue[] }>({
     defaultValues: {
       product: [
@@ -397,19 +395,19 @@ const AdminManageProductAddItem = () => {
     );
   };
 
-  useEffect(() => {
-    if (location) {
-      setValue("product.0.imageUrl", location);
-    }
-  }, [location]);
+  // useEffect(() => {
+  //   if (location) {
+  //     setValue("product.0.imageUrl", location);
+  //   }
+  // }, [location]);
 
-  useEffect(() => {
-    if (error) {
-      setError("product.0.imageUrl", {
-        message: error
-      });
-    }
-  }, [error]);
+  // useEffect(() => {
+  //   if (error) {
+  //     setError("product.0.imageUrl", {
+  //       message: error
+  //     });
+  //   }
+  // }, [error]);
 
   return (
     <>
@@ -442,9 +440,9 @@ const AdminManageProductAddItem = () => {
         <form onSubmit={onSubmit}>
           {fields.map((item, index) => (
             <fieldset key={item.id}>
-              {location && <Images src={location} />}
+              {/* {location && <Images src={location} />} */}
               <div className="product-input-container">
-                <Label htmlFor="imageUploader">섬네일</Label>
+                <LabelDefault htmlFor="imageUploader">섬네일</LabelDefault>
                 <AddimageUrlLabel htmlFor="imageUploader">
                   <IoIosAddCircle />
                 </AddimageUrlLabel>
@@ -454,7 +452,6 @@ const AdminManageProductAddItem = () => {
                   accept="image/*"
                   name="imageUrl"
                   placeholder="사진 찾기"
-                  onChange={uploadFile}
                 />
                 <AddimageUrl
                   id="imageUrl"
@@ -463,7 +460,7 @@ const AdminManageProductAddItem = () => {
                 />
               </div>
               <div className="product-input-container">
-                <Label htmlFor="name">상품 이름</Label>
+                <LabelDefault htmlFor="name">상품 이름</LabelDefault>
                 <InputDefault
                   id="name"
                   type="text"
@@ -475,7 +472,7 @@ const AdminManageProductAddItem = () => {
               </div>
               {errors.product && <p>{errors.product[index]?.name?.message}</p>}
               <div className="product-input-container">
-                <Label htmlFor="price">상품 가격</Label>
+                <LabelDefault htmlFor="price">상품 가격</LabelDefault>
                 <InputDefault
                   id="price"
                   type="number"
@@ -488,7 +485,7 @@ const AdminManageProductAddItem = () => {
               {errors.product && <p>{errors.product[index]?.name?.message}</p>}
               <OptionsField>
                 <div className="add-option-button-container">
-                  <Label>상품 옵션</Label>
+                  <LabelDefault>상품 옵션</LabelDefault>
                   <button
                     type="button"
                     className="add-button"
@@ -501,7 +498,9 @@ const AdminManageProductAddItem = () => {
                 {optionsFields.map((optionField, index) => (
                   <div className="option-input-container" key={optionField.id}>
                     <div className="option-label-button-container">
-                      <Label htmlFor="option">상품 옵션 {index + 1}</Label>
+                      <LabelDefault htmlFor="option">
+                        상품 옵션 {index + 1}
+                      </LabelDefault>
                       <button
                         type="button"
                         onClick={() => optionsRemove(index)}
@@ -523,8 +522,8 @@ const AdminManageProductAddItem = () => {
                 {optionErrors.options && <p>{optionErrors.options.message}</p>}
               </OptionsField>
               <div className="product-input-container">
-                <Label htmlFor="infomation">상품 정보</Label>
-                <Textarea
+                <LabelDefault htmlFor="infomation">상품 정보</LabelDefault>
+                <TextareaDefault
                   id="description"
                   placeholder="상세 정보를 입력해주세요."
                   name="description"

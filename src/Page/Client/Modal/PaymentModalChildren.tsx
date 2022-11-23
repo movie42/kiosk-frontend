@@ -2,19 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useRecoilState, useRecoilValue } from "recoil";
-import {
-  Headline2,
-  SubTitle2,
-  Body1,
-  SubTitle1
-} from "../../../lib/styles/mixin";
-import { selectMenuListState } from "../../../lib/state/productItemState";
-import ButtonDefaultStyle from "../../../Components/Buttons/ButtonDefault";
+import { Headline2, SubTitle2, Body1, SubTitle1 } from "@/lib/styles/mixin";
+import { selectMenuListState } from "@/lib/state/productItemState";
+import ButtonDefaultStyle from "@/Components/Buttons/ButtonDefault";
 import { RequestPayParams, RequestPayResponse } from "../Payment";
-import { OrderType, useAddOrderMutation } from "../../../lib/generated/graphql";
-import graphqlReqeustClient from "../../../lib/graphqlRequestClient";
-import { userState } from "../../../lib/state/userState";
-import { orderType } from "../../../lib/state/orderState";
+import { OrderType, useAddOrderMutation } from "@/lib/generated/graphql";
+import graphqlReqeustClient from "@/lib/graphqlRequestClient";
+import { userState } from "@/lib/state/userState";
+import { orderType } from "@/lib/state/orderState";
 
 interface IPaymentModalChildrenProps {
   setIsModal: React.Dispatch<React.SetStateAction<boolean>>;

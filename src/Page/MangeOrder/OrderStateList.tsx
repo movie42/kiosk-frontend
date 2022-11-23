@@ -1,19 +1,20 @@
+import React, { useState, useEffect } from "react";
 import { motion, Variants } from "framer-motion";
-import React, { useState } from "react";
 import { useQueryClient } from "react-query";
-import styled, { DefaultTheme } from "styled-components";
 import { useRecoilValue } from "recoil";
+import styled, { DefaultTheme } from "styled-components";
 
-import { useUpdateOrderStatusMutation } from "../../lib/generated/graphql";
-import graphqlReqeustClient from "../../lib/graphqlRequestClient";
-import { getOrderForFrontend } from "../../lib/state/orderState";
-import { OrderStatusType } from "../../lib/generated/graphql";
-import { Headline2 } from "../../lib/styles/mixin";
-import { userState } from "../../lib/state/userState";
-import useModalHook from "../../lib/utils/customHooks/useModalHook";
-import { translateLocalCurrency } from "../../lib/utils/helper/translateLocalCurrency";
+import { translateLocalCurrency } from "@/lib/utils";
+import { getOrderForFrontend, userState } from "@/lib/state";
+import { Headline2 } from "@/lib/styles";
+import { useModalHook } from "@/lib/hooks";
+import {
+  useUpdateOrderStatusMutation,
+  OrderStatusType
+} from "@/lib/generated/graphql";
+import graphqlReqeustClient from "@/lib/graphqlRequestClient";
+
 import OrderModal from "./OrderModal";
-import { useEffect } from "react";
 
 const List = styled.ul`
   display: grid;
@@ -245,7 +246,9 @@ const OrderStateList = () => {
               </div>
               <div className="order-button-container">
                 <ReadyOrderButton
-                  onClick={(e) => handleSetModalItem(e, OrderStatusType.Ready)}
+                  onClick={(e: any) =>
+                    handleSetModalItem(e, OrderStatusType.Ready)
+                  }
                   variants={buttonBlinkVariants}
                   animate={order.status === "READY" && "animation"}
                   status={order.status}
@@ -253,13 +256,15 @@ const OrderStateList = () => {
                   주문접수
                 </ReadyOrderButton>
                 <DoneOrderButton
-                  onClick={(e) => handleSetModalItem(e, OrderStatusType.Done)}
+                  onClick={(e: any) =>
+                    handleSetModalItem(e, OrderStatusType.Done)
+                  }
                   status={order.status}
                 >
                   준비완료
                 </DoneOrderButton>
                 <CompleteOrderButton
-                  onClick={(e) =>
+                  onClick={(e: any) =>
                     handleSetModalItem(e, OrderStatusType.Complete)
                   }
                   status={order.status}
@@ -267,7 +272,7 @@ const OrderStateList = () => {
                   주문완료
                 </CompleteOrderButton>
                 <CancelOrderButton
-                  onClick={(e) =>
+                  onClick={(e: any) =>
                     handleSetModalItem(e, OrderStatusType.Canceled)
                   }
                   status={order.status}

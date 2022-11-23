@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Headline1, SubTitle2 } from "../lib/styles/mixin";
+import { Headline1, SubTitle2 } from "../../lib/styles/mixin";
 import { motion, Variants } from "framer-motion";
 import LoadingBall from "./LoadingBall";
 

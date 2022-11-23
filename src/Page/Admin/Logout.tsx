@@ -1,9 +1,10 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
-import Loading from "../../Components/Loading";
-import { userState } from "../../lib/state/userState";
-import useRemoveUserInfoInLocalStorage from "../../lib/utils/customHooks/useRemoveUserInfoInLocalStorage";
+
+import { Loading } from "@/Components";
+import { userState } from "@/lib/state";
+import { useRemoveUserInfoInLocalStorage } from "@/lib/hooks";
 
 const Logout = () => {
   const navigate = useNavigate();

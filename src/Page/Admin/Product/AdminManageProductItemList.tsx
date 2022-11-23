@@ -1,24 +1,27 @@
 import { useEffect } from "react";
 import styled from "styled-components";
-import ProductItem from "./ProductItem";
-import { ProductListValues } from "../../../lib/state/productItemState";
-import StateMenuBar from "./StateMenuBar";
+import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import ButtonDefaultStyle from "../../../Components/Buttons/ButtonDefault";
+
+import ButtonDefaultStyle from "@/Components/Buttons/ButtonDefault";
 import {
+  ProductListValues,
   productListState,
   SelectOption,
   Option,
   selectOptionState,
-  selectProductListState
-} from "../../../lib/state/productItemState";
-import { useNavigate, useParams } from "react-router-dom";
-import PageHeaderMessage from "../../../Components/PageHeader";
-import { storeState } from "../../../lib/state/storeState";
-import { useGetProductsQuery } from "../../../lib/generated/graphql";
-import graphqlReqeustClient from "../../../lib/graphqlRequestClient";
-import { userState } from "../../../lib/state/userState";
-import Loading from "../../../Components/Loading";
+  selectProductListState,
+  userState,
+  storeState
+} from "@/lib/state";
+import PageHeaderMessage from "@/Components/Layouts/Header/PageHeader";
+
+import Loading from "@/Components/Loading/Loading";
+import { useGetProductsQuery } from "@/lib/generated/graphql";
+import graphqlReqeustClient from "@/lib/graphqlRequestClient";
+
+import ProductItem from "./ProductItem";
+import StateMenuBar from "./StateMenuBar";
 
 import { MdAddCircle, MdDelete } from "react-icons/md";
 

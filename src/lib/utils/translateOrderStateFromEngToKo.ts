@@ -1,6 +1,6 @@
-import { OrderStatusType } from "../../state/orderState";
+import { OrderStatusType } from "../state";
 
-export const translateOrderStateFromEngToKo = (state: OrderStatusType) => {
+const translateOrderStateFromEngToKo = (state: OrderStatusType) => {
   if (state === OrderStatusType.Ready) {
     return "접수";
   }
@@ -15,3 +15,5 @@ export const translateOrderStateFromEngToKo = (state: OrderStatusType) => {
 
   return;
 };
+
+export default translateOrderStateFromEngToKo;
