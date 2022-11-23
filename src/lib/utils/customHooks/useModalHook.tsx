@@ -1,6 +1,4 @@
-import React, { useState } from "react";
-
-interface IuseModalHookProps {}
+import { useState } from "react";
 
 const useModalHook = () => {
   const [isModal, setIsModal] = useState(false);

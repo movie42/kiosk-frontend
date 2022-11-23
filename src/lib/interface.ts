@@ -14,7 +14,7 @@ export interface ErrorState {
             name: string;
           };
         };
-      },
+      }
     ];
     data: null;
     status: number;

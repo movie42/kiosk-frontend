@@ -1,7 +1,7 @@
-schema: http://kyojs.com:3200/graphql
+schema: http://everyonekiosk.com:3200/graphql
 documents: "./src/**/*.graphql"
 generates:
-  ./src/generated/graphql.ts:
+  ./src/lib/generated/graphql.ts:
     plugins:
       - typescript
       - typescript-operations

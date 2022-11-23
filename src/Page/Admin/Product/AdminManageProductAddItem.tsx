@@ -1,25 +1,24 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 
 import InputDefault from "../../../Components/Form/InputDefault";
 import Label from "../../../Components/Form/LabelDefault";
 import Textarea from "../../../Components/Form/TextareaDefault";
 import ButtonDefaultStyle from "../../../Components/Buttons/ButtonDefault";
-import { IoIosAddCircle, IoIosRemove, IoIosRemoveCircle } from "react-icons/io";
+import { IoIosAddCircle, IoIosRemoveCircle } from "react-icons/io";
 import Modal from "../../../Components/Modals/Modal";
 import {
   useAddProductOptionsMutation,
   useAddProductsMutation
-} from "../../../generated/graphql";
+} from "../../../lib/generated/graphql";
 import graphqlReqeustClient from "../../../lib/graphqlRequestClient";
 import { useRecoilValue } from "recoil";
-import { userState } from "../../../state/userState";
+import { userState } from "../../../lib/state/userState";
 import { useQueryClient } from "react-query";
 import Images from "../../../Components/Images/Images";
-import useImageUpload from "../../../utils/customHooks/useImageUpload";
-import { Option } from "../../../state/productItemState";
+import useImageUpload from "../../../lib/utils/customHooks/useImageUpload";
 
 const Container = styled.div`
   margin-bottom: 8rem;
@@ -333,7 +332,7 @@ const AdminManageProductAddItem = () => {
     name: "options"
   });
 
-  const { fields, append, remove } = useFieldArray({
+  const { fields } = useFieldArray({
     control,
     name: "product"
   });
@@ -385,7 +384,7 @@ const AdminManageProductAddItem = () => {
           addProductOptionMutate(
             { option: addOptions },
             {
-              onSuccess: (data) => {
+              onSuccess: () => {
                 queryClient.invalidateQueries("getProducts");
                 navigate(
                   `/admin/${userId}/store/${storeId}/product/manage-product`
@@ -400,13 +399,13 @@ const AdminManageProductAddItem = () => {
 
   useEffect(() => {
     if (location) {
-      setValue(`product.0.imageUrl`, location);
+      setValue("product.0.imageUrl", location);
     }
   }, [location]);
 
   useEffect(() => {
     if (error) {
-      setError(`product.0.imageUrl`, {
+      setError("product.0.imageUrl", {
         message: error
       });
     }
@@ -508,7 +507,7 @@ const AdminManageProductAddItem = () => {
                   </button>
                 </div>
                 {optionsFields.map((optionField, index) => (
-                  <div className="option-input-container">
+                  <div className="option-input-container" key={optionField.id}>
                     <div className="option-label-button-container">
                       <Label htmlFor="option">상품 옵션 {index + 1}</Label>
                       <button

@@ -2,14 +2,19 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { Headline2, SubTitle2, Body1, SubTitle1 } from "../../../mixin";
-import { selectMenuListState } from "../../../state/productItemState";
+import {
+  Headline2,
+  SubTitle2,
+  Body1,
+  SubTitle1
+} from "../../../lib/styles/mixin";
+import { selectMenuListState } from "../../../lib/state/productItemState";
 import ButtonDefaultStyle from "../../../Components/Buttons/ButtonDefault";
 import { RequestPayParams, RequestPayResponse } from "../Payment";
-import { OrderType, useAddOrderMutation } from "../../../generated/graphql";
+import { OrderType, useAddOrderMutation } from "../../../lib/generated/graphql";
 import graphqlReqeustClient from "../../../lib/graphqlRequestClient";
-import { userState } from "../../../state/userState";
-import { orderType } from "../../../state/orderState";
+import { userState } from "../../../lib/state/userState";
+import { orderType } from "../../../lib/state/orderState";
 
 interface IPaymentModalChildrenProps {
   setIsModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -75,16 +80,8 @@ interface AddOrderInput {
   type: OrderType;
 }
 
-interface ResultOrderItems {
-  [index: number]: {
-    productId?: number;
-    totalCount: number;
-    optionIds?: number[] | undefined;
-  };
-}
-
 const PaymentModalChildren: React.FC<IPaymentModalChildrenProps> = ({
-  setIsModal,
+  setIsModal
 }) => {
   const navigate = useNavigate();
   const { userId, storeId } = useParams();
@@ -98,11 +95,11 @@ const PaymentModalChildren: React.FC<IPaymentModalChildrenProps> = ({
   // print done
   const [isPrint, setIsPrint] = useState(false);
   // handle print receipt
-  const [printReceipt, setPrintReceipt] = useState<Boolean>(false);
+  const [_, setPrintReceipt] = useState(false);
 
   // set time out
 
-  const handleReceipt = (receipt: Boolean) => {
+  const handleReceipt = (receipt: boolean) => {
     setPrintReceipt(receipt);
     setIsPrint(true);
   };
@@ -122,7 +119,7 @@ const PaymentModalChildren: React.FC<IPaymentModalChildrenProps> = ({
   };
 
   // add order mutate
-  const { mutate, isSuccess } = useAddOrderMutation<AddOrderInput>(
+  const { mutate } = useAddOrderMutation<AddOrderInput>(
     graphqlReqeustClient(accessToken)
   );
   const addOrderItems = (
@@ -137,14 +134,14 @@ const PaymentModalChildren: React.FC<IPaymentModalChildrenProps> = ({
           imp_uid: imp,
           merchant_uid: merchant,
           products: orderProducts,
-          type: ordertype === "go" ? OrderType.Go : OrderType.Here,
-        },
+          type: ordertype === "go" ? OrderType.Go : OrderType.Here
+        }
       },
       {
         onSuccess: (data) => {
           setOrderNumber(data.addOrder);
           closeReceipt();
-        },
+        }
       }
     );
   };
@@ -161,7 +158,7 @@ const PaymentModalChildren: React.FC<IPaymentModalChildrenProps> = ({
       return {
         productId: item.productId,
         amount: item.totalCount,
-        productOptionId: item.optionId,
+        productOptionId: item.optionId
       };
     });
 
@@ -175,15 +172,13 @@ const PaymentModalChildren: React.FC<IPaymentModalChildrenProps> = ({
       name: "Kiosk Payment",
       merchant_uid: `mid_${new Date().getTime()}`,
       amount: amount,
-      buyer_tel: "000-000-0000",
+      buyer_tel: "000-000-0000"
     };
     const callback = (response: RequestPayResponse) => {
       const { success, merchant_uid, error_msg, imp_uid, error_code } =
         response;
       if (success) {
         addOrderItems(orderProducts, imp_uid, merchant_uid);
-      } else {
-        console.log(error_msg, error_code);
       }
     };
     window.IMP?.request_pay(data, callback);
@@ -191,7 +186,7 @@ const PaymentModalChildren: React.FC<IPaymentModalChildrenProps> = ({
 
   useEffect(() => {
     if (isPaid) {
-      let closeTimer = setTimeout(() => {
+      const closeTimer = setTimeout(() => {
         setIsPrint(true);
       }, 5000);
 
@@ -201,12 +196,12 @@ const PaymentModalChildren: React.FC<IPaymentModalChildrenProps> = ({
 
   useEffect(() => {
     if (isPaid) {
-      let showTimer = setInterval(() => {
+      const showTimer = setInterval(() => {
         setRemain((prv) => prv - 1);
       }, 1000);
       return () => clearInterval(showTimer);
     }
-  }, [closeReceipt]);
+  }, [setRemain, isPaid]);
 
   return (
     <PaymentBox>
@@ -216,7 +211,7 @@ const PaymentModalChildren: React.FC<IPaymentModalChildrenProps> = ({
           <h4>주문 내용과 금액을 확인해주세요</h4>
 
           <p>주문 상품</p>
-          {orderList.map((el, i) => (
+          {orderList.map((el) => (
             <MenuBox key={`${el.productId}${el.option}`}>
               <span>
                 {el.name} {el.option}

@@ -3,15 +3,15 @@ import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { IoIosAddCircle } from "react-icons/io";
 import { AiFillMinusCircle } from "react-icons/ai";
-import { selectMenuListState } from "../../state/productItemState";
+import { selectMenuListState } from "../../lib/state/productItemState";
 import { IOrderSelectedItem } from "./ClientMenu";
 import Modal from "../../Components/Modals/Modal";
-import { Headline1, SubTitle1, SubTitle2, Body1 } from "../../mixin";
+import { Headline1, SubTitle1, SubTitle2, Body1 } from "../../lib/styles/mixin";
 import OrderStateBar from "./OrderStateBar";
 import PaymentModalChildren from "./Modal/PaymentModalChildren";
 import { useNavigate, useParams } from "react-router-dom";
 import ButtonDefaultStyle from "../../Components/Buttons/ButtonDefault";
-import { translateLocalCurrency } from "../../utils/helper/translateLocalCurrency";
+import { translateLocalCurrency } from "../../lib/utils/helper/translateLocalCurrency";
 import Noimage from "../../Components/Images/Noimage";
 import Images from "../../Components/Images/Images";
 
@@ -111,10 +111,10 @@ const ClientSelectList = () => {
   };
 
   const handleAddCount = (current: IOrderSelectedItem) => {
-    let [selected] = totalSelectMenu
+    const [selected] = totalSelectMenu
       .filter((menu) => menu.productId === current.productId)
       .filter((menu) => menu.option === current.option);
-    let newCount = selected.totalCount + 1;
+    const newCount = selected.totalCount + 1;
     setTotalSelectMenu((item) =>
       [
         ...item.filter((el) => el !== selected),
@@ -133,10 +133,10 @@ const ClientSelectList = () => {
   };
 
   const handleMinusCount = (current: IOrderSelectedItem) => {
-    let [selected] = totalSelectMenu
+    const [selected] = totalSelectMenu
       .filter((menu) => menu.productId === current.productId)
       .filter((menu) => menu.option === current.option);
-    let newCount = selected.totalCount - 1;
+    const newCount = selected.totalCount - 1;
     if (newCount < 1) {
       return;
     }

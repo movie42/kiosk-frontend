@@ -14,9 +14,22 @@
 <img src="https://img.shields.io/badge/누구나 키오스크-61DAFB?style=for-the-badge&logoColor=white" />
 </a> 데모를 만나보세요.
 
+## 😅 공지.
+
+[build 이슈](https://github.com/movie42/kiosk-frontend/wiki/%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85/_edit#React-Build-%EC%9D%B4%ED%9B%84%EC%97%90-%ED%99%98%EA%B2%BD-%EB%B3%80%EC%88%98%EA%B0%92%EC%9D%B4-%EC%A0%81%EC%9A%A9%EB%90%98%EC%A7%80-%EC%95%8A%EB%8A%94-%EB%AC%B8%EC%A0%9C)로 어플리케이션의 주문과 사진 등록이 되지 않습니다.  
+더미 데이터가 등록된 아이디로 어플리케이션을 체험해볼 수 있습니다.  
+id : a@gmail.com  
+pw : 123qwe!@
+
+## 📑 위키
+
 개발 과정에 대한 자세한 이야기는 [위키](https://github.com/movie42/kiosk-frontend/wiki)에서 만나보세요!
 
 ## ✍️ 주요 기능
+
+### 소개영상
+
+https://user-images.githubusercontent.com/44064122/180661805-87a78eb2-ca02-42cd-beb0-8bab98f0021d.mp4
 
 ### Easy Start
 
@@ -77,4 +90,8 @@
 
 ## 🕹 아키텍쳐
 
+![아키텍쳐](https://user-images.githubusercontent.com/44064122/180215835-3dc96d91-f7cb-4638-ae55-4e851a4d481c.png)
+
 ## 🛠 CI/CD
+
+![CICD](https://user-images.githubusercontent.com/44064122/180215824-6e7a9b14-f44f-493e-97c2-251092bb4769.png)

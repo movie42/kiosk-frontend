@@ -1,18 +1,18 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import Modal from "../../Components/Modals/Modal";
 import OrderStateBar from "./OrderStateBar";
 import MenuItemModalChildren from "./Modal/MenuItemModalChildren";
-import { ProductListValues } from "../../state/productItemState";
+import { ProductListValues } from "../../lib/state/productItemState";
 import {
   productListState,
-  selectMenuListState,
-} from "../../state/productItemState";
-import { Headline1 } from "../../mixin";
+  selectMenuListState
+} from "../../lib/state/productItemState";
+import { Headline1 } from "../../lib/styles/mixin";
 import { useNavigate, useParams } from "react-router-dom";
-import { userState } from "../../state/userState";
-import { useGetProductsQuery } from "../../generated/graphql";
+import { userState } from "../../lib/state/userState";
+import { useGetProductsQuery } from "../../lib/generated/graphql";
 import graphqlReqeustClient from "../../lib/graphqlRequestClient";
 import Loading from "../../Components/Loading";
 import Noimage from "../../Components/Images/Noimage";
@@ -146,7 +146,7 @@ const ClientMenu = () => {
   const { isLoading } = useGetProductsQuery(
     graphqlReqeustClient(accessToken),
     {
-      id: Number(storeId),
+      id: Number(storeId)
     },
     {
       onSuccess: (data) => {
@@ -160,14 +160,14 @@ const ClientMenu = () => {
               description: value.description,
               options: value.options.map((value) => ({
                 id: Number(value.id),
-                name: value.name,
+                name: value.name
               })),
-              isAvailable: value.isAvailable,
+              isAvailable: value.isAvailable
             }))
             .filter((value) => value.isAvailable === true);
           setMenuList(productList);
         }
-      },
+      }
     }
   );
 

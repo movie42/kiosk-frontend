@@ -37,7 +37,7 @@ interface IIsOpenModalChildrenProps {
 const IsOpenModalChildren = ({
   setModal,
   setConfirm,
-  toggleState,
+  toggleState
 }: IIsOpenModalChildrenProps) => {
   const handleModal = () => {
     setModal(false);

@@ -1,5 +1,5 @@
 import { atom } from "recoil";
-import { IOrderSelectedItem } from "../Page/Client/ClientMenu";
+import { IOrderSelectedItem } from "../../Page/Client/ClientMenu";
 
 export interface ProductOptions {
   id: number;

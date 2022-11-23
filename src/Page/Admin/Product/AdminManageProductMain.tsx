@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Modal from "../../../Components/Modals/Modal";
 import IsOpenModalChildren from "../Modal/IsOpenModalChildren";
-import useModalHook from "../../../utils/customHooks/useModalHook";
+import useModalHook from "../../../lib/utils/customHooks/useModalHook";
 import PageHeaderMessage from "../../../Components/PageHeader";
 import {
   useStoreQuery,
   useToggleStoreIsAvailableMutation
-} from "../../../generated/graphql";
+} from "../../../lib/generated/graphql";
 import graphqlReqeustClient from "../../../lib/graphqlRequestClient";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { userState } from "../../../state/userState";
-import { storeState } from "../../../state/storeState";
+import { userState } from "../../../lib/state/userState";
+import { storeState } from "../../../lib/state/storeState";
 import { useQueryClient } from "react-query";
 import ToggleButton from "../../../Components/Buttons/ToggleButton";
-import { Body2, Headline2 } from "../../../mixin";
+import { Body2 } from "../../../lib/styles/mixin";
 import {
   customerImage,
   manageProductImage,
@@ -188,7 +188,7 @@ const AdminManageProductMain = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const [store, setStore] = useRecoilState(storeState);
-  const { accessToken, refreshToken } = useRecoilValue(userState);
+  const { accessToken } = useRecoilValue(userState);
 
   const [toggleState, setToggleState] = useState(store.isAvailable);
   const { id, setId, isModal, setIsModal, confirm, setConfirm } =
@@ -202,7 +202,7 @@ const AdminManageProductMain = () => {
       }
     });
 
-  const { isSuccess } = useStoreQuery(
+  useStoreQuery(
     graphqlReqeustClient(accessToken),
     {
       id: Number(id)

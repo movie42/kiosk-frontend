@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { useEffect } from "react";
 import styled from "styled-components";
 import ProductItem from "./ProductItem";
-import { ProductListValues } from "../../../state/productItemState";
+import { ProductListValues } from "../../../lib/state/productItemState";
 import StateMenuBar from "./StateMenuBar";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import ButtonDefaultStyle from "../../../Components/Buttons/ButtonDefault";
@@ -11,19 +11,19 @@ import {
   Option,
   selectOptionState,
   selectProductListState
-} from "../../../state/productItemState";
+} from "../../../lib/state/productItemState";
 import { useNavigate, useParams } from "react-router-dom";
 import PageHeaderMessage from "../../../Components/PageHeader";
-import { storeState } from "../../../state/storeState";
-import { useGetProductsQuery } from "../../../generated/graphql";
+import { storeState } from "../../../lib/state/storeState";
+import { useGetProductsQuery } from "../../../lib/generated/graphql";
 import graphqlReqeustClient from "../../../lib/graphqlRequestClient";
-import { userState } from "../../../state/userState";
+import { userState } from "../../../lib/state/userState";
 import Loading from "../../../Components/Loading";
-import { theme } from "../../../theme";
-import { MdAddCircle, MdDelete, MdCreate } from "react-icons/md";
+
+import { MdAddCircle, MdDelete } from "react-icons/md";
 
 const Container = styled.div<{ selectOption: boolean }>`
-  padding-bottom: ${({ selectOption }) => (selectOption ? `12rem;` : `3rem`)};
+  padding-bottom: ${({ selectOption }) => (selectOption ? "12rem;" : "3rem")};
   ul.productList {
     display: grid;
     gap: 2rem;

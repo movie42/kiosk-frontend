@@ -1,16 +1,14 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { orderStateForFrontend } from "../../state/orderState";
+import { orderStateForFrontend } from "../../lib/state/orderState";
 import OrderStateList from "./OrderStateList";
 import {
-  GetOrdersQuery,
   OrderStatusType,
-  useGetOrdersQuery,
   useGetProductsQuery,
-  useTodayOrdersQuery
-} from "../../generated/graphql";
-import { userState } from "../../state/userState";
+  useGetOrdersQuery
+} from "../../lib/generated/graphql";
+import { userState } from "../../lib/state/userState";
 import graphqlReqeustClient from "../../lib/graphqlRequestClient";
 import { useParams } from "react-router-dom";
 
@@ -22,7 +20,7 @@ const OrderStateContainer = styled.div``;
 
 interface SelectOrder {
   __typename?: "Query";
-  todayOrders: Array<{
+  orders: Array<{
     __typename?: "Order";
     id: string;
     number: number;
@@ -65,7 +63,7 @@ const handleDataToNew = (
   getProduct: ProductQuery,
   term?: string
 ) => {
-  const orders = todayOrdersData.todayOrders.map((order) => ({
+  const orders = todayOrdersData.orders.map((order) => ({
     id: order.id,
     storeId: order.storeId,
     number: order.number,
@@ -73,7 +71,7 @@ const handleDataToNew = (
     status: order.status,
     orderProducts: order.orderProducts.map((orderProduct) => {
       if (getProduct.store) {
-        const [selectProduct] = getProduct.store?.products.filter(
+        const [selectProduct] = getProduct.store.products.filter(
           (product) => product.id === String(orderProduct.productId)
         );
 
@@ -122,35 +120,63 @@ const MangeOrderMain = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const setOrders = useSetRecoilState(orderStateForFrontend);
 
-  const { data: getProduct, isSuccess: isGetProductSuccess } =
-    useGetProductsQuery(graphqlReqeustClient(accessToken), {
-      id: Number(storeId)
-    });
+  const {
+    data: getProduct,
+    isSuccess: isGetProductSuccess,
+    isRefetching: isGetProductRefetcing
+  } = useGetProductsQuery(graphqlReqeustClient(accessToken), {
+    id: Number(storeId)
+  });
 
-  const { data: todayOrdersData, isSuccess: isTodayOrdersQuerySuccess } =
-    useTodayOrdersQuery(graphqlReqeustClient(accessToken), {
-      offset: 0,
-      limit: 10
-    });
+  const {
+    data: todayOrdersData,
+    isSuccess: isTodayOrdersQuerySuccess,
+    isRefetching: isTodayOrdersRefetcing
+  } = useGetOrdersQuery(graphqlReqeustClient(accessToken), {
+    storeId: storeId ? Number(storeId) : 1,
+    offset: 0,
+    limit: 10
+  });
 
   useEffect(() => {
     if (sticky.current) {
       const offsetTop = sticky.current.offsetTop as number;
       setStickyPos(offsetTop);
     }
-  }, [sticky.current]);
+  }, [sticky]);
 
   useEffect(() => {
-    if (searchTerm && isGetProductSuccess && isTodayOrdersQuerySuccess) {
+    if (
+      searchTerm &&
+      isGetProductSuccess &&
+      isTodayOrdersQuerySuccess &&
+      !isGetProductRefetcing &&
+      !isTodayOrdersRefetcing
+    ) {
       const orders = handleDataToNew(todayOrdersData, getProduct, searchTerm);
       setOrders(orders);
     }
 
-    if (!searchTerm && isGetProductSuccess && isTodayOrdersQuerySuccess) {
+    if (
+      !searchTerm &&
+      isGetProductSuccess &&
+      isTodayOrdersQuerySuccess &&
+      !isGetProductRefetcing &&
+      !isTodayOrdersRefetcing
+    ) {
       const orders = handleDataToNew(todayOrdersData, getProduct);
       setOrders(orders);
     }
-  }, [searchTerm, isGetProductSuccess, isTodayOrdersQuerySuccess]);
+  }, [
+    todayOrdersData,
+    getProduct,
+    setOrders,
+    searchTerm,
+    isGetProductSuccess,
+    isTodayOrdersQuerySuccess,
+    isGetProductRefetcing,
+    isTodayOrdersRefetcing
+  ]);
 
   return (
     <Wrapper>

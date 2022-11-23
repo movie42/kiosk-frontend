@@ -1,8 +1,7 @@
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { AiOutlineClose } from "react-icons/ai";
-import { Headline2 } from "../../mixin";
-import { NavLinkProps } from "react-router-dom";
+import { Headline2 } from "../../lib/styles/mixin";
 
 const Wrapper = styled.div`
   position: fixed;
@@ -74,7 +73,7 @@ interface INavProps {
   children: React.ReactNode;
 }
 
-const Nav = ({ setNavState, children, ...props }: INavProps) => {
+const Nav = ({ setNavState, children }: INavProps) => {
   useEffect(() => {
     return () => setNavState(false);
   }, [setNavState]);

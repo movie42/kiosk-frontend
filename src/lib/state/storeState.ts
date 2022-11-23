@@ -15,15 +15,15 @@ const initialValue = {
   code: "",
   address: "",
   phone: "",
-  isAvailable: false,
+  isAvailable: false
 };
 
 export const storesState = atom<storeStateProps[]>({
   key: "stores",
-  default: [initialValue],
+  default: [initialValue]
 });
 
 export const storeState = atom<storeStateProps>({
   key: "store",
-  default: initialValue,
+  default: initialValue
 });

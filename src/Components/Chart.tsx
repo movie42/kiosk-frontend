@@ -1,39 +1,26 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import Graph from "react-apexcharts";
-import { Sales } from "../state/productItemState";
-
-interface IChartProps {}
 
 const Chart = () => {
-  const [salesInfo, setSalesInfo] = useState([]);
-  const [chartOption, setChartOption] = useState("today");
-  const [selectedSalesInfo, setSelectedSalesInfo] = useState<Sales[]>([
-    {
-      name: "",
-      price: 0,
-      option: "",
-      quantity: 0,
-      createdAt: new Date().toUTCString(),
-    },
-  ]);
-  const [chartState, setChartState] = useState<{
+  const [_, setChartOption] = useState("today");
+  const [chartState, __] = useState<{
     options: ApexCharts.ApexOptions;
     series: ApexAxisChartSeries;
   }>({
     options: {
       chart: {
-        id: "0",
+        id: "0"
       },
       xaxis: {
-        categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999],
-      },
+        categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999]
+      }
     },
     series: [
       {
         name: "series-1",
-        data: [30, 40, 45, 50, 49, 60, 70, 91],
-      },
-    ],
+        data: [30, 40, 45, 50, 49, 60, 70, 91]
+      }
+    ]
   });
 
   // const handleSelectedSalesInfo = (option: string) => {

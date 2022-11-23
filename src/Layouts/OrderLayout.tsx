@@ -1,9 +1,8 @@
-import React from "react";
 import { Outlet } from "react-router-dom";
-import { useRecoilState } from "recoil";
+// import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import { userState } from "../state/userState";
-import { Headline1 } from "../mixin";
+// import { userState } from "../lib/state/userState";
+import { Headline1 } from "../lib/styles/mixin";
 
 const Wrapper = styled.div`
   padding: 1rem 2rem;
@@ -35,7 +34,7 @@ const Header = styled.div`
 const Main = styled.main``;
 
 const OrderLayout = () => {
-  const [user, setUser] = useRecoilState(userState);
+  // const [user, setUser] = useRecoilState(userState);
   return (
     <Wrapper>
       <Header>

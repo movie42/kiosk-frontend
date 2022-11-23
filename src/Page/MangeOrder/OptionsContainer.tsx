@@ -12,8 +12,8 @@ import styled from "styled-components";
 import ButtonDefaultStyle from "../../Components/Buttons/ButtonDefault";
 import InputDefault from "../../Components/Form/InputDefault";
 import PageHeaderMessage from "../../Components/PageHeader";
-import { Headline2, Headline3 } from "../../mixin";
-import { orderStatusState, OrderStatusType } from "../../state/orderState";
+import { Headline2, Headline3 } from "../../lib/styles/mixin";
+import { orderStatusState, OrderStatusType } from "../../lib/state/orderState";
 
 const OptionContainer = styled(motion.div)`
   position: relative;
@@ -99,7 +99,7 @@ const OptionsContainer = ({
   const borderTick = useTransform(
     scrollY,
     [0, stickyPos, stickyPos + 1],
-    ["unset", "unset", `3px solid #575757`]
+    ["unset", "unset", "3px solid #575757"]
   );
 
   const { register, handleSubmit } = useForm();

@@ -17,6 +17,6 @@ export const userState = atom<UserState>({
     name: undefined,
     email: undefined,
     accessToken: undefined,
-    refreshToken: undefined,
-  },
+    refreshToken: undefined
+  }
 });

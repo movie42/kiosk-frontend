@@ -1,7 +1,4 @@
-import React from "react";
 import { UserState } from "../../state/userState";
-
-interface IuseGetUserStateFromLocalStorageProps {}
 
 const useGetUserInfoFromLocalStorage = () => {
   const getUser = () => {

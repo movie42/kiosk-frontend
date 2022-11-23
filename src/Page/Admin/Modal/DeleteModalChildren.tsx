@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { ProductListValues } from "../../../state/productItemState";
+import { ProductListValues } from "../../../lib/state/productItemState";
 import {
   selectOptionState,
   selectProductListState,
-  Option,
-} from "../../../state/productItemState";
+  Option
+} from "../../../lib/state/productItemState";
 import styled from "styled-components";
 import Noimage from "../../../Components/Images/Noimage";
 import ButtonDefaultStyle from "../../../Components/Buttons/ButtonDefault";
-import { translateLocalCurrency } from "../../../utils/helper/translateLocalCurrency";
-import { useRemoveProductsMutation } from "../../../generated/graphql";
+import { translateLocalCurrency } from "../../../lib/utils/helper/translateLocalCurrency";
+import { useRemoveProductsMutation } from "../../../lib/generated/graphql";
 import graphqlReqeustClient from "../../../lib/graphqlRequestClient";
-import { userState } from "../../../state/userState";
+import { userState } from "../../../lib/state/userState";
 import { useQueryClient } from "react-query";
 import { motion } from "framer-motion";
 import LoadingBall from "../../../Components/LoadingBall";
@@ -106,7 +106,7 @@ const DeleteModalChildren = ({ setIsModal }: IDeleteModalChildrenProps) => {
   const [isSendingItem, setIsSendingItem] = useState(false);
   const setSelectOption = useSetRecoilState(selectOptionState);
   const [selectProduct, setSelectProduct] = useRecoilState<ProductListValues[]>(
-    selectProductListState,
+    selectProductListState
   );
   const [finalSelectedProduct, setFinalSelectedProduct] =
     useState<ProductListValues[]>(selectProduct);
@@ -116,8 +116,8 @@ const DeleteModalChildren = ({ setIsModal }: IDeleteModalChildrenProps) => {
     {
       onSuccess: () => {
         queryClient.invalidateQueries("getProducts");
-      },
-    },
+      }
+    }
   );
 
   const handleModal = () => {
@@ -137,7 +137,7 @@ const DeleteModalChildren = ({ setIsModal }: IDeleteModalChildrenProps) => {
     if (!hasItem) {
       setFinalSelectedProduct((pre) => [
         ...pre,
-        ...selectProduct.filter((value) => value.id === id),
+        ...selectProduct.filter((value) => value.id === id)
       ]);
       return;
     }
@@ -179,7 +179,7 @@ const DeleteModalChildren = ({ setIsModal }: IDeleteModalChildrenProps) => {
                 data-id={item.id}
                 onClick={() => checkBoxChangeHandler(item.id)}
                 selected={finalSelectedProduct?.some(
-                  (findItem) => findItem.id === item.id,
+                  (findItem) => findItem.id === item.id
                 )}
               >
                 <span className="check-box"></span>
@@ -195,7 +195,7 @@ const DeleteModalChildren = ({ setIsModal }: IDeleteModalChildrenProps) => {
                   <p>
                     {translateLocalCurrency(item.price, "ko-KR", {
                       style: "currency",
-                      currency: "KRW",
+                      currency: "KRW"
                     })}
                   </p>
                 </div>
@@ -203,14 +203,14 @@ const DeleteModalChildren = ({ setIsModal }: IDeleteModalChildrenProps) => {
             ))}
           {isSendingItem &&
             finalSelectedProduct.map((item) => (
-              <FinalItem>
+              <FinalItem key={item.id}>
                 <h3>{item.name}</h3>
               </FinalItem>
             ))}
           {isSuccess &&
             !isSendingItem &&
             finalSelectedProduct.map((item) => (
-              <FinalItem>
+              <FinalItem key={item.id}>
                 <h3>{item.name}</h3>
               </FinalItem>
             ))}

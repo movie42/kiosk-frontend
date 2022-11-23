@@ -1,9 +1,9 @@
-import React, { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { BrowserRouter } from "react-router-dom";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import Router from "./Routers/Routers";
-import { userState } from "./state/userState";
-import useGetUserInfoFromLocalStorage from "./utils/customHooks/useGetUserStateFromLocalStorage";
+import { userState } from "./lib/state/userState";
+import useGetUserInfoFromLocalStorage from "./lib/utils/customHooks/useGetUserStateFromLocalStorage";
 
 function App() {
   const [user, setUser] = useRecoilState(userState);
