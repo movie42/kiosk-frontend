@@ -264,9 +264,7 @@ const UpdateModalForm = ({
         <InputDefault
           type="text"
           id="imageUrl"
-          name="imageUrl"
-          fieldName={fieldName}
-          register={register}
+          {...register("imageUrl")}
           style={{ visibility: "hidden" }}
         />
         <AddThumbnail
@@ -283,11 +281,10 @@ const UpdateModalForm = ({
         <InputDefault
           type="text"
           id="name"
-          name="name"
-          fieldName={fieldName}
-          register={register}
-          defaultValue={productData?.name}
-          onChange={uploadFile}
+          {...register("name", {
+            value: productData.name,
+            onChange: uploadFile
+          })}
         />
       </FieldContainer>
       <FieldContainer>
@@ -295,10 +292,9 @@ const UpdateModalForm = ({
         <InputDefault
           type="number"
           id="price"
-          name="price"
-          fieldName={fieldName}
-          defaultValue={productData?.price}
-          register={register}
+          {...register("price", {
+            value: productData.price
+          })}
         />
       </FieldContainer>
       <OptionFieldContainer>
@@ -339,11 +335,10 @@ const UpdateModalForm = ({
             <InputDefault
               id="option"
               type="text"
-              name="name"
-              register={optionsRegister}
-              fieldName={`options.${index}`}
               placeholder="옵션의 이름을 입력해주세요"
-              defaultValue={optionField.name}
+              {...optionsRegister(`options.${index}.name`, {
+                value: optionField.name
+              })}
             />
           </div>
         ))}
@@ -353,10 +348,9 @@ const UpdateModalForm = ({
         <LabelDefault htmlFor="description">상품 정보</LabelDefault>
         <TextareaDefault
           id="description"
-          name="description"
-          fieldName={fieldName}
-          defaultValue={productData?.description as string}
-          register={register}
+          {...register("description", {
+            value: productData?.description
+          })}
         />
       </FieldContainer>
     </FieldSet>

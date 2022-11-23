@@ -1,11 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
+import { useQueryClient } from "react-query";
+import { useNavigate } from "react-router-dom";
+import { useRecoilState } from "recoil";
+
 import InputDefault from "../../Components/Form/InputDefault";
 import ButtonDefaultStyle from "../../Components/Buttons/ButtonDefault";
 import { Wrapper, Header, Title, Container, ButtonGroup } from "./Agreement";
 import { SubTitle2, Body1 } from "../../lib/styles/mixin";
-import { useNavigate } from "react-router-dom";
 import graphqlReqeustClient from "../../lib/graphqlRequestClient";
 import {
   MeQuery,
@@ -14,10 +17,9 @@ import {
   useSignupMutation
 } from "../../lib/generated/graphql";
 import { handleErrorMessage } from "../../lib/utils/helper/handleErrorMessage";
-import { ErrorState } from "../Admin/Login/AdminLogin";
-import { useRecoilState } from "recoil";
 import { userState } from "../../lib/state/userState";
-import { useQueryClient } from "react-query";
+import { ErrorState } from "../../lib/interface";
+import { EMAIL_REX } from "../../lib/constant/constant";
 
 const FormContainer = styled.form`
   height: inherit;
@@ -219,49 +221,43 @@ const SignUp = () => {
           <SubContainer>
             <SignUpInput
               id="email"
-              name="email"
               placeholder="이메일"
-              register={register}
-              registerOptions={{
+              {...register("email", {
                 required: "이메일을 입력해주세요.",
                 pattern: {
-                  value:
-                    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                  value: EMAIL_REX,
                   message: "이메일이 아닙니다."
                 }
-              }}
+              })}
             />
             <ErrorMessage>{errors.email?.message}</ErrorMessage>
             <GroupForm>
               <SignUpInput
                 id="name"
-                name="name"
                 placeholder="이름"
-                register={register}
-                required
+                {...register("name", {
+                  required: "비밀번호를 입력해주세요."
+                })}
               />
             </GroupForm>
 
             <SignUpInput
               id="password"
-              name="password"
               type="password"
               placeholder="비밀번호"
-              register={register}
-              required
+              {...register("password", {
+                required: "비밀번호를 입력해주세요."
+              })}
             />
-
             <SignUpInput
               id="passwordConfirm"
-              name="passwordConfirm"
               type="password"
               placeholder="비밀번호 확인"
-              register={register}
-              registerOptions={{
+              {...register("passwordConfirm", {
+                required: "앞에서 입력한 비밀번호를 입력해주세요.",
                 validate: (value) =>
                   value === password.current || "비밀번호가 일치하지 않습니다."
-              }}
-              required
+              })}
             />
             <ErrorMessage>{errors.passwordConfirm?.message}</ErrorMessage>
           </SubContainer>
@@ -283,30 +279,30 @@ const SignUp = () => {
                 <SignUpInput
                   placeholder="사업장번호"
                   id="code"
-                  name="code"
-                  required={checkStore}
-                  register={checkStore && register}
+                  {...register("code", {
+                    required: checkStore
+                  })}
                 />
                 <SignUpInput
                   placeholder="상호명"
                   id="storeName"
-                  name="storeName"
-                  required={checkStore}
-                  register={checkStore && register}
+                  {...register("storeName", {
+                    required: checkStore
+                  })}
                 />
                 <SignUpInput
                   placeholder="전화번호"
                   id="phone"
-                  name="phone"
-                  required={checkStore}
-                  register={checkStore && register}
+                  {...register("phone", {
+                    required: checkStore
+                  })}
                 />
                 <SignUpInput
                   placeholder="주소"
                   id="address"
-                  name="address"
-                  required={checkStore}
-                  register={checkStore && register}
+                  {...register("address", {
+                    required: checkStore
+                  })}
                 />
               </>
             )}

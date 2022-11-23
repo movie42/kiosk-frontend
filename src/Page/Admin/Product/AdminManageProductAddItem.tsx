@@ -459,9 +459,7 @@ const AdminManageProductAddItem = () => {
                 <AddimageUrl
                   id="imageUrl"
                   type="text"
-                  name="imageUrl"
-                  register={register}
-                  fieldName={`product.${index}`}
+                  {...register(`product.${index}.imageUrl`)}
                 />
               </div>
               <div className="product-input-container">
@@ -470,12 +468,9 @@ const AdminManageProductAddItem = () => {
                   id="name"
                   type="text"
                   placeholder="상품 이름을 입력해주세요."
-                  name="name"
-                  register={register}
-                  fieldName={`product.${index}`}
-                  registerOptions={{
+                  {...register(`product.${index}.name`, {
                     required: "상품 이름은 꼭 입력해야해요"
-                  }}
+                  })}
                 />
               </div>
               {errors.product && <p>{errors.product[index]?.name?.message}</p>}
@@ -485,12 +480,9 @@ const AdminManageProductAddItem = () => {
                   id="price"
                   type="number"
                   placeholder="상품 가격을 입력해주세요."
-                  name="price"
-                  register={register}
-                  fieldName={`product.${index}`}
-                  registerOptions={{
+                  {...register(`product.${index}.price`, {
                     required: "상품의 가격은 꼭 입력해야해요"
-                  }}
+                  })}
                 />
               </div>
               {errors.product && <p>{errors.product[index]?.name?.message}</p>}
@@ -521,11 +513,10 @@ const AdminManageProductAddItem = () => {
                     <InputDefault
                       id="option"
                       type="text"
-                      name="name"
-                      register={optionRegister}
-                      fieldName={`options.${index}`}
                       placeholder="옵션의 이름을 입력해주세요"
-                      defaultValue={optionField.name}
+                      {...optionRegister(`options.${index}.name`, {
+                        value: optionField.name
+                      })}
                     />
                   </div>
                 ))}

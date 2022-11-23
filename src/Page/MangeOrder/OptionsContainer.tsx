@@ -134,15 +134,13 @@ const OptionsContainer = ({
       <PageHeaderMessage header="주문관리" />
       <form onSubmit={searchOrder}>
         <SearchingInput
-          register={register}
-          registerOptions={{
+          type="number"
+          placeholder="주문번호를 입력해주세요."
+          {...register("searchOrder", {
             max: 3000,
             min: 0,
             onChange: (e) => setSearchTerm(e.currentTarget.value)
-          }}
-          type="number"
-          name="searchOrder"
-          placeholder="주문번호를 입력해주세요."
+          })}
         />
         <button style={{ visibility: "hidden" }}>제출</button>
       </form>
