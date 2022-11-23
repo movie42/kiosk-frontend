@@ -16,7 +16,7 @@ import AdminManageProductItemList from "@/Page/Admin/Product/AdminManageProductI
 import AdminMain from "@/Page/Admin/Product/AdminManageProductMain";
 import AdminStoreList from "@/Page/Admin/Store/AdminStoreList/AdminStoreList";
 import AdminCreateStore from "@/Page/Admin/Store/AdminCreateStore";
-import AdminUpdateStore from "@/Page/Admin/Store/AdminUpdateStore";
+import AdminStoreUpdate from "@/Page/Admin/Store/AdminStoreUpdate/AdminStoreUpdate";
 import AdminLoadingAndGetUser from "@/Page/Admin/Login/AdminLoadingAndGetUser";
 import Logout from "@/Page/Admin/Logout";
 import AdminProductDetail from "@/Page/Admin/Product/AdminProductDetail";
@@ -43,7 +43,7 @@ const Router = () => {
                 <Route path="list" element={<AdminStoreList />} />
                 <Route path="create" element={<AdminCreateStore />} />
                 <Route path=":storeId">
-                  <Route path="update" element={<AdminUpdateStore />} />
+                  <Route path="update" element={<AdminStoreUpdate />} />
                 </Route>
               </Route>
             </Route>

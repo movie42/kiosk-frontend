@@ -1,12 +1,8 @@
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
-import InputDefault from "@/Components/Form/InputDefault";
-import LabelDefault from "@/Components/Form/LabelDefault";
-import Loading from "@/Components/Loading/Loading";
-
-import useAddStore from "./hooks/useAddStore";
-import useLoadingComplete from "./hooks/useLoadingComplete";
+import { Loading, LabelDefault, InputDefault } from "@/Components";
+import { useAddStore, useLoadingComplete } from "./hooks";
 import { IStoreFormProps } from "./interface";
 import { Form, InputContainer, StatusBar } from "./styles";
 
@@ -17,7 +13,6 @@ const AdminCreateStore = () => {
     handleSubmit,
     formState: { errors }
   } = useForm<IStoreFormProps>();
-
   const { mutate, isSuccess } = useAddStore();
   const { isComplete, setIsComplete } = useLoadingComplete({ isSuccess });
 
