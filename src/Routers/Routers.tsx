@@ -1,7 +1,7 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { userState } from "../lib/state/userState";
-import { storeState } from "../lib/state/storeState";
+// import { storeState } from "../lib/state/storeState";
 
 import AdminLayout from "../Layouts/AdminLayout";
 import ClientLayout from "../Layouts/ClientLayout";
@@ -29,48 +29,48 @@ import PageNotFound from "../Page/Errors/404";
 
 const Router = () => {
   const { isLogin, id: userId } = useRecoilValue(userState);
-  const store = useRecoilValue(storeState);
+  // const store = useRecoilValue(storeState);
   return (
     <Routes>
-      {isLogin && (
-        <>
-          <Route path="/admin" element={<AdminLayout />}>
-            <Route path=":userId">
-              <Route path="store">
-                <Route path="" element={<Navigate to="list" />} />
-                <Route path="list" element={<AdminStoreList />} />
-                <Route path="create" element={<AdminCreateStore />} />
-                <Route path=":storeId">
-                  <Route path="update" element={<AdminUpdateStore />} />
-                </Route>
+      {/* {isLogin && ( */}
+      <>
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route path=":userId">
+            <Route path="store">
+              <Route path="" element={<Navigate to="list" />} />
+              <Route path="list" element={<AdminStoreList />} />
+              <Route path="create" element={<AdminCreateStore />} />
+              <Route path=":storeId">
+                <Route path="update" element={<AdminUpdateStore />} />
               </Route>
             </Route>
           </Route>
+        </Route>
+        <Route
+          path="/admin/:userId/store/:storeId/product"
+          element={<AdminManageProductLayout />}
+        >
+          <Route path=":productId" element={<AdminProductDetail />} />
+          <Route path="main" element={<AdminMain />} />
           <Route
-            path="/admin/:userId/store/:storeId/product"
-            element={<AdminManageProductLayout />}
-          >
-            <Route path=":productId" element={<AdminProductDetail />} />
-            <Route path="main" element={<AdminMain />} />
-            <Route
-              path="manage-product"
-              element={<AdminManageProductItemList />}
-            />
-            <Route path="manage-order" element={<MangeOrderMain />} />
-            <Route path="add-product" element={<AdminManageProductAddItem />} />
+            path="manage-product"
+            element={<AdminManageProductItemList />}
+          />
+          <Route path="manage-order" element={<MangeOrderMain />} />
+          <Route path="add-product" element={<AdminManageProductAddItem />} />
+        </Route>
+        {/* {store.isAvailable && ( */}
+        <Route path="/client" element={<ClientLayout />}>
+          <Route path=":userId/:storeId">
+            <Route path="" element={<Navigate to="main" />} />
+            <Route path="main" element={<ClientMain />} />
+            <Route path="menu" element={<ClientMenu />} />
+            <Route path="select-list" element={<ClientSelectList />} />
           </Route>
-          {store.isAvailable && (
-            <Route path="/client" element={<ClientLayout />}>
-              <Route path=":userId/:storeId">
-                <Route path="" element={<Navigate to="main" />} />
-                <Route path="main" element={<ClientMain />} />
-                <Route path="menu" element={<ClientMenu />} />
-                <Route path="select-list" element={<ClientSelectList />} />
-              </Route>
-            </Route>
-          )}
-        </>
-      )}
+        </Route>
+        {/* )} */}
+      </>
+      {/* )} */}
       {/* TODO: private router로 변경하면 login이 동작하지 않습니다. 왜냐하면
       isLogin이 true이기 때문입니다. login이 전부 끝난 다음에 접근하지 못하도록 변경해야합니다.*/}
       <Route path="/" element={<LandingLayout />}>
