@@ -1,26 +1,23 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate, useParams } from "react-router-dom";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { useQueryClient } from "react-query";
 
-import useModalHook from "@/lib/hooks/useModalHook";
-import PageHeaderMessage from "@/Components/Layouts/Header/PageHeader";
+import { useModalHook } from "@/lib/hooks";
 import {
   useStoreQuery,
   useToggleStoreIsAvailableMutation
 } from "@/lib/generated/graphql";
 import graphqlReqeustClient from "@/lib/graphqlRequestClient";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { userState } from "@/lib/state/userState";
-import { storeState } from "@/lib/state/storeState";
-import { useQueryClient } from "react-query";
-import ToggleButton from "@/Components/Buttons/ToggleButton";
-import { Body2 } from "@/lib/styles/mixin";
+import { userState, storeState } from "@/lib/state";
+import { Body2 } from "@/lib/styles";
 import {
   customerImage,
   manageProductImage,
   orderStateImage
 } from "@/lib/images";
-import { StoreOpenCloseModal } from "../Modals";
+import { StoreOpenCloseModal, ToggleButton, PageHeader } from "@/Components";
 
 const Wrapper = styled.div``;
 
@@ -252,7 +249,7 @@ const AdminManageProductMain = () => {
         isStoreOpen={store.isAvailable}
       />
       <Header>
-        <PageHeaderMessage header="관리자 메뉴" message={store.name} />
+        <PageHeader header="관리자 메뉴" message={store.name} />
         <BusinessInfoContainer>
           <span>
             <strong>사업자 번호</strong> {store.code}

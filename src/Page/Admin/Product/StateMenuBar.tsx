@@ -11,8 +11,7 @@ import {
 import Modal from "@/Components/Modals/Modal";
 import useModalHook from "@/lib/hooks/useModalHook";
 import { SubTitle2 } from "@/lib/styles/mixin";
-import ButtonDefaultStyle from "@/Components/Buttons/ButtonDefault";
-import DeleteModalChildren from "../Modals/ProductDeleteModal/ProductDeleteModal";
+import { ButtonDefault, ProductDeleteModal } from "@/Components";
 
 const MenuBarContainer = styled.div`
   display: flex;
@@ -44,11 +43,11 @@ const MenuBarContainer = styled.div`
   }
 `;
 
-const ConfirmButton = styled(ButtonDefaultStyle)`
+const ConfirmButton = styled(ButtonDefault)`
   background-color: ${(props) => props.theme.color.error500};
 `;
 
-const CancelButton = styled(ButtonDefaultStyle)`
+const CancelButton = styled(ButtonDefault)`
   background-color: ${(props) => props.theme.color.gray400};
   color: ${(props) => props.theme.color.fontColorWhite};
   margin-right: 0.3rem;
@@ -78,7 +77,7 @@ const StateMenuBar = () => {
     <>
       {isModal && selectOption.options === "delete" && (
         <Modal strach={true}>
-          <DeleteModalChildren setIsModal={setIsModal} />
+          <ProductDeleteModal setIsModal={setIsModal} />
         </Modal>
       )}
       <MenuBarContainer>

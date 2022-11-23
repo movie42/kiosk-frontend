@@ -88,32 +88,6 @@ export const Item = styled.li`
     }
   }
 `;
-export const ModalChildren = styled.div`
-  display: flex;
-  flex-direction: column;
-  button {
-    cursor: pointer;
-    font-size: 2rem;
-    border: 0;
-    padding: 0.8rem 1.3rem;
-    border-radius: 0.5rem;
-    color: ${(props) => props.theme.color.fontColorWhite};
-    &:not(:first-child) {
-      margin-left: 0.8rem;
-    }
-  }
-  .button-container {
-    display: flex;
-    justify-items: flex-end;
-    align-self: flex-end;
-  }
-  .cancel-button {
-    background-color: ${(props) => props.theme.color.gray400};
-  }
-  .confirm-button {
-    background-color: ${(props) => props.theme.color.error700};
-  }
-`;
 
 export const Form = styled.form`
   width: 100%;

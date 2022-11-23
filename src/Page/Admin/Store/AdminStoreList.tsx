@@ -10,9 +10,13 @@ import graphqlReqeustClient from "@/lib/graphqlRequestClient";
 import { storesState, storeStateProps } from "@/lib/state";
 import PageHeaderMessage from "@/Components/Layouts/Header/PageHeader";
 
-import { StoreOpenCloseModal, StoreDeleteModal } from "../Modals";
 import useModalHook from "@/lib/hooks/useModalHook";
-import ToggleButton from "@/Components/Buttons/ToggleButton";
+import {
+  ToggleButton,
+  StoreOpenCloseModal,
+  StoreDeleteModal
+} from "@/Components";
+
 import { AddStoreButton, Header, Item, StoreList, Wrapper } from "./styles";
 
 const AdminStoreList = () => {

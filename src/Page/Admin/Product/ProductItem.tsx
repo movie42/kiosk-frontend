@@ -6,11 +6,14 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
-import ButtonDefaultStyle from "@/Components/Buttons/ButtonDefault";
-import ToggleButton from "@/Components/Buttons/ToggleButton";
-import Images from "@/Components/Images/Images";
-import Noimage from "@/Components/Images/Noimage";
-import Modal from "@/Components/Modals/Modal";
+import {
+  Modal,
+  ProductUpdateModal,
+  ButtonDefault,
+  ToggleButton,
+  Images,
+  Noimage
+} from "@/Components";
 import { useToggleProductIsAvailableMutation } from "@/lib/generated/graphql";
 import graphqlReqeustClient from "@/lib/graphqlRequestClient";
 import {
@@ -24,7 +27,6 @@ import {
 
 import useModalHook from "@/lib/hooks/useModalHook";
 import { translateLocalCurrency } from "@/lib/utils";
-import { ProductUpdateModal } from "../Modals/ProductUpdateModal";
 
 const ItemWrapper = styled(motion.li)`
   position: relative;
@@ -134,7 +136,7 @@ const UpdateButtonWrapper = styled.div`
   }
 `;
 
-const UpdateProductButton = styled(ButtonDefaultStyle)`
+const UpdateProductButton = styled(ButtonDefault)`
   font-size: 1.5rem;
 `;
 

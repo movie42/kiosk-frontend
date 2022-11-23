@@ -1,1 +1,1 @@
-export {Logout} from "./Admin"
+export { Logout } from "./Admin";
