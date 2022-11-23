@@ -1,52 +1,15 @@
-import React from "react";
-import { RegisterOptions } from "react-hook-form";
-import Label from "./LabelDefault";
+import React, { forwardRef } from "react";
 
-interface IInputProps
-  extends React.DetailedHTMLProps<
-    React.InputHTMLAttributes<HTMLInputElement>,
-    HTMLInputElement
-  > {
-  register?: any;
-  registerOptions?: RegisterOptions;
-  fieldName?: string;
-  error?: string | undefined | null;
+interface IInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  ref?: React.LegacyRef<HTMLInputElement>;
 }
 
-const InputDefault = ({
-  register,
-  registerOptions,
-  fieldName,
-  error,
-  ...props
-}: IInputProps) => {
-  if (!register) {
-    return (
-      <>
-        <input {...props} />
-        {error && <Label className="error-label">{error}</Label>}
-      </>
-    );
+const InputDefault = forwardRef(
+  (props: IInputProps, ref?: React.LegacyRef<HTMLInputElement>) => {
+    return <input ref={ref} {...props} />;
   }
+);
 
-  if (!fieldName) {
-    return (
-      <>
-        <input {...props} />
-        {error && <Label className="error-label">{error}</Label>}
-      </>
-    );
-  }
-
-  return (
-    <>
-      <input
-        {...props}
-        {...register(`${fieldName}.${props.name}`, registerOptions)}
-      />
-      {error && <Label className="error-label">{error}</Label>}
-    </>
-  );
-};
+InputDefault.displayName = "InputDefault";
 
 export default InputDefault;

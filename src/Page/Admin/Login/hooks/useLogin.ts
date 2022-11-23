@@ -1,11 +1,11 @@
-import { useQueryClient } from "react-query";
+// import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
 import { useLoginMutation } from "../../../../lib/generated/graphql";
 import graphqlReqeustClient from "../../../../lib/graphqlRequestClient";
 import { userState } from "../../../../lib/state/userState";
 
 const useLogin = () => {
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
 
   const setIsUser = useSetRecoilState(userState);
 
@@ -21,7 +21,7 @@ const useLogin = () => {
         accessToken,
         refreshToken
       }));
-      queryClient.invalidateQueries("me");
+      // queryClient.invalidateQueries("me");
     }
     // onError: (error) => {
     //   handleErrorMessage(error, setErrorState);

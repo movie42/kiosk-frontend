@@ -7,17 +7,17 @@ import {
   useAddProductOptionsMutation,
   useUpdateProductMutation,
   useUpdateProductOptionsMutation
-} from "../../../lib/generated/graphql";
-import graphqlReqeustClient from "../../../lib/graphqlRequestClient";
-import { ProductListValues } from "../../../lib/state/productItemState";
+} from "../../../../lib/generated/graphql";
+import graphqlReqeustClient from "../../../../lib/graphqlRequestClient";
+import { ProductListValues } from "../../../../lib/state/productItemState";
 import {
   selectOptionState,
   Option,
   updateProductState
-} from "../../../lib/state/productItemState";
-import { userState } from "../../../lib/state/userState";
+} from "../../../../lib/state/productItemState";
+import { userState } from "../../../../lib/state/userState";
 
-import UpdateModalForm from "../Product/UpdateModalForm";
+import UpdateModalForm from "../../Product/UpdateModalForm";
 
 const Wrapper = styled.div`
   display: grid;

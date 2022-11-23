@@ -22,7 +22,7 @@ import {
 import { userState } from "../../../lib/state/userState";
 import useModalHook from "../../../lib/utils/customHooks/useModalHook";
 import { translateLocalCurrency } from "../../../lib/utils/helper/translateLocalCurrency";
-import UpdateModalChildren from "../Modal/UpdateModalChildren";
+import UpdateModalChildren from "../Store/Modals/UpdateModalChildren";
 
 const ItemWrapper = styled(motion.li)`
   position: relative;

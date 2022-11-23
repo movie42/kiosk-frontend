@@ -1,64 +1,28 @@
-import PageHeaderMessage from "../../../Components/PageHeader";
-
 import { MdAddCircle } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
+
+import { MdDelete, MdCreate } from "react-icons/md";
+
 import { userState } from "../../../lib/state/userState";
-import {
-  useMyStoresQuery,
-  useRemoveStoreMutation,
-  useToggleStoreIsAvailableMutation
-} from "../../../lib/generated/graphql";
+import { useMyStoresQuery } from "../../../lib/generated/graphql";
 import graphqlReqeustClient from "../../../lib/graphqlRequestClient";
 import { storesState, storeStateProps } from "../../../lib/state/storeState";
+import PageHeaderMessage from "../../../Components/PageHeader";
 
-import { useEffect, useState } from "react";
-import Modal from "../../../Components/Modals/Modal";
-import IsOpenModalChildren from "../Modal/IsOpenModalChildren";
-import { useQueryClient } from "react-query";
-import { MdDelete, MdCreate } from "react-icons/md";
+import { StoreOpenCloseModal, StoreDeleteModal } from "../Modals";
 import useModalHook from "../../../lib/utils/customHooks/useModalHook";
 import ToggleButton from "../../../Components/Buttons/ToggleButton";
-import {
-  AddStoreButton,
-  Header,
-  Item,
-  ModalChildren,
-  StoreList,
-  Wrapper
-} from "./styles";
+import { AddStoreButton, Header, Item, StoreList, Wrapper } from "./styles";
 
 const AdminStoreList = () => {
-  const [toggleState, setToggleState] = useState<boolean | undefined>(false);
-  const {
-    id: toggleId,
-    setId: setToggleId,
-    confirm: toggleConfirm,
-    setConfirm: setToggleConfirm,
-    isModal: isToggleModal,
-    setIsModal: setIsToggleModal
-  } = useModalHook();
-
-  const {
-    id: deleteItemId,
-    setId: setDeleteItemId,
-    confirm: deleteConfirm,
-    setConfirm: setDeleteConfirm,
-    isModal: isDeleteModal,
-    setIsModal: setIsDeleteModal
-  } = useModalHook();
-
+  const [store, setStore] = useRecoilState(storesState);
   const navigate = useNavigate();
   const user = useRecoilValue(userState);
-  const [store, setStore] = useRecoilState(storesState);
-  const queryClient = useQueryClient();
-
-  const { mutate: toggleStoreAvailableMutate } =
-    useToggleStoreIsAvailableMutation(graphqlReqeustClient(user.accessToken), {
-      onSuccess: () => {
-        queryClient.invalidateQueries("myStores");
-      }
-    });
+  const { isModal: isToggleModal, setIsModal: setIsToggleModal } =
+    useModalHook();
+  const { isModal: isDeleteModal, setIsModal: setIsDeleteModal } =
+    useModalHook();
 
   const { isSuccess: isStoreRequestSuccess } = useMyStoresQuery(
     graphqlReqeustClient(user.accessToken),
@@ -79,92 +43,16 @@ const AdminStoreList = () => {
     }
   );
 
-  const { mutate: deleteMutate } = useRemoveStoreMutation(
-    graphqlReqeustClient(user.accessToken),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries("myStores");
-      }
-    }
-  );
-  const toggleHandler = (id: string | undefined) => {
-    if (id) {
-      setToggleId(id);
-    }
+  const toggleHandler = () => {
     setIsToggleModal(true);
   };
 
-  const deleteModalHandler = (id: string | undefined) => {
-    if (id) {
-      setDeleteItemId(id);
-    }
+  const deleteModalHandler = () => {
     setIsDeleteModal(true);
   };
 
-  useEffect(() => {
-    if (toggleConfirm) {
-      toggleStoreAvailableMutate({ id: Number(toggleId) });
-      setToggleConfirm(false);
-      setToggleId(null);
-    }
-  }, [
-    toggleConfirm,
-    toggleStoreAvailableMutate,
-    setToggleConfirm,
-    setToggleId,
-    toggleId
-  ]);
-
-  useEffect(() => {
-    if (deleteConfirm) {
-      deleteMutate({ id: Number(deleteItemId) });
-      setDeleteItemId(null);
-      setIsDeleteModal(false);
-    }
-  }, [
-    deleteConfirm,
-    deleteMutate,
-    setDeleteItemId,
-    setIsDeleteModal,
-    deleteItemId
-  ]);
-
   return (
     <Wrapper>
-      {isToggleModal && (
-        <Modal>
-          <IsOpenModalChildren
-            toggleState={toggleState}
-            setModal={setIsToggleModal}
-            setConfirm={setToggleConfirm}
-          />
-        </Modal>
-      )}
-      {isDeleteModal && (
-        <Modal>
-          <ModalChildren>
-            <h1>삭제하시겠습니까?</h1>
-            <p>삭제하면 가게에 등록된 모든 정보가 함께 삭제됩니다.</p>
-            <div className="button-container">
-              <button
-                className="cancel-button"
-                onClick={() => {
-                  setIsDeleteModal(false);
-                  setDeleteItemId(null);
-                }}
-              >
-                돌아가기
-              </button>
-              <button
-                className="confirm-button"
-                onClick={() => setDeleteConfirm(true)}
-              >
-                삭제하기
-              </button>
-            </div>
-          </ModalChildren>
-        </Modal>
-      )}
       <Header>
         <PageHeaderMessage
           header="가게목록"
@@ -184,6 +72,17 @@ const AdminStoreList = () => {
         <StoreList>
           {store.map((item) => (
             <Item key={item.id}>
+              <StoreOpenCloseModal
+                itemId={item.id}
+                isStoreOpen={item.isAvailable}
+                isToggleModal={isToggleModal}
+                setIsToggleModal={setIsToggleModal}
+              />
+              <StoreDeleteModal
+                itemId={item.id}
+                isDeleteModal={isDeleteModal}
+                setIsDeleteModal={setIsDeleteModal}
+              />
               <Link to={`/admin/${user.id}/store/${item.id}/product/main`}>
                 <h3>{item.name}</h3>
               </Link>
@@ -192,10 +91,7 @@ const AdminStoreList = () => {
                   <ToggleButton
                     size={4}
                     isActive={item.isAvailable}
-                    onClick={() => {
-                      toggleHandler(item.id);
-                      setToggleState(item.isAvailable);
-                    }}
+                    onClick={toggleHandler}
                   />
                 </div>
                 <div className="various-button-box">
@@ -210,7 +106,7 @@ const AdminStoreList = () => {
                   </button>
                   <button
                     className="delete-button"
-                    onClick={() => deleteModalHandler(item.id)}
+                    onClick={deleteModalHandler}
                   >
                     <MdDelete />
                     <span>삭제</span>
