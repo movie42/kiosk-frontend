@@ -9,7 +9,7 @@ import {
 } from "../../../lib/state/productItemState";
 
 import Modal from "../../../Components/Modals/Modal";
-import DeleteModalChildren from "../Modal/DeleteModalChildren";
+import DeleteModalChildren from "../Store/Modals/DeleteModalChildren";
 import useModalHook from "../../../lib/utils/customHooks/useModalHook";
 import { SubTitle2 } from "../../../lib/styles/mixin";
 import ButtonDefaultStyle from "../../../Components/Buttons/ButtonDefault";

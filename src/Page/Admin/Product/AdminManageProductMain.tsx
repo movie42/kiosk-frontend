@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate, useParams } from "react-router-dom";
-import Modal from "../../../Components/Modals/Modal";
-import IsOpenModalChildren from "../Modal/IsOpenModalChildren";
+
 import useModalHook from "../../../lib/utils/customHooks/useModalHook";
 import PageHeaderMessage from "../../../Components/PageHeader";
 import {
@@ -21,6 +20,7 @@ import {
   manageProductImage,
   orderStateImage
 } from "../../../lib/images";
+import { StoreOpenCloseModal } from "../Modals";
 
 const Wrapper = styled.div``;
 
@@ -190,9 +190,7 @@ const AdminManageProductMain = () => {
   const [store, setStore] = useRecoilState(storeState);
   const { accessToken } = useRecoilValue(userState);
 
-  const [toggleState, setToggleState] = useState(store.isAvailable);
-  const { id, setId, isModal, setIsModal, confirm, setConfirm } =
-    useModalHook();
+  const { isModal, setIsModal, confirm, setConfirm } = useModalHook();
 
   const { mutate: toggleStoreAvailableMutate } =
     useToggleStoreIsAvailableMutation(graphqlReqeustClient(accessToken), {
@@ -205,7 +203,7 @@ const AdminManageProductMain = () => {
   useStoreQuery(
     graphqlReqeustClient(accessToken),
     {
-      id: Number(id)
+      id: Number(userId)
     },
     {
       onSuccess: (data) => {
@@ -239,30 +237,20 @@ const AdminManageProductMain = () => {
   };
 
   useEffect(() => {
-    if (storeId) {
-      setId(storeId);
-    }
-  }, []);
-
-  useEffect(() => {
     if (confirm) {
-      toggleStoreAvailableMutate({ id: Number(id) });
-      setToggleState((preValue) => !preValue);
+      toggleStoreAvailableMutate({ id: Number(userId) });
       setConfirm(false);
     }
   }, [confirm]);
 
   return (
     <Wrapper>
-      {isModal && (
-        <Modal>
-          <IsOpenModalChildren
-            toggleState={toggleState}
-            setModal={setIsModal}
-            setConfirm={setConfirm}
-          />
-        </Modal>
-      )}
+      <StoreOpenCloseModal
+        itemId={userId}
+        isToggleModal={isModal}
+        setIsToggleModal={setIsModal}
+        isStoreOpen={store.isAvailable}
+      />
       <Header>
         <PageHeaderMessage header="관리자 메뉴" message={store.name} />
         <BusinessInfoContainer>
