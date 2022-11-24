@@ -1,5 +1,14 @@
 import { atom } from "recoil";
-import { IOrderSelectedItem } from "../../Page/Client/ClientMenu";
+export interface IOrderSelectedItem {
+  productId: number;
+  name: string;
+  optionId: number;
+  option?: string;
+  price: number;
+  totalCount: number;
+  totalPrice: number;
+  imageUrl?: string | null | undefined;
+}
 
 export interface ProductOptions {
   id: number;
