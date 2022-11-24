@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import { useNavigate, useParams } from "react-router-dom";
 import { Modal } from "../../../Components";
 import PaymentModal from "./PaymentModal";
@@ -12,22 +12,15 @@ import {
 } from "./styles";
 import OrderStateBar from "../OrderStateBar";
 import MenuListItem from "./MenuListItem";
+import useHandleSelectMenu from "./hooks/useHandleSelectMenu";
 
 const ClientSelectList = () => {
   const navigate = useNavigate();
   const { userId, storeId } = useParams();
-  const [totalSelectMenu, setTotalSelectMenu] =
-    useRecoilState(selectMenuListState);
+  const totalSelectMenu = useRecoilValue(selectMenuListState);
   const [isModal, setIsModal] = useState(false);
 
-  const deleteAll = () => {
-    const confirm = window.confirm("전체 주문을 취소하시겠습니까?");
-    if (confirm) {
-      setTotalSelectMenu([]);
-      alert("전체 주문이 취소되었습니다");
-      navigate(`/client/${userId}/${storeId}/menu`);
-    }
-  };
+  const { deleteAll } = useHandleSelectMenu();
 
   return (
     <>
@@ -49,7 +42,9 @@ const ClientSelectList = () => {
       </MenuListWrapper>
       {totalSelectMenu.length !== 0 && (
         <ResetButtonWrapper>
-          <ResetButton onClick={deleteAll}>전체삭제</ResetButton>
+          <ResetButton onClick={() => deleteAll(userId, storeId)}>
+            전체삭제
+          </ResetButton>
         </ResetButtonWrapper>
       )}
       <OrderStateBar
