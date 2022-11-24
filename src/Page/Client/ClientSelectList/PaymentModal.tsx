@@ -17,7 +17,7 @@ import {
   ConfirmButton,
   CancelButton
 } from "./styles";
-import { OrderProductInput, AddOrderInput, IPaymentModalProps } from "./types";
+import { OrderProductInput, AddOrderInput, IPaymentModalProps } from "../types";
 
 const PaymentModal: React.FC<IPaymentModalProps> = ({ setIsModal }) => {
   const navigate = useNavigate();
@@ -32,7 +32,7 @@ const PaymentModal: React.FC<IPaymentModalProps> = ({ setIsModal }) => {
   // print done
   const [isPrint, setIsPrint] = useState(false);
   // handle print receipt
-  const [_, setPrintReceipt] = useState(false);
+  const [, setPrintReceipt] = useState(false);
 
   // set time out
 

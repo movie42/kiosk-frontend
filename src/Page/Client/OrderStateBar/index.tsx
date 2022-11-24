@@ -1,16 +1,9 @@
 import React from "react";
 import { translateLocalCurrency } from "../../../lib/utils/helper/translateLocalCurrency";
+import { TotalOrderMenu } from "../types";
 import { MenuBarContainer } from "./styles";
 
-interface ITotalOrderMenu {
-  totalCount: number;
-  totalPrice: number;
-  label: string;
-  goBack?: (value: any) => void;
-  handler?: (value: any) => void;
-}
-
-const OrderStateBar: React.FC<ITotalOrderMenu> = ({
+const OrderStateBar: React.FC<TotalOrderMenu> = ({
   totalCount = 0,
   totalPrice = 0,
   label,

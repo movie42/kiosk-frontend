@@ -13,17 +13,6 @@ import MenuList from "./MenuList";
 
 import { Header, Container, SubTitle } from "./styles";
 
-export interface IOrderSelectedItem {
-  productId: number;
-  name: string;
-  optionId: number;
-  option?: string;
-  price: number;
-  totalCount: number;
-  totalPrice: number;
-  imageUrl?: string | null | undefined;
-}
-
 const ClientMenu = () => {
   const navigate = useNavigate();
   const { userId, storeId } = useParams();
