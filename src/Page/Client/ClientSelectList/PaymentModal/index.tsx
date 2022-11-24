@@ -1,8 +1,7 @@
-/* eslint-disable */
-
-import React, { useState } from "react";
+import React from "react";
 import { useParams } from "react-router-dom";
 import { IPaymentModalProps } from "../../types";
+import useHandleReceipt from "../hooks/useHandleReceipt";
 import useTimer from "../hooks/useTimer";
 import OrderConfirm from "./OrderConfirm";
 import PrintReceipt from "./PrintReceipt";
@@ -10,22 +9,18 @@ import ProceedPayment from "./ProceedPayment";
 
 const PaymentModal: React.FC<IPaymentModalProps> = ({ setIsModal }) => {
   const { userId, storeId } = useParams();
-  const [isPaid, setIsPaid] = useState(false);
-  const [orderNumber, setOrderNumber] = useState(0);
-  const [isPrint, setIsPrint] = useState(false);
-  const [, setPrintReceipt] = useState(false);
+
+  const {
+    isPaid,
+    isPrint,
+    setIsPrint,
+    orderNumber,
+    setOrderNumber,
+    handleReceipt,
+    closeReceipt
+  } = useHandleReceipt();
 
   const { remain } = useTimer(isPaid, setIsPrint);
-
-  const handleReceipt = (receipt: boolean) => {
-    setPrintReceipt(receipt);
-    setIsPrint(true);
-  };
-
-  const closeReceipt = () => {
-    setPrintReceipt(true);
-    setIsPaid(true);
-  };
 
   if (!isPaid)
     return (
