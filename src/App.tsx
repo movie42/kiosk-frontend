@@ -1,14 +1,15 @@
 import { useEffect } from "react";
 import { BrowserRouter } from "react-router-dom";
 import { useRecoilState } from "recoil";
+
 import Router from "./Routers/Routers";
-import { userState } from "./lib/state/userState";
-import useGetUserInfoFromLocalStorage from "./lib/utils/customHooks/useGetUserStateFromLocalStorage";
+import { userState } from "./lib/state";
+import { useGetUserStateFromLocalStorage } from "./lib/hooks";
 
 function App() {
   const [user, setUser] = useRecoilState(userState);
 
-  const { getUser } = useGetUserInfoFromLocalStorage();
+  const { getUser } = useGetUserStateFromLocalStorage();
 
   useEffect(() => {
     const storageUser = getUser();

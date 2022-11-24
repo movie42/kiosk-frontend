@@ -2,11 +2,11 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { RecoilRoot } from "recoil";
 import { ThemeProvider } from "styled-components";
-import { theme } from "./lib/styles/theme";
-import { GlobalStyle } from "../src/lib/styles/GlobalStyle";
-import App from "./App";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
+
+import { theme, GlobalStyle } from "./lib/styles";
+import App from "./App";
 
 const queryClient = new QueryClient();
 

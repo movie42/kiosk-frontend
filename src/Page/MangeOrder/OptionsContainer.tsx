@@ -9,11 +9,11 @@ import { useForm } from "react-hook-form";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 
-import ButtonDefaultStyle from "../../Components/Buttons/ButtonDefault";
-import InputDefault from "../../Components/Form/InputDefault";
-import PageHeaderMessage from "../../Components/PageHeader";
-import { Headline2, Headline3 } from "../../lib/styles/mixin";
-import { orderStatusState, OrderStatusType } from "../../lib/state/orderState";
+import ButtonDefaultStyle from "@/Components/Buttons/ButtonDefault";
+import InputDefault from "@/Components/Form/InputDefault";
+import PageHeaderMessage from "@/Components/Layouts/Header/PageHeader";
+import { Headline2, Headline3 } from "@/lib/styles/mixin";
+import { orderStatusState, OrderStatusType } from "@/lib/state";
 
 const OptionContainer = styled(motion.div)`
   position: relative;
@@ -134,15 +134,13 @@ const OptionsContainer = ({
       <PageHeaderMessage header="주문관리" />
       <form onSubmit={searchOrder}>
         <SearchingInput
-          register={register}
-          registerOptions={{
+          type="number"
+          placeholder="주문번호를 입력해주세요."
+          {...register("searchOrder", {
             max: 3000,
             min: 0,
             onChange: (e) => setSearchTerm(e.currentTarget.value)
-          }}
-          type="number"
-          name="searchOrder"
-          placeholder="주문번호를 입력해주세요."
+          })}
         />
         <button style={{ visibility: "hidden" }}>제출</button>
       </form>

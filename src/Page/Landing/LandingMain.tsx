@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { Headline1 } from "../../lib/styles/mixin";
-import ButtonDefaultStyle from "../../Components/Buttons/ButtonDefault";
+import { Headline1 } from "@/lib/styles/mixin";
+import ButtonDefaultStyle from "@/Components/Buttons/ButtonDefault";
 
 const Wrapper = styled.div`
   width: 100%;

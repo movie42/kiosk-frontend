@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import Loading from "../../../Components/Loading";
-import { MeQuery, useMeQuery } from "../../../lib/generated/graphql";
-import graphqlReqeustClient from "../../../lib/graphqlRequestClient";
-import { userState } from "../../../lib/state/userState";
-import useSetUserInfoToLocalStorage from "../../../lib/utils/customHooks/useSetUser";
+
+import { Loading } from "@/Components";
+import { MeQuery, useMeQuery } from "@/lib/generated/graphql";
+import graphqlReqeustClient from "@/lib/graphqlRequestClient";
+import { userState } from "@/lib/state";
+import { useSetUserInfoToLocalStorage } from "@/lib/hooks";
 
 const AdminLoadingAndGetUser = () => {
   const navigate = useNavigate();

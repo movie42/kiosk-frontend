@@ -5,24 +5,28 @@ import { useQueryClient } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import ButtonDefaultStyle from "../../../Components/Buttons/ButtonDefault";
-import ToggleButton from "../../../Components/Buttons/ToggleButton";
-import Images from "../../../Components/Images/Images";
-import Noimage from "../../../Components/Images/Noimage";
-import Modal from "../../../Components/Modals/Modal";
-import { useToggleProductIsAvailableMutation } from "../../../lib/generated/graphql";
-import graphqlReqeustClient from "../../../lib/graphqlRequestClient";
-import { ProductListValues } from "../../../lib/state/productItemState";
+
 import {
+  Modal,
+  ProductUpdateModal,
+  ButtonDefault,
+  ToggleButton,
+  Images,
+  Noimage
+} from "@/Components";
+import { useToggleProductIsAvailableMutation } from "@/lib/generated/graphql";
+import graphqlReqeustClient from "@/lib/graphqlRequestClient";
+import {
+  ProductListValues,
   Option,
   selectOptionState,
   selectProductListState,
-  updateProductState
-} from "../../../lib/state/productItemState";
-import { userState } from "../../../lib/state/userState";
-import useModalHook from "../../../lib/utils/customHooks/useModalHook";
-import { translateLocalCurrency } from "../../../lib/utils/helper/translateLocalCurrency";
-import UpdateModalChildren from "../Modal/UpdateModalChildren";
+  updateProductState,
+  userState
+} from "@/lib/state";
+
+import useModalHook from "@/lib/hooks/useModalHook";
+import { translateLocalCurrency } from "@/lib/utils";
 
 const ItemWrapper = styled(motion.li)`
   position: relative;
@@ -132,7 +136,7 @@ const UpdateButtonWrapper = styled.div`
   }
 `;
 
-const UpdateProductButton = styled(ButtonDefaultStyle)`
+const UpdateProductButton = styled(ButtonDefault)`
   font-size: 1.5rem;
 `;
 
@@ -217,7 +221,7 @@ const ProductItem = ({ productData }: IProductItemProps) => {
     <>
       {isModal && (
         <Modal strach={true}>
-          <UpdateModalChildren setIsModal={setIsModal} />
+          <ProductUpdateModal setIsModal={setIsModal} />
         </Modal>
       )}
       {productData.map((product) => (

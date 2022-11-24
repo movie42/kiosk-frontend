@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { Headline1, Headline2, Body1 } from "../../lib/styles/mixin";
-import ButtonDefaultStyle from "../../Components/Buttons/ButtonDefault";
+import { Headline1, Headline2, Body1 } from "@/lib/styles/mixin";
+import ButtonDefaultStyle from "@/Components/Buttons/ButtonDefault";
 import { useNavigate } from "react-router-dom";
 import { termsOfService, privacyPolicy } from "./Agreement/AgreementContent";
 import { useState } from "react";

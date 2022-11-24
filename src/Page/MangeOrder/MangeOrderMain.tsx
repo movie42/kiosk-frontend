@@ -1,17 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { orderStateForFrontend } from "../../lib/state/orderState";
-import OrderStateList from "./OrderStateList";
+import { useParams } from "react-router-dom";
+
 import {
   OrderStatusType,
   useGetProductsQuery,
   useGetOrdersQuery
-} from "../../lib/generated/graphql";
-import { userState } from "../../lib/state/userState";
-import graphqlReqeustClient from "../../lib/graphqlRequestClient";
-import { useParams } from "react-router-dom";
-
+} from "@/lib/generated/graphql";
+import { userState, orderStateForFrontend } from "@/lib/state";
+import graphqlReqeustClient from "@/lib/graphqlRequestClient";
+import OrderStateList from "./OrderStateList";
 import OptionsContainer from "./OptionsContainer";
 
 const Wrapper = styled.div``;
