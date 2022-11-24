@@ -18,12 +18,8 @@ const ClientMenu = () => {
   const { userId, storeId } = useParams();
 
   const [isModal, setIsModal] = useState(false);
-
-  // select menu item & add count (in Modal)
   const [count, setCount] = useState(0);
   const [selectedItem, setSelectedItem] = useState<ProductListValues[]>([]);
-
-  // make order list
   const [orderItem, setOrderItem] = useRecoilState(selectMenuListState);
   const menuList = useRecoilValue(productListState);
 

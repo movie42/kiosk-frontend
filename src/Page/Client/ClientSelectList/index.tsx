@@ -42,7 +42,7 @@ const ClientSelectList = () => {
       <MenuListWrapper>
         {totalSelectMenu.map((item) => (
           <MenuListItem
-            key={`${item.productId}_${item.name}_${item.optionId || ""}`}
+            key={`${item.productId}_${item.optionId || ""}`}
             item={item}
           />
         ))}

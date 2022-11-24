@@ -8,6 +8,10 @@ export interface IPaymentModalProps {
   setIsModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+export interface MenuListItemProps {
+  item: IOrderSelectedItem;
+}
+
 export interface OrderProductInput {
   productId: number;
   amount: number;
