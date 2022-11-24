@@ -12,10 +12,10 @@ const Button = styled(motion.button)`
   background-color: ${(props) => props.theme.color.gray300};
 `;
 
-type IButtonDefaultStyle = HTMLMotionProps<"button">;
+type IButtonDefault = HTMLMotionProps<"button">;
 
-const ButtonDefaultStyle: React.FC<IButtonDefaultStyle> = ({ ...props }) => {
+const ButtonDefault: React.FC<IButtonDefault> = ({ ...props }) => {
   return <Button {...props}>{props.children}</Button>;
 };
 
-export default ButtonDefaultStyle;
+export default ButtonDefault;
