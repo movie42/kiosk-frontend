@@ -9,16 +9,13 @@ import {
   selectMenuListState
 } from "../../../lib/state/productItemState";
 import { translateLocalCurrency } from "../../../lib/utils/helper/translateLocalCurrency";
+import { MenuListItemProps } from "../types";
 import {
   AddCountButton,
   DeleteButton,
   MinusCountButton,
   MenuListItemBox
 } from "./styles";
-
-interface MenuListItemProps {
-  item: IOrderSelectedItem;
-}
 
 const MenuListItem: React.FC<MenuListItemProps> = ({ item }) => {
   const [totalSelectMenu, setTotalSelectMenu] =

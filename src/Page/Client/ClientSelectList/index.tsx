@@ -16,17 +16,10 @@ import MenuListItem from "./MenuListItem";
 const ClientSelectList = () => {
   const navigate = useNavigate();
   const { userId, storeId } = useParams();
-  // order menu list
   const [totalSelectMenu, setTotalSelectMenu] =
     useRecoilState(selectMenuListState);
-
-  // hide modal
   const [isModal, setIsModal] = useState(false);
 
-  // for Order State bar handler
-  const handlePayment = () => {
-    setIsModal(true);
-  };
   const deleteAll = () => {
     const confirm = window.confirm("전체 주문을 취소하시겠습니까?");
     if (confirm) {
@@ -70,7 +63,7 @@ const ClientSelectList = () => {
         )}
         label="주문하기"
         goBack={() => navigate(`/client/${userId}/${storeId}/menu`)}
-        handler={handlePayment}
+        handler={() => setIsModal(() => true)}
       />
     </>
   );
