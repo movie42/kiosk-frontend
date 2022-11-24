@@ -1,24 +1,17 @@
 import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { useNavigate, useParams } from "react-router-dom";
-import { IoIosAddCircle } from "react-icons/io";
-import { AiFillMinusCircle } from "react-icons/ai";
-import { Images, Modal, Noimage } from "../../../Components";
+import { Modal } from "../../../Components";
 import PaymentModal from "./PaymentModal";
 import { selectMenuListState } from "../../../lib/state/productItemState";
-import { IOrderSelectedItem } from "../ClientMenu";
 import {
   Header,
   MenuListWrapper,
-  MenuListItem,
-  DeleteButton,
   ResetButtonWrapper,
-  ResetButton,
-  AddCountButton,
-  MinusCountButton
+  ResetButton
 } from "./styles";
-import { translateLocalCurrency } from "../../../lib/utils/helper/translateLocalCurrency";
 import OrderStateBar from "../OrderStateBar";
+import MenuListItem from "./MenuListItem";
 
 const ClientSelectList = () => {
   const navigate = useNavigate();
@@ -34,62 +27,6 @@ const ClientSelectList = () => {
   const handlePayment = () => {
     setIsModal(true);
   };
-
-  const handleAddCount = (current: IOrderSelectedItem) => {
-    const [selected] = totalSelectMenu
-      .filter((menu) => menu.productId === current.productId)
-      .filter((menu) => menu.option === current.option);
-    const newCount = selected.totalCount + 1;
-    setTotalSelectMenu((item) =>
-      [
-        ...item.filter((el) => el !== selected),
-        {
-          ...selected,
-          totalCount: newCount,
-          totalPrice: selected.price * newCount
-        }
-      ].sort((a: any, b: any) => {
-        if (a.productId === b.productId) {
-          return a?.option > b?.option ? 1 : -1;
-        }
-        return a.productId - b.productId;
-      })
-    );
-  };
-
-  const handleMinusCount = (current: IOrderSelectedItem) => {
-    const [selected] = totalSelectMenu
-      .filter((menu) => menu.productId === current.productId)
-      .filter((menu) => menu.option === current.option);
-    const newCount = selected.totalCount - 1;
-    if (newCount < 1) {
-      return;
-    }
-    setTotalSelectMenu((item) =>
-      [
-        ...item.filter((el) => el !== selected),
-        {
-          ...selected,
-          totalCount: newCount,
-          totalPrice: selected.price * newCount
-        }
-      ].sort((a: any, b: any) => {
-        if (a.productId === b.productId) {
-          return a?.option > b?.option ? 1 : -1;
-        }
-        return a.productId - b.productId;
-      })
-    );
-  };
-  // delete item from list
-  const handleDelete = (current: IOrderSelectedItem) => {
-    const [filtered] = totalSelectMenu.filter(
-      (el) => el.productId === current.productId && el.option === current.option
-    );
-    const isDelete = window.confirm("정말 삭제하시겠습니까?");
-    if (isDelete)
-      setTotalSelectMenu((item) => [...item.filter((el) => el !== filtered)]);
-  };
   const deleteAll = () => {
     const confirm = window.confirm("전체 주문을 취소하시겠습니까?");
     if (confirm) {
@@ -98,6 +35,7 @@ const ClientSelectList = () => {
       navigate(`/client/${userId}/${storeId}/menu`);
     }
   };
+
   return (
     <>
       {isModal && (
@@ -109,39 +47,11 @@ const ClientSelectList = () => {
         <h1>주문 목록</h1>
       </Header>
       <MenuListWrapper>
-        {totalSelectMenu.map((item, i) => (
-          <MenuListItem key={`${item.productId}_${i}`}>
-            {item.imageUrl ? (
-              <div style={{ padding: "0.5rem 1rem 0.5rem 0" }}>
-                <Images src={item.imageUrl} alt={item.name} />
-              </div>
-            ) : (
-              <Noimage />
-            )}
-            <div>
-              <h2>{item.name}</h2>
-              {item.option && <p>선택옵션: {item.option}</p>}
-              <p>
-                주문수량:
-                <MinusCountButton onClick={() => handleMinusCount(item)}>
-                  <AiFillMinusCircle />
-                </MinusCountButton>
-                {item.totalCount}
-                <AddCountButton onClick={() => handleAddCount(item)}>
-                  <IoIosAddCircle />
-                </AddCountButton>
-              </p>
-            </div>
-            <div>
-              <p className="price">
-                총 가격:&nbsp;
-                {translateLocalCurrency(item.totalPrice, "ko-KR")}원
-              </p>
-              <DeleteButton onClick={() => handleDelete(item)}>
-                삭제하기
-              </DeleteButton>
-            </div>
-          </MenuListItem>
+        {totalSelectMenu.map((item) => (
+          <MenuListItem
+            key={`${item.productId}_${item.name}_${item.optionId || ""}`}
+            item={item}
+          />
         ))}
       </MenuListWrapper>
       {totalSelectMenu.length !== 0 && (
