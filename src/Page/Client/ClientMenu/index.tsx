@@ -1,17 +1,16 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { Modal } from "../../../Components";
+import { Modal } from "@/Components";
 import {
   productListState,
   ProductListValues,
   selectMenuListState
-} from "../../../lib/state/productItemState";
-import OrderStateBar from "../OrderStateBar";
+} from "@/lib/state";
 import MenuItemModal from "./MenuItemModal";
 import MenuList from "./MenuList";
-
 import { Header, Container, SubTitle } from "./styles";
+import OrderStateBar from "../OrderStateBar";
 
 const ClientMenu = () => {
   const navigate = useNavigate();

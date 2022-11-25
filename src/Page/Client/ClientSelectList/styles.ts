@@ -1,12 +1,12 @@
 import styled from "styled-components";
-import { ButtonDefaultStyle } from "../../../Components";
+import { ButtonDefault } from "@/Components";
 import {
   Body1,
   Headline1,
   Headline2,
   SubTitle1,
   SubTitle2
-} from "../../../lib/styles/mixin";
+} from "@/lib/styles";
 
 export const Header = styled.div`
   display: flex;
@@ -64,24 +64,24 @@ export const MenuListItemBox = styled.div`
     ${SubTitle2}
   }
 `;
-export const DeleteButton = styled(ButtonDefaultStyle)`
+export const DeleteButton = styled(ButtonDefault)`
   background-color: ${(props) => props.theme.color.gray300};
 `;
 export const ResetButtonWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
 `;
-export const ResetButton = styled(ButtonDefaultStyle)`
+export const ResetButton = styled(ButtonDefault)`
   text-align: center;
   background-color: ${(props) => props.theme.color.primary500};
 `;
-export const AddCountButton = styled(ButtonDefaultStyle)`
+export const AddCountButton = styled(ButtonDefault)`
   background-color: unset;
   color: ${(props) => props.theme.color.primary500};
   font-size: 2.3rem;
   vertical-align: middle;
 `;
-export const MinusCountButton = styled(ButtonDefaultStyle)`
+export const MinusCountButton = styled(ButtonDefault)`
   background-color: unset;
   color: ${(props) => props.theme.color.error500};
   font-size: 2.3rem;
@@ -126,11 +126,11 @@ export const BtnGroup = styled.div`
   text-align: center;
   margin-top: 1rem;
 `;
-export const ConfirmButton = styled(ButtonDefaultStyle)`
+export const ConfirmButton = styled(ButtonDefault)`
   background-color: ${(props) => props.theme.color.primary500};
   margin: 0 0.5rem;
 `;
-export const CancelButton = styled(ButtonDefaultStyle)`
+export const CancelButton = styled(ButtonDefault)`
   background-color: ${(props) => props.theme.color.gray300};
   margin: 0 0.5rem;
 `;

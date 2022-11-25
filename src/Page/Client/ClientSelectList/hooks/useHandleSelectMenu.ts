@@ -3,7 +3,7 @@ import { useRecoilState } from "recoil";
 import {
   IOrderSelectedItem,
   selectMenuListState
-} from "../../../../lib/state/productItemState";
+} from "@/lib/state/productItemState";
 
 const useHandleSelectMenu = () => {
   const navigate = useNavigate();

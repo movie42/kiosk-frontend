@@ -1,8 +1,8 @@
-import { OrderStatusType } from "../../lib/state/orderState";
+import { OrderStatusType } from "@/lib/state";
 import {
   IOrderSelectedItem,
   ProductListValues
-} from "../../lib/state/productItemState";
+} from "@/lib/state/productItemState";
 
 export interface IPaymentModalProps {
   setIsModal: React.Dispatch<React.SetStateAction<boolean>>;

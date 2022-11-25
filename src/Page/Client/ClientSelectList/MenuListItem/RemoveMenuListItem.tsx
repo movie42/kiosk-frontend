@@ -1,5 +1,5 @@
 import React from "react";
-import { translateLocalCurrency } from "../../../../lib/utils/helper/translateLocalCurrency";
+import { translateLocalCurrency } from "@/lib/utils";
 import { MenuListItemProps } from "../../types";
 import useHandleSelectMenu from "../hooks/useHandleSelectMenu";
 import { DeleteButton } from "../styles";

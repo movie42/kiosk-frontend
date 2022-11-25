@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { Headline1, SubTitle1 } from "../../../lib/styles/mixin";
-import { MenuButtonDefault } from "../../Admin/Product/AdminManageProductMain";
+import { Headline1, SubTitle1 } from "@/lib/styles";
+import { MenuButtonDefault } from "@/Page/Admin/Product/AdminManageProductMain";
 
 export const Header = styled.div`
   display: flex;

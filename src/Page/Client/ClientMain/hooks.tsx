@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
-import { orderType } from "../../../lib/state/orderState";
+import { orderType } from "@/lib/state";
 
 interface ParamTypes {
   userId: string | undefined;

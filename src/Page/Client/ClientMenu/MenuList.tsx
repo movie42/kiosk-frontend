@@ -1,13 +1,9 @@
 import React from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { Images, Loading, Noimage } from "../../../Components";
-import { useGetProductsQuery } from "../../../lib/generated/graphql";
-import graphqlReqeustClient from "../../../lib/graphqlRequestClient";
-import {
-  productListState,
-  ProductListValues
-} from "../../../lib/state/productItemState";
-import { userState } from "../../../lib/state/userState";
+import { productListState, ProductListValues, userState } from "@/lib/state";
+import graphqlReqeustClient from "@/lib/graphqlRequestClient";
+import { useGetProductsQuery } from "@/lib/generated/graphql";
+import { Images, Loading, Noimage } from "@/Components";
 import { Item } from "./styles";
 
 interface MenuListProps {

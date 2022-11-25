@@ -1,19 +1,10 @@
 /* eslint-disable */
-
 import React from "react";
 import { useRecoilValue } from "recoil";
-import {
-  OrderType,
-  useAddOrderMutation
-} from "../../../../lib/generated/graphql";
-import graphqlReqeustClient from "../../../../lib/graphqlRequestClient";
-import { orderType } from "../../../../lib/state/orderState";
-import { selectMenuListState } from "../../../../lib/state/productItemState";
-import { userState } from "../../../../lib/state/userState";
-import {
-  RequestPayParams,
-  RequestPayResponse
-} from "../../../../lib/types/Payment";
+import { OrderType, useAddOrderMutation } from "@/lib/generated/graphql";
+import graphqlReqeustClient from "@/lib/graphqlRequestClient";
+import { orderType, selectMenuListState, userState } from "@/lib/state";
+import { RequestPayResponse, RequestPayParams } from "@/lib/types/Payment";
 import { AddOrderInput, OrderProductInput } from "../../types";
 import {
   MenuBox,

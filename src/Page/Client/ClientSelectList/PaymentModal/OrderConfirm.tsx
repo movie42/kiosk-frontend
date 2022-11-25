@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
-import { selectMenuListState } from "../../../../lib/state/productItemState";
+import { selectMenuListState } from "@/lib/state";
 import { PaymentBox, BtnGroup, ConfirmButton } from "../styles";
 
 interface ConfirmProps {
