@@ -1,3 +1,15 @@
+export interface IStoreFormProps {
+  name: string;
+  code?: string;
+  phone: string;
+  address: string;
+  addFail?: string;
+}
+
+export interface IAdminMenuProps {
+  isActive?: boolean;
+  image?: string;
+}
 export interface IUserProps {
   email: string;
   password: string;

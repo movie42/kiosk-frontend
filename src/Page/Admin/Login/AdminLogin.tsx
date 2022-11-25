@@ -7,7 +7,6 @@ import { EMAIL_REX } from "@/lib/constant/constant";
 import { userState } from "@/lib/state/userState";
 
 import AdminLoadingAndGetUser from "./AdminLoadingAndGetUser";
-import { IUserProps } from "./interface";
 import {
   ActionContainer,
   FormContainer,
@@ -17,6 +16,7 @@ import {
 } from "./styles";
 import { useLogin } from "./hooks";
 import { useRecoilValue } from "recoil";
+import { IUserProps } from "../interface";
 
 const AdminMain = () => {
   const { mutate } = useLogin();
