@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 
 import { InputDefault, LabelDefault, Loading } from "@/Components";
 import { useGetStore, useLoadingComplete, useUpdateStore } from "../hooks";
-import { IStoreFormProps } from "../interface";
+import { IStoreFormProps } from "../../interface";
 import { Form, InputContainer } from "../styles";
 import StoreUpdateStatusBar from "./StoreUpdateStatusBar";
 

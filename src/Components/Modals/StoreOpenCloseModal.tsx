@@ -38,6 +38,7 @@ const StoreOpenCloseModal = ({
     useToggleStoreIsAvailableMutation(graphqlReqeustClient(user.accessToken), {
       onSuccess: () => {
         queryClient.invalidateQueries("myStores");
+        queryClient.invalidateQueries("store");
       }
     });
 
