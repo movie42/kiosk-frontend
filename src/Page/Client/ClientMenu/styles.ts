@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { ButtonDefaultStyle } from "../../../Components";
-import { Headline1, SubTitle2 } from "../../../lib/styles/mixin";
+import { ButtonDefault } from "@/Components";
+import { Headline1, SubTitle2 } from "@/lib/styles";
 
 export const Header = styled.div`
   display: flex;
@@ -139,7 +139,7 @@ export const ItemNameContainer = styled.div`
     margin-left: 0.5rem;
   }
 `;
-export const OptionButton = styled(ButtonDefaultStyle)<{ selected?: boolean }>`
+export const OptionButton = styled(ButtonDefault)<{ selected?: boolean }>`
   background-color: ${(props) =>
     props.selected ? props.theme.color.primary800 : props.theme.color.gray300};
   margin-right: 1rem;
@@ -155,12 +155,12 @@ export const OrderContainer = styled.div`
 export const OptionContainer = styled.div`
   display: flex;
 `;
-export const CancelButton = styled(ButtonDefaultStyle)`
+export const CancelButton = styled(ButtonDefault)`
   background-color: ${(props) => props.theme.color.gray300};
   padding: 0.8rem;
   font-family: "Noto Sans KR";
 `;
-export const OrderButton = styled(ButtonDefaultStyle)`
+export const OrderButton = styled(ButtonDefault)`
   background-color: ${(props) => props.theme.color.primary800};
   padding: 0.8rem;
   font-family: "Noto Sans KR";

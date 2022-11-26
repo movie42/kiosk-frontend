@@ -1,16 +1,16 @@
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
 import { useNavigate, useParams } from "react-router-dom";
-import { Modal } from "../../../Components";
+import { selectMenuListState } from "@/lib/state";
+import { Modal } from "@/Components";
+import OrderStateBar from "../OrderStateBar";
 import PaymentModal from "./PaymentModal";
-import { selectMenuListState } from "../../../lib/state/productItemState";
 import {
   Header,
   MenuListWrapper,
   ResetButtonWrapper,
   ResetButton
 } from "./styles";
-import OrderStateBar from "../OrderStateBar";
 import MenuListItem from "./MenuListItem";
 import useHandleSelectMenu from "./hooks/useHandleSelectMenu";
 

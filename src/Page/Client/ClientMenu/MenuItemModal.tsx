@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { IoIosAddCircle } from "react-icons/io";
 import { AiFillMinusCircle } from "react-icons/ai";
-import { translateLocalCurrency } from "../../../lib/utils/helper/translateLocalCurrency";
-import Noimage from "../../../Components/Images/Noimage";
-import Images from "../../../Components/Images/Images";
+import { translateLocalCurrency } from "@/lib/utils";
+import { Images, Noimage } from "@/Components";
 import { AddCountButton, MinusCountButton } from "../ClientSelectList/styles";
+import { IMenuItemModalProps } from "../types";
 import {
   ItemNameContainer,
   Wrapper,
@@ -16,7 +16,6 @@ import {
   Title,
   ProductCount
 } from "./styles";
-import { IMenuItemModalProps } from "../types";
 
 const MenuItemModal: React.FC<IMenuItemModalProps> = ({
   setIsModal,

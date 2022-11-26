@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { restaurantImage, takeoutImage } from "../../../lib/images";
+import { restaurantImage, takeoutImage } from "@/lib/images";
 import { useNavigateHereToGo } from "./hooks";
 import { Header, OrderingMethod, OrderingButton, Wrapper } from "./styles";
 

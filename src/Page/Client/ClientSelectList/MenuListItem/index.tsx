@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { Images, Noimage } from "../../../../Components";
+import { Images, Noimage } from "@/Components";
 import { MenuListItemProps } from "../../types";
 import { MenuListItemBox } from "../styles";
 import MenuListItemDetail from "./MenuListItemDetail";

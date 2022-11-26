@@ -1,5 +1,5 @@
 import React from "react";
-import { translateLocalCurrency } from "../../../lib/utils/helper/translateLocalCurrency";
+import { translateLocalCurrency } from "@/lib/utils";
 import { TotalOrderMenu } from "../types";
 import { MenuBarContainer } from "./styles";
 

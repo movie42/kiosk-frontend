@@ -1,15 +1,12 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
-
 import { userState, storeState } from "@/lib/state";
-
 import {
   AdminLayout,
   ClientLayout,
   LandingLayout,
   AdminManageProductLayout
 } from "@/Components";
-
 import Login from "@/Page/Admin/Login/AdminLogin";
 import AdminManageProductAddItem from "@/Page/Admin/Product/AdminManageProductAddItem";
 import AdminManageProductItemList from "@/Page/Admin/Product/AdminManageProductItemList";
