@@ -34,7 +34,8 @@ const Router = () => {
       <Route path="/admin" element={<AdminLayout />}>
         <Route path=":userId">
           <Route path="store">
-            <Route index element={<AdminStoreList />} />
+            <Route path="" element={<Navigate to="list" />} />
+            <Route path="list" element={<AdminStoreList />} />
             <Route path="create" element={<AdminStoreCreate />} />
             <Route path=":storeId">
               <Route path="update" element={<AdminStoreUpdate />} />
@@ -47,7 +48,7 @@ const Router = () => {
         element={<AdminManageProductLayout />}
       >
         <Route path=":productId" element={<AdminProductDetail />} />
-        <Route index element={<AdminManageProductMain />} />
+        <Route path="main" element={<AdminManageProductMain />} />
         <Route path="manage-product" element={<AdminManageProductItemList />} />
         <Route path="manage-order" element={<MangeOrderMain />} />
         <Route path="add-product" element={<AdminManageProductAddItem />} />
