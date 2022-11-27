@@ -1,11 +1,15 @@
 /* eslint-disable */
 import { Images, Noimage } from "@/Components";
-import { MenuListItemProps } from "../../types";
+import { IOrderSelectedItem } from "@/lib/state/productItemState";
 import { MenuListItemBox } from "../styles";
 import MenuListItemDetail from "./MenuListItemDetail";
 import RemoveMenuListItem from "./RemoveMenuListItem";
 
-const MenuListItem: React.FC<MenuListItemProps> = ({ item }) => {
+interface MenuListItemProps {
+  item: IOrderSelectedItem;
+}
+
+const MenuListItem = ({ item }: MenuListItemProps) => {
   return (
     <MenuListItemBox>
       {item.imageUrl ? (

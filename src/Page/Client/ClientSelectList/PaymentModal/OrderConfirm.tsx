@@ -9,11 +9,8 @@ interface ConfirmProps {
   userId: string | undefined;
   storeId: string | undefined;
 }
-const OrderConfirm: React.FC<ConfirmProps> = ({
-  orderNumber,
-  userId,
-  storeId
-}) => {
+
+const OrderConfirm = ({ orderNumber, userId, storeId }: ConfirmProps) => {
   const navigate = useNavigate();
   const setOrderList = useSetRecoilState(selectMenuListState);
 

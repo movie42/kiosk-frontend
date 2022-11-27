@@ -11,7 +11,7 @@ interface MenuListProps {
   selectHandler: (menuId: number) => void;
 }
 
-const MenuList: React.FC<MenuListProps> = ({ storeId, selectHandler }) => {
+const MenuList = ({ storeId, selectHandler }: MenuListProps) => {
   const [menuList, setMenuList] = useRecoilState(productListState);
   const { accessToken } = useRecoilValue(userState);
 

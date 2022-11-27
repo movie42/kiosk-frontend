@@ -21,12 +21,12 @@ interface PaymentProps {
   closeReceipt: () => void;
 }
 
-const ProceedPayment: React.FC<PaymentProps> = ({
+const ProceedPayment = ({
   storeId,
   setIsModal,
   setOrderNumber,
   closeReceipt
-}) => {
+}: PaymentProps) => {
   const ordertype = useRecoilValue(orderType);
   const orderList = useRecoilValue(selectMenuListState);
   const impkey = (process.env.REACT_APP_IMP as string) || "temporary";
