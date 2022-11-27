@@ -135,7 +135,7 @@ const UpdateModalForm = ({
           {...register("imageUrl")}
           style={{ visibility: "hidden" }}
         />
-        
+
         <AddThumbnail
           id="imageUploader"
           type="file"
