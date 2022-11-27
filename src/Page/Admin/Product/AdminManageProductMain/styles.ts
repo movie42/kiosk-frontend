@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { Body2 } from "@/lib/styles";
 import { IAdminMenuProps } from "../../interface";
 
@@ -62,7 +62,13 @@ export const MenuButtonDefault = styled.button<IAdminMenuProps>`
 
   &:hover {
     &::before {
-      transform: scale(1.2);
+      ${(props) => {
+        if (!props.disabled) {
+          return css`
+            transform: scale(1.2);
+          `;
+        }
+      }}
     }
   }
   ${({ theme }) => theme.device.tablet} {
@@ -87,20 +93,25 @@ export const MenuButtonWrapper = styled.div`
     }
   }
 `;
-export const BusinessManageButtonWrapper = styled.div`
-  display: grid;
-  grid-template-rows: repeat(auto-fit, 1fr);
-  gap: 0.8rem;
-  overflow: hidden;
-`;
 
-export const LinkToStaffWindowButton = styled(MenuButtonDefault)`
+export const LinkToStaffWindowButton = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
+  position: relative;
+  height: 100%;
+  width: 100%;
+  span {
+    display: inline-block;
+    font-weight: normal;
+    font-size: 1.2rem;
+    &:first-child {
+      font-size: 3rem;
+      font-weight: bold;
+    }
+  }
 `;
-
-export const LinkToProductManageWindowButton = styled(MenuButtonDefault)``;
 
 export const BusinessInfoContainer = styled.div`
   span {
@@ -125,34 +136,6 @@ export const BusinessInfoContainer = styled.div`
         grid-column: 1 / span 2;
         margin-left: 0;
       }
-    }
-  }
-`;
-
-export const LinkToCustomerWindowButton = styled(MenuButtonDefault)`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  background-color: ${(props) =>
-    props.isActive
-      ? props.theme.color.backgroundBlack100
-      : props.theme.color.gray300};
-
-  span {
-    display: inline-block;
-    font-weight: normal;
-    font-size: 1.2rem;
-    &:first-child {
-      font-size: 3rem;
-      font-weight: bold;
-    }
-  }
-  &:hover {
-    &::before {
-      ${(props) =>
-        props.isActive ? "transform: scale(1.2)" : "transform:scale(1)"}
     }
   }
 `;

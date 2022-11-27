@@ -1,115 +1,21 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
-import styled from "styled-components";
 
 import { Images, Noimage, Chart } from "@/Components";
 import { useGetProductsQuery } from "@/lib/generated/graphql";
 import graphqlReqeustClient from "@/lib/graphqlRequestClient";
-import { Headline2, SubTitle2 } from "@/lib/styles";
 import { ProductListValues, userState } from "@/lib/state";
 import { translateLocalCurrency } from "@/lib/utils";
-
-const Wrapper = styled.div`
-  box-sizing: border-box;
-  display: grid;
-  width: 100%;
-  height: calc(100vh - 7rem);
-  grid-template-columns: 1fr 1fr;
-  ${({ theme }) => theme.device.tablet} {
-    display: block;
-    grid-template-columns: unset;
-  }
-`;
-
-const ContainerDefaultStyle = styled.div`
-  box-sizing: border-box;
-  padding: 1rem;
-  h2 {
-    font-size: 1.8rem;
-    font-weight: 900;
-    color: ${({ theme }) => theme.color.primary700};
-    margin-bottom: 0.7rem;
-  }
-  .info-box {
-    display: flex;
-    align-items: center;
-    span,
-    ul {
-      ${SubTitle2};
-      margin-left: 1rem;
-      span,
-      li {
-        span {
-          &:not(:first-child) {
-            margin-left: 1rem;
-          }
-        }
-        margin: 0;
-      }
-    }
-    h3 {
-      ${Headline2};
-      line-height: 1.5;
-    }
-  }
-  .button-box {
-    display: flex;
-  }
-`;
-
-const BasicInfoContainer = styled.div`
-  display: grid;
-  grid-template-rows: 1fr 1fr;
-  ${({ theme }) => theme.device.tablet} {
-    grid-template-rows: unset;
-    grid-auto-rows: minmax(30rem, auto);
-  }
-  ${({ theme }) => theme.device.mobile} {
-    grid-auto-rows: unset;
-  }
-`;
-
-const ImageContainer = styled.div`
-  box-sizing: border-box;
-  padding: 1rem;
-  div {
-    overflow: hidden;
-    border-radius: 2rem;
-  }
-`;
-
-const InfoContainer = styled(ContainerDefaultStyle)`
-  .info-box {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    ul {
-      display: flex;
-      li {
-        font-weight: 700;
-        font-size: 2.4rem;
-        &:not(:first-child) {
-          margin-left: 1.4rem;
-        }
-      }
-    }
-    span {
-      font-size: 2rem;
-      strong {
-        font-size: 2.4rem;
-        font-weight: 700;
-      }
-    }
-  }
-`;
-const SalesInfoContainer = styled(BasicInfoContainer)``;
-const SalesInfoSummuryContainer = styled(ContainerDefaultStyle)`
-  div:first-child {
-    margin-bottom: 2rem;
-  }
-`;
-const SalesInfoGraphContainer = styled(ContainerDefaultStyle)``;
+import {
+  BasicInfoContainer,
+  ImageContainer,
+  InfoContainer,
+  SalesInfoContainer,
+  SalesInfoGraphContainer,
+  SalesInfoSummuryContainer,
+  Wrapper
+} from "./styles";
 
 const AdminProductDetail = () => {
   const { accessToken } = useRecoilValue(userState);

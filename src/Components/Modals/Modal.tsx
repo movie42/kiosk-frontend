@@ -7,7 +7,7 @@ import {
 export interface IModalProps {
   strach?: boolean;
   fullBox?: boolean;
-  children: JSX.Element;
+  children: React.ReactNode;
 }
 
 const Modal = ({ strach, fullBox, children }: IModalProps) => {

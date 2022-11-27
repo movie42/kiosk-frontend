@@ -1,7 +1,11 @@
 import { useForm } from "react-hook-form";
 
 import { InputDefault, LabelDefault, Loading } from "@/Components";
-import { useGetStore, useLoadingComplete, useUpdateStore } from "../hooks";
+import {
+  useGetStore,
+  useLoadingComplete,
+  useUpdateStore
+} from "@/Page/Admin/hooks";
 import { IStoreFormProps } from "../../interface";
 import { Form, InputContainer } from "../styles";
 import StoreUpdateStatusBar from "./StoreUpdateStatusBar";
@@ -19,7 +23,7 @@ const AdminStoreUpdate = () => {
 
   const onSubmit = handleSubmit((data) => {
     mutate({
-      id: Number(updateStore?.store?.id),
+      id: Number(updateStore?.id),
       name: data.name,
       address: data.address,
       phone: data.phone
@@ -50,7 +54,7 @@ const AdminStoreUpdate = () => {
                 id="code"
                 placeholder="사업자 번호를 입력해주세요."
                 {...register("code", {
-                  value: updateStore?.store?.code
+                  value: updateStore?.code
                 })}
               />
             </InputContainer>
@@ -60,7 +64,7 @@ const AdminStoreUpdate = () => {
                 id="name"
                 placeholder="가게 이름을 입력해주세요."
                 {...register("name", {
-                  value: updateStore?.store?.name,
+                  value: updateStore?.name,
                   required: "가게 이름이 꼭 있어야합니다."
                 })}
               />
@@ -71,7 +75,7 @@ const AdminStoreUpdate = () => {
                 id="address"
                 placeholder="주소를 입력해주세요."
                 {...register("address", {
-                  value: updateStore?.store?.address,
+                  value: updateStore?.address,
                   required: "주소가 꼭 있어야합니다."
                 })}
               />
@@ -82,7 +86,7 @@ const AdminStoreUpdate = () => {
                 id="phone"
                 placeholder="가게 대표 번호를 입력해주세요."
                 {...register("phone", {
-                  value: updateStore?.store?.phone,
+                  value: updateStore?.phone,
                   required: "대표 번호가 꼭 필요합니다."
                 })}
               />

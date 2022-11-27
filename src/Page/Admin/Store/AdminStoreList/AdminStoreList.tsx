@@ -1,5 +1,5 @@
 import { StoreList, Wrapper } from "../styles";
-import useGetMyStore from "../hooks/useGetMyStore";
+import { useGetMyStore } from "@/Page/Admin/hooks";
 import AdminStoreListHeader from "./AdminStoreListHeader";
 import AdminStoreListItem from "./AdminStoreListItem";
 

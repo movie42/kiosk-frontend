@@ -72,7 +72,6 @@ interface IUpdateModalFormProps {
 
 const UpdateModalForm = ({
   register,
-
   optionsRegister,
   optionsError,
   optionsFields,
@@ -124,6 +123,7 @@ const UpdateModalForm = ({
           <Images src={thumbnailImage} alt={productData?.name} />
         </ImageContainer>
       )}
+
       <FieldContainer>
         <LabelDefault>섬네일</LabelDefault>
         <AddThumbnailLabel htmlFor="imageUploader">
@@ -135,6 +135,7 @@ const UpdateModalForm = ({
           {...register("imageUrl")}
           style={{ visibility: "hidden" }}
         />
+
         <AddThumbnail
           id="imageUploader"
           type="file"
