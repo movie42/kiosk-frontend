@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 
 import {
@@ -50,7 +49,7 @@ export const ModalDefaultWrapper = styled.div`
   z-index: 30;
 `;
 
-export const ModalContainer: React.FC<IModalProps> = styled.div<IModalProps>`
+export const ModalContainer = styled.div<IModalProps>`
   display: flex;
   flex-direction: column;
   width: 60rem;

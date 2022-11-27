@@ -26,10 +26,10 @@ import {
 } from "./styles";
 
 const AdminManageProductMain = () => {
-  const { storeId } = useParams();
-  const { id: userId } = useRecoilValue(userState);
+  const { storeId, userId } = useParams();
   const { isModal, setIsModal } = useModalHook();
-
+  // const { id: userId } = useRecoilValue(userState);
+  console.log(storeId, userId);
   const navigate = useNavigate();
   const [store, setStore] = useRecoilState(storeState);
   const { accessToken } = useRecoilValue(userState);

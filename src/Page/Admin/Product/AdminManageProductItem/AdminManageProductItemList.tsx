@@ -1,9 +1,8 @@
 import { useEffect } from "react";
-import styled from "styled-components";
+
 import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
-import ButtonDefaultStyle from "@/Components/Buttons/ButtonDefault";
 import {
   ProductListValues,
   productListState,
@@ -21,61 +20,17 @@ import { useGetProductsQuery } from "@/lib/generated/graphql";
 import graphqlReqeustClient from "@/lib/graphqlRequestClient";
 
 import ProductItem from "./ProductItem";
-import StateMenuBar from "./StateMenuBar";
+import StateMenuBar from "../StateMenuBar/StateMenuBar";
 
 import { MdAddCircle, MdDelete } from "react-icons/md";
-
-const Container = styled.div<{ selectOption: boolean }>`
-  padding-bottom: ${({ selectOption }) => (selectOption ? "12rem;" : "3rem")};
-  ul.productList {
-    display: grid;
-    gap: 2rem;
-    grid-template-columns: repeat(4, 1fr);
-    grid-auto-rows: minmax(20rem, auto);
-    ${({ theme }) => theme.device.tablet} {
-      grid-template-columns: repeat(2, 1fr);
-    }
-    ${({ theme }) => theme.device.mobile} {
-      grid-template-columns: unset;
-    }
-  }
-`;
-const ManageOptionContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-  ${({ theme }) => theme.device.tablet} {
-    flex-wrap: wrap;
-  }
-  ${({ theme }) => theme.device.mobile} {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  align-items: center;
-`;
-const ButtonItemWrapper = styled.div`
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  font-size: 2.5rem;
-  &:not(:first-child) {
-    margin-left: 0.7rem;
-  }
-  button {
-    color: ${({ theme }) => theme.color.fontColorBlack};
-    background-color: unset;
-    padding: 0;
-    padding-left: 0.5rem;
-  }
-`;
-
-const CreateProductButton = styled(ButtonDefaultStyle)``;
-const DeleteProductButton = styled(ButtonDefaultStyle)``;
+import {
+  ButtonContainer,
+  ButtonItemWrapper,
+  Container,
+  CreateProductButton,
+  DeleteProductButton,
+  ManageOptionContainer
+} from "./styles";
 
 const AdminManageProductItemList = () => {
   const { storeId, userId } = useParams();

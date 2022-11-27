@@ -14,7 +14,7 @@ import {
   LoginLabel,
   Wrapper
 } from "./styles";
-import { useLogin } from "./hooks";
+import { useLogin } from "../hooks";
 import { useRecoilValue } from "recoil";
 import { IUserProps } from "../interface";
 

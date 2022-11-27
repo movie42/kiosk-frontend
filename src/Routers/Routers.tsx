@@ -8,15 +8,15 @@ import {
   AdminManageProductLayout
 } from "@/Components";
 import Login from "@/Page/Admin/Login/AdminLogin";
-import AdminManageProductAddItem from "@/Page/Admin/Product/AdminManageProductAddItem";
-import AdminManageProductItemList from "@/Page/Admin/Product/AdminManageProductItemList";
-import AdminMain from "@/Page/Admin/Product/AdminManageProductMain";
+import AdminManageProductAddItem from "@/Page/Admin/Product/AdminManageProductAddItem/AdminManageProductAddItem";
+import AdminManageProductItemList from "@/Page/Admin/Product/AdminManageProductItem/AdminManageProductItemList";
+import { AdminManageProductMain } from "@/Page/Admin/Product/AdminManageProductMain";
 import AdminStoreList from "@/Page/Admin/Store/AdminStoreList/AdminStoreList";
 import AdminStoreCreate from "@/Page/Admin/Store/AdminStoreCreate/AdminStoreCreate";
 import AdminStoreUpdate from "@/Page/Admin/Store/AdminStoreUpdate/AdminStoreUpdate";
 import AdminLoadingAndGetUser from "@/Page/Admin/Login/AdminLoadingAndGetUser";
-import Logout from "@/Page/Admin/Logout";
-import AdminProductDetail from "@/Page/Admin/Product/AdminProductDetail";
+import { Logout } from "@/Page/Admin/Logout";
+import { AdminProductDetail } from "@/Page/Admin/Product/AdminProductDetail";
 import MangeOrderMain from "@/Page/MangeOrder/MangeOrderMain";
 import ClientMain from "@/Page/Client/ClientMain";
 import ClientMenu from "@/Page/Client/ClientMenu";
@@ -50,7 +50,7 @@ const Router = () => {
             element={<AdminManageProductLayout />}
           >
             <Route path=":productId" element={<AdminProductDetail />} />
-            <Route path="main" element={<AdminMain />} />
+            <Route path="main" element={<AdminManageProductMain />} />
             <Route
               path="manage-product"
               element={<AdminManageProductItemList />}

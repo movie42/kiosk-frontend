@@ -6,14 +6,13 @@ import {
   ProductListValues,
   selectOptionState,
   selectProductListState,
-  Option
+  Option,
+  userState
 } from "@/lib/state";
-import Noimage from "@/Components/Images/Noimage";
 import { translateLocalCurrency } from "@/lib/utils";
 import { useRemoveProductsMutation } from "@/lib/generated/graphql";
 import graphqlReqeustClient from "@/lib/graphqlRequestClient";
-import { userState } from "@/lib/state/userState";
-import { LoadingBall, Images } from "@/Components";
+import { LoadingBall, Images, Noimage, Modal } from "@/Components";
 
 import {
   ButtonContainer,
@@ -88,15 +87,15 @@ const DeleteModalChildren = ({ setIsModal }: IDeleteModalChildrenProps) => {
   }, [isSuccess]);
 
   return (
-    <>
+    <Modal>
       <h1>삭제하기</h1>
-      {!isSuccess ? (
+      {!isSuccess && (
         <p>상품을 삭제하면 복구할 수 없습니다. 한 번 더 확인해주세요.</p>
-      ) : isSendingItem ? (
-        <p>{finalSelectedProduct.length}개의 상품을 삭제하고 있습니다.</p>
-      ) : (
-        <p>상품 삭제를 완료했습니다.</p>
       )}
+      {isSendingItem && (
+        <p>{finalSelectedProduct.length}개의 상품을 삭제하고 있습니다.</p>
+      )}
+      {isSuccess && !isSendingItem && <p>상품 삭제를 완료했습니다.</p>}
 
       <ItemWrapper>
         <ItemListContainer>
@@ -161,7 +160,7 @@ const DeleteModalChildren = ({ setIsModal }: IDeleteModalChildrenProps) => {
           </ConfirmButton>
         )}
       </ButtonContainer>
-    </>
+    </Modal>
   );
 };
 
