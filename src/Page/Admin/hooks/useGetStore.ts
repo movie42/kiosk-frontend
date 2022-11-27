@@ -5,12 +5,19 @@ import graphqlReqeustClient from "@/lib/graphqlRequestClient";
 import { userState } from "@/lib/state/userState";
 
 const useGetStore = () => {
-  const { accessToken } = useRecoilValue(userState);
-
   const { storeId } = useParams();
-  return useStoreQuery(graphqlReqeustClient(accessToken), {
-    id: Number(storeId)
-  });
+  const { accessToken } = useRecoilValue(userState);
+  return useStoreQuery(
+    graphqlReqeustClient(accessToken),
+    {
+      id: Number(storeId)
+    },
+    {
+      select: (data) => {
+        return data.store;
+      }
+    }
+  );
 };
 
 export default useGetStore;
