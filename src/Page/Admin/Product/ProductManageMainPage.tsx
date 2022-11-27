@@ -10,17 +10,18 @@ import {
 import { StoreOpenCloseModal, ToggleButton, PageHeader } from "@/Components";
 import {
   BusinessInfoContainer,
-  Header,
+  ProductMainPageHeader,
   LinkToStaffWindowButton,
-  Menu,
+  ProductMainPageMenu,
   MenuButtonDefault,
-  MenuButtonWrapper,
-  Wrapper
+  ProductMenuButtonContainer,
+  ProductMainContainer
 } from "./styles";
-import { useGetStore } from "@/Page/Admin/hooks";
-import { DefaultTheme, StyledComponent } from "styled-components";
 
-const AdminManageProductMain = () => {
+import { DefaultTheme, StyledComponent } from "styled-components";
+import { useGetStore } from "../hooks";
+
+const ProductManageMainPage = () => {
   const { storeId, userId } = useParams();
   const { isModal, setIsModal } = useModalHook();
   const { data: store } = useGetStore();
@@ -30,23 +31,23 @@ const AdminManageProductMain = () => {
   };
 
   return (
-    <Wrapper>
+    <ProductMainContainer>
       <StoreOpenCloseModal
-        itemId={userId}
+        itemId={storeId}
         isToggleModal={isModal}
         setIsToggleModal={setIsModal}
         isStoreOpen={store?.isAvailable}
       />
-      <Header>
+      <ProductMainPageHeader>
         <PageHeader header="관리자 메뉴" message={store?.name} />
         <StoreInfo
           code={store?.code}
           address={store?.address}
           phone={store?.phone}
         />
-      </Header>
-      <Menu>
-        <MenuButtonWrapper className="button-wrapper">
+      </ProductMainPageHeader>
+      <ProductMainPageMenu>
+        <ProductMenuButtonContainer className="button-wrapper">
           <div className="store-state-container">
             {store?.isAvailable ? (
               <p>가게를 닫으려면 버튼을 누르세요.</p>
@@ -62,14 +63,14 @@ const AdminManageProductMain = () => {
           <ManageProductMainPageLinkButton
             ChildComponent={LinkToStaffWindowButton}
             data-link="order"
-            to={`/client/${userId}/${storeId}`}
+            to={`/client/${userId}/${storeId}/main`}
             disabled={!store?.isAvailable}
             image={orderStateImage}
           >
             <span>고객 주문 화면</span>
             {store?.isAvailable && <span>현재 주문을 받고 있는 중입니다.</span>}
           </ManageProductMainPageLinkButton>
-        </MenuButtonWrapper>
+        </ProductMenuButtonContainer>
         <ManageProductMainPageLinkButton
           ChildComponent={LinkToStaffWindowButton}
           data-link="manage-order"
@@ -86,12 +87,12 @@ const AdminManageProductMain = () => {
         >
           상품 관리하기
         </ManageProductMainPageLinkButton>
-      </Menu>
-    </Wrapper>
+      </ProductMainPageMenu>
+    </ProductMainContainer>
   );
 };
 
-export default AdminManageProductMain;
+export default ProductManageMainPage;
 
 interface StoreInfoProps {
   code?: string;

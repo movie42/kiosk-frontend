@@ -1,16 +1,20 @@
 import { useForm } from "react-hook-form";
 
-import { InputDefault, LabelDefault, Loading } from "@/Components";
+import {
+  InputDefault,
+  LabelDefault,
+  Loading,
+  StoreUpdateStatusBar
+} from "@/Components";
 import {
   useGetStore,
   useLoadingComplete,
   useUpdateStore
 } from "@/Page/Admin/hooks";
-import { IStoreFormProps } from "../../interface";
-import { Form, InputContainer } from "../styles";
-import StoreUpdateStatusBar from "./StoreUpdateStatusBar";
+import { IStoreFormProps } from "../interface";
+import { Form, InputContainer } from "./styles";
 
-const AdminStoreUpdate = () => {
+const StoreUpdatePage = () => {
   const { data: updateStore, isLoading: isLoadingGetStore } = useGetStore();
   const { mutate, isSuccess } = useUpdateStore();
   const { isComplete, setIsComplete } = useLoadingComplete({ isSuccess });
@@ -104,4 +108,4 @@ const AdminStoreUpdate = () => {
   );
 };
 
-export default AdminStoreUpdate;
+export default StoreUpdatePage;

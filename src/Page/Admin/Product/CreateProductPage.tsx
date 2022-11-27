@@ -21,14 +21,14 @@ import { userState } from "@/lib/state";
 import {
   AddimageUrl,
   AddimageUrlLabel,
-  ButtonContainer,
   CancelButton,
-  Container,
+  CreateProductContainer,
   CreateButton,
   CreateProductHeader,
   ModalButtonContainer,
   ModalChildren,
-  OptionsField
+  OptionsField,
+  ButtonContainer
 } from "./styles";
 
 interface ProductDefaultValue {
@@ -42,7 +42,7 @@ interface ProductMutationValue extends ProductDefaultValue {
   storeId: number;
 }
 
-const AdminManageProductAddItem = () => {
+const CreateProductPage = () => {
   const { storeId, userId } = useParams();
   const { accessToken } = useRecoilValue(userState);
 
@@ -195,7 +195,7 @@ const AdminManageProductAddItem = () => {
           </ModalChildren>
         </Modal>
       )}
-      <Container>
+      <CreateProductContainer>
         <CreateProductHeader>
           <h2>상품 등록</h2>
         </CreateProductHeader>
@@ -288,9 +288,7 @@ const AdminManageProductAddItem = () => {
                 <TextareaDefault
                   id="description"
                   placeholder="상세 정보를 입력해주세요."
-                  name="description"
-                  register={register}
-                  fieldName={`product.${index}`}
+                  {...register(`product.${index}.description`)}
                 />
               </div>
             </fieldset>
@@ -303,9 +301,9 @@ const AdminManageProductAddItem = () => {
             <CreateButton onClick={onSubmit}>상품 등록</CreateButton>
           </div>
         </ButtonContainer>
-      </Container>
+      </CreateProductContainer>
     </>
   );
 };
 
-export default AdminManageProductAddItem;
+export default CreateProductPage;

@@ -1,12 +1,16 @@
 import { useForm } from "react-hook-form";
 
-import { Loading, LabelDefault, InputDefault } from "@/Components";
+import {
+  Loading,
+  LabelDefault,
+  InputDefault,
+  StoreCreateStatusBar
+} from "@/Components";
 import { useAddStore, useLoadingComplete } from "@/Page/Admin/hooks";
-import { IStoreFormProps } from "../../interface";
-import { Form, InputContainer } from "../styles";
-import StoreCreateStatusBar from "./StoreCreateStatusBar";
+import { IStoreFormProps } from "../interface";
+import { Form, InputContainer } from "./styles";
 
-const AdminStoreCreate = () => {
+const StoreCreatePage = () => {
   const {
     register,
     handleSubmit,
@@ -74,4 +78,4 @@ const AdminStoreCreate = () => {
   );
 };
 
-export default AdminStoreCreate;
+export default StoreCreatePage;

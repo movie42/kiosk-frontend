@@ -2,11 +2,10 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
-import { LabelDefault, PageHeader } from "@/Components";
+import { LabelDefault, PageHeader, AdminLoadingAndGetUser } from "@/Components";
 import { EMAIL_REX } from "@/lib/constant/constant";
 import { userState } from "@/lib/state/userState";
 
-import AdminLoadingAndGetUser from "./AdminLoadingAndGetUser";
 import {
   ActionContainer,
   FormContainer,
@@ -18,7 +17,7 @@ import { useLogin } from "../hooks";
 import { useRecoilValue } from "recoil";
 import { IUserProps } from "../interface";
 
-const AdminMain = () => {
+const Login = () => {
   const { mutate } = useLogin();
   const isUser = useRecoilValue(userState);
 
@@ -76,4 +75,4 @@ const AdminMain = () => {
   );
 };
 
-export default AdminMain;
+export default Login;

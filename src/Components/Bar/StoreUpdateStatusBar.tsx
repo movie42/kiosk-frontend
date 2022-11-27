@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { StatusBar } from "../styles";
+import { StatusBar } from "./styles";
 
 interface IStoreUpdateStatusBarProps {
   onSubmit: (

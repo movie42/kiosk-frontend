@@ -1,67 +1,8 @@
-import { ButtonDefault } from "@/Components";
+import { ButtonDefault } from "@/Components/Buttons";
 import { Option } from "@/lib/state";
+import { Headline3 } from "@/lib/styles";
 import { motion, Variants } from "framer-motion";
-import styled, { css } from "styled-components";
-
-export const Container = styled.div``;
-
-export const ProductList = styled.ul`
-  display: grid;
-  gap: 2rem;
-  grid-template-columns: repeat(4, 1fr);
-  grid-auto-rows: minmax(20rem, auto);
-  ${({ theme }) => theme.device.tablet} {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  ${({ theme }) => theme.device.mobile} {
-    grid-template-columns: unset;
-  }
-`;
-
-export const ManageOptionContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-  ${({ theme }) => theme.device.tablet} {
-    flex-wrap: wrap;
-  }
-  ${({ theme }) => theme.device.mobile} {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-`;
-
-export const ButtonContainer = styled.div<{ options: Option }>`
-  display: flex;
-  align-items: center;
-  ${({ options }) => {
-    if (options !== Option.NONE) {
-      return css`
-        visibility: hidden;
-      `;
-    }
-  }}
-`;
-
-export const ButtonItemWrapper = styled.div`
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  font-size: 2.5rem;
-  &:not(:first-child) {
-    margin-left: 0.7rem;
-  }
-  button {
-    color: ${({ theme }) => theme.color.fontColorBlack};
-    background-color: unset;
-    padding: 0;
-    padding-left: 0.5rem;
-  }
-`;
-
-export const CreateProductButton = styled(ButtonDefault)``;
-export const DeleteProductButton = styled(ButtonDefault)``;
+import styled from "styled-components";
 
 export const ItemWrapper = styled(motion.li)`
   position: relative;
@@ -108,28 +49,31 @@ export const Item = styled(motion.div)<{
         background-color: ${({ theme }) => theme.color.backgroundBlack60};
       }
     }
-    .item-info-container {
-      align-self: center;
-      padding: 0.8rem;
-      ${({ theme }) => theme.device.tablet} {
-        padding: 2rem;
-      }
-      h3 {
-        font-size: 3rem;
-        font-weight: bold;
-        margin-bottom: 0.6rem;
-      }
-      h4 {
-        font-size: 2rem;
-        align-self: end;
-      }
-    }
   }
 `;
+
+export const ProductInfoContainer = styled.div`
+  align-self: center;
+  padding: 0.8rem;
+  ${({ theme }) => theme.device.tablet} {
+    padding: 2rem;
+  }
+  h3 {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 0.6rem;
+  }
+  h4 {
+    font-size: 2rem;
+    align-self: end;
+  }
+`;
+
 export const ProductItemButtonContainer = styled.div`
   position: absolute;
   top: 0;
   left: 0;
+  right: 0;
   z-index: 11;
   display: flex;
   width: 100%;
@@ -145,7 +89,7 @@ export const ToggleContainer = styled.div`
   align-items: center;
   color: ${({ theme }) => theme.color.fontColorWhite};
   margin: 0.4rem;
-  p {
+  span {
     margin-left: 0.5rem;
     ${({ theme }) => theme.device.tablet} {
       font-size: 2.8rem;
@@ -197,3 +141,46 @@ export const imageBoxVariants: Variants = {
     }
   }
 };
+
+export const StoreListItemContainer = styled.li`
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: inherit;
+  position: relative;
+  border: 1px solid ${(props) => props.theme.color.gray300};
+  border-radius: 1rem;
+  padding: 0.5rem 1rem;
+  a {
+    text-decoration: none;
+    color: ${(props) => props.theme.color.fontColorBlack};
+  }
+  h3 {
+    ${Headline3};
+    padding: 0;
+    margin: 0;
+    ${({ theme }) => theme.device.mobile} {
+      font-size: 2.4rem;
+    }
+  }
+`;
+
+export const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  .various-button-box {
+    button {
+      cursor: pointer;
+      border: 0;
+      background-color: unset;
+      padding: 0;
+      font-size: 2rem;
+      color: ${(props) => props.theme.color.gray400};
+    }
+  }
+`;
+export const UpdateButton = styled(ButtonDefault)``;
+export const DeleteButton = styled(ButtonDefault)`
+  margin-left: 1.8rem;
+`;

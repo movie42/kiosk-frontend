@@ -14,10 +14,10 @@ import {
   SalesInfoContainer,
   SalesInfoGraphContainer,
   SalesInfoSummuryContainer,
-  Wrapper
+  ProductDetailPageContainer
 } from "./styles";
 
-const AdminProductDetail = () => {
+const ProductDetailPage = () => {
   const { accessToken } = useRecoilValue(userState);
   const [product, setProduct] = useState<ProductListValues>({
     id: 0,
@@ -56,7 +56,7 @@ const AdminProductDetail = () => {
   );
 
   return (
-    <Wrapper>
+    <ProductDetailPageContainer>
       <BasicInfoContainer>
         <ImageContainer>
           {product.imageUrl ? (
@@ -141,8 +141,8 @@ const AdminProductDetail = () => {
           <Chart />
         </SalesInfoGraphContainer>
       </SalesInfoContainer>
-    </Wrapper>
+    </ProductDetailPageContainer>
   );
 };
 
-export default AdminProductDetail;
+export default ProductDetailPage;

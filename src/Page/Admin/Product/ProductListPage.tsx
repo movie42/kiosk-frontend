@@ -3,21 +3,25 @@ import { useRecoilState } from "recoil";
 import { MdAddCircle, MdDelete } from "react-icons/md";
 
 import { Option, selectOptionState } from "@/lib/state";
-import { PageHeader, Loading } from "@/Components";
-import { useGetStore, useGetProduct } from "@/Page/Admin/hooks";
-import { StateMenuBar } from "../StateMenuBar";
 import {
-  ButtonContainer,
+  PageHeader,
+  Loading,
+  ProductListItem,
+  MenuStatusBar
+} from "@/Components";
+import { useGetStore, useGetProduct } from "@/Page/Admin/hooks";
+
+import {
+  ProductListPageButtonContainer,
   ButtonItemWrapper,
-  Container,
+  ProductListPageContainer,
   CreateProductButton,
   DeleteProductButton,
   ManageOptionContainer,
   ProductList
 } from "./styles";
-import ProductItem from "./ProductItem";
 
-const AdminManageProductItemList = () => {
+const ProductListPage = () => {
   const { storeId, userId } = useParams();
   const navigate = useNavigate();
   const { isLoading, data: products } = useGetProduct();
@@ -32,10 +36,10 @@ const AdminManageProductItemList = () => {
   return isLoading ? (
     <Loading title="등록한 상품을 불러오고 있습니다." />
   ) : (
-    <Container>
+    <ProductListPageContainer>
       <ManageOptionContainer>
         <PageHeader header="상품 관리" message={store?.name} />
-        <ButtonContainer options={options}>
+        <ProductListPageButtonContainer options={options}>
           <ButtonItemWrapper onClick={handleGoToAddProduct}>
             <MdAddCircle />
             <CreateProductButton>상품등록</CreateProductButton>
@@ -44,14 +48,17 @@ const AdminManageProductItemList = () => {
             <MdDelete />
             <DeleteProductButton>상품삭제</DeleteProductButton>
           </ButtonItemWrapper>
-        </ButtonContainer>
+        </ProductListPageButtonContainer>
       </ManageOptionContainer>
       <ProductList>
-        <ProductItem productData={products} />
+        {products &&
+          products.map((product) => (
+            <ProductListItem key={product.id} product={product} />
+          ))}
       </ProductList>
-      {options !== "none" && <StateMenuBar />}
-    </Container>
+      {options !== "none" && <MenuStatusBar />}
+    </ProductListPageContainer>
   );
 };
 
-export default AdminManageProductItemList;
+export default ProductListPage;

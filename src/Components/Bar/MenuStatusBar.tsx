@@ -8,10 +8,9 @@ import {
   selectProductListState,
   Option
 } from "@/lib/state";
-import Modal from "@/Components/Modals/Modal";
 import useModalHook from "@/lib/hooks/useModalHook";
 import { SubTitle2 } from "@/lib/styles/mixin";
-import { ButtonDefault, ProductDeleteModal } from "@/Components";
+import { ButtonDefault, ProductDeleteModal, Modal } from "@/Components";
 
 const MenuBarContainer = styled.div`
   display: flex;
@@ -53,7 +52,7 @@ const CancelButton = styled(ButtonDefault)`
   margin-right: 0.3rem;
 `;
 
-const StateMenuBar = () => {
+const MenuStatusBar = () => {
   const [selectOption, setSelectOption] = useRecoilState(selectOptionState);
   const { isModal, setIsModal } = useModalHook();
   const [selectList, setSelectList] = useRecoilState<ProductListValues[]>(
@@ -93,4 +92,4 @@ const StateMenuBar = () => {
   );
 };
 
-export default StateMenuBar;
+export default MenuStatusBar;
