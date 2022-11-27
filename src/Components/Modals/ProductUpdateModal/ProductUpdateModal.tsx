@@ -18,13 +18,10 @@ import {
   userState
 } from "@/lib/state";
 
-import {
-  ButtonContainer,
-  FormContainer,
-  StateInfoContainer,
-  Wrapper
-} from "./styles";
+import Modal from "../Modal";
 import UpdateModalForm from "./ProductUpdateForm";
+import { ButtonContainer, FormContainer, StateInfoContainer } from "./styles";
+import { ModalContainer } from "../styles";
 
 interface ISelectModalChildrenProps {
   setIsModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -152,8 +149,8 @@ const UpdateModalChildren = ({ setIsModal }: ISelectModalChildrenProps) => {
   }, [isAddOptionSuccess, isUpdateProductSuccess]);
 
   return (
-    <>
-      <Wrapper>
+    <Modal>
+      <ModalContainer>
         <StateInfoContainer>
           <h1>수정하기</h1>
           <p>
@@ -185,8 +182,8 @@ const UpdateModalChildren = ({ setIsModal }: ISelectModalChildrenProps) => {
             수정하기
           </button>
         </ButtonContainer>
-      </Wrapper>
-    </>
+      </ModalContainer>
+    </Modal>
   );
 };
 

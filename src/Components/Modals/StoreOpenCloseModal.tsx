@@ -1,11 +1,7 @@
 import React, { useEffect } from "react";
-import { useQueryClient } from "react-query";
-import { useRecoilValue } from "recoil";
 
 import { Modal } from "@/Components";
-import { useToggleStoreIsAvailableMutation } from "@/lib/generated/graphql";
-import graphqlReqeustClient from "@/lib/graphqlRequestClient";
-import { userState } from "@/lib/state/";
+
 import { useModalHook } from "@/lib/hooks";
 import {
   CancelButton,
@@ -13,6 +9,7 @@ import {
   StopConfirmButton,
   Wrapper
 } from "./styles";
+import { useUpdateStoreOpenCloseToggle } from "@/Page/Admin/hooks";
 
 interface IStoreOpenModalProps {
   itemId?: string;
@@ -32,15 +29,8 @@ const StoreOpenCloseModal = ({
   setIsToggleModal,
   isStoreOpen
 }: IStoreOpenModalProps) => {
-  const user = useRecoilValue(userState);
-  const queryClient = useQueryClient();
   const { mutate: toggleStoreAvailableMutate } =
-    useToggleStoreIsAvailableMutation(graphqlReqeustClient(user.accessToken), {
-      onSuccess: () => {
-        queryClient.invalidateQueries("myStores");
-        queryClient.invalidateQueries("store");
-      }
-    });
+    useUpdateStoreOpenCloseToggle();
 
   const { confirm: toggleConfirm, setConfirm: setToggleConfirm } =
     useModalHook();
@@ -48,6 +38,7 @@ const StoreOpenCloseModal = ({
   const handleModal = () => {
     setIsToggleModal(false);
   };
+
   const handleShopOpenState = () => {
     setToggleConfirm(true);
     setIsToggleModal(false);
