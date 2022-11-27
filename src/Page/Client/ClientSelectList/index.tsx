@@ -12,7 +12,7 @@ import {
   ResetButton
 } from "./styles";
 import MenuListItem from "./MenuListItem";
-import useHandleSelectMenu from "./hooks/useHandleSelectMenu";
+import useHandleSelectMenu from "../hooks/useHandleSelectMenu";
 
 const ClientSelectList = () => {
   const navigate = useNavigate();
