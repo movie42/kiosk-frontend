@@ -56,7 +56,8 @@ const Router = () => {
 
       <Route path="/client" element={<ClientLayout />}>
         <Route path=":userId/:storeId">
-          <Route index element={<ClientMain />} />
+          <Route path="" element={<Navigate to="main" />} />
+          <Route path="main" element={<ClientMain />} />
           <Route path="menu" element={<ClientMenu />} />
           <Route path="select-list" element={<ClientSelectList />} />
         </Route>
