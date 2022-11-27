@@ -1,28 +1,19 @@
 import { useEffect } from "react";
 
 import { useNavigate, useParams } from "react-router-dom";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { MdAddCircle, MdDelete } from "react-icons/md";
 
 import {
-  ProductListValues,
-  productListState,
   SelectOption,
   Option,
   selectOptionState,
-  selectProductListState,
-  userState,
-  storeState
+  selectProductListState
 } from "@/lib/state";
-import PageHeaderMessage from "@/Components/Layouts/Header/PageHeader";
-
-import Loading from "@/Components/Loading/Loading";
-import { useGetProductsQuery } from "@/lib/generated/graphql";
-import graphqlReqeustClient from "@/lib/graphqlRequestClient";
+import { PageHeader, Loading } from "@/Components";
 
 import ProductItem from "./ProductItem";
 import StateMenuBar from "../StateMenuBar/StateMenuBar";
-
-import { MdAddCircle, MdDelete } from "react-icons/md";
 import {
   ButtonContainer,
   ButtonItemWrapper,
@@ -31,45 +22,15 @@ import {
   DeleteProductButton,
   ManageOptionContainer
 } from "./styles";
+import { useGetStore, useGetProduct } from "@/Page/Admin/hooks";
 
 const AdminManageProductItemList = () => {
   const { storeId, userId } = useParams();
-  const { accessToken } = useRecoilValue(userState);
   const navigate = useNavigate();
-  const store = useRecoilValue(storeState);
-  const [productList, setProductList] = useRecoilState(productListState);
   const [selectOption, setSelectOption] = useRecoilState(selectOptionState);
   const setSelectProduct = useSetRecoilState(selectProductListState);
-
-  const { isLoading } = useGetProductsQuery(
-    graphqlReqeustClient(accessToken),
-    {
-      id: Number(storeId)
-    },
-    {
-      onSuccess: (data) => {
-        if (data.store?.products) {
-          const productList = data.store.products.map<ProductListValues>(
-            (value) => ({
-              id: Number(value.id),
-              isAvailable: value.isAvailable,
-              name: value.name,
-              price: value.price,
-              imageUrl: value.imageUrl,
-              description: value.description,
-              options: value.options.map((item) => ({
-                id: Number(item.id),
-                name: item.name
-              }))
-            })
-          );
-
-          setProductList(productList);
-        }
-      }
-    }
-  );
-
+  const { isLoading, data: products } = useGetProduct();
+  const { data: store } = useGetStore();
   const handleDeleteItem = () => {
     handleSelectOption({ options: Option.DELETE });
   };
@@ -91,7 +52,7 @@ const AdminManageProductItemList = () => {
     <>
       <Container selectOption={selectOption.options !== "none"}>
         <ManageOptionContainer>
-          <PageHeaderMessage header="상품 관리" message={store.name} />
+          <PageHeader header="상품 관리" message={store?.name} />
           {selectOption.options === "none" && (
             <ButtonContainer>
               <ButtonItemWrapper
@@ -112,7 +73,7 @@ const AdminManageProductItemList = () => {
           )}
         </ManageOptionContainer>
         <ul className="productList">
-          <ProductItem productData={productList} />
+          <ProductItem productData={products} />
         </ul>
       </Container>
       {selectOption.options !== "none" && <StateMenuBar />}

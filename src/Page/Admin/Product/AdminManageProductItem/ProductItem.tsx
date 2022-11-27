@@ -141,7 +141,7 @@ const UpdateProductButton = styled(ButtonDefault)`
 `;
 
 interface IProductItemProps extends React.HTMLAttributes<HTMLLIElement> {
-  productData: ProductListValues[];
+  productData?: ProductListValues[];
 }
 
 const boxVariants: Variants = {
@@ -204,17 +204,20 @@ const ProductItem = ({ productData }: IProductItemProps) => {
       );
       return;
     }
-
-    const [selectedProduct] = productData.filter(
-      (product) => product.id === productId
-    );
-    setSelectProduct((products) => [...products, selectedProduct]);
+    if (productData) {
+      const [selectedProduct] = productData.filter(
+        (product) => product.id === productId
+      );
+      setSelectProduct((products) => [...products, selectedProduct]);
+    }
   };
 
   const handleUpdateItem = (id: number) => {
-    const [updateItem] = productData.filter((value) => value.id === id);
-    setSelectUpdateProduct(updateItem);
-    setIsModal(true);
+    if (productData) {
+      const [updateItem] = productData.filter((value) => value.id === id);
+      setSelectUpdateProduct(updateItem);
+      setIsModal(true);
+    }
   };
 
   return (
@@ -224,7 +227,7 @@ const ProductItem = ({ productData }: IProductItemProps) => {
           <ProductUpdateModal setIsModal={setIsModal} />
         </Modal>
       )}
-      {productData.map((product) => (
+      {productData?.map((product) => (
         <ItemWrapper
           variants={boxVariants}
           initial="init"
