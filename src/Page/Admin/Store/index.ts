@@ -1,3 +1,3 @@
-export { AdminStoreCreate } from "./AdminStoreCreate";
-export { AdminStoreList } from "./AdminStoreList";
-export { AdminStoreUpdate } from "./AdminStoreUpdate";
+export { default as StoreCreatePage } from "./StoreCreatePage";
+export { default as StoreUpdatePage } from "./StoreUpdatePage";
+export { default as StoreListPage } from "./StoreListPage";

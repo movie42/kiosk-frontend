@@ -1,6 +1,6 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { Headline1, SubTitle1 } from "@/lib/styles";
-import { MenuButtonDefault } from "@/Page/Admin/Product/AdminManageProductMain/styles";
+import { IAdminMenuProps } from "@/Page/Admin/interface";
 
 export const Header = styled.div`
   display: flex;
@@ -24,6 +24,53 @@ export const Header = styled.div`
     background-color: ${(props) => props.theme.color.gray300};
   }
 `;
+
+export const MenuButtonDefault = styled.button<IAdminMenuProps>`
+  box-sizing: border-box;
+  border: 0;
+  border-radius: 0.6rem;
+  width: 100%;
+  height: 70vh;
+  cursor: pointer;
+  font-size: 3rem;
+  font-weight: bold;
+  word-break: keep-all;
+  color: ${(props) => props.theme.color.fontColorWhite};
+  position: relative;
+  background-color: black;
+
+  &::before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: scale(1);
+    width: 100%;
+    height: 100%;
+    background-image: ${(props) => `url(${props.image})`};
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    opacity: 0.4;
+    content: "";
+    transition: all 0.2s ease-in-out;
+  }
+
+  &:hover {
+    &::before {
+      ${(props) => {
+        if (!props.disabled) {
+          return css`
+            transform: scale(1.2);
+          `;
+        }
+      }}
+    }
+  }
+  ${({ theme }) => theme.device.tablet} {
+    height: 30rem;
+  }
+`;
+
 export const Wrapper = styled.div`
   h2 {
     ${SubTitle1}

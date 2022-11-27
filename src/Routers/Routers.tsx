@@ -5,18 +5,24 @@ import {
   AdminLayout,
   ClientLayout,
   LandingLayout,
-  AdminManageProductLayout
+  AdminManageProductLayout,
+  AdminLoadingAndGetUser
 } from "@/Components";
-import Login from "@/Page/Admin/Login/AdminLogin";
-import AdminManageProductAddItem from "@/Page/Admin/Product/AdminManageProductAddItem/AdminManageProductAddItem";
-import AdminManageProductItemList from "@/Page/Admin/Product/AdminManageProductItem/AdminManageProductItemList";
-import { AdminManageProductMain } from "@/Page/Admin/Product/AdminManageProductMain";
-import AdminStoreList from "@/Page/Admin/Store/AdminStoreList/AdminStoreList";
-import AdminStoreCreate from "@/Page/Admin/Store/AdminStoreCreate/AdminStoreCreate";
-import AdminStoreUpdate from "@/Page/Admin/Store/AdminStoreUpdate/AdminStoreUpdate";
-import AdminLoadingAndGetUser from "@/Page/Admin/Login/AdminLoadingAndGetUser";
+import Login from "@/Page/Admin/Login/Login";
+
+import {
+  ProductManageMainPage,
+  ProductDetailPage,
+  CreateProductPage,
+  ProductListPage
+} from "@/Page/Admin/Product";
+import {
+  StoreListPage,
+  StoreCreatePage,
+  StoreUpdatePage
+} from "@/Page/Admin/Store";
 import { Logout } from "@/Page/Admin/Logout";
-import { AdminProductDetail } from "@/Page/Admin/Product/AdminProductDetail";
+
 import MangeOrderMain from "@/Page/MangeOrder/MangeOrderMain";
 import ClientMain from "@/Page/Client/ClientMain";
 import ClientMenu from "@/Page/Client/ClientMenu";
@@ -35,10 +41,10 @@ const Router = () => {
         <Route path=":userId">
           <Route path="store">
             <Route path="" element={<Navigate to="list" />} />
-            <Route path="list" element={<AdminStoreList />} />
-            <Route path="create" element={<AdminStoreCreate />} />
+            <Route path="list" element={<StoreListPage />} />
+            <Route path="create" element={<StoreCreatePage />} />
             <Route path=":storeId">
-              <Route path="update" element={<AdminStoreUpdate />} />
+              <Route path="update" element={<StoreUpdatePage />} />
             </Route>
           </Route>
         </Route>
@@ -47,11 +53,11 @@ const Router = () => {
         path="/admin/:userId/store/:storeId/product"
         element={<AdminManageProductLayout />}
       >
-        <Route path=":productId" element={<AdminProductDetail />} />
-        <Route path="main" element={<AdminManageProductMain />} />
-        <Route path="manage-product" element={<AdminManageProductItemList />} />
+        <Route path=":productId" element={<ProductDetailPage />} />
+        <Route path="main" element={<ProductManageMainPage />} />
+        <Route path="manage-product" element={<ProductListPage />} />
         <Route path="manage-order" element={<MangeOrderMain />} />
-        <Route path="add-product" element={<AdminManageProductAddItem />} />
+        <Route path="add-product" element={<CreateProductPage />} />
       </Route>
 
       <Route path="/client" element={<ClientLayout />}>
