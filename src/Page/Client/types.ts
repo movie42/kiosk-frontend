@@ -1,5 +1,4 @@
 import { OrderStatusType } from "@/lib/state";
-import { IOrderSelectedItem } from "@/lib/state/productItemState";
 
 export interface OrderProductInput {
   productId: number;
