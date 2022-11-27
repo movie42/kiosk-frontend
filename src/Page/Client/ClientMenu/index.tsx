@@ -1,16 +1,13 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { Modal } from "@/Components";
-import {
-  productListState,
-  ProductListValues,
-  selectMenuListState
-} from "@/lib/state";
+import { ProductListValues, selectMenuListState } from "@/lib/state";
 import MenuItemModal from "./MenuItemModal";
 import MenuList from "./MenuList";
 import { Header, Container, SubTitle } from "./styles";
 import OrderStateBar from "../OrderStateBar";
+import useGetMenuList from "../hooks/useGetMenuList";
 
 const ClientMenu = () => {
   const navigate = useNavigate();
@@ -20,12 +17,15 @@ const ClientMenu = () => {
   const [count, setCount] = useState(0);
   const [selectedItem, setSelectedItem] = useState<ProductListValues[]>([]);
   const [orderItem, setOrderItem] = useRecoilState(selectMenuListState);
-  const menuList = useRecoilValue(productListState);
+
+  const { isLoading, menuList } = useGetMenuList(storeId);
 
   const selectHandler = (menuId: number) => {
     setIsModal(true);
-    const selected = menuList.filter((el) => el.id === menuId);
-    setSelectedItem([...selected]);
+    if (menuList) {
+      const selected = menuList.filter((el) => el.id === menuId);
+      setSelectedItem([...selected]);
+    }
   };
 
   if (isModal)
@@ -49,7 +49,11 @@ const ClientMenu = () => {
       </Header>
       <Container>
         <SubTitle>메뉴 목록</SubTitle>
-        <MenuList storeId={storeId} selectHandler={selectHandler} />
+        <MenuList
+          isLoading={isLoading}
+          menuList={menuList}
+          selectHandler={selectHandler}
+        />
       </Container>
       <OrderStateBar
         totalCount={orderItem.reduce((acc, obj) => acc + obj.totalCount, 0)}
