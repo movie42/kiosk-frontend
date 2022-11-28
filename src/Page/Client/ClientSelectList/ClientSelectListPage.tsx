@@ -2,26 +2,26 @@ import { useState } from "react";
 import { useRecoilValue } from "recoil";
 import { useNavigate, useParams } from "react-router-dom";
 import { selectMenuListState } from "@/lib/state";
+import { calculateTotalAmount } from "@/lib/utils";
+import { PaymentModal } from "@/Components/Modals/PaymentModal";
 import { Modal } from "@/Components";
-import OrderStateBar from "../OrderStateBar";
-import PaymentModal from "./PaymentModal";
+import { MenuListItem } from "./MenuListItem";
+import { OrderStateBar } from "../OrderStateBar";
 import {
   Header,
   MenuListWrapper,
   ResetButtonWrapper,
   ResetButton
 } from "./styles";
-import MenuListItem from "./MenuListItem";
-import useHandleSelectMenu from "../hooks/useHandleSelectMenu";
+import { useHandleSelectMenu } from "../hooks";
 
-const ClientSelectList = () => {
+const ClientSelectListPage = () => {
   const navigate = useNavigate();
   const { userId, storeId } = useParams();
   const totalSelectMenu = useRecoilValue(selectMenuListState);
   const [isModal, setIsModal] = useState(false);
 
   const { deleteAll } = useHandleSelectMenu();
-
   return (
     <>
       {isModal && (
@@ -48,14 +48,8 @@ const ClientSelectList = () => {
         </ResetButtonWrapper>
       )}
       <OrderStateBar
-        totalCount={totalSelectMenu.reduce(
-          (acc, obj) => acc + obj.totalCount,
-          0
-        )}
-        totalPrice={totalSelectMenu.reduce(
-          (acc, obj) => acc + obj.totalPrice,
-          0
-        )}
+        totalCount={calculateTotalAmount(totalSelectMenu, "totalCount")}
+        totalPrice={calculateTotalAmount(totalSelectMenu, "totalPrice")}
         label="주문하기"
         goBack={() => navigate(`/client/${userId}/${storeId}/menu`)}
         handler={() => setIsModal(() => true)}
@@ -64,4 +58,4 @@ const ClientSelectList = () => {
   );
 };
 
-export default ClientSelectList;
+export default ClientSelectListPage;
