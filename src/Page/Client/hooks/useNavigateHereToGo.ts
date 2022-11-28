@@ -7,7 +7,7 @@ interface ParamTypes {
   storeId: string | undefined;
 }
 
-export const useNavigateHereToGo = ({ userId, storeId }: ParamTypes) => {
+const useNavigateHereToGo = ({ userId, storeId }: ParamTypes) => {
   const navigate = useNavigate();
   const setOrderType = useSetRecoilState(orderType);
 
@@ -19,3 +19,5 @@ export const useNavigateHereToGo = ({ userId, storeId }: ParamTypes) => {
 
   return { handleOrderMethod };
 };
+
+export default useNavigateHereToGo;
