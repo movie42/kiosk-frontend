@@ -1,32 +1,33 @@
 import { useEffect } from "react";
-import { BrowserRouter } from "react-router-dom";
-import { useRecoilState } from "recoil";
-
 import Router from "./Routers/Routers";
-import { userState } from "./lib/state";
-import { useGetUserStateFromLocalStorage } from "./lib/hooks";
+import { UserState, userState, useUserContext } from "./lib/state";
+import { useSetRecoilState } from "recoil";
+import { useNavigate } from "react-router-dom";
+import { LOCAL_STORAGE_KEY } from "./lib/constant/constant";
 
 function App() {
-  const [user, setUser] = useRecoilState(userState);
-
-  const { getUser } = useGetUserStateFromLocalStorage();
+  const navigate = useNavigate();
+  const setUser = useSetRecoilState(userState);
+  const { getLocalStorage } = useUserContext();
 
   useEffect(() => {
-    const storageUser = getUser();
+    const userInfo = getLocalStorage<UserState>();
 
-    if (storageUser === undefined) {
-      return;
+    if (userInfo === null) {
+      setUser({
+        isLogin: false,
+        id: "",
+        name: "",
+        accessToken: "",
+        refreshToken: "",
+        email: ""
+      });
+      return navigate("/");
     }
-    if (storageUser && !user.isLogin) {
-      setUser(storageUser);
-    }
+    setUser(userInfo);
   }, []);
 
-  return (
-    <BrowserRouter>
-      <Router />
-    </BrowserRouter>
-  );
+  return <Router />;
 }
 
 export default App;

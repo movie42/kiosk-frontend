@@ -3,13 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 
 import { Loading } from "@/Components";
-import { userState } from "@/lib/state";
-import { useRemoveUserInfoInLocalStorage } from "@/lib/hooks";
+import { userState, useUserContext } from "@/lib/state";
 
 const Logout = () => {
+  const { removeLocalStorage } = useUserContext();
   const navigate = useNavigate();
   const setUserInfo = useSetRecoilState(userState);
-  const { removeUser } = useRemoveUserInfoInLocalStorage();
 
   useEffect(() => {
     setTimeout(() => {
@@ -21,7 +20,7 @@ const Logout = () => {
         accessToken: undefined,
         refreshToken: undefined
       });
-      removeUser("kiosk-user");
+      removeLocalStorage();
       navigate("/");
     }, 3000);
   }, []);
