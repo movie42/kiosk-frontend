@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { termsOfService, privacyPolicy } from "./Agreement/AgreementContent";
+import { termsOfService, privacyPolicy } from "../Agreement/AgreementContent";
 import { useState } from "react";
 import {
   AgreementButton,

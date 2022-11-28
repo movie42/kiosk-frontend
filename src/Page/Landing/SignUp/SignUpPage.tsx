@@ -1,8 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useQueryClient } from "react-query";
-import { useNavigate } from "react-router-dom";
-import { useRecoilState } from "recoil";
 import {
   Wrapper,
   Header,
@@ -16,139 +13,34 @@ import {
   FormContainer,
   SubContainer
 } from "./styles";
-import graphqlReqeustClient from "@/lib/graphqlRequestClient";
-import {
-  MeQuery,
-  useAddStoreMutation,
-  useMeQuery,
-  useSignupMutation
-} from "@/lib/generated/graphql";
-import { handleErrorMessage } from "@/lib/utils";
-import { userState } from "@/lib/state/userState";
-import { ErrorState } from "@/lib/interface";
 import { EMAIL_REX } from "@/lib/constant/constant";
-
-interface ISignUpProps {
-  email: string;
-  name: string;
-  password: string;
-  passwordConfirm: string;
-  code: string;
-  storeName: string;
-  address: string;
-  phone: string;
-}
-interface IStoreProps {
-  code: string;
-  name: string;
-  address: string;
-  phone: string;
-}
+import { SignUpProps } from "../interface";
+import useAddStore from "./hooks/useAddStore";
+import useSubmit from "./hooks/useSubmit";
+import useHandleGoBack from "./hooks/useHandleGoBack";
 
 const SignUpPage = () => {
-  const navigate = useNavigate();
-  const queryClient = useQueryClient();
+  const [checkStore, setCheckStore] = useState(true);
 
-  // signup form
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors }
-  } = useForm<ISignUpProps>({ mode: "onSubmit" });
-
-  // display store & type & store mutate trigger
-  const [checkStore, setCheckStore] = useState(true);
-  const [storeInfo, setStoreInfo] = useState<IStoreProps>();
-  const [saveStore, setSaveStore] = useState(false);
-
-  // registration & error
-  const [_, setErrorState] = useState<ErrorState>();
-  const [isUser, setIsUser] = useRecoilState(userState);
+  } = useForm<SignUpProps>({ mode: "onSubmit" });
 
   const password = useRef({});
   password.current = watch("password", "");
 
-  // query
-  const { refetch } = useMeQuery<MeQuery, Error>(
-    graphqlReqeustClient(isUser.accessToken),
-    undefined,
-    {
-      enabled: false,
-      onSuccess: (data) => {
-        const { id, email, name } = data.me;
-        setIsUser((pre) => ({ ...pre, id, email, name }));
-      }
-    }
-  );
+  const { mutateStore } = useAddStore();
+  const { onSubmit, saveStore, storeInfo } = useSubmit({ checkStore });
+  const { handleGoBack } = useHandleGoBack();
 
-  // mutation
-  const { mutate } = useSignupMutation<Error>(graphqlReqeustClient(), {
-    onSuccess: (data) => {
-      const {
-        signup: { accessToken, refreshToken }
-      } = data;
-      setIsUser((pre) => ({
-        ...pre,
-        isLogin: true,
-        accessToken,
-        refreshToken
-      }));
-      alert("정상적으로 회원가입이 완료되었습니다.");
-      if (checkStore) refetch();
-      if (!checkStore) {
-        navigate("/login");
-      }
-    },
-    onError: (error) => {
-      handleErrorMessage(error, setErrorState);
-    }
-  });
-  const { mutate: mutateStore } = useAddStoreMutation<Error>(
-    graphqlReqeustClient(isUser.accessToken),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries("stores");
-        navigate("/login");
-      },
-      onError: (error) => {
-        handleErrorMessage(error, setErrorState);
-      }
-    }
-  );
-
-  // call mutateStore or not
   useEffect(() => {
     if (checkStore && saveStore && storeInfo) {
       mutateStore({ ...storeInfo });
     }
   }, [saveStore, checkStore, storeInfo, mutateStore]);
-
-  const onSubmit = (data: ISignUpProps) => {
-    const { email, name, password, code, storeName, phone, address } = data;
-    setStoreInfo(() => {
-      return { code, name: storeName, phone, address };
-    });
-    mutate(
-      { user: { email, name, password } },
-      {
-        onSuccess: () => {
-          if (checkStore) {
-            setSaveStore((prv) => !prv);
-          }
-        }
-      }
-    );
-  };
-
-  // goBack modal
-  const handleGoBack = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.preventDefault();
-    const confirm = window.confirm(
-      "작성 내용이 취소됩니다. 정말 돌아가시겠습니까?"
-    );
-    if (confirm) navigate("/agreement");
-  };
 
   return (
     <Wrapper>
