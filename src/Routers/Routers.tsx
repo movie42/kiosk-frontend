@@ -69,7 +69,7 @@ const Router = () => {
         </Route>
       </Route>
 
-      {/* TODO: private router로 변경하면 login이 동작하지 않습니다. 왜냐하면
+      {/* FIXME: private router로 변경하면 login이 동작하지 않습니다. 왜냐하면
       isLogin이 true이기 때문입니다. login이 전부 끝난 다음에 접근하지 못하도록 변경해야합니다.*/}
       <Route path="/" element={<LandingLayout />}>
         {!isLogin ? (

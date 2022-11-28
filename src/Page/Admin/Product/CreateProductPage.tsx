@@ -244,6 +244,7 @@ const CreateProductPage = () => {
                 </div>
                 {optionsFields.map((optionField, index) => (
                   // TODO: 컴포넌트로 따로 뺴는게 더 이득일까?
+                  // FIXME: 옵션 필드가 제대로 동작하지 않는다. 수정이 필요함
                   <div className="option-input-container" key={optionField.id}>
                     <div className="option-label-button-container">
                       <LabelDefault htmlFor="option">

@@ -1,11 +1,4 @@
-import { useState } from "react";
-import { useParams } from "react-router-dom";
-import { useRecoilValue } from "recoil";
-
 import { Images, Noimage, Chart } from "@/Components";
-import { useGetProductsQuery } from "@/lib/generated/graphql";
-import graphqlReqeustClient from "@/lib/graphqlRequestClient";
-import { ProductListValues, userState } from "@/lib/state";
 import { translateLocalCurrency } from "@/lib/utils";
 import {
   BasicInfoContainer,
@@ -16,51 +9,17 @@ import {
   SalesInfoSummuryContainer,
   ProductDetailPageContainer
 } from "./styles";
+import { useGetProductDetail } from "../hooks";
 
 const ProductDetailPage = () => {
-  const { accessToken } = useRecoilValue(userState);
-  const [product, setProduct] = useState<ProductListValues>({
-    id: 0,
-    name: "",
-    price: 0,
-    options: [],
-    imageUrl: "",
-    description: ""
-  });
-  const { storeId, productId } = useParams();
-  useGetProductsQuery(
-    graphqlReqeustClient(accessToken),
-    { id: Number(storeId) },
-    {
-      onSuccess: (data) => {
-        if (data.store?.products) {
-          const [product]: ProductListValues[] = data.store.products
-            .filter((product) => product.id === productId)
-            .map((item) => {
-              return {
-                id: Number(item.id),
-                name: item.name,
-                price: item.price,
-                options: item.options.map((value) => ({
-                  id: Number(value.id),
-                  name: value.name
-                })),
-                imageUrl: item.imageUrl,
-                description: item.description
-              };
-            });
-          setProduct(product);
-        }
-      }
-    }
-  );
+  const { data: product } = useGetProductDetail();
 
   return (
     <ProductDetailPageContainer>
       <BasicInfoContainer>
         <ImageContainer>
-          {product.imageUrl ? (
-            <Images src={product.imageUrl} alt={product.name} />
+          {product?.imageUrl ? (
+            <Images src={product?.imageUrl} alt={product?.name} />
           ) : (
             <Noimage />
           )}
@@ -70,22 +29,24 @@ const ProductDetailPage = () => {
           <div className="info-box">
             <span>이름</span>
             <span>
-              <strong>{product.name}</strong>
+              <strong>{product?.name}</strong>
             </span>
           </div>
           <div className="info-box">
             <span>가격</span>
             <span>
               <strong>
-                {translateLocalCurrency(product.price, "ko-KR")}원
+                {product?.price &&
+                  translateLocalCurrency(Number(product.price), "ko-KR")}
+                원
               </strong>
             </span>
           </div>
           <div className="info-box">
             <span>옵션</span>
             <ul>
-              {product.options?.length !== 0
-                ? product.options?.map((value) => (
+              {product?.options?.length !== 0
+                ? product?.options?.map((value) => (
                     <li key={value.id} data-id={value.id}>
                       {value.name}
                     </li>
@@ -98,7 +59,7 @@ const ProductDetailPage = () => {
             <span>
               <strong>
                 {product?.description
-                  ? product.description
+                  ? product?.description
                   : "상품의 정보가 없습니다."}
               </strong>
             </span>
