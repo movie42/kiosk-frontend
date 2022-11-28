@@ -1,13 +1,21 @@
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import styled from "styled-components";
 import { useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
-
-import { InputDefault, ButtonDefault } from "@/Components";
-import { Wrapper, Header, Title, Container, ButtonGroup } from "./Agreement";
-import { SubTitle2, Body1 } from "@/lib/styles";
+import {
+  Wrapper,
+  Header,
+  Title,
+  Container,
+  ButtonGroup,
+  GroupForm,
+  SignUpInput,
+  ErrorMessage,
+  ActionButton,
+  FormContainer,
+  SubContainer
+} from "./styles";
 import graphqlReqeustClient from "@/lib/graphqlRequestClient";
 import {
   MeQuery,
@@ -19,67 +27,6 @@ import { handleErrorMessage } from "@/lib/utils";
 import { userState } from "@/lib/state/userState";
 import { ErrorState } from "@/lib/interface";
 import { EMAIL_REX } from "@/lib/constant/constant";
-
-const FormContainer = styled.form`
-  height: inherit;
-  display: flex;
-  position: relative;
-  flex-direction: column;
-  justify-content: center;
-  width: 100%;
-`;
-
-const SubContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  justify-content: center;
-  width: 38rem;
-  margin: 2rem auto;
-`;
-
-const SignUpInput = styled(InputDefault)`
-  ${SubTitle2}
-  width: 100%;
-  outline: 0;
-  border-right: 0;
-  border-top: 0;
-  border-left: 0;
-  border-bottom: 2px solid black;
-  margin-bottom: 1rem;
-  :focus {
-    outline: 0;
-  }
-`;
-
-const GroupForm = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-  p {
-    ${Body1}
-    line-height: 2;
-  }
-  span {
-    font-size: 1.2rem;
-  }
-`;
-
-const ErrorMessage = styled.p`
-  ${Body1}
-  color: ${(props) => props.theme.color.error500};
-`;
-
-const ActionButton = styled(ButtonDefault)<{ option?: string }>`
-  margin-left: 5px;
-  color: ${(props) => props.theme.color.fontColorWhite};
-  background-color: ${(props) =>
-    props.option === "confirm"
-      ? props.theme.color.primary600
-      : props.theme.color.gray300};
-`;
 
 interface ISignUpProps {
   email: string;
@@ -98,7 +45,7 @@ interface IStoreProps {
   phone: string;
 }
 
-const SignUp = () => {
+const SignUpPage = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -317,4 +264,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default SignUpPage;
