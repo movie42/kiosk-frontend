@@ -1,11 +1,15 @@
 import React from "react";
 import { AiFillMinusCircle } from "react-icons/ai";
 import { IoIosAddCircle } from "react-icons/io";
-import useHandleSelectMenu from "../hooks/useHandleSelectMenu";
-import { MenuListItemProps } from "../../types";
+import { IOrderSelectedItem } from "@/lib/state/productItemState";
+import useHandleSelectMenu from "../../hooks/useHandleSelectMenu";
 import { AddCountButton, MinusCountButton } from "../styles";
 
-const MenuListItemDetail: React.FC<MenuListItemProps> = ({ item }) => {
+interface MenuListItemProps {
+  item: IOrderSelectedItem;
+}
+
+const MenuListItemDetail = ({ item }: MenuListItemProps) => {
   const { handleMinusCount, handleAddCount } = useHandleSelectMenu();
 
   return (

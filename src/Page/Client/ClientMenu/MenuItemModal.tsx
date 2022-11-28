@@ -4,7 +4,6 @@ import { AiFillMinusCircle } from "react-icons/ai";
 import { translateLocalCurrency } from "@/lib/utils";
 import { Images, Noimage } from "@/Components";
 import { AddCountButton, MinusCountButton } from "../ClientSelectList/styles";
-import { IMenuItemModalProps } from "../types";
 import {
   ItemNameContainer,
   Wrapper,
@@ -16,15 +15,28 @@ import {
   Title,
   ProductCount
 } from "./styles";
+import {
+  IOrderSelectedItem,
+  ProductListValues
+} from "@/lib/state/productItemState";
 
-const MenuItemModal: React.FC<IMenuItemModalProps> = ({
+interface MenuItemModalProps {
+  setIsModal: React.Dispatch<React.SetStateAction<boolean>>;
+  selectedItem: ProductListValues[];
+  count: number;
+  setCount: React.Dispatch<React.SetStateAction<number>>;
+  orderItem: IOrderSelectedItem[];
+  setOrderItem: React.Dispatch<React.SetStateAction<IOrderSelectedItem[]>>;
+}
+
+const MenuItemModal = ({
   setIsModal,
   selectedItem,
   count,
   setCount,
   orderItem,
   setOrderItem
-}) => {
+}: MenuItemModalProps) => {
   const [selected] = selectedItem;
   const orderSelectedItem = () => {
     const [sameMenu] = orderItem.filter(

@@ -1,10 +1,14 @@
 import React from "react";
 import { translateLocalCurrency } from "@/lib/utils";
-import { MenuListItemProps } from "../../types";
-import useHandleSelectMenu from "../hooks/useHandleSelectMenu";
+import { IOrderSelectedItem } from "@/lib/state/productItemState";
+import useHandleSelectMenu from "../../hooks/useHandleSelectMenu";
 import { DeleteButton } from "../styles";
 
-const RemoveMenuListItem: React.FC<MenuListItemProps> = ({ item }) => {
+interface MenuListItemProps {
+  item: IOrderSelectedItem;
+}
+
+const RemoveMenuListItem = ({ item }: MenuListItemProps) => {
   const { handleDelete } = useHandleSelectMenu();
 
   return (

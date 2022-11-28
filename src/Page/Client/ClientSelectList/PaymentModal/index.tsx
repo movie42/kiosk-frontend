@@ -1,13 +1,16 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { IPaymentModalProps } from "../../types";
-import useHandleReceipt from "../hooks/useHandleReceipt";
-import useTimer from "../hooks/useTimer";
+import useHandleReceipt from "../../hooks/useHandleReceipt";
+import useTimer from "../../hooks/useTimer";
 import OrderConfirm from "./OrderConfirm";
 import PrintReceipt from "./PrintReceipt";
 import ProceedPayment from "./ProceedPayment";
 
-const PaymentModal: React.FC<IPaymentModalProps> = ({ setIsModal }) => {
+interface PaymentModalProps {
+  setIsModal: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const PaymentModal = ({ setIsModal }: PaymentModalProps) => {
   const { userId, storeId } = useParams();
 
   const {

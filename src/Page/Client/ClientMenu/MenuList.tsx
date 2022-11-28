@@ -1,48 +1,14 @@
-import React from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { productListState, ProductListValues, userState } from "@/lib/state";
-import graphqlReqeustClient from "@/lib/graphqlRequestClient";
-import { useGetProductsQuery } from "@/lib/generated/graphql";
 import { Images, Loading, Noimage } from "@/Components";
 import { Item } from "./styles";
+import { ProductListValues } from "@/lib/state/productItemState";
 
 interface MenuListProps {
-  storeId: string | undefined;
+  isLoading: boolean;
+  menuList: ProductListValues[] | undefined;
   selectHandler: (menuId: number) => void;
 }
 
-const MenuList: React.FC<MenuListProps> = ({ storeId, selectHandler }) => {
-  const [menuList, setMenuList] = useRecoilState(productListState);
-  const { accessToken } = useRecoilValue(userState);
-
-  const { isLoading } = useGetProductsQuery(
-    graphqlReqeustClient(accessToken),
-    {
-      id: Number(storeId)
-    },
-    {
-      onSuccess: (data) => {
-        if (data.store?.products) {
-          const productList = data.store.products
-            .map<ProductListValues>((value) => ({
-              id: Number(value.id),
-              name: value.name,
-              price: value.price,
-              imageUrl: value.imageUrl,
-              description: value.description,
-              options: value.options.map((value) => ({
-                id: Number(value.id),
-                name: value.name
-              })),
-              isAvailable: value.isAvailable
-            }))
-            .filter((value) => value.isAvailable === true);
-          setMenuList(productList);
-        }
-      }
-    }
-  );
-
+const MenuList = ({ isLoading, menuList, selectHandler }: MenuListProps) => {
   if (isLoading) return <Loading title="등록한 상품을 불러오고 있습니다." />;
 
   return (
