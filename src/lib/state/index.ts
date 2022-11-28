@@ -29,3 +29,4 @@ export type {
 } from "./interface";
 
 export { OrderStatusType, Option } from "./interface";
+export { UserContextAPI, useUserContext } from "./UserContextAPI";

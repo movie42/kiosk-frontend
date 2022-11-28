@@ -5,13 +5,12 @@ import { useRecoilState } from "recoil";
 import { Loading } from "@/Components";
 import { MeQuery, useMeQuery } from "@/lib/generated/graphql";
 import graphqlReqeustClient from "@/lib/graphqlRequestClient";
-import { userState } from "@/lib/state";
-import { useSetUserInfoToLocalStorage } from "@/lib/hooks";
+import { userState, useUserContext } from "@/lib/state";
 
 const AdminLoadingAndGetUser = () => {
   const navigate = useNavigate();
   const [isUser, setIsUser] = useRecoilState(userState);
-  const { setUser } = useSetUserInfoToLocalStorage();
+  const { setLocalStorage } = useUserContext();
 
   const { isSuccess, isRefetching } = useMeQuery<MeQuery, Error>(
     graphqlReqeustClient(isUser.accessToken),
@@ -26,7 +25,7 @@ const AdminLoadingAndGetUser = () => {
 
   useEffect(() => {
     if (isSuccess && !isRefetching) {
-      setUser(isUser);
+      setLocalStorage(isUser);
       setTimeout(() => navigate(`/admin/${isUser.id}/store`), 3000);
     }
   }, [isSuccess, isRefetching, isUser]);
