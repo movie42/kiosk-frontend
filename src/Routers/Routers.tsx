@@ -29,7 +29,8 @@ import PageNotFound from "@/Page/Errors/404";
 import { ClientMainPage } from "@/Page/Client/ClientMain";
 import { ClientMenuPage } from "@/Page/Client/ClientMenu";
 import { ClientSelectListPage } from "@/Page/Client/ClientSelectList";
-import { AgreementPage, SignUpPage, LandingMainPage } from "@/Page/Landing";
+import { AgreementPage, SignUpPage } from "@/Page/Landing/SignUp";
+import LandingMainPage from "@/Page/Landing/LandingMainPage";
 
 const Router = () => {
   const { isLogin, id: userId } = useRecoilValue(userState);
