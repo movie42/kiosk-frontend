@@ -1,35 +1,26 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
-import { useQueryClient } from "react-query";
-import { useRecoilValue } from "recoil";
 import { IoIosAddCircle, IoIosRemoveCircle } from "react-icons/io";
 
 import {
   InputDefault,
   LabelDefault,
-  TextareaDefault,
-  Modal
+  Loading,
+  TextareaDefault
 } from "@/Components";
 
 import {
-  useAddProductOptionsMutation,
-  useAddProductsMutation
-} from "@/lib/generated/graphql";
-import graphqlReqeustClient from "@/lib/graphqlRequestClient";
-import { userState } from "@/lib/state";
-import {
-  AddimageUrl,
-  AddimageUrlLabel,
   CancelButton,
   CreateProductContainer,
   CreateButton,
   CreateProductHeader,
-  ModalButtonContainer,
-  ModalChildren,
   OptionsField,
   ButtonContainer
 } from "./styles";
+import { useModalHook } from "@/lib/hooks";
+import { CreateProductModal } from "@/Components/Modals";
+import { useCreateProduct } from "../hooks";
 
 interface ProductDefaultValue {
   imageUrl?: string;
@@ -43,39 +34,28 @@ interface ProductMutationValue extends ProductDefaultValue {
 }
 
 const CreateProductPage = () => {
-  const { storeId, userId } = useParams();
-  const { accessToken } = useRecoilValue(userState);
-
-  const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const [isModal, setIsModal] = useState(false);
-  const [formData, setFormData] = useState<ProductMutationValue[]>([
-    {
-      storeId: 0,
-      imageUrl: "",
-      name: "",
-      price: 0,
-      description: ""
-    }
-  ]);
-
-  const { mutate: addProductMutate } = useAddProductsMutation<
-    ProductDefaultValue[]
-  >(graphqlReqeustClient(accessToken));
-
-  const { mutate: addProductOptionMutate } = useAddProductOptionsMutation(
-    graphqlReqeustClient(accessToken)
-  );
+  const { storeId } = useParams();
+  const { isModal, setIsModal, setConfirm, confirm } = useModalHook();
+  const {
+    newProducts,
+    addProductMutate,
+    isProductAddSuccess,
+    addProductOptionMutate,
+    isProductAdding,
+    isOptionAdding
+  } = useCreateProduct();
 
   const {
+    getValues: getProductValues,
     register,
-    handleSubmit,
     control,
     formState: { errors }
-  } = useForm<{ product: ProductDefaultValue[] }>({
+  } = useForm<{ product: ProductMutationValue[] }>({
     defaultValues: {
       product: [
         {
+          storeId: Number(storeId),
           imageUrl: "",
           name: "",
           price: 0,
@@ -83,6 +63,11 @@ const CreateProductPage = () => {
         }
       ]
     }
+  });
+
+  const { fields, append: productAppend } = useFieldArray({
+    control,
+    name: "product"
   });
 
   const {
@@ -106,104 +91,103 @@ const CreateProductPage = () => {
     name: "options"
   });
 
-  const { fields } = useFieldArray({
-    control,
-    name: "product"
-  });
-
-  const handleModal = () => {
-    setIsModal((pre) => !pre);
-  };
-
-  const onSubmit = handleSubmit((data) => {
-    const options = optionValue("options");
-
+  const hasOptions = ({ options }: { options: { name: string }[] }) => {
     if (options.length === 0) {
       optionSetError("options", {
         message: "반드시 기본 옵션을 들어가야합니다."
       });
+      return false;
+    }
+
+    optionSetError("options", { message: "" });
+    return true;
+  };
+
+  const handleCancelAddProduct = () => {
+    navigate(-1);
+  };
+  const handlSubmitAddProduct = () => {
+    const options = optionValue("options");
+    const isOption = hasOptions({ options });
+    if (!isOption) {
       return;
     }
-    if (options.length !== 0 && optionErrors.options?.message) {
-      optionSetError("options", { message: "" });
+    setIsModal(true);
+  };
+
+  useEffect(() => {
+    if (confirm) {
+      const products = getProductValues("product").map((value) => ({
+        ...value,
+        price: Number(value.price)
+      }));
+
+      addProductMutate({ products });
     }
+  }, [confirm]);
 
-    handleModal();
-    setFormData(
-      data.product.map((item) => ({
-        imageUrl: item.imageUrl,
-        storeId: Number(storeId),
-        name: item.name,
-        price: Number(item.price),
-        description: item.description
-      }))
-    );
-  });
-
-  const cancelAddProductItems = () => {
-    handleModal();
-    setFormData([]);
-  };
-
-  const confirmAddProductItems = () => {
-    addProductMutate(
-      { products: formData },
-      {
-        onSuccess: (data) => {
-          const addOptions = optionValue("options").map((value) => ({
-            productId: data.addProducts[0],
-            name: value.name
-          }));
-
-          addProductOptionMutate(
-            { option: addOptions },
-            {
-              onSuccess: () => {
-                queryClient.invalidateQueries("getProducts");
-                navigate(
-                  `/admin/${userId}/store/${storeId}/product/manage-product`
-                );
-              }
-            }
-          );
-        }
-      }
-    );
-  };
+  useEffect(() => {
+    if (isProductAddSuccess && newProducts?.addProducts) {
+      const [productId] = newProducts.addProducts;
+      const option = optionValue("options").map((value) => ({
+        productId,
+        name: value.name
+      }));
+      addProductOptionMutate({ option });
+    }
+  }, [isProductAddSuccess]);
 
   return (
     <>
-      {isModal && (
-        <Modal strach={false}>
-          <ModalChildren>
-            <h2>상품을 등록 하시겠습니까?</h2>
-            <p>상품을 등록하려면 아래 등록하기 버튼을 누르세요.</p>
-            <ModalButtonContainer>
-              <button
-                className="modal-cancel-button"
-                onClick={cancelAddProductItems}
-              >
-                돌아가기
-              </button>
-              <button
-                className="modal-confirm-button"
-                onClick={confirmAddProductItems}
-              >
-                등록하기
-              </button>
-            </ModalButtonContainer>
-          </ModalChildren>
-        </Modal>
+      {isProductAdding && isOptionAdding && (
+        <Loading
+          title="잠시만 기다려주세요!"
+          subTitle={
+            isProductAdding
+              ? "상품 등록 중입니다."
+              : "옵션을 등록하는 중입니다."
+          }
+        />
       )}
+      <CreateProductModal
+        isModal={isModal}
+        setIsModal={setIsModal}
+        setConfirm={setConfirm}
+      />
       <CreateProductContainer>
         <CreateProductHeader>
           <h2>상품 등록</h2>
+          <button
+            onClick={() =>
+              productAppend({
+                storeId: Number(storeId),
+                name: "",
+                price: 0,
+                description: ""
+              })
+            }
+          >
+            추가
+          </button>
         </CreateProductHeader>
-        <form onSubmit={onSubmit}>
+        <form onSubmit={handlSubmitAddProduct}>
           {fields.map((item, index) => (
             <fieldset key={item.id}>
               {/* {location && <Images src={location} />} */}
-              <div className="product-input-container">
+              <div
+                className="product-input-container"
+                style={{ visibility: "hidden" }}
+              >
+                <InputDefault
+                  id="name"
+                  type="text"
+                  disabled
+                  {...register(`product.${index}.storeId`, {
+                    value: Number(storeId)
+                  })}
+                />
+              </div>
+              {/* <div className="product-input-container">
                 <LabelDefault htmlFor="imageUploader">섬네일</LabelDefault>
                 <AddimageUrlLabel htmlFor="imageUploader">
                   <IoIosAddCircle />
@@ -220,7 +204,8 @@ const CreateProductPage = () => {
                   type="text"
                   {...register(`product.${index}.imageUrl`)}
                 />
-              </div>
+              </div> */}
+
               <div className="product-input-container">
                 <LabelDefault htmlFor="name">상품 이름</LabelDefault>
                 <InputDefault
@@ -258,6 +243,7 @@ const CreateProductPage = () => {
                   </button>
                 </div>
                 {optionsFields.map((optionField, index) => (
+                  // TODO: 컴포넌트로 따로 뺴는게 더 이득일까?
                   <div className="option-input-container" key={optionField.id}>
                     <div className="option-label-button-container">
                       <LabelDefault htmlFor="option">
@@ -297,8 +283,12 @@ const CreateProductPage = () => {
         <ButtonContainer>
           <h3>상품 입력이 끝나면 등록하기 버튼을 눌러주세요.</h3>
           <div>
-            <CancelButton onClick={() => navigate(-1)}>등록 취소</CancelButton>
-            <CreateButton onClick={onSubmit}>상품 등록</CreateButton>
+            <CancelButton onClick={handleCancelAddProduct}>
+              등록 취소
+            </CancelButton>
+            <CreateButton onClick={handlSubmitAddProduct}>
+              상품 등록
+            </CreateButton>
           </div>
         </ButtonContainer>
       </CreateProductContainer>
