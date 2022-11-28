@@ -1,9 +1,20 @@
-import React from "react";
+import React, { forwardRef } from "react";
 
-type ITextAreaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement>;
+interface ITextAreaProps
+  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+  ref?: React.LegacyRef<HTMLTextAreaElement>;
+}
 
-const TextareaDefault = ({ ...props }: ITextAreaProps) => {
-  return <textarea {...props}>{props.children}</textarea>;
-};
+const TextareaDefault = forwardRef(
+  (props: ITextAreaProps, ref?: React.LegacyRef<HTMLTextAreaElement>) => {
+    return (
+      <textarea ref={ref} {...props}>
+        {props.children}
+      </textarea>
+    );
+  }
+);
+
+TextareaDefault.displayName = "TextareaDefault";
 
 export default TextareaDefault;

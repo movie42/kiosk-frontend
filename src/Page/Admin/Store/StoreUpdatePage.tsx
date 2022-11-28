@@ -39,14 +39,14 @@ const StoreUpdatePage = () => {
     <>
       {!isComplete ? (
         <Loading
-          title="가게 정보를 수정하고 있습니다."
+          title="가게를 수정하고 있습니다."
           subTitle="잠시만 기다려주세요."
         />
       ) : null}
 
       {isLoadingGetStore ? (
         <Loading
-          title="가게 정보를 불러오는 중입니다."
+          title="수정 할 가게를 불러오는 중입니다."
           subTitle="잠시만 기다려주세요."
         />
       ) : (

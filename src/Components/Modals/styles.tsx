@@ -114,3 +114,28 @@ export const StopConfirmButton = styled(ButtonDefaultStyle)`
 export const StartConfirmButton = styled(ButtonDefaultStyle)`
   background-color: ${(props) => props.theme.color.primary600};
 `;
+
+export const ModalButtonContainer = styled.div`
+  display: flex;
+  align-self: flex-end;
+  button {
+    cursor: pointer;
+    font-size: 2rem;
+    border: 0;
+    padding: 0.8rem 1.3rem;
+    border-radius: 0.5rem;
+    color: ${(props) => props.theme.color.fontColorWhite};
+
+    &.modal-cancel-button {
+      background-color: ${(props) => props.theme.color.gray200};
+    }
+
+    &.modal-confirm-button {
+      background-color: ${(props) => props.theme.color.primary600};
+    }
+
+    &:not(:first-child) {
+      margin-left: 0.8rem;
+    }
+  }
+`;

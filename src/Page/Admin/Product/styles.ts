@@ -39,7 +39,7 @@ export const CreateProductContainer = styled.div`
           font-size: 2rem;
           align-self: center;
           resize: none;
-          height: 40vh;
+          height: 8vh;
           outline: none;
           &::placeholder {
             font-size: 2rem;
@@ -213,6 +213,7 @@ export const OptionsField = styled.div`
   }
 `;
 
+// TODO: 모달 다 옮기면 삭제하기
 export const ModalButtonContainer = styled.div`
   display: flex;
   align-self: flex-end;
