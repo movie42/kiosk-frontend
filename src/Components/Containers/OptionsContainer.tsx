@@ -6,14 +6,14 @@ import {
   useViewportScroll
 } from "framer-motion";
 import { useForm } from "react-hook-form";
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
-import ButtonDefaultStyle from "@/Components/Buttons/ButtonDefault";
-import InputDefault from "@/Components/Form/InputDefault";
-import PageHeaderMessage from "@/Components/Layouts/Header/PageHeader";
+import { ButtonDefault, InputDefault, PageHeader } from "@/Components";
 import { Headline2, Headline3 } from "@/lib/styles/mixin";
-import { orderStatusState, OrderStatusType } from "@/lib/state";
+import { orderStatusState } from "@/lib/state";
+import type { OrderStatusValue } from "@/lib/state/interface";
+import ManageOrderStatusButton from "@/Components/Buttons/ManageOrderStatusButton";
 
 const OptionContainer = styled(motion.div)`
   position: relative;
@@ -75,14 +75,6 @@ const ButtonContainer = styled(motion.div)`
   }
 `;
 
-const WholeOrderStateButton = styled(ButtonDefaultStyle)``;
-const OrderStateButton = styled(ButtonDefaultStyle)``;
-const CancelOrderStateButton = styled(ButtonDefaultStyle)``;
-const CompleteOrderStateButton = styled(ButtonDefaultStyle)``;
-const Underline = styled(motion.div)`
-  border-bottom: 3px solid ${(props) => props.theme.color.primary700};
-`;
-
 interface IOptionsContainerProps {
   setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
   stickyPos: number;
@@ -103,35 +95,19 @@ const OptionsContainer = ({
   );
 
   const { register, handleSubmit } = useForm();
-  const [orderStatus, setOrderStatus] = useRecoilState(orderStatusState);
+  const setOrderStatus = useSetRecoilState(orderStatusState);
 
   const searchOrder = handleSubmit((data) => {
     setSearchTerm(data.searchOrder);
   });
 
-  const showAllOrders = () => {
-    setOrderStatus(OrderStatusType.All);
-  };
-
-  const showReady = () => {
-    setOrderStatus(OrderStatusType.Ready);
-  };
-
-  const showDone = () => {
-    setOrderStatus(OrderStatusType.Done);
-  };
-
-  const showCompleteOrders = () => {
-    setOrderStatus(OrderStatusType.Complete);
-  };
-
-  const showCancelOrders = () => {
-    setOrderStatus(OrderStatusType.Canceled);
+  const handleStatus = (statue: OrderStatusValue) => () => {
+    setOrderStatus(statue);
   };
 
   return (
     <OptionContainer style={{ y, borderBottom: borderTick }}>
-      <PageHeaderMessage header="주문관리" />
+      <PageHeader header="주문관리" />
       <form onSubmit={searchOrder}>
         <SearchingInput
           type="number"
@@ -142,30 +118,40 @@ const OptionsContainer = ({
             onChange: (e) => setSearchTerm(e.currentTarget.value)
           })}
         />
-        <button style={{ visibility: "hidden" }}>제출</button>
+        <ButtonDefault>검색</ButtonDefault>
       </form>
       <AnimateSharedLayout>
         <ButtonContainer>
-          <WholeOrderStateButton onClick={showAllOrders}>
+          <ManageOrderStatusButton
+            statusCheck="ALL"
+            onClick={handleStatus("ALL")}
+          >
             전체
-            {orderStatus === "ALL" && <Underline layoutId="underline" />}
-          </WholeOrderStateButton>
-          <OrderStateButton onClick={showReady}>
+          </ManageOrderStatusButton>
+          <ManageOrderStatusButton
+            statusCheck="READY"
+            onClick={handleStatus("READY")}
+          >
             주문접수
-            {orderStatus === "READY" && <Underline layoutId="underline" />}
-          </OrderStateButton>
-          <OrderStateButton onClick={showDone}>
+          </ManageOrderStatusButton>
+          <ManageOrderStatusButton
+            statusCheck="COMPLETE"
+            onClick={handleStatus("COMPLETE")}
+          >
             준비완료
-            {orderStatus === "DONE" && <Underline layoutId="underline" />}
-          </OrderStateButton>
-          <CompleteOrderStateButton onClick={showCompleteOrders}>
+          </ManageOrderStatusButton>
+          <ManageOrderStatusButton
+            statusCheck="DONE"
+            onClick={handleStatus("DONE")}
+          >
             주문완료
-            {orderStatus === "COMPLETE" && <Underline layoutId="underline" />}
-          </CompleteOrderStateButton>
-          <CancelOrderStateButton onClick={showCancelOrders}>
+          </ManageOrderStatusButton>
+          <ManageOrderStatusButton
+            statusCheck="CANCELED"
+            onClick={handleStatus("CANCELED")}
+          >
             주문취소
-            {orderStatus === "CANCELED" && <Underline layoutId="underline" />}
-          </CancelOrderStateButton>
+          </ManageOrderStatusButton>
         </ButtonContainer>
       </AnimateSharedLayout>
     </OptionContainer>

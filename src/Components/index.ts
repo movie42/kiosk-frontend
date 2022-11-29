@@ -8,6 +8,7 @@ export {
   StoreCreateStatusBar,
   StoreUpdateStatusBar
 } from "./Bar";
+export { OptionsContainer } from "./Containers";
 export { Nav } from "./Nav";
 export {
   PageHeader,
