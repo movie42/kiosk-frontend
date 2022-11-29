@@ -1,4 +1,3 @@
-import React from "react";
 import {
   AnimateSharedLayout,
   motion,
@@ -14,6 +13,7 @@ import { Headline2, Headline3 } from "@/lib/styles/mixin";
 import { orderStatusState } from "@/lib/state";
 import type { OrderStatusValue } from "@/lib/state/interface";
 import ManageOrderStatusButton from "@/Components/Buttons/ManageOrderStatusButton";
+import { useSearchParams } from "react-router-dom";
 
 const OptionContainer = styled(motion.div)`
   position: relative;
@@ -76,14 +76,11 @@ const ButtonContainer = styled(motion.div)`
 `;
 
 interface IOptionsContainerProps {
-  setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
   stickyPos: number;
 }
 
-const OptionsContainer = ({
-  setSearchTerm,
-  stickyPos
-}: IOptionsContainerProps) => {
+const OptionsContainer = ({ stickyPos }: IOptionsContainerProps) => {
+  const [_, setQueryString] = useSearchParams();
   const { scrollY } = useViewportScroll();
   const y = useTransform(scrollY, [0, stickyPos, stickyPos + 1], [0, 0, 1], {
     clamp: false
@@ -98,7 +95,8 @@ const OptionsContainer = ({
   const setOrderStatus = useSetRecoilState(orderStatusState);
 
   const searchOrder = handleSubmit((data) => {
-    setSearchTerm(data.searchOrder);
+    const { searchOrder } = data;
+    setQueryString(`order=${searchOrder}`);
   });
 
   const handleStatus = (statue: OrderStatusValue) => () => {
@@ -114,8 +112,7 @@ const OptionsContainer = ({
           placeholder="주문번호를 입력해주세요."
           {...register("searchOrder", {
             max: 3000,
-            min: 0,
-            onChange: (e) => setSearchTerm(e.currentTarget.value)
+            min: 1000
           })}
         />
         <ButtonDefault>검색</ButtonDefault>
