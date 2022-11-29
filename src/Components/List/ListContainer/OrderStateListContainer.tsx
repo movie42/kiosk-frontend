@@ -299,7 +299,7 @@ const OrderStateListContainer = () => {
                       <span>
                         <strong>가격</strong>
                         {product?.productPrice &&
-                          translateLocalCurrency(product?.productPrice)}
+                          translateLocalCurrency(Number(product?.productPrice))}
                         원
                       </span>
                       <span>

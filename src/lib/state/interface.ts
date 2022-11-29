@@ -53,7 +53,7 @@ export interface NewOrder {
   number: number;
   price: number;
   status: OrderStatusValue;
-  orderProducts: ProductInfo[] | undefined[];
+  orderProducts: ProductInfo[];
 }
 
 export interface ProductOptions {
