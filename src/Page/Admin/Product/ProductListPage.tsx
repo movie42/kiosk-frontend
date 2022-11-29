@@ -2,7 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { MdAddCircle, MdDelete } from "react-icons/md";
 
-import { Option, selectOptionState } from "@/lib/state";
+import { OptionValue, selectOptionState } from "@/lib/state";
 import {
   PageHeader,
   Loading,
@@ -27,7 +27,7 @@ const ProductListPage = () => {
   const { isLoading, data: products } = useGetProduct();
   const { data: store } = useGetStore();
   const [{ options }, setSelectOption] = useRecoilState(selectOptionState);
-  const handleDeleteItem = (option: Option) => () => {
+  const handleDeleteItem = (option: OptionValue) => () => {
     setSelectOption({ options: option });
   };
   const handleGoToAddProduct = () =>
@@ -44,7 +44,7 @@ const ProductListPage = () => {
             <MdAddCircle />
             <CreateProductButton>상품등록</CreateProductButton>
           </ButtonItemWrapper>
-          <ButtonItemWrapper onClick={handleDeleteItem(Option.DELETE)}>
+          <ButtonItemWrapper onClick={handleDeleteItem("DELETE")}>
             <MdDelete />
             <DeleteProductButton>상품삭제</DeleteProductButton>
           </ButtonItemWrapper>
@@ -56,7 +56,7 @@ const ProductListPage = () => {
             <ProductListItem key={product.id} product={product} />
           ))}
       </ProductList>
-      {options !== "none" && <MenuStatusBar />}
+      {options !== "NONE" && <MenuStatusBar />}
     </ProductListPageContainer>
   );
 };

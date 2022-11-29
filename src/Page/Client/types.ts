@@ -1,4 +1,4 @@
-import { OrderStatusType } from "@/lib/state";
+import { OrderStatusValue } from "@/lib/state/interface";
 
 export interface OrderProductInput {
   productId: number;
@@ -11,5 +11,5 @@ export interface AddOrderInput {
   imp_uid: string;
   merchant_uid: string;
   products: OrderProductInput[];
-  type: OrderStatusType;
+  type: OrderStatusValue;
 }

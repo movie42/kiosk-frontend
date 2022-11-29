@@ -13,7 +13,6 @@ import graphqlReqeustClient from "@/lib/graphqlRequestClient";
 import {
   ProductListValues,
   selectOptionState,
-  Option,
   updateProductState,
   userState
 } from "@/lib/state";
@@ -89,7 +88,7 @@ const UpdateModalChildren = ({ setIsModal }: ISelectModalChildrenProps) => {
 
   const onCancel = () => {
     setSelectUpdateProduct(updateDefault);
-    setSelectOption({ options: Option.NONE });
+    setSelectOption({ options: "NONE" });
     setIsModal(false);
   };
 

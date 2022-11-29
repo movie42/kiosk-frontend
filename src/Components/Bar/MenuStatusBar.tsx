@@ -5,8 +5,7 @@ import {
   ProductListValues,
   productListState,
   selectOptionState,
-  selectProductListState,
-  Option
+  selectProductListState
 } from "@/lib/state";
 import useModalHook from "@/lib/hooks/useModalHook";
 import { SubTitle2 } from "@/lib/styles/mixin";
@@ -65,7 +64,7 @@ const MenuStatusBar = () => {
   };
 
   const updateSelectOptionToNone = () => {
-    setSelectOption({ options: Option.NONE });
+    setSelectOption({ options: "NONE" });
     setProductList((preValue) => [
       ...preValue.map((item) => ({ ...item, select: false }))
     ]);
@@ -74,7 +73,7 @@ const MenuStatusBar = () => {
 
   return (
     <>
-      {isModal && selectOption.options === "delete" && (
+      {isModal && selectOption.options === "DELETE" && (
         <Modal strach={true}>
           <ProductDeleteModal setIsModal={setIsModal} />
         </Modal>

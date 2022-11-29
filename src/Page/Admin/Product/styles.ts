@@ -1,8 +1,8 @@
 import { ButtonDefault, InputDefault, LabelDefault } from "@/Components";
 import styled, { css } from "styled-components";
 import { Body2, Headline2, SubTitle2 } from "@/lib/styles";
-import { Option } from "@/lib/state";
 import { IAdminMenuProps } from "../interface";
+import { OptionValue } from "@/lib/state";
 
 export const CreateProductContainer = styled.div`
   margin-bottom: 8rem;
@@ -406,11 +406,13 @@ export const ManageOptionContainer = styled.div`
   }
 `;
 
-export const ProductListPageButtonContainer = styled.div<{ options: Option }>`
+export const ProductListPageButtonContainer = styled.div<{
+  options: OptionValue;
+}>`
   display: flex;
   align-items: center;
   ${({ options }) => {
-    if (options !== Option.NONE) {
+    if (options !== "NONE") {
       return css`
         visibility: hidden;
       `;
