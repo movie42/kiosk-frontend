@@ -1,102 +1,29 @@
-import {
-  AnimateSharedLayout,
-  motion,
-  useTransform,
-  useViewportScroll
-} from "framer-motion";
+import { AnimateSharedLayout } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { useSetRecoilState } from "recoil";
-import styled from "styled-components";
 
-import { ButtonDefault, InputDefault, PageHeader } from "@/Components";
-import { Headline2, Headline3 } from "@/lib/styles/mixin";
+import { ButtonDefault, PageHeader } from "@/Components";
 import { orderStatusState } from "@/lib/state";
 import type { OrderStatusValue } from "@/lib/state/interface";
 import ManageOrderStatusButton from "@/Components/Buttons/ManageOrderStatusButton";
 import { useSearchParams } from "react-router-dom";
+import { ButtonContainer, OptionContainer, SearchingInput } from "./styles";
 
-const OptionContainer = styled(motion.div)`
-  position: relative;
-  display: grid;
-  align-items: center;
-  grid-template-columns: 1fr 2fr 3fr;
-  padding-bottom: 1.5rem;
-  background-color: ${(props) => props.theme.color.background100};
-  z-index: 10;
-  h2 {
-    ${Headline2}
-  }
+type OptionsContainerProps = React.HTMLAttributes<HTMLDivElement>;
 
-  ${({ theme }) => theme.device.tablet} {
-    h2 {
-      ${Headline3};
-      margin-top: 1rem;
-      line-height: 1.5;
-    }
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-  }
-`;
-
-const SearchingInput = styled(InputDefault)`
-  ${Headline3};
-  border: 0;
-  outline: unset;
-  &::-webkit-outer-spin-button,
-  &::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-  }
-
-  ${({ theme }) => theme.device.tablet} {
-    font-size: 2rem;
-    margin: 1rem 0;
-    line-height: 1.5;
-    padding: 0;
-  }
-`;
-
-const ButtonContainer = styled(motion.div)`
-  button {
-    padding: 0.2rem 1.5rem;
-    font-size: 2rem;
-    margin-left: 0.3rem;
-    background-color: unset;
-    color: ${(props) => props.theme.color.fontColorBlack};
-    ${({ theme }) => theme.device.tablet} {
-      padding: 0.2rem 1.5rem 0 0;
-      margin-left: 0;
-    }
-    ${({ theme }) => theme.device.mobile} {
-      font-size: 1.8rem;
-      padding: 0.2rem 1rem 0 0;
-      margin-left: 0;
-    }
-  }
-`;
-
-interface IOptionsContainerProps {
-  stickyPos: number;
-}
-
-const OptionsContainer = ({ stickyPos }: IOptionsContainerProps) => {
+const OptionsContainer = ({ ...props }: OptionsContainerProps) => {
   const [_, setQueryString] = useSearchParams();
-  const { scrollY } = useViewportScroll();
-  const y = useTransform(scrollY, [0, stickyPos, stickyPos + 1], [0, 0, 1], {
-    clamp: false
-  });
-  const borderTick = useTransform(
-    scrollY,
-    [0, stickyPos, stickyPos + 1],
-    ["unset", "unset", "3px solid #575757"]
-  );
 
   const { register, handleSubmit } = useForm();
   const setOrderStatus = useSetRecoilState(orderStatusState);
 
   const searchOrder = handleSubmit((data) => {
     const { searchOrder } = data;
-    setQueryString(`order=${searchOrder}`);
+    if (searchOrder) {
+      setQueryString(`order=${searchOrder}`);
+      return;
+    }
+    setQueryString("");
   });
 
   const handleStatus = (statue: OrderStatusValue) => () => {
@@ -104,7 +31,7 @@ const OptionsContainer = ({ stickyPos }: IOptionsContainerProps) => {
   };
 
   return (
-    <OptionContainer style={{ y, borderBottom: borderTick }}>
+    <OptionContainer {...props}>
       <PageHeader header="주문관리" />
       <form onSubmit={searchOrder}>
         <SearchingInput
@@ -154,5 +81,7 @@ const OptionsContainer = ({ stickyPos }: IOptionsContainerProps) => {
     </OptionContainer>
   );
 };
+
+OptionsContainer.displayName = "OptionsContainer";
 
 export default OptionsContainer;
