@@ -45,16 +45,19 @@ const Router = () => {
             <Route path="create" element={<StoreCreatePage />} />
             <Route path=":storeId">
               <Route path="update" element={<StoreUpdatePage />} />
-              <Route path="product" element={<AdminManageProductLayout />}>
-                <Route path=":productId" element={<ProductDetailPage />} />
-                <Route path="main" element={<ProductManageMainPage />} />
-                <Route path="manage-product" element={<ProductListPage />} />
-                <Route path="add-product" element={<CreateProductPage />} />
-              </Route>
               <Route path="manage-order" element={<ManageOrderPage />} />
             </Route>
           </Route>
         </Route>
+      </Route>
+      <Route
+        path="/admin/:userId/store/:storeId/product"
+        element={<AdminManageProductLayout />}
+      >
+        <Route path=":productId" element={<ProductDetailPage />} />
+        <Route path="main" element={<ProductManageMainPage />} />
+        <Route path="manage-product" element={<ProductListPage />} />
+        <Route path="add-product" element={<CreateProductPage />} />
       </Route>
 
       <Route path="/client" element={<ClientLayout />}>
