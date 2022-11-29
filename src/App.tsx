@@ -3,7 +3,6 @@ import Router from "./Routers/Routers";
 import { UserState, userState, useUserContext } from "./lib/state";
 import { useSetRecoilState } from "recoil";
 import { useNavigate } from "react-router-dom";
-import { LOCAL_STORAGE_KEY } from "./lib/constant/constant";
 
 function App() {
   const navigate = useNavigate();
@@ -24,6 +23,7 @@ function App() {
       });
       return navigate("/");
     }
+
     setUser(userInfo);
   }, []);
 

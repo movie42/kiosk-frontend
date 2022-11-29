@@ -111,7 +111,7 @@ const handleDataToNew = (
   return orders;
 };
 
-const MangeOrderMain = () => {
+const ManageOrderPage = () => {
   const { storeId } = useParams();
   const sticky = useRef<HTMLDivElement>(null);
   const [stickyPos, setStickyPos] = useState<number>(0);
@@ -192,4 +192,4 @@ const MangeOrderMain = () => {
   );
 };
 
-export default MangeOrderMain;
+export default ManageOrderPage;

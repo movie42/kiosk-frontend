@@ -23,7 +23,7 @@ import {
 } from "@/Page/Admin/Store";
 import { Logout } from "@/Page/Admin/Logout";
 
-import MangeOrderMain from "@/Page/MangeOrder/MangeOrderMain";
+import { ManageOrderPage } from "@/Page/MangeOrder";
 import ClientMain from "@/Page/Client/ClientMain";
 import ClientMenu from "@/Page/Client/ClientMenu";
 import ClientSelectList from "@/Page/Client/ClientSelectList";
@@ -45,19 +45,16 @@ const Router = () => {
             <Route path="create" element={<StoreCreatePage />} />
             <Route path=":storeId">
               <Route path="update" element={<StoreUpdatePage />} />
+              <Route path="product" element={<AdminManageProductLayout />}>
+                <Route path=":productId" element={<ProductDetailPage />} />
+                <Route path="main" element={<ProductManageMainPage />} />
+                <Route path="manage-product" element={<ProductListPage />} />
+                <Route path="add-product" element={<CreateProductPage />} />
+              </Route>
+              <Route path="manage-order" element={<ManageOrderPage />} />
             </Route>
           </Route>
         </Route>
-      </Route>
-      <Route
-        path="/admin/:userId/store/:storeId/product"
-        element={<AdminManageProductLayout />}
-      >
-        <Route path=":productId" element={<ProductDetailPage />} />
-        <Route path="main" element={<ProductManageMainPage />} />
-        <Route path="manage-product" element={<ProductListPage />} />
-        <Route path="manage-order" element={<MangeOrderMain />} />
-        <Route path="add-product" element={<CreateProductPage />} />
       </Route>
 
       <Route path="/client" element={<ClientLayout />}>
