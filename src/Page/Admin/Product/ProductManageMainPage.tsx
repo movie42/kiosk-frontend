@@ -74,7 +74,7 @@ const ProductManageMainPage = () => {
         <ManageProductMainPageLinkButton
           ChildComponent={LinkToStaffWindowButton}
           data-link="manage-order"
-          to={`/admin/${userId}/store/${storeId}/product/manage-order`}
+          to={`/admin/${userId}/store/${storeId}/manage-order`}
           image={customerImage}
         >
           고객 주문 관리하기
