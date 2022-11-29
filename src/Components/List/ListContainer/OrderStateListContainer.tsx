@@ -14,7 +14,7 @@ import {
 } from "@/lib/generated/graphql";
 import graphqlReqeustClient from "@/lib/graphqlRequestClient";
 
-import OrderModal from "./OrderModal";
+import OrderModal from "../../Modals/OrderModal";
 
 const List = styled.ul`
   display: grid;
@@ -168,7 +168,7 @@ const CancelOrderButton = styled(defaultButtonStyle)`
       : `${buttonFalse(theme)}`};
 `;
 
-const OrderStateList = () => {
+const OrderStateListContainer = () => {
   const queryClient = useQueryClient();
   const { accessToken } = useRecoilValue(userState);
   const orders = useRecoilValue(getOrderForFrontend);
@@ -322,4 +322,4 @@ const OrderStateList = () => {
   );
 };
 
-export default OrderStateList;
+export default OrderStateListContainer;

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useParams } from "react-router-dom";
 
-import { OptionsContainer } from "@/Components";
+import { OptionsContainer, OrderStateListContainer } from "@/Components";
 import {
   OrderStatusType,
   useGetProductsQuery,
@@ -11,7 +11,6 @@ import {
 } from "@/lib/generated/graphql";
 import { userState, orderStateForFrontend } from "@/lib/state";
 import graphqlReqeustClient from "@/lib/graphqlRequestClient";
-import OrderStateList from "./OrderStateList";
 
 const Wrapper = styled.div``;
 
@@ -186,7 +185,7 @@ const ManageOrderPage = () => {
         />
       </div>
       <OrderStateContainer>
-        <OrderStateList />
+        <OrderStateListContainer />
       </OrderStateContainer>
     </Wrapper>
   );

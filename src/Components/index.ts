@@ -25,6 +25,11 @@ export {
   ProductDeleteModal,
   ProductUpdateModal,
   ProductUpdateForm,
+  OrderModal,
   Modal
 } from "./Modals";
-export { ProductListItem, StoreListItem } from "./List";
+export {
+  ProductListItem,
+  StoreListItem,
+  OrderStateListContainer
+} from "./List";
