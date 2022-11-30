@@ -1,9 +1,9 @@
 import { useParams } from "react-router-dom";
 import { restaurantImage, takeoutImage } from "@/lib/images";
 import { Header, OrderingMethod, OrderingButton, Wrapper } from "./styles";
-import { useNavigateHereToGo } from "../hooks/useNavigateHereToGo";
+import { useNavigateHereToGo } from "../hooks";
 
-const ClientMain = () => {
+const ClientMainPage = () => {
   const { userId, storeId } = useParams();
   const { handleOrderMethod } = useNavigateHereToGo({ userId, storeId });
 
@@ -37,4 +37,4 @@ const ClientMain = () => {
   );
 };
 
-export default ClientMain;
+export default ClientMainPage;

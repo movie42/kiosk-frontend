@@ -3,7 +3,14 @@ import { IoIosAddCircle } from "react-icons/io";
 import { AiFillMinusCircle } from "react-icons/ai";
 import { translateLocalCurrency } from "@/lib/utils";
 import { Images, Noimage } from "@/Components";
-import { AddCountButton, MinusCountButton } from "../ClientSelectList/styles";
+import {
+  IOrderSelectedItem,
+  ProductListValues
+} from "@/lib/state/productItemState";
+import {
+  AddCountButton,
+  MinusCountButton
+} from "@/Page/Client/ClientSelectList/styles";
 import {
   ItemNameContainer,
   Wrapper,
@@ -15,10 +22,6 @@ import {
   Title,
   ProductCount
 } from "./styles";
-import {
-  IOrderSelectedItem,
-  ProductListValues
-} from "@/lib/state/productItemState";
 
 interface MenuItemModalProps {
   setIsModal: React.Dispatch<React.SetStateAction<boolean>>;

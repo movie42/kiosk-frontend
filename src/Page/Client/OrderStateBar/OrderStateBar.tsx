@@ -1,4 +1,3 @@
-import React from "react";
 import { translateLocalCurrency } from "@/lib/utils";
 import { MenuBarContainer } from "./styles";
 

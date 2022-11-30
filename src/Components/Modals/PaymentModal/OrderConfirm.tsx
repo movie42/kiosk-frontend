@@ -2,7 +2,11 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import { selectMenuListState } from "@/lib/state";
-import { PaymentBox, BtnGroup, ConfirmButton } from "../styles";
+import {
+  PaymentBox,
+  BtnGroup,
+  ConfirmButton
+} from "../../../Page/Client/ClientSelectList/styles";
 
 interface ConfirmProps {
   orderNumber: number;

@@ -5,14 +5,18 @@ import { OrderType, useAddOrderMutation } from "@/lib/generated/graphql";
 import graphqlReqeustClient from "@/lib/graphqlRequestClient";
 import { orderType, selectMenuListState, userState } from "@/lib/state";
 import { RequestPayResponse, RequestPayParams } from "@/lib/types/Payment";
-import { AddOrderInput, OrderProductInput } from "../../types";
+import {
+  AddOrderInput,
+  OrderProductInput
+} from "../../../Page/Client/interface";
 import {
   MenuBox,
   BtnGroup,
   ConfirmButton,
   CancelButton,
   PaymentBox
-} from "../styles";
+} from "../../../Page/Client/ClientSelectList/styles";
+import { calculateTotalAmount, translateLocalCurrency } from "@/lib/utils";
 
 interface PaymentProps {
   storeId: string | undefined;
@@ -63,11 +67,7 @@ const ProceedPayment = ({
   const handlePayment = () => {
     // window.IMP?.init(impkey);
 
-    const amount: number = orderList.reduce(
-      (acc, obj) => acc + obj.totalPrice,
-      0
-    );
-
+    const amount: number = calculateTotalAmount(orderList, "totalPrice");
     const orderProducts = orderList.map((item) => {
       return {
         productId: item.productId,
@@ -112,14 +112,12 @@ const ProceedPayment = ({
             {el.name} {el.option}
           </span>
           <span>{el.totalCount}개</span>
-          <span>{el.totalPrice.toLocaleString()}원</span>
+          <span>{translateLocalCurrency(el.totalPrice)}원</span>
         </MenuBox>
       ))}
       <h3>
         총 결제&nbsp;
-        {orderList
-          .reduce((acc, obj) => acc + obj.totalPrice, 0)
-          .toLocaleString()}
+        {translateLocalCurrency(calculateTotalAmount(orderList, "totalPrice"))}
         원
       </h3>
       <BtnGroup>
