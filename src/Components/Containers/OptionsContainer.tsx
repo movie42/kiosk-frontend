@@ -59,14 +59,14 @@ const OptionsContainer = ({ ...props }: OptionsContainerProps) => {
             주문접수
           </ManageOrderStatusButton>
           <ManageOrderStatusButton
-            statusCheck="COMPLETE"
-            onClick={handleStatus("COMPLETE")}
+            statusCheck="DONE"
+            onClick={handleStatus("DONE")}
           >
             준비완료
           </ManageOrderStatusButton>
           <ManageOrderStatusButton
-            statusCheck="DONE"
-            onClick={handleStatus("DONE")}
+            statusCheck="COMPLETE"
+            onClick={handleStatus("COMPLETE")}
           >
             주문완료
           </ManageOrderStatusButton>
