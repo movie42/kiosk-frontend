@@ -1,6 +1,6 @@
-import { useNavigate } from "react-router-dom";
-import { termsOfService, privacyPolicy } from "../Agreement/AgreementContent";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { TERMS_OF_SERVICE, PRIVACY_POLICY } from "@/lib/constant";
 import {
   AgreementButton,
   ButtonGroup,
@@ -31,7 +31,7 @@ const AgreementPage = () => {
             동의하기
           </AgreementButton>
         </TermsContainer>
-        <TermsText>{termsOfService}</TermsText>
+        <TermsText>{TERMS_OF_SERVICE}</TermsText>
         <hr />
         <TermsContainer>
           <Title>개인정보 수집 및 이용 동의</Title>
@@ -39,7 +39,7 @@ const AgreementPage = () => {
             동의하기
           </AgreementButton>
         </TermsContainer>
-        <TermsText>{privacyPolicy}</TermsText>
+        <TermsText>{PRIVACY_POLICY}</TermsText>
         <hr />
 
         <ButtonGroup>
