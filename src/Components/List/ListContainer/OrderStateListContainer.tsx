@@ -14,7 +14,7 @@ import {
 } from "@/lib/generated/graphql";
 import graphqlReqeustClient from "@/lib/graphqlRequestClient";
 
-import OrderModal from "./OrderModal";
+import OrderModal from "../../Modals/OrderModal";
 
 const List = styled.ul`
   display: grid;
@@ -168,7 +168,7 @@ const CancelOrderButton = styled(defaultButtonStyle)`
       : `${buttonFalse(theme)}`};
 `;
 
-const OrderStateList = () => {
+const OrderStateListContainer = () => {
   const queryClient = useQueryClient();
   const { accessToken } = useRecoilValue(userState);
   const orders = useRecoilValue(getOrderForFrontend);
@@ -299,7 +299,7 @@ const OrderStateList = () => {
                       <span>
                         <strong>가격</strong>
                         {product?.productPrice &&
-                          translateLocalCurrency(product?.productPrice)}
+                          translateLocalCurrency(Number(product?.productPrice))}
                         원
                       </span>
                       <span>
@@ -322,4 +322,4 @@ const OrderStateList = () => {
   );
 };
 
-export default OrderStateList;
+export default OrderStateListContainer;

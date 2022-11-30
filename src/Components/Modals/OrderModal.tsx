@@ -2,7 +2,7 @@ import React from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 
-import { Modal } from "@/Components";
+import Modal from "./Modal";
 import { getOrderForFrontend } from "@/lib/state/orderState";
 import { OrderStatusType } from "@/lib/generated/graphql";
 import { translateLocalCurrency, calculatePrice } from "@/lib/utils";
@@ -181,7 +181,13 @@ const OrderModal = ({
               </span>
               <span>
                 <strong>
-                  {calculatePrice(value?.productPrice, value?.amount)}원
+                  {value.productPrice &&
+                    value.amount &&
+                    calculatePrice(
+                      Number(value.productPrice),
+                      Number(value?.amount)
+                    )}
+                  원
                 </strong>
               </span>
             </MordalItem>

@@ -6,7 +6,6 @@ import {
   ProductListValues,
   selectOptionState,
   selectProductListState,
-  Option,
   userState
 } from "@/lib/state";
 import { translateLocalCurrency } from "@/lib/utils";
@@ -51,7 +50,7 @@ const DeleteModalChildren = ({ setIsModal }: IDeleteModalChildrenProps) => {
   const handleModal = () => {
     setSelectProduct([]);
     setIsModal(false);
-    setSelectOption({ options: Option.NONE });
+    setSelectOption({ options: "NONE" });
   };
 
   const selectDeleteItemsSubmitHandler = () => {
@@ -74,7 +73,7 @@ const DeleteModalChildren = ({ setIsModal }: IDeleteModalChildrenProps) => {
 
   useEffect(() => {
     return () => {
-      setSelectOption({ options: Option.NONE });
+      setSelectOption({ options: "NONE" });
       setSelectProduct([]);
     };
   }, []);

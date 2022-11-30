@@ -8,6 +8,7 @@ export {
   StoreCreateStatusBar,
   StoreUpdateStatusBar
 } from "./Bar";
+export { OptionsContainer } from "./Containers";
 export { Nav } from "./Nav";
 export {
   PageHeader,
@@ -24,6 +25,11 @@ export {
   ProductDeleteModal,
   ProductUpdateModal,
   ProductUpdateForm,
+  OrderModal,
   Modal
 } from "./Modals";
-export { ProductListItem, StoreListItem } from "./List";
+export {
+  ProductListItem,
+  StoreListItem,
+  OrderStateListContainer
+} from "./List";

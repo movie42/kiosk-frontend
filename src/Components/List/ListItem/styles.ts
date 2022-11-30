@@ -1,5 +1,5 @@
 import { ButtonDefault } from "@/Components/Buttons";
-import { Option } from "@/lib/state";
+import { OptionValue } from "@/lib/state";
 import { Headline3 } from "@/lib/styles";
 import { motion, Variants } from "framer-motion";
 import styled from "styled-components";
@@ -9,7 +9,7 @@ export const ItemWrapper = styled(motion.li)`
 `;
 
 export const Item = styled(motion.div)<{
-  selectOption: Option;
+  selectOption: OptionValue;
   selected: boolean;
 }>`
   .item-container {

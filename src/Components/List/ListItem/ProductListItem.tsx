@@ -153,7 +153,7 @@ const ProductImageInfoContainer = ({
       selected={selectProduct.some((item) => item.id === productId)}
     >
       <div className="item-container">
-        {selectOption.options !== "none" && <span className="is-select"></span>}
+        {selectOption.options !== "NONE" && <span className="is-select"></span>}
         <div className="image-container">
           <span className="transparent-box"></span>
           {imageUrl ? (

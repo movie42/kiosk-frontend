@@ -1,15 +1,15 @@
-import { OrderStatusType } from "../state";
+import { OrderStatusValue } from "../state/interface";
 
-const translateOrderStateFromEngToKo = (state: OrderStatusType) => {
-  if (state === OrderStatusType.Ready) {
+const translateOrderStateFromEngToKo = (state: OrderStatusValue) => {
+  if (state === "READY") {
     return "접수";
   }
 
-  if (state === OrderStatusType.Canceled) {
+  if (state === "CANCELED") {
     return "취소";
   }
 
-  if (state === OrderStatusType.Complete) {
+  if (state === "COMPLETE") {
     return "완료";
   }
 

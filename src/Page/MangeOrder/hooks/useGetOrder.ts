@@ -1,21 +1,13 @@
-import { useEffect, useRef, useState } from "react";
-import styled from "styled-components";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { useParams } from "react-router-dom";
-
 import {
   OrderStatusType,
-  useGetProductsQuery,
-  useGetOrdersQuery
+  useGetOrdersQuery,
+  useGetProductsQuery
 } from "@/lib/generated/graphql";
-import { userState, orderStateForFrontend } from "@/lib/state";
 import graphqlReqeustClient from "@/lib/graphqlRequestClient";
-import OrderStateList from "./OrderStateList";
-import OptionsContainer from "./OptionsContainer";
-
-const Wrapper = styled.div``;
-
-const OrderStateContainer = styled.div``;
+import { orderStateForFrontend, userState } from "@/lib/state";
+import { useEffect, useState } from "react";
+import { useParams, useSearchParams } from "react-router-dom";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 
 interface SelectOrder {
   __typename?: "Query";
@@ -28,15 +20,17 @@ interface SelectOrder {
     imp_uid: string;
     merchant_uid: string;
     status: OrderStatusType;
-    orderProducts: Array<{
-      __typename?: "OrderProduct";
-      id: string;
-      orderId: number;
-      productId: number;
-      amount: number;
-      productOptionId: number;
-    }>;
+    orderProducts: OrderProducts[];
   }>;
+}
+
+interface OrderProducts {
+  __typename?: "OrderProduct";
+  id: string;
+  orderId: number;
+  productId: number;
+  amount: number;
+  productOptionId: number;
 }
 
 interface ProductQuery {
@@ -57,18 +51,13 @@ interface ProductQuery {
   } | null;
 }
 
-const handleDataToNew = (
+const normalizationManageOrderData = (
   todayOrdersData: SelectOrder,
   getProduct: ProductQuery,
   term?: string
 ) => {
-  const orders = todayOrdersData.orders.map((order) => ({
-    id: order.id,
-    storeId: order.storeId,
-    number: order.number,
-    price: order.price,
-    status: order.status,
-    orderProducts: order.orderProducts.map((orderProduct) => {
+  const orderProducts = (orderProducts: OrderProducts[]) =>
+    orderProducts.map((orderProduct) => {
       if (getProduct.store) {
         const [selectProduct] = getProduct.store.products.filter(
           (product) => product.id === String(orderProduct.productId)
@@ -96,12 +85,20 @@ const handleDataToNew = (
         productId: orderProduct.productId,
         orderId: orderProduct.orderId,
         amount: orderProduct.amount,
-        productName: "언노운",
+        productName: "정보를 불러올 수 없습니다.",
         productPrice: 0,
-        productOptionId: "언노운",
-        optionName: "언노운"
+        productOptionId: "정보를 불러올 수 없습니다.",
+        optionName: "정보를 불러올 수 없습니다."
       };
-    })
+    });
+
+  const orders = todayOrdersData.orders.map((order) => ({
+    id: order.id,
+    storeId: order.storeId,
+    number: order.number,
+    price: order.price,
+    status: order.status,
+    orderProducts: orderProducts(order.orderProducts)
   }));
 
   if (term) {
@@ -111,18 +108,24 @@ const handleDataToNew = (
   return orders;
 };
 
-const MangeOrderMain = () => {
-  const { storeId } = useParams();
-  const sticky = useRef<HTMLDivElement>(null);
-  const [stickyPos, setStickyPos] = useState<number>(0);
-  const { accessToken } = useRecoilValue(userState);
-  const [searchTerm, setSearchTerm] = useState("");
+const useGetOrder = () => {
+  const [getOrderStatus, setGetOrderStatue] = useState({
+    isLoading: false,
+    isSuccess: false,
+    isRefetching: false
+  });
+
   const setOrders = useSetRecoilState(orderStateForFrontend);
+  const { storeId } = useParams();
+  const [queryString] = useSearchParams();
+  const orderSearchTerm = queryString.get("order");
+  const { accessToken } = useRecoilValue(userState);
 
   const {
     data: getProduct,
     isSuccess: isGetProductSuccess,
-    isRefetching: isGetProductRefetcing
+    isRefetching: isGetProductRefetcing,
+    isLoading: isProductLoading
   } = useGetProductsQuery(graphqlReqeustClient(accessToken), {
     id: Number(storeId)
   });
@@ -130,7 +133,8 @@ const MangeOrderMain = () => {
   const {
     data: todayOrdersData,
     isSuccess: isTodayOrdersQuerySuccess,
-    isRefetching: isTodayOrdersRefetcing
+    isRefetching: isTodayOrdersRefetcing,
+    isLoading: isTodayOrdersLoading
   } = useGetOrdersQuery(graphqlReqeustClient(accessToken), {
     storeId: storeId ? Number(storeId) : 1,
     offset: 0,
@@ -138,58 +142,70 @@ const MangeOrderMain = () => {
   });
 
   useEffect(() => {
-    if (sticky.current) {
-      const offsetTop = sticky.current.offsetTop as number;
-      setStickyPos(offsetTop);
-    }
-  }, [sticky]);
-
-  useEffect(() => {
     if (
-      searchTerm &&
+      orderSearchTerm &&
       isGetProductSuccess &&
       isTodayOrdersQuerySuccess &&
       !isGetProductRefetcing &&
       !isTodayOrdersRefetcing
     ) {
-      const orders = handleDataToNew(todayOrdersData, getProduct, searchTerm);
+      const orders = normalizationManageOrderData(
+        todayOrdersData,
+        getProduct,
+        orderSearchTerm
+      );
       setOrders(orders);
+      return;
     }
 
     if (
-      !searchTerm &&
       isGetProductSuccess &&
       isTodayOrdersQuerySuccess &&
       !isGetProductRefetcing &&
       !isTodayOrdersRefetcing
     ) {
-      const orders = handleDataToNew(todayOrdersData, getProduct);
+      const orders = normalizationManageOrderData(todayOrdersData, getProduct);
       setOrders(orders);
+      return;
     }
   }, [
     todayOrdersData,
     getProduct,
     setOrders,
-    searchTerm,
+    orderSearchTerm,
     isGetProductSuccess,
     isTodayOrdersQuerySuccess,
     isGetProductRefetcing,
     isTodayOrdersRefetcing
   ]);
 
-  return (
-    <Wrapper>
-      <div ref={sticky}>
-        <OptionsContainer
-          setSearchTerm={setSearchTerm}
-          stickyPos={stickyPos as number}
-        />
-      </div>
-      <OrderStateContainer>
-        <OrderStateList />
-      </OrderStateContainer>
-    </Wrapper>
-  );
+  useEffect(() => {
+    const isSuccess = [isGetProductSuccess, isTodayOrdersQuerySuccess].every(
+      (value) => value
+    );
+    const isRefetching = [isGetProductRefetcing, isTodayOrdersRefetcing].some(
+      (value) => value
+    );
+    const isLoading = [isProductLoading, isTodayOrdersLoading].some(
+      (value) => value
+    );
+    setGetOrderStatue({
+      isSuccess,
+      isRefetching,
+      isLoading
+    });
+  }, [
+    isGetProductSuccess,
+    isGetProductRefetcing,
+    isProductLoading,
+    isTodayOrdersQuerySuccess,
+    isTodayOrdersRefetcing,
+    isTodayOrdersLoading
+  ]);
+
+  return {
+    ...getOrderStatus
+  };
 };
 
-export default MangeOrderMain;
+export default useGetOrder;

@@ -8,3 +8,4 @@ export { default as useGetProduct } from "./useGetProduct";
 export { default as useUpdateStoreOpenCloseToggle } from "./useUpdateStoreOpenCloseToggle";
 export { default as useUpdateProductOpenCloseToggle } from "./useUpdateProductOpenCloseToggle";
 export { default as useCreateProduct } from "./useCreateProduct";
+export { default as useGetProductDetail } from "./useGetProductDetail";

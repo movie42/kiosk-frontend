@@ -1,16 +1,24 @@
-export enum OrderStatusType {
-  All = "ALL",
-  Canceled = "CANCELED",
-  Complete = "COMPLETE",
-  Done = "DONE",
-  Ready = "READY"
-}
+export const ORDER_STATUS = {
+  All: "ALL",
+  Canceled: "CANCELED",
+  Complete: "COMPLETE",
+  Done: "DONE",
+  Ready: "READY"
+} as const;
 
-export enum Option {
-  NONE = "none",
-  DELETE = "delete",
-  UPDATE = "update"
-}
+export type OrderStatusType = typeof ORDER_STATUS;
+export type OrderStatusKey = keyof OrderStatusType;
+export type OrderStatusValue = OrderStatusType[OrderStatusKey];
+
+export const OPTION = {
+  NONE: "NONE",
+  DELETE: "DELETE",
+  UPDATE: "UPDATE"
+} as const;
+
+export type OptionType = typeof OPTION;
+export type OptionKey = keyof OptionType;
+export type OptionValue = OptionType[OptionKey];
 
 export interface OrderProducts {
   productId: number;
@@ -24,7 +32,7 @@ export interface Order {
   storeId: number;
   number: number;
   price: number;
-  status: OrderStatusType;
+  status: OrderStatusValue;
   orderProducts: OrderProducts[];
 }
 
@@ -44,8 +52,8 @@ export interface NewOrder {
   storeId: number;
   number: number;
   price: number;
-  status: OrderStatusType;
-  orderProducts: ProductInfo[] | undefined[];
+  status: OrderStatusValue;
+  orderProducts: ProductInfo[];
 }
 
 export interface ProductOptions {
@@ -78,7 +86,7 @@ export interface SalesInfo {
 }
 
 export interface SelectOption {
-  options: Option;
+  options: OptionValue;
 }
 
 export interface storeStateProps {

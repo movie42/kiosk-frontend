@@ -23,7 +23,7 @@ import {
 } from "@/Page/Admin/Store";
 import { Logout } from "@/Page/Admin/Logout";
 
-import MangeOrderMain from "@/Page/MangeOrder/MangeOrderMain";
+import { ManageOrderPage } from "@/Page/MangeOrder";
 
 import PageNotFound from "@/Page/Errors/404";
 import { ClientMainPage } from "@/Page/Client/ClientMain";
@@ -45,6 +45,7 @@ const Router = () => {
             <Route path="create" element={<StoreCreatePage />} />
             <Route path=":storeId">
               <Route path="update" element={<StoreUpdatePage />} />
+              <Route path="manage-order" element={<ManageOrderPage />} />
             </Route>
           </Route>
         </Route>
@@ -56,7 +57,6 @@ const Router = () => {
         <Route path=":productId" element={<ProductDetailPage />} />
         <Route path="main" element={<ProductManageMainPage />} />
         <Route path="manage-product" element={<ProductListPage />} />
-        <Route path="manage-order" element={<MangeOrderMain />} />
         <Route path="add-product" element={<CreateProductPage />} />
       </Route>
 
@@ -69,7 +69,7 @@ const Router = () => {
         </Route>
       </Route>
 
-      {/* TODO: private router로 변경하면 login이 동작하지 않습니다. 왜냐하면
+      {/* FIXME: private router로 변경하면 login이 동작하지 않습니다. 왜냐하면
       isLogin이 true이기 때문입니다. login이 전부 끝난 다음에 접근하지 못하도록 변경해야합니다.*/}
       <Route path="/" element={<LandingLayout />}>
         {!isLogin ? (

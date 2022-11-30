@@ -1,4 +1,5 @@
 import { atom } from "recoil";
+import { OptionValue } from "./interface";
 export interface IOrderSelectedItem {
   productId: number;
   name: string;
@@ -46,7 +47,7 @@ export enum Option {
 }
 
 export interface SelectOption {
-  options: Option;
+  options: OptionValue;
 }
 
 export const productListState = atom({
@@ -61,7 +62,7 @@ export const selectProductListState = atom({
 
 export const selectOptionState = atom<SelectOption>({
   key: "selectOption",
-  default: { options: Option.NONE }
+  default: { options: "NONE" }
 });
 
 // client

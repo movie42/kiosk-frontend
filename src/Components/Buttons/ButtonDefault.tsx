@@ -1,8 +1,8 @@
 import React from "react";
-import { HTMLMotionProps, motion } from "framer-motion";
+
 import styled from "styled-components";
 
-const Button = styled(motion.button)`
+const Button = styled.button`
   cursor: pointer;
   font-size: 2.5rem;
   border: 0;
@@ -12,9 +12,9 @@ const Button = styled(motion.button)`
   background-color: ${(props) => props.theme.color.gray300};
 `;
 
-type IButtonDefault = HTMLMotionProps<"button">;
+type IButtonDefault = React.ButtonHTMLAttributes<HTMLButtonElement>;
 
-const ButtonDefault: React.FC<IButtonDefault> = ({ ...props }) => {
+const ButtonDefault = ({ ...props }: IButtonDefault) => {
   return <Button {...props}>{props.children}</Button>;
 };
 

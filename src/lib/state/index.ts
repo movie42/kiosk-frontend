@@ -14,6 +14,7 @@ export {
 } from "./productItemState";
 export { storesState, storeState } from "./storeState";
 export { userState } from "./userState";
+
 export type {
   OrderProducts,
   Order,
@@ -25,8 +26,11 @@ export type {
   SalesInfo,
   SelectOption,
   storeStateProps,
-  UserState
+  UserState,
+  OrderStatusKey,
+  OptionType,
+  OptionKey,
+  OptionValue
 } from "./interface";
 
-export { OrderStatusType, Option } from "./interface";
 export { UserContextAPI, useUserContext } from "./UserContextAPI";
