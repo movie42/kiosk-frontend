@@ -1,10 +1,4 @@
-import React from "react";
-import {
-  BtnGroup,
-  CancelButton,
-  ConfirmButton,
-  PaymentBox
-} from "../../../Page/Client/ClientSelectList/styles";
+import { BtnGroup, CancelButton, ConfirmButton, PaymentBox } from "./styles";
 
 interface ReceiptProps {
   remain: number;

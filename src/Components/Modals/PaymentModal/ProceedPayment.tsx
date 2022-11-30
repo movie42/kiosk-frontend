@@ -9,14 +9,14 @@ import {
   AddOrderInput,
   OrderProductInput
 } from "../../../Page/Client/interface";
-import {
-  MenuBox,
-  BtnGroup,
-  ConfirmButton,
-  CancelButton,
-  PaymentBox
-} from "../../../Page/Client/ClientSelectList/styles";
 import { calculateTotalAmount, translateLocalCurrency } from "@/lib/utils";
+import {
+  BtnGroup,
+  CancelButton,
+  ConfirmButton,
+  MenuBox,
+  PaymentBox
+} from "./styles";
 
 interface PaymentProps {
   storeId: string | undefined;
