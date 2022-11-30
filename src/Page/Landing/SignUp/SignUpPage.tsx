@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import {
   FieldErrorsImpl,
   useForm,
@@ -22,8 +22,7 @@ import { EMAIL_REX } from "@/lib/constant/constant";
 import { SignUpProps } from "../interface";
 import useHandleGoBack from "./hooks/useHandleGoBack";
 import useSubmitSignup from "./hooks/useSubmitSignup";
-import { useNavigate } from "react-router-dom";
-import useMutateStore from "./hooks/useMutateStore";
+import useSubmitStore from "./hooks/useSubmitStore";
 
 const SignUpPage = () => {
   return (
@@ -42,9 +41,6 @@ const SignUpPage = () => {
 export default SignUpPage;
 
 const SignupForm = () => {
-  const navigate = useNavigate();
-  const [checkStore, setCheckStore] = useState(true);
-
   const {
     submitUserOnly,
     isSuccess: mutateUserSuccess,
@@ -52,16 +48,12 @@ const SignupForm = () => {
     mutateUserForStoreSuccess,
     storeInfo
   } = useSubmitSignup();
-  const { mutateStore } = useMutateStore();
 
-  useEffect(() => {
-    if (mutateUserSuccess && !checkStore) {
-      navigate("/login");
-    }
-    if (mutateUserForStoreSuccess && checkStore && storeInfo) {
-      mutateStore({ ...storeInfo });
-    }
-  }, [mutateUserSuccess, mutateUserForStoreSuccess, checkStore, storeInfo]);
+  const { checkStore, setCheckStore } = useSubmitStore({
+    mutateUserSuccess,
+    mutateUserForStoreSuccess,
+    storeInfo
+  });
 
   const {
     register,
