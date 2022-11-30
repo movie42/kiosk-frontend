@@ -1,9 +1,8 @@
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
-import { Headline1 } from "@/lib/styles/mixin";
-import ButtonDefaultStyle from "@/Components/Buttons/ButtonDefault";
+import { Headline1 } from "@/lib/styles";
+import { ButtonDefault } from "@/Components";
 
-const Wrapper = styled.div`
+export const LandingWrapper = styled.div`
   width: 100%;
   height: 100%;
   position: relative;
@@ -27,7 +26,8 @@ const Wrapper = styled.div`
     line-height: 1.3;
   }
 `;
-const Container = styled.div`
+
+export const LandingContainer = styled.div`
   width: 50%;
   padding: 1rem 2rem;
   h1 {
@@ -43,34 +43,14 @@ const Container = styled.div`
   }
 `;
 
-const Title = styled.h2`
+export const LandingTitle = styled.h2`
   font-size: 1.2rem;
   line-height: 2;
 `;
 
-const LinkButton = styled(ButtonDefaultStyle)`
+export const LinkButton = styled(ButtonDefault)`
   color: #000;
   font-weight: bold;
   background: none;
   padding-left: 0;
 `;
-
-const LandingMain = () => {
-  const navigate = useNavigate();
-  return (
-    <Wrapper>
-      <Container>
-        <h1>누구나 키오스크</h1>
-        <Title>누구나 쉽고 빠르게 내 가게를 운영하는 방법</Title>
-        <div>
-          <LinkButton onClick={() => navigate("/agreement")}>
-            회원가입
-          </LinkButton>
-          <LinkButton onClick={() => navigate("/login")}>로그인</LinkButton>
-        </div>
-      </Container>
-    </Wrapper>
-  );
-};
-
-export default LandingMain;

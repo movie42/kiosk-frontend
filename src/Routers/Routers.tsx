@@ -24,13 +24,13 @@ import {
 import { Logout } from "@/Page/Admin/Logout";
 
 import { ManageOrderPage } from "@/Page/MangeOrder";
-import ClientMain from "@/Page/Client/ClientMain";
-import ClientMenu from "@/Page/Client/ClientMenu";
-import ClientSelectList from "@/Page/Client/ClientSelectList";
-import LandingMain from "@/Page/Landing/LandingMain";
-import SignUp from "@/Page/Landing/SignUp";
-import Agreement from "@/Page/Landing/Agreement";
+
 import PageNotFound from "@/Page/Errors/404";
+import { ClientMainPage } from "@/Page/Client/ClientMain";
+import { ClientMenuPage } from "@/Page/Client/ClientMenu";
+import { ClientSelectListPage } from "@/Page/Client/ClientSelectList";
+import { AgreementPage, SignUpPage } from "@/Page/Landing/SignUp";
+import LandingMainPage from "@/Page/Landing/LandingMainPage";
 
 const Router = () => {
   const { isLogin, id: userId } = useRecoilValue(userState);
@@ -63,9 +63,9 @@ const Router = () => {
       <Route path="/client" element={<ClientLayout />}>
         <Route path=":userId/:storeId">
           <Route path="" element={<Navigate to="main" />} />
-          <Route path="main" element={<ClientMain />} />
-          <Route path="menu" element={<ClientMenu />} />
-          <Route path="select-list" element={<ClientSelectList />} />
+          <Route path="main" element={<ClientMainPage />} />
+          <Route path="menu" element={<ClientMenuPage />} />
+          <Route path="select-list" element={<ClientSelectListPage />} />
         </Route>
       </Route>
 
@@ -74,8 +74,8 @@ const Router = () => {
       <Route path="/" element={<LandingLayout />}>
         {!isLogin ? (
           <>
-            <Route path="/" element={<LandingMain />} />
-            <Route path="agreement" element={<Agreement />} />
+            <Route path="/" element={<LandingMainPage />} />
+            <Route path="agreement" element={<AgreementPage />} />
           </>
         ) : (
           <Route
@@ -83,7 +83,7 @@ const Router = () => {
             element={<Navigate to={`/admin/${userId}/store/list`} />}
           />
         )}
-        <Route path="signup" element={<SignUp />} />
+        <Route path="signup" element={<SignUpPage />} />
         <Route
           path="login"
           element={!isLogin ? <Login /> : <AdminLoadingAndGetUser />}
