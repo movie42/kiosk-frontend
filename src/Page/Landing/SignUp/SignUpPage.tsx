@@ -19,10 +19,8 @@ import {
   SubContainer
 } from "./styles";
 import { EMAIL_REX } from "@/lib/constant/constant";
+import { useHandleGoBack, useSubmitSignup, useSubmitStore } from "./hooks";
 import { SignUpProps } from "../interface";
-import useHandleGoBack from "./hooks/useHandleGoBack";
-import useSubmitSignup from "./hooks/useSubmitSignup";
-import useSubmitStore from "./hooks/useSubmitStore";
 
 const SignUpPage = () => {
   return (
