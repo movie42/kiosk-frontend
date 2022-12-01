@@ -6,10 +6,12 @@ import { IoIosAddCircle, IoIosRemoveCircle } from "react-icons/io";
 import {
   InputDefault,
   LabelDefault,
-  Loading,
   TextareaDefault
-} from "@/Components";
-
+} from "@/Components/UI/Atoms";
+import { Loading } from "@/Components/UI/Molecules";
+import { CreateProductModal } from "@/Components/UI/Organisms";
+import { useModalHook } from "@/lib/hooks";
+import { useCreateProduct } from "../hooks";
 import {
   CancelButton,
   CreateProductContainer,
@@ -18,9 +20,6 @@ import {
   OptionsField,
   ButtonContainer
 } from "./styles";
-import { useModalHook } from "@/lib/hooks";
-import { CreateProductModal } from "@/Components/Modals";
-import { useCreateProduct } from "../hooks";
 
 interface ProductDefaultValue {
   imageUrl?: string;

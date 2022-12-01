@@ -1,13 +1,16 @@
 import React, { ReactNode } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useModalHook } from "@/lib/hooks";
+import { DefaultTheme, StyledComponent } from "styled-components";
+
 import {
   customerImage,
   manageProductImage,
   orderStateImage
 } from "@/lib/images";
-
-import { StoreOpenCloseModal, ToggleButton, PageHeader } from "@/Components";
+import { useModalHook } from "@/lib/hooks";
+import { StoreOpenCloseModal, PageHeader } from "@/Components/UI/Organisms";
+import { ToggleButton } from "@/Components/UI/Atoms";
+import { useGetStore } from "../hooks";
 import {
   BusinessInfoContainer,
   ProductMainPageHeader,
@@ -17,9 +20,6 @@ import {
   ProductMenuButtonContainer,
   ProductMainContainer
 } from "./styles";
-
-import { DefaultTheme, StyledComponent } from "styled-components";
-import { useGetStore } from "../hooks";
 
 const ProductManageMainPage = () => {
   const { storeId, userId } = useParams();

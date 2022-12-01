@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import styled from "styled-components";
-import Nav from "../Nav/Nav";
+import Nav from "../UI/Molecules/Nav/Nav";
 import { Headline1 } from "../../lib/styles/mixin";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { useRecoilValue } from "recoil";

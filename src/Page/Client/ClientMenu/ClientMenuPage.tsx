@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { useNavigate, useParams } from "react-router-dom";
-import { MenuItemModal } from "@/Components/Modals/MenuItemModal";
-import { Images, Loading, Modal, Noimage } from "@/Components";
+
+import { MenuItemModal, Modal } from "@/Components/UI/Organisms";
+import { Loading } from "@/Components/UI/Molecules";
+import { Images, Noimage } from "@/Components/UI/Atoms";
 import { ProductListValues, selectMenuListState } from "@/lib/state";
 import { calculateTotalAmount } from "@/lib/utils";
 import { useGetMenuList } from "../hooks";

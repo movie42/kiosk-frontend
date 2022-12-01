@@ -1,5 +1,7 @@
-import { Images, Noimage, Chart } from "@/Components";
+import { Images, Noimage } from "@/Components/UI/Atoms";
+import { Chart } from "@/Components/UI/Organisms";
 import { translateLocalCurrency } from "@/lib/utils";
+import { useGetProductDetail } from "../hooks";
 import {
   BasicInfoContainer,
   ImageContainer,
@@ -9,7 +11,6 @@ import {
   SalesInfoSummuryContainer,
   ProductDetailPageContainer
 } from "./styles";
-import { useGetProductDetail } from "../hooks";
 
 const ProductDetailPage = () => {
   const { data: product } = useGetProductDetail();

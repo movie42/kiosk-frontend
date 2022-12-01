@@ -1,11 +1,12 @@
-import {
-  Loading,
-  OptionsContainer,
-  OrderStateListContainer
-} from "@/Components";
+import { useTransform, useViewportScroll } from "framer-motion";
+
 import { Container, OrderStateContainer, OrderStateHeader } from "./styles";
 import { useGetOrder, useElementTopOffset } from "./hooks";
-import { useTransform, useViewportScroll } from "framer-motion";
+import { Loading } from "@/Components/UI/Molecules";
+import {
+  OptionsContainer,
+  OrderStateListContainer
+} from "@/Components/UI/Organisms";
 
 const handleMotionDiff = <TStart, TDiff>(start: TStart, ...rest: TDiff[]) => {
   return [start, ...rest];

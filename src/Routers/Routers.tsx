@@ -5,11 +5,10 @@ import {
   AdminLayout,
   ClientLayout,
   LandingLayout,
-  AdminManageProductLayout,
-  AdminLoadingAndGetUser
-} from "@/Components";
-import Login from "@/Page/Admin/Login/Login";
-
+  AdminManageProductLayout
+} from "@/Components/Layouts";
+import { AdminLoadingAndGetUser } from "@/Components/UI/Molecules";
+import { Login } from "@/Page/Admin/Login";
 import {
   ProductManageMainPage,
   ProductDetailPage,
@@ -22,15 +21,13 @@ import {
   StoreUpdatePage
 } from "@/Page/Admin/Store";
 import { Logout } from "@/Page/Admin/Logout";
-
 import { ManageOrderPage } from "@/Page/MangeOrder";
-
 import PageNotFound from "@/Page/Errors/404";
 import { ClientMainPage } from "@/Page/Client/ClientMain";
 import { ClientMenuPage } from "@/Page/Client/ClientMenu";
 import { ClientSelectListPage } from "@/Page/Client/ClientSelectList";
 import { AgreementPage, SignUpPage } from "@/Page/Landing/SignUp";
-import LandingMainPage from "@/Page/Landing/LandingMainPage";
+import { LandingMainPage } from "@/Page/Landing";
 
 const Router = () => {
   const { isLogin, id: userId } = useRecoilValue(userState);

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Headline1 } from "@/lib/styles";
-import { ButtonDefault } from "@/Components";
+import { ButtonDefault } from "@/Components/UI/Atoms";
 
 export const LandingWrapper = styled.div`
   width: 100%;

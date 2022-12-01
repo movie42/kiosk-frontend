@@ -1,4 +1,8 @@
-import { ButtonDefault, InputDefault, LabelDefault } from "@/Components";
+import {
+  ButtonDefault,
+  InputDefault,
+  LabelDefault
+} from "@/Components/UI/Atoms";
 import styled, { css } from "styled-components";
 import { Body2, Headline2, SubTitle2 } from "@/lib/styles";
 import { IAdminMenuProps } from "../interface";

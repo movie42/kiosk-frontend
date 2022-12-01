@@ -1,8 +1,8 @@
-import { Loading } from "@/Components";
 import { useGetStores } from "../hooks";
 import { StoreList, Wrapper } from "./styles";
 
-import { AdminStoreListHeader, StoreListItem } from "@/Components";
+import { AdminStoreListHeader } from "@/Components/UI/Organisms";
+import { Loading, StoreListItem } from "@/Components/UI/Molecules";
 
 const StoreListPage = () => {
   const { data: stores, isLoading } = useGetStores();

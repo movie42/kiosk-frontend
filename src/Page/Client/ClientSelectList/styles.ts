@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { ButtonDefault } from "@/Components";
+import { ButtonDefault } from "@/Components/UI/Atoms";
 import {
   Body1,
   Headline1,

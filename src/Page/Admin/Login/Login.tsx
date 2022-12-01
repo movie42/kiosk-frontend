@@ -1,11 +1,14 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { useRecoilValue } from "recoil";
 
-import { LabelDefault, PageHeader, AdminLoadingAndGetUser } from "@/Components";
+import { LabelDefault } from "@/Components/UI/Atoms";
+import { AdminLoadingAndGetUser } from "@/Components/UI/Molecules";
+import { PageHeader } from "@/Components/Layouts";
 import { EMAIL_REX } from "@/lib/constant/constant";
 import { userState } from "@/lib/state/userState";
-
+import { useLogin } from "../hooks";
+import { IUserProps } from "../interface";
 import {
   ActionContainer,
   FormContainer,
@@ -13,9 +16,6 @@ import {
   LoginLabel,
   Wrapper
 } from "./styles";
-import { useLogin } from "../hooks";
-import { useRecoilValue } from "recoil";
-import { IUserProps } from "../interface";
 
 const Login = () => {
   const { mutate } = useLogin();

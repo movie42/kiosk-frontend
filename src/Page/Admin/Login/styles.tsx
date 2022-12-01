@@ -1,8 +1,7 @@
 import styled from "styled-components";
 
-import InputDefault from "@/Components/Form/InputDefault";
+import { LabelDefault, InputDefault } from "@/Components/UI/Atoms";
 import { SubTitle1, SubTitle2 } from "@/lib/styles/mixin";
-import LabelDefault from "@/Components/Form/LabelDefault";
 
 export const Wrapper = styled.div`
   height: 80vh;

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Body1, Headline1, Headline2, SubTitle2 } from "@/lib/styles";
-import { ButtonDefault, InputDefault } from "@/Components";
+import { ButtonDefault, InputDefault } from "@/Components/UI/Atoms";
 
 export const Wrapper = styled.div`
   padding: 1rem 2rem;

@@ -1,11 +1,7 @@
 import { useForm } from "react-hook-form";
 
-import {
-  InputDefault,
-  LabelDefault,
-  Loading,
-  StoreUpdateStatusBar
-} from "@/Components";
+import { InputDefault, LabelDefault } from "@/Components/UI/Atoms";
+import { Loading, StoreUpdateStatusBar } from "@/Components/UI/Molecules";
 import {
   useGetStore,
   useLoadingComplete,
