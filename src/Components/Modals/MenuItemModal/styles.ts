@@ -31,6 +31,13 @@ export const Wrapper = styled.div`
       align-self: end;
     }
   }
+  .warning {
+    position: absolute;
+    top: -3.5rem;
+    right: 0.5rem;
+    font-size: 2rem;
+    color: red;
+  }
 `;
 
 export const ItemNameContainer = styled.div`
@@ -58,6 +65,7 @@ export const OptionButton = styled(ButtonDefault)<{ selected?: boolean }>`
 `;
 export const OrderContainer = styled.div`
   display: grid;
+  position: relative;
   grid-template-columns: 50px 0.5fr 50px 1fr 1fr;
   column-gap: 10px;
   align-items: center;
@@ -75,6 +83,7 @@ export const OrderButton = styled(ButtonDefault)`
   padding: 0.8rem;
   font-family: "Noto Sans KR";
 `;
+
 export const Title = styled.h4<{ composition?: boolean }>`
   font-size: 1.7rem;
   font-weight: bold;

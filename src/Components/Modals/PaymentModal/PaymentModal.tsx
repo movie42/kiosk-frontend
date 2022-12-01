@@ -1,7 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import useHandleReceipt from "../../../Page/Client/hooks/useHandleReceipt";
-import useTimer from "../../../Page/Client/hooks/useTimer";
+import { useHandleReceipt, useTimer } from "@/Page/Client/hooks";
 import OrderConfirm from "./OrderConfirm";
 import PrintReceipt from "./PrintReceipt";
 import ProceedPayment from "./ProceedPayment";
