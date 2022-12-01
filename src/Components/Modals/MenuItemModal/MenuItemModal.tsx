@@ -40,6 +40,7 @@ const MenuItemModal = ({
   orderItem,
   setOrderItem
 }: MenuItemModalProps) => {
+  const [warning, setWarning] = useState("");
   const [selected] = selectedItem;
   const orderSelectedItem = () => {
     const [sameMenu] = orderItem.filter(
@@ -50,12 +51,12 @@ const MenuItemModal = ({
     const { options: hasOption }: any = selected;
 
     if (count === 0) {
-      alert("수량을 선택해주세요");
+      setWarning("수량을 선택해주세요");
       return;
     }
 
     if (hasOption?.length > 0 && !selectedOption) {
-      alert("옵션을 선택하세요");
+      setWarning("옵션을 선택하세요");
       return;
     }
 
@@ -154,6 +155,7 @@ const MenuItemModal = ({
           {translateLocalCurrency(count * Number(selected.price), "ko-KR")}원
         </Title>
         <OrderContainer>
+          {warning && <span className="warning">{warning}</span>}
           <MinusCountButton
             onClick={() => {
               if (count < 1) return;
