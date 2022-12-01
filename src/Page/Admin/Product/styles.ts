@@ -1,5 +1,5 @@
 import {
-  ButtonDefault,
+  BasicSquareButton,
   InputDefault,
   LabelDefault
 } from "@/Components/UI/Atoms";
@@ -121,11 +121,11 @@ export const ButtonContainer = styled.div`
   }
 `;
 
-export const CreateButton = styled(ButtonDefault)`
+export const CreateButton = styled(BasicSquareButton)`
   background-color: ${(props) => props.theme.color.primary600};
 `;
 
-export const CancelButton = styled(ButtonDefault)`
+export const CancelButton = styled(BasicSquareButton)`
   color: ${(props) => props.theme.color.fontColorWhite};
   margin-right: 0.3rem;
 `;
@@ -271,7 +271,7 @@ export const ProductMainPageMenu = styled.div`
   }
 `;
 
-export const MenuButtonDefault = styled.button<IAdminMenuProps>`
+export const MenuBasicSquareButton = styled.button<IAdminMenuProps>`
   box-sizing: border-box;
   border: 0;
   border-radius: 0.6rem;
@@ -440,8 +440,8 @@ export const ButtonItemWrapper = styled.div`
   }
 `;
 
-export const CreateProductButton = styled(ButtonDefault)``;
-export const DeleteProductButton = styled(ButtonDefault)``;
+export const CreateProductButton = styled(BasicSquareButton)``;
+export const DeleteProductButton = styled(BasicSquareButton)``;
 
 export const ProductDetailPageContainer = styled.div`
   box-sizing: border-box;

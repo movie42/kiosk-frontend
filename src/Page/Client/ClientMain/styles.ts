@@ -25,7 +25,7 @@ export const Header = styled.div`
   }
 `;
 
-export const MenuButtonDefault = styled.button<IAdminMenuProps>`
+export const MenuBasicSquareButton = styled.button<IAdminMenuProps>`
   box-sizing: border-box;
   border: 0;
   border-radius: 0.6rem;
@@ -91,7 +91,7 @@ export const OrderingMethod = styled.div`
   }
 `;
 
-export const OrderingButton = styled(MenuButtonDefault)`
+export const OrderingButton = styled(MenuBasicSquareButton)`
   display: flex;
   align-items: center;
   justify-content: center;

@@ -9,7 +9,7 @@ import {
 } from "@/lib/state";
 import useModalHook from "@/lib/hooks/useModalHook";
 import { SubTitle2 } from "@/lib/styles/mixin";
-import { ButtonDefault } from "@/Components/UI/Atoms";
+import { BasicSquareButton } from "@/Components/UI/Atoms";
 
 const MenuBarContainer = styled.div`
   display: flex;
@@ -41,11 +41,11 @@ const MenuBarContainer = styled.div`
   }
 `;
 
-const ConfirmButton = styled(ButtonDefault)`
+const ConfirmButton = styled(BasicSquareButton)`
   background-color: ${(props) => props.theme.color.error500};
 `;
 
-const CancelButton = styled(ButtonDefault)`
+const CancelButton = styled(BasicSquareButton)`
   background-color: ${(props) => props.theme.color.gray400};
   color: ${(props) => props.theme.color.fontColorWhite};
   margin-right: 0.3rem;

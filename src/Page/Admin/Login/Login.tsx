@@ -4,7 +4,7 @@ import { useRecoilValue } from "recoil";
 
 import { LabelDefault } from "@/Components/UI/Atoms";
 import { AdminLoadingAndGetUser } from "@/Components/UI/Molecules";
-import { PageHeader } from "@/Components/Layouts";
+import { PageHeader } from "@/Components/UI/Organisms";
 import { EMAIL_REX } from "@/lib/constant/constant";
 import { userState } from "@/lib/state/userState";
 import { useLogin } from "../hooks";

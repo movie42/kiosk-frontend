@@ -7,7 +7,7 @@ import {
   MenuStatusBar,
   ProductListItem
 } from "@/Components/UI/Molecules";
-import { PageHeader } from "@/Components/Layouts";
+import { PageHeader } from "@/Components/UI/Organisms";
 import { OptionValue, selectOptionState } from "@/lib/state";
 import { useGetStore, useGetProduct } from "@/Page/Admin/hooks";
 import {

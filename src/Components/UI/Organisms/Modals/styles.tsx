@@ -7,7 +7,7 @@ import {
   Headline3,
   SubTitle2
 } from "@/lib/styles/mixin";
-import ButtonDefaultStyle from "@/Components/UI/Atoms/Buttons/ButtonDefault";
+import BasicSquareButtonStyle from "@/Components/UI/Atoms/Buttons/BasicSquareButton";
 import { IModalProps } from "./Modal";
 
 export const ModalChildren = styled.div`
@@ -107,11 +107,11 @@ export const Wrapper = styled.div`
     }
   }
 `;
-export const CancelButton = styled(ButtonDefaultStyle)``;
-export const StopConfirmButton = styled(ButtonDefaultStyle)`
+export const CancelButton = styled(BasicSquareButtonStyle)``;
+export const StopConfirmButton = styled(BasicSquareButtonStyle)`
   background-color: ${(props) => props.theme.color.error500};
 `;
-export const StartConfirmButton = styled(ButtonDefaultStyle)`
+export const StartConfirmButton = styled(BasicSquareButtonStyle)`
   background-color: ${(props) => props.theme.color.primary600};
 `;
 

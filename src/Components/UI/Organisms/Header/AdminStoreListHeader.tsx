@@ -1,8 +1,9 @@
 import { MdAddCircle } from "react-icons/md";
-import { Link, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { storeStateProps } from "@/lib/state";
-import { AddStoreButton, Header } from "@/Page/Admin/Store/styles";
+import { IconButton } from "@/Components/UI/Atoms";
+import { Header } from "@/Page/Admin/Store/styles";
 import PageHeader from "./PageHeader";
 
 interface Props {
@@ -11,6 +12,10 @@ interface Props {
 
 const AdminStoreListHeader = ({ store }: Props) => {
   const { userId } = useParams();
+  const navigate = useNavigate();
+  const handleMoveToPage = () => {
+    navigate(`/admin/${userId}/store/create`);
+  };
   return (
     <Header>
       <PageHeader
@@ -21,10 +26,12 @@ const AdminStoreListHeader = ({ store }: Props) => {
             : "아직 등록된 가게가 없습니다."
         }
       />
-      <AddStoreButton>
-        <MdAddCircle />
-        <Link to={`/admin/${userId}/store/create`}>가게등록</Link>
-      </AddStoreButton>
+      <IconButton
+        ReactIcon={MdAddCircle}
+        text="가게등록"
+        hidden={false}
+        onClick={handleMoveToPage}
+      />
     </Header>
   );
 };

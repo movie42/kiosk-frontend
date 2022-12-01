@@ -1,4 +1,4 @@
-import { ButtonDefault } from "@/Components/UI/Atoms/Buttons";
+import { BasicSquareButton } from "@/Components/UI/Atoms/Buttons";
 import { OptionValue } from "@/lib/state";
 import { Headline3 } from "@/lib/styles";
 import { motion, Variants } from "framer-motion";
@@ -118,7 +118,7 @@ export const UpdateButtonWrapper = styled.div`
   }
 `;
 
-export const UpdateProductButton = styled(ButtonDefault)`
+export const UpdateProductButton = styled(BasicSquareButton)`
   font-size: 1.5rem;
 `;
 
@@ -180,7 +180,7 @@ export const ButtonContainer = styled.div`
     }
   }
 `;
-export const UpdateButton = styled(ButtonDefault)``;
-export const DeleteButton = styled(ButtonDefault)`
+export const UpdateButton = styled(BasicSquareButton)``;
+export const DeleteButton = styled(BasicSquareButton)`
   margin-left: 1.8rem;
 `;

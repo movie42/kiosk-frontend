@@ -5,7 +5,10 @@ import { useSetRecoilState } from "recoil";
 
 import { orderStatusState } from "@/lib/state";
 import type { OrderStatusValue } from "@/lib/state/interface";
-import { ManageOrderStatusButton, ButtonDefault } from "@/Components/UI/Atoms";
+import {
+  ManageOrderStatusButton,
+  BasicSquareButton
+} from "@/Components/UI/Atoms";
 import { PageHeader } from "@/Components/UI/Organisms";
 import { ButtonContainer, OptionContainer, SearchingInput } from "./styles";
 
@@ -42,7 +45,7 @@ const OptionsContainer = ({ ...props }: OptionsContainerProps) => {
             min: 1000
           })}
         />
-        <ButtonDefault>검색</ButtonDefault>
+        <BasicSquareButton>검색</BasicSquareButton>
       </form>
       <AnimateSharedLayout>
         <ButtonContainer>

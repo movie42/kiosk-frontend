@@ -16,7 +16,7 @@ import {
   ProductMainPageHeader,
   LinkToStaffWindowButton,
   ProductMainPageMenu,
-  MenuButtonDefault,
+  MenuBasicSquareButton,
   ProductMenuButtonContainer,
   ProductMainContainer
 } from "./styles";
@@ -139,8 +139,8 @@ const ManageProductMainPageLinkButton = ({
     navigate(to);
   };
   return (
-    <MenuButtonDefault image={image} onClick={handleNavigate} {...props}>
+    <MenuBasicSquareButton image={image} onClick={handleNavigate} {...props}>
       <ChildComponent>{children}</ChildComponent>
-    </MenuButtonDefault>
+    </MenuBasicSquareButton>
   );
 };

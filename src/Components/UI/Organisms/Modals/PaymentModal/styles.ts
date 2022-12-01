@@ -1,4 +1,4 @@
-import { ButtonDefault } from "@/Components/UI/Atoms/Buttons";
+import { BasicSquareButton } from "@/Components/UI/Atoms/Buttons";
 import { Headline2, SubTitle1, SubTitle2, Body1 } from "@/lib/styles";
 import styled from "styled-components";
 
@@ -39,11 +39,11 @@ export const BtnGroup = styled.div`
   text-align: center;
   margin-top: 1rem;
 `;
-export const ConfirmButton = styled(ButtonDefault)`
+export const ConfirmButton = styled(BasicSquareButton)`
   background-color: ${(props) => props.theme.color.primary500};
   margin: 0 0.5rem;
 `;
-export const CancelButton = styled(ButtonDefault)`
+export const CancelButton = styled(BasicSquareButton)`
   background-color: ${(props) => props.theme.color.gray300};
   margin: 0 0.5rem;
 `;
