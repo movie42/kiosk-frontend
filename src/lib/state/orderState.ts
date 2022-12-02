@@ -1,52 +1,10 @@
 import { atom, selector } from "recoil";
 
-export enum OrderStatusType {
-  All = "ALL",
-  Canceled = "CANCELED",
-  Complete = "COMPLETE",
-  Done = "DONE",
-  Ready = "READY"
-}
+import { NewOrder, OrderStatusValue } from "./interface";
 
-export interface OrderProducts {
-  productId: number;
-  orderId: number;
-  amount: number;
-  productOptionIds: number[];
-}
-
-export interface Order {
-  id: string;
-  storeId: number;
-  number: number;
-  price: number;
-  status: OrderStatusType;
-  orderProducts: OrderProducts[];
-}
-
-export interface ProductInfo {
-  id: string;
-  productId: number;
-  orderId: number;
-  amount: number;
-  productName: string;
-  productPrice: number;
-  productOptionId: string;
-  optionName: string;
-}
-
-export interface NewOrder {
-  id: string;
-  storeId: number;
-  number: number;
-  price: number;
-  status: OrderStatusType;
-  orderProducts: ProductInfo[] | undefined[];
-}
-
-export const orderStatusState = atom<OrderStatusType>({
+export const orderStatusState = atom<OrderStatusValue>({
   key: "orderStatusState",
-  default: OrderStatusType.Ready
+  default: "READY"
 });
 
 export const orderStateForFrontend = atom<NewOrder[]>({
@@ -62,17 +20,13 @@ export const getOrderForFrontend = selector<NewOrder[]>({
 
     switch (orderStatus) {
       case "READY":
-        return orders.filter((item) => item.status === OrderStatusType.Ready);
+        return orders.filter((item) => item.status === "READY");
       case "DONE":
-        return orders.filter((item) => item.status === OrderStatusType.Done);
+        return orders.filter((item) => item.status === "DONE");
       case "COMPLETE":
-        return orders.filter(
-          (item) => item.status === OrderStatusType.Complete
-        );
+        return orders.filter((item) => item.status === "COMPLETE");
       case "CANCELED":
-        return orders.filter(
-          (item) => item.status === OrderStatusType.Canceled
-        );
+        return orders.filter((item) => item.status === "CANCELED");
       default:
         return orders;
     }

@@ -1,5 +1,15 @@
 import { atom } from "recoil";
-import { IOrderSelectedItem } from "../../Page/Client/ClientMenu";
+import { OptionValue } from "./interface";
+export interface IOrderSelectedItem {
+  productId: number;
+  name: string;
+  optionId: number;
+  option?: string;
+  price: number;
+  totalCount: number;
+  totalPrice: number;
+  imageUrl?: string | null | undefined;
+}
 
 export interface ProductOptions {
   id: number;
@@ -37,7 +47,7 @@ export enum Option {
 }
 
 export interface SelectOption {
-  options: Option;
+  options: OptionValue;
 }
 
 export const productListState = atom({
@@ -52,7 +62,7 @@ export const selectProductListState = atom({
 
 export const selectOptionState = atom<SelectOption>({
   key: "selectOption",
-  default: { options: Option.NONE }
+  default: { options: "NONE" }
 });
 
 // client
