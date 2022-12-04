@@ -27,20 +27,40 @@ export const OptionContainer = styled.div`
   }
 `;
 
+export const SearchForm = styled.form`
+  width: 100%;
+`;
+
+export const SearchBox = styled.div`
+  width: 40rem;
+  border-bottom: 1px solid ${(props) => props.theme.color.gray800};
+  display: grid;
+  grid-template-columns: 1fr auto;
+
+  button {
+    font-size: 1.8rem;
+    color: ${(props) => props.theme.color.gray800};
+    width: 100%;
+    background-color: unset;
+    &:hover {
+      color: ${(props) => props.theme.color.primary700};
+      font-weight: bolder;
+    }
+  }
+`;
 export const SearchingInput = styled(InputDefault)`
-  ${Headline3};
+  padding: 0 2rem;
+  font-size: 2rem;
   border: 0;
   outline: unset;
+  background-color: unset;
   &::-webkit-outer-spin-button,
   &::-webkit-inner-spin-button {
     -webkit-appearance: none;
   }
-
   ${({ theme }) => theme.device.tablet} {
-    font-size: 2rem;
     margin: 1rem 0;
     line-height: 1.5;
-    padding: 0;
   }
 `;
 

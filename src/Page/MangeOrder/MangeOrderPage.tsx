@@ -18,10 +18,10 @@ const ManageOrderPage = () => {
 
   const { scrollY } = useViewportScroll();
 
-  const opacity = useTransform(
+  const display = useTransform(
     scrollY,
     handleMotionDiff(0, topOffset, topOffset + 1),
-    handleMotionDiff(0, 0, 1)
+    handleMotionDiff("none", "none", "block")
   );
   const borderTick = useTransform(
     scrollY,
@@ -35,7 +35,7 @@ const ManageOrderPage = () => {
     <Container>
       <OrderStateHeader
         style={{
-          opacity,
+          display,
           borderBottom: borderTick,
           zIndex: 100
         }}

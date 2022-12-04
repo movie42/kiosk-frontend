@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { ButtonDefault } from "@/Components/UI/Atoms";
+import { BasicSquareButton } from "@/Components/UI/Atoms";
 import { SubTitle2 } from "@/lib/styles";
 
 export const Wrapper = styled.div`
@@ -56,7 +56,7 @@ export const ItemNameContainer = styled.div`
     margin-left: 0.5rem;
   }
 `;
-export const OptionButton = styled(ButtonDefault)<{ selected?: boolean }>`
+export const OptionButton = styled(BasicSquareButton)<{ selected?: boolean }>`
   background-color: ${(props) =>
     props.selected ? props.theme.color.primary800 : props.theme.color.gray300};
   margin-right: 1rem;
@@ -73,12 +73,12 @@ export const OrderContainer = styled.div`
 export const OptionContainer = styled.div`
   display: flex;
 `;
-export const CancelButton = styled(ButtonDefault)`
+export const CancelButton = styled(BasicSquareButton)`
   background-color: ${(props) => props.theme.color.gray300};
   padding: 0.8rem;
   font-family: "Noto Sans KR";
 `;
-export const OrderButton = styled(ButtonDefault)`
+export const OrderButton = styled(BasicSquareButton)`
   background-color: ${(props) => props.theme.color.primary800};
   padding: 0.8rem;
   font-family: "Noto Sans KR";

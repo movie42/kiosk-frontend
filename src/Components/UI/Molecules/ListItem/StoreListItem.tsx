@@ -59,15 +59,20 @@ const StoreListItem = ({ store }: IAdminStoreListItemProps) => {
       </Link>
       <ButtonContainer>
         <ToggleButton size={4} isActive={isAvailable} onClick={toggleHandler} />
-        <div className="various-button-box">
-          <UpdateButton onClick={handleUpdate(id)}>
-            <MdCreate />
-            <span>수정</span>
-          </UpdateButton>
-          <DeleteButton className="delete-button" onClick={deleteModalHandler}>
-            <MdDelete />
-            <span>삭제</span>
-          </DeleteButton>
+        <div>
+          <UpdateButton
+            text="수정"
+            hidden={false}
+            ReactIcon={MdCreate}
+            onClick={handleUpdate(id)}
+          />
+          <DeleteButton
+            className="delete-button"
+            text="삭제"
+            hidden={false}
+            ReactIcon={MdDelete}
+            onClick={deleteModalHandler}
+          />
         </div>
       </ButtonContainer>
     </StoreListItemContainer>

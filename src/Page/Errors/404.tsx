@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import ButtonDefaultStyle from "@/Components/UI/Atoms/Buttons/ButtonDefault";
+import BasicSquareButtonStyle from "@/Components/UI/Atoms/Buttons/BasicSquareButton";
 import { SubTitle2 } from "@/lib/styles/mixin";
 const Wrapper = styled.div`
   display: flex;
@@ -11,7 +11,7 @@ const Wrapper = styled.div`
     ${SubTitle2}
   }
 `;
-const ConfirmButton = styled(ButtonDefaultStyle)`
+const ConfirmButton = styled(BasicSquareButtonStyle)`
   color: ${(props) => props.theme.color.fontColorWhite};
   font-size: 2rem;
   margin: 1rem 0;

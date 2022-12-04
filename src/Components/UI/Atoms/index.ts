@@ -1,7 +1,8 @@
 export {
-  ButtonDefault,
+  BasicSquareButton,
   ToggleButton,
-  ManageOrderStatusButton
+  ManageOrderStatusButton,
+  IconButton
 } from "./Buttons";
 export { InputDefault, LabelDefault, TextareaDefault } from "./Form";
 export { Images, Noimage } from "./Images";
