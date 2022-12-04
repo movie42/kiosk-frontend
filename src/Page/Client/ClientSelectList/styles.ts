@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { ButtonDefault } from "@/Components/UI/Atoms";
+import { BasicSquareButton } from "@/Components/UI/Atoms";
 import {
   Body1,
   Headline1,
@@ -64,24 +64,24 @@ export const MenuListItemBox = styled.div`
     ${SubTitle2}
   }
 `;
-export const DeleteButton = styled(ButtonDefault)`
+export const DeleteButton = styled(BasicSquareButton)`
   background-color: ${(props) => props.theme.color.gray300};
 `;
 export const ResetButtonWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
 `;
-export const ResetButton = styled(ButtonDefault)`
+export const ResetButton = styled(BasicSquareButton)`
   text-align: center;
   background-color: ${(props) => props.theme.color.primary500};
 `;
-export const AddCountButton = styled(ButtonDefault)`
+export const AddCountButton = styled(BasicSquareButton)`
   background-color: unset;
   color: ${(props) => props.theme.color.primary500};
   font-size: 2.3rem;
   vertical-align: middle;
 `;
-export const MinusCountButton = styled(ButtonDefault)`
+export const MinusCountButton = styled(BasicSquareButton)`
   background-color: unset;
   color: ${(props) => props.theme.color.error500};
   font-size: 2.3rem;

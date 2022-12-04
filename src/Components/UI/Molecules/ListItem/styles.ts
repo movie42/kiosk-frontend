@@ -1,4 +1,4 @@
-import { ButtonDefault } from "@/Components/UI/Atoms/Buttons";
+import { BasicSquareButton, IconButton } from "@/Components/UI/Atoms/Buttons";
 import { OptionValue } from "@/lib/state";
 // import { Headline3 } from "@/lib/styles";
 import { motion, Variants } from "framer-motion";
@@ -135,7 +135,7 @@ export const ListItemButtonWrapper = styled.div`
   }
 `;
 
-export const ListItemButton = styled(ButtonDefault)`
+export const ListItemButton = styled(BasicSquareButton)`
   font-size: 1.5rem;
 `;
 
@@ -186,18 +186,20 @@ export const imageBoxVariants: Variants = {
 export const ButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  .various-button-box {
-    button {
-      cursor: pointer;
-      border: 0;
-      background-color: unset;
-      padding: 0;
-      font-size: 2rem;
-      color: ${(props) => props.theme.color.gray400};
-    }
+`;
+
+export const UpdateButton = styled(IconButton)`
+  cursor: pointer;
+  border: 0;
+  background-color: unset;
+  padding: 0;
+  font-size: 2rem;
+  color: ${(props) => props.theme.color.gray400};
+  svg {
+    padding: 0;
+    font-size: 1.7rem;
+  }
+  &:hover {
+    font-weight: bolder;
   }
 `;
-// export const UpdateButton = styled(ButtonDefault)``;
-// export const DeleteButton = styled(ButtonDefault)`
-//   margin-left: 1.8rem;
-// `;

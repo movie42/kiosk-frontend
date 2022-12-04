@@ -2,7 +2,7 @@ import styled from "styled-components";
 import {
   InputDefault,
   LabelDefault,
-  ButtonDefault
+  BasicSquareButton
 } from "@/Components/UI/Atoms";
 
 export const FieldSet = styled.fieldset`
@@ -183,7 +183,7 @@ export const FormContainer = styled.div`
   }
 `;
 
-export const ConfirmButton = styled(ButtonDefault)<{
+export const ConfirmButton = styled(BasicSquareButton)<{
   isSuccess?: boolean;
 }>`
   background-color: ${(props) => props.theme.color.error500};

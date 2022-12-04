@@ -92,15 +92,15 @@ const ProductListItem = ({ product }: IProductItemProps) => {
 
 export default ProductListItem;
 
-interface ToggleButton {
+interface ToggleButtonProps {
   id: number;
   isAvailable?: boolean;
 }
 
-const ProductToggleButton = ({ id, isAvailable }: ToggleButton) => {
+const ProductToggleButton = ({ id, isAvailable }: ToggleButtonProps) => {
   const { mutate: toggleProductValue } = useUpdateProductOpenCloseToggle();
   const handleToggle =
-    (id: number) => (e: React.MouseEvent<HTMLDivElement>) => {
+    (id: number) => (e: React.MouseEvent<HTMLButtonElement>) => {
       e.stopPropagation();
       toggleProductValue({ id });
     };

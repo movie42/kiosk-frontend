@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Headline1 } from "@/lib/styles";
-import { ButtonDefault } from "@/Components/UI/Atoms";
+import { BasicSquareButton } from "@/Components/UI/Atoms";
 
 export const LandingWrapper = styled.div`
   width: 100%;
@@ -48,7 +48,7 @@ export const LandingTitle = styled.h2`
   line-height: 2;
 `;
 
-export const LinkButton = styled(ButtonDefault)`
+export const LinkButton = styled(BasicSquareButton)`
   color: #000;
   font-weight: bold;
   background: none;

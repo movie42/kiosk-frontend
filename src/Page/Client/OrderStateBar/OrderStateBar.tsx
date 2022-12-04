@@ -1,4 +1,6 @@
+import { BasicSquareButton } from "@/Components/UI/Atoms";
 import { translateLocalCurrency } from "@/lib/utils";
+import styled from "styled-components";
 import { MenuBarContainer } from "./styles";
 
 export interface TotalOrderMenu {
@@ -24,12 +26,8 @@ const OrderStateBar = ({
           {translateLocalCurrency(totalPrice, "ko-KR")}원
         </h2>
         <div>
-          {goBack && (
-            <button className="go-back-button" onClick={goBack}>
-              돌아가기
-            </button>
-          )}
-          <button onClick={handler}>{label}</button>
+          <GoBackButton onClick={goBack}>돌아가기</GoBackButton>
+          <OrderButton onClick={handler}>{label}</OrderButton>
         </div>
       </MenuBarContainer>
     </div>
@@ -37,3 +35,6 @@ const OrderStateBar = ({
 };
 
 export default OrderStateBar;
+
+const GoBackButton = styled(BasicSquareButton)``;
+const OrderButton = styled(BasicSquareButton)``;

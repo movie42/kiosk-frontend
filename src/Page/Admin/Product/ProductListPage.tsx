@@ -6,12 +6,11 @@ import {
   MenuStatusBar,
   ProductListItem
 } from "@/Components/UI/Molecules";
-import { PageHeader } from "@/Components/Layouts";
+import { PageHeader } from "@/Components/UI/Organisms";
 import { OptionValue, selectOptionState } from "@/lib/state";
 import { useGetStore, useGetProduct } from "@/Page/Admin/hooks";
 import {
   ProductListPageButtonContainer,
-  ButtonItemWrapper,
   ProductListPageContainer,
   CreateProductButton,
   DeleteProductButton,
@@ -38,14 +37,18 @@ const ProductListPage = () => {
       <ManageOptionContainer>
         <PageHeader header="상품 관리" message={store?.name} />
         <ProductListPageButtonContainer options={options}>
-          <ButtonItemWrapper onClick={handleGoToAddProduct}>
-            <MdAddCircle />
-            <CreateProductButton>상품등록</CreateProductButton>
-          </ButtonItemWrapper>
-          <ButtonItemWrapper onClick={handleDeleteItem("DELETE")}>
-            <MdDelete />
-            <DeleteProductButton>상품삭제</DeleteProductButton>
-          </ButtonItemWrapper>
+          <CreateProductButton
+            ReactIcon={MdAddCircle}
+            onClick={handleGoToAddProduct}
+            hidden={false}
+            text="상품등록"
+          />
+          <DeleteProductButton
+            ReactIcon={MdDelete}
+            onClick={handleDeleteItem("DELETE")}
+            hidden={false}
+            text="상품삭제"
+          />
         </ProductListPageButtonContainer>
       </ManageOptionContainer>
       <List>
