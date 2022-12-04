@@ -1,5 +1,6 @@
 import {
   BasicSquareButton,
+  IconButton,
   InputDefault,
   LabelDefault
 } from "@/Components/UI/Atoms";
@@ -264,7 +265,6 @@ export const ProductMainPageMenu = styled.div`
   .button-wrapper,
   button {
     overflow: hidden;
-    width: 100%;
   }
   ${({ theme }) => theme.device.tablet} {
     grid-template-columns: 1fr;
@@ -424,24 +424,12 @@ export const ProductListPageButtonContainer = styled.div<{
   }}
 `;
 
-export const ButtonItemWrapper = styled.div`
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  font-size: 2.5rem;
-  &:not(:first-child) {
-    margin-left: 0.7rem;
-  }
-  button {
-    color: ${({ theme }) => theme.color.fontColorBlack};
-    background-color: unset;
-    padding: 0;
-    padding-left: 0.5rem;
+export const CreateProductButton = styled(IconButton)``;
+export const DeleteProductButton = styled(IconButton)`
+  &:hover {
+    color: ${(props) => props.theme.color.error600};
   }
 `;
-
-export const CreateProductButton = styled(BasicSquareButton)``;
-export const DeleteProductButton = styled(BasicSquareButton)``;
 
 export const ProductDetailPageContainer = styled.div`
   box-sizing: border-box;

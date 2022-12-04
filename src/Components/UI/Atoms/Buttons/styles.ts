@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 
 export const Button = styled.button`
   cursor: pointer;
@@ -21,7 +21,7 @@ export const IconButtonContainer = styled.button`
   }
 `;
 
-export const ButtonItemContainer = styled.div<{ hidden: boolean }>`
+export const ButtonItemContainer = styled.div`
   display: flex;
   align-items: center;
   svg {
@@ -29,19 +29,4 @@ export const ButtonItemContainer = styled.div<{ hidden: boolean }>`
     padding-top: 0.3rem;
     margin-right: 0.3rem;
   }
-  ${({ hidden }) => {
-    if (hidden) {
-      return css`
-      span{
-            position: absolute;
-            top:0;
-            left:0;
-            width:1px;
-            height:1px
-            margin: -1px -1px;
-            
-        }
-      `;
-    }
-  }}
 `;

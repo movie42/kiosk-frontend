@@ -11,9 +11,9 @@ interface IconButtonProps
 const IconButton = ({ ReactIcon, text, hidden, ...props }: IconButtonProps) => {
   return (
     <IconButtonContainer {...props}>
-      <ButtonItemContainer hidden={hidden}>
+      <ButtonItemContainer>
         <ReactIcon />
-        <span>{text}</span>
+        <span className={hidden ? "screen-reader-hidden" : ""}>{text}</span>
       </ButtonItemContainer>
     </IconButtonContainer>
   );
