@@ -1,10 +1,9 @@
 import React from "react";
-import { motion } from "framer-motion";
 import { MdCreate } from "react-icons/md";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { ToggleButton, Images, Noimage } from "@/Components/UI/Atoms";
+import { ToggleButton } from "@/Components/UI/Atoms";
 import { ProductUpdateModal } from "@/Components/UI/Organisms";
 import { useUpdateProductOpenCloseToggle } from "@/Page/Admin/hooks";
 import {
@@ -12,20 +11,15 @@ import {
   selectOptionState,
   selectProductListState
 } from "@/lib/state";
-import { translateLocalCurrency } from "@/lib/utils";
 import { useModalHook } from "@/lib/hooks";
 
 import {
-  boxVariants,
-  imageBoxVariants,
-  Item,
-  ItemWrapper,
-  ProductInfoContainer,
   ProductItemButtonContainer,
   ToggleContainer,
-  UpdateButtonWrapper,
-  UpdateProductButton
+  ListItemButtonWrapper,
+  ListItemButton
 } from "./styles";
+import ListItem from "./ListItem";
 
 interface IProductItemProps extends React.HTMLAttributes<HTMLLIElement> {
   product: ProductListValues;
@@ -64,34 +58,34 @@ const ProductListItem = ({ product }: IProductItemProps) => {
     ]);
   };
 
+  const selectProduct = useRecoilValue(selectProductListState);
+  const selectOption = useRecoilValue(selectOptionState);
+
   return (
     <>
       {isModal && <ProductUpdateModal setIsModal={setIsModal} />}
-      <ItemWrapper
-        variants={boxVariants}
-        initial="init"
-        whileHover="hover"
+      <ListItem
         key={product.id}
         onClick={handleGoToProductDetail}
+        itemId={product.id}
+        name={product.name}
+        price={product.price}
+        imageUrl={product.imageUrl}
+        itemHandler={handleSelectItem(product.id)}
+        selectOption={selectOption.options}
+        selected={selectProduct.some((item) => item.id === product.id)}
       >
         <ProductItemButtonContainer>
           <ProductToggleButton
             id={product.id}
             isAvailable={product.isAvailable}
           />
-          <UpdateButtonWrapper onClick={handleUpdateItem}>
+          <ListItemButtonWrapper onClick={handleUpdateItem}>
             <MdCreate />
-            <UpdateProductButton>수정</UpdateProductButton>
-          </UpdateButtonWrapper>
+            <ListItemButton>수정</ListItemButton>
+          </ListItemButtonWrapper>
         </ProductItemButtonContainer>
-        <ProductImageInfoContainer
-          productId={product.id}
-          name={product.name}
-          imageUrl={product.imageUrl}
-          price={product.price}
-          handleSelectItem={handleSelectItem}
-        />
-      </ItemWrapper>
+      </ListItem>
     </>
   );
 };
@@ -119,51 +113,5 @@ const ProductToggleButton = ({ id, isAvailable }: ToggleButton) => {
       />
       {isAvailable ? <span>판매</span> : <span>준비</span>}
     </ToggleContainer>
-  );
-};
-
-interface ProductImageInfoContainerProps {
-  productId: number;
-  imageUrl?: string | null;
-  name: string;
-  price: number;
-  handleSelectItem: (id: number) => () => void;
-}
-
-const ProductImageInfoContainer = ({
-  productId,
-  imageUrl,
-  name,
-  price,
-  handleSelectItem
-}: ProductImageInfoContainerProps) => {
-  const selectProduct = useRecoilValue(selectProductListState);
-  const selectOption = useRecoilValue(selectOptionState);
-
-  return (
-    <Item
-      data-id={productId}
-      onClick={handleSelectItem(productId)}
-      selectOption={selectOption.options}
-      selected={selectProduct.some((item) => item.id === productId)}
-    >
-      <div className="item-container">
-        {selectOption.options !== "NONE" && <span className="is-select"></span>}
-        <div className="image-container">
-          <span className="transparent-box"></span>
-          {imageUrl ? (
-            <motion.div variants={imageBoxVariants} whileHover="hover">
-              <Images src={imageUrl} alt={name} />
-            </motion.div>
-          ) : (
-            <Noimage />
-          )}
-        </div>
-        <ProductInfoContainer>
-          <h3>{name}</h3>
-          <h4>{translateLocalCurrency(price, "ko-KR")}원</h4>
-        </ProductInfoContainer>
-      </div>
-    </Item>
   );
 };
