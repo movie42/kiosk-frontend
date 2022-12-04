@@ -11,7 +11,7 @@ import { ToggleButton } from "@/Components/UI/Atoms";
 import { useModalHook } from "@/lib/hooks";
 import { storeStateProps, userState } from "@/lib/state";
 import {
-  ProductItemButtonContainer,
+  ListItemButtonContainer,
   ToggleContainer,
   ListItemButtonWrapper,
   ListItemButton
@@ -65,7 +65,7 @@ const StoreListItem = ({ store }: IAdminStoreListItemProps) => {
         isDeleteModal={isDeleteModal}
         setIsDeleteModal={setIsDeleteModal}
       />
-      <ProductItemButtonContainer>
+      <ListItemButtonContainer>
         <StoreToggleButton
           id={Number(id)}
           isAvailable={isAvailable}
@@ -84,7 +84,7 @@ const StoreListItem = ({ store }: IAdminStoreListItemProps) => {
             <ListItemButton>삭제</ListItemButton>
           </ListItemButtonWrapper>
         </div>
-      </ProductItemButtonContainer>
+      </ListItemButtonContainer>
     </ListItem>
   );
 };

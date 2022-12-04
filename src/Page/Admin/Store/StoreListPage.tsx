@@ -1,8 +1,9 @@
 import { useGetStores } from "../hooks";
-import { StoreList, Wrapper } from "./styles";
+import { Wrapper } from "./styles";
 
 import { AdminStoreListHeader } from "@/Components/UI/Organisms";
 import { Loading, StoreListItem } from "@/Components/UI/Molecules";
+import { List } from "@/Components/UI/Molecules/ListItem/styles";
 
 const StoreListPage = () => {
   const { data: stores, isLoading } = useGetStores();
@@ -11,11 +12,11 @@ const StoreListPage = () => {
     <Wrapper>
       {isLoading && <Loading title="가게 정보를 불러오고 있습니다." />}
       <AdminStoreListHeader store={stores} />
-      <StoreList>
+      <List>
         {stores?.map((store) => (
           <StoreListItem key={store.id} store={store} />
         ))}
-      </StoreList>
+      </List>
     </Wrapper>
   );
 };

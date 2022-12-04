@@ -14,7 +14,7 @@ import {
 import { useModalHook } from "@/lib/hooks";
 
 import {
-  ProductItemButtonContainer,
+  ListItemButtonContainer,
   ToggleContainer,
   ListItemButtonWrapper,
   ListItemButton
@@ -75,7 +75,7 @@ const ProductListItem = ({ product }: IProductItemProps) => {
         selectOption={selectOption.options}
         selected={selectProduct.some((item) => item.id === product.id)}
       >
-        <ProductItemButtonContainer>
+        <ListItemButtonContainer>
           <ProductToggleButton
             id={product.id}
             isAvailable={product.isAvailable}
@@ -84,7 +84,7 @@ const ProductListItem = ({ product }: IProductItemProps) => {
             <MdCreate />
             <ListItemButton>수정</ListItemButton>
           </ListItemButtonWrapper>
-        </ProductItemButtonContainer>
+        </ListItemButtonContainer>
       </ListItem>
     </>
   );

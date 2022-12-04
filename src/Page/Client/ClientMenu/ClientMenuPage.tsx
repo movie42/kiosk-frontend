@@ -10,6 +10,7 @@ import { useGetMenuList } from "../hooks";
 import { OrderStateBar } from "../OrderStateBar";
 import { Header, Container, SubTitle } from "./styles";
 import ListItem from "@/Components/UI/Molecules/ListItem/ListItem";
+import { List } from "@/Components/UI/Molecules/ListItem/styles";
 
 const ClientMenuPage = () => {
   const navigate = useNavigate();
@@ -79,7 +80,7 @@ const MenuList = ({ isLoading, menuList, selectHandler }: MenuListProps) => {
   if (isLoading) return <Loading title="등록한 상품을 불러오고 있습니다." />;
 
   return (
-    <ul className="productList">
+    <List>
       {menuList &&
         menuList.map((item) => (
           <ListItem
@@ -91,6 +92,6 @@ const MenuList = ({ isLoading, menuList, selectHandler }: MenuListProps) => {
             imageUrl={item.imageUrl}
           />
         ))}
-    </ul>
+    </List>
   );
 };

@@ -1,6 +1,6 @@
 import { ButtonDefault } from "@/Components/UI/Atoms/Buttons";
 import { OptionValue } from "@/lib/state";
-import { Headline3 } from "@/lib/styles";
+// import { Headline3 } from "@/lib/styles";
 import { motion, Variants } from "framer-motion";
 import styled from "styled-components";
 
@@ -69,7 +69,20 @@ export const ProductInfoContainer = styled.div`
   }
 `;
 
-export const ProductItemButtonContainer = styled.div`
+export const List = styled.ul`
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: minmax(20rem, auto);
+  ${({ theme }) => theme.device.tablet} {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  ${({ theme }) => theme.device.mobile} {
+    grid-template-columns: unset;
+  }
+`;
+
+export const ListItemButtonContainer = styled.div`
   position: absolute;
   top: 0;
   left: 0;
@@ -79,6 +92,10 @@ export const ProductItemButtonContainer = styled.div`
   width: 100%;
   justify-content: space-between;
   align-items: center;
+  .block {
+    display: flex;
+    justify-content: space-between;
+  }
 `;
 
 export const ToggleContainer = styled.div`
@@ -97,7 +114,7 @@ export const ToggleContainer = styled.div`
   }
 `;
 
-export const UpdateButtonWrapper = styled.div`
+export const ListItemButtonWrapper = styled.div`
   padding-right: 1rem;
   cursor: pointer;
   display: flex;
@@ -118,7 +135,7 @@ export const UpdateButtonWrapper = styled.div`
   }
 `;
 
-export const UpdateProductButton = styled(ButtonDefault)`
+export const ListItemButton = styled(ButtonDefault)`
   font-size: 1.5rem;
 `;
 
@@ -142,29 +159,29 @@ export const imageBoxVariants: Variants = {
   }
 };
 
-export const StoreListItemContainer = styled.li`
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: inherit;
-  position: relative;
-  border: 1px solid ${(props) => props.theme.color.gray300};
-  border-radius: 1rem;
-  padding: 0.5rem 1rem;
-  a {
-    text-decoration: none;
-    color: ${(props) => props.theme.color.fontColorBlack};
-  }
-  h3 {
-    ${Headline3};
-    padding: 0;
-    margin: 0;
-    ${({ theme }) => theme.device.mobile} {
-      font-size: 2.4rem;
-    }
-  }
-`;
+// export const StoreListItemContainer = styled.li`
+//   box-sizing: border-box;
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: space-between;
+//   height: inherit;
+//   position: relative;
+//   border: 1px solid ${(props) => props.theme.color.gray300};
+//   border-radius: 1rem;
+//   padding: 0.5rem 1rem;
+//   a {
+//     text-decoration: none;
+//     color: ${(props) => props.theme.color.fontColorBlack};
+//   }
+//   h3 {
+//     ${Headline3};
+//     padding: 0;
+//     margin: 0;
+//     ${({ theme }) => theme.device.mobile} {
+//       font-size: 2.4rem;
+//     }
+//   }
+// `;
 
 export const ButtonContainer = styled.div`
   display: flex;
@@ -180,7 +197,7 @@ export const ButtonContainer = styled.div`
     }
   }
 `;
-export const UpdateButton = styled(ButtonDefault)``;
-export const DeleteButton = styled(ButtonDefault)`
-  margin-left: 1.8rem;
-`;
+// export const UpdateButton = styled(ButtonDefault)``;
+// export const DeleteButton = styled(ButtonDefault)`
+//   margin-left: 1.8rem;
+// `;
