@@ -4,12 +4,12 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import { MenuItemModal, Modal } from "@/Components/UI/Organisms";
 import { Loading } from "@/Components/UI/Molecules";
-import { Images, Noimage } from "@/Components/UI/Atoms";
 import { ProductListValues, selectMenuListState } from "@/lib/state";
 import { calculateTotalAmount } from "@/lib/utils";
 import { useGetMenuList } from "../hooks";
 import { OrderStateBar } from "../OrderStateBar";
-import { Header, Container, SubTitle, Item } from "./styles";
+import { Header, Container, SubTitle } from "./styles";
+import ListItem from "@/Components/UI/Molecules/ListItem/ListItem";
 
 const ClientMenuPage = () => {
   const navigate = useNavigate();
@@ -82,21 +82,14 @@ const MenuList = ({ isLoading, menuList, selectHandler }: MenuListProps) => {
     <ul className="productList">
       {menuList &&
         menuList.map((item) => (
-          <Item key={item.id} onClick={() => selectHandler(item.id)}>
-            <div className="item-container">
-              <div className="image-container">
-                {item.imageUrl ? (
-                  <Images src={item.imageUrl} alt={item.name} />
-                ) : (
-                  <Noimage />
-                )}
-              </div>
-              <div className="item-info-container">
-                <h3>{item.name}</h3>
-                <h4>가격 {item.price.toLocaleString()}원</h4>
-              </div>
-            </div>
-          </Item>
+          <ListItem
+            key={item.id}
+            onClick={() => selectHandler(item.id)}
+            itemId={item.id}
+            price={item.price}
+            name={item.name}
+            imageUrl={item.imageUrl}
+          />
         ))}
     </ul>
   );
