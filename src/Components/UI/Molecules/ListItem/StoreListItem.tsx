@@ -1,5 +1,6 @@
+/* eslint-disable */
 import { MdCreate, MdDelete } from "react-icons/md";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 
 import {
@@ -10,11 +11,12 @@ import { ToggleButton } from "@/Components/UI/Atoms";
 import { useModalHook } from "@/lib/hooks";
 import { storeStateProps, userState } from "@/lib/state";
 import {
-  ButtonContainer,
-  DeleteButton,
-  StoreListItemContainer,
-  UpdateButton
+  ListItemButtonContainer,
+  ToggleContainer,
+  ListItemButtonWrapper,
+  ListItemButton
 } from "./styles";
+import ListItem from "./ListItem";
 
 interface IAdminStoreListItemProps {
   store?: storeStateProps;
@@ -41,8 +43,17 @@ const StoreListItem = ({ store }: IAdminStoreListItemProps) => {
     navigate(`/admin/${user.id}/store/${id}/update`);
   };
 
+  const handleGoToStoreDetail = () => {
+    navigate(`/admin/${user.id}/store/${id}/product/main`);
+  };
+
   return (
-    <StoreListItemContainer key={id} data-storeid={id}>
+    <ListItem
+      key={id}
+      itemId={Number(id)}
+      name={name}
+      // onClick={handleGoToStoreDetail}
+    >
       <StoreOpenCloseModal
         itemId={id}
         isStoreOpen={isAvailable}
@@ -54,29 +65,43 @@ const StoreListItem = ({ store }: IAdminStoreListItemProps) => {
         isDeleteModal={isDeleteModal}
         setIsDeleteModal={setIsDeleteModal}
       />
-      <Link to={`/admin/${user.id}/store/${id}/product/main`}>
-        <h3>{name}</h3>
-      </Link>
-      <ButtonContainer>
-        <ToggleButton size={4} isActive={isAvailable} onClick={toggleHandler} />
-        <div>
-          <UpdateButton
-            text="수정"
-            hidden={false}
-            ReactIcon={MdCreate}
-            onClick={handleUpdate(id)}
-          />
-          <DeleteButton
+      <ListItemButtonContainer>
+        <StoreToggleButton
+          id={Number(id)}
+          isAvailable={isAvailable}
+          onClick={toggleHandler}
+        />
+        <div className="block">
+          <ListItemButtonWrapper onClick={handleUpdate(id)}>
+            <MdCreate />
+            <ListItemButton>수정</ListItemButton>
+          </ListItemButtonWrapper>
+          <ListItemButtonWrapper
             className="delete-button"
-            text="삭제"
-            hidden={false}
-            ReactIcon={MdDelete}
             onClick={deleteModalHandler}
-          />
+          >
+            <MdDelete />
+            <ListItemButton>삭제</ListItemButton>
+          </ListItemButtonWrapper>
         </div>
-      </ButtonContainer>
-    </StoreListItemContainer>
+      </ListItemButtonContainer>
+    </ListItem>
   );
 };
 
 export default StoreListItem;
+
+interface ToggleButton {
+  id: number;
+  isAvailable?: boolean;
+  onClick?: () => void;
+}
+
+const StoreToggleButton = ({ id, isAvailable, onClick }: ToggleButton) => {
+  return (
+    <ToggleContainer>
+      <ToggleButton onClick={onClick} isActive={isAvailable} size={5} />
+      {isAvailable ? <span>열기</span> : <span>중지</span>}
+    </ToggleContainer>
+  );
+};

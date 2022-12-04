@@ -1,7 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { MdAddCircle, MdDelete } from "react-icons/md";
-
 import {
   Loading,
   MenuStatusBar,
@@ -15,9 +14,9 @@ import {
   ProductListPageContainer,
   CreateProductButton,
   DeleteProductButton,
-  ManageOptionContainer,
-  ProductList
+  ManageOptionContainer
 } from "./styles";
+import { List } from "@/Components/UI/Molecules/ListItem/styles";
 
 const ProductListPage = () => {
   const { storeId, userId } = useParams();
@@ -52,12 +51,12 @@ const ProductListPage = () => {
           />
         </ProductListPageButtonContainer>
       </ManageOptionContainer>
-      <ProductList>
+      <List>
         {products &&
           products.map((product) => (
             <ProductListItem key={product.id} product={product} />
           ))}
-      </ProductList>
+      </List>
       {options !== "NONE" && <MenuStatusBar />}
     </ProductListPageContainer>
   );
