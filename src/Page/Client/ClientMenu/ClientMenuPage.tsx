@@ -9,7 +9,7 @@ import { calculateTotalAmount } from "@/lib/utils";
 import { useGetMenuList } from "../hooks";
 import { OrderStateBar } from "../OrderStateBar";
 import { Header, Container, SubTitle } from "./styles";
-import ListItem from "@/Components/UI/Molecules/ListItem/ListItem";
+import { ListItem } from "@/Components/UI/Molecules/ListItem";
 import { List } from "@/Components/UI/Molecules/ListItem/styles";
 
 const ClientMenuPage = () => {
