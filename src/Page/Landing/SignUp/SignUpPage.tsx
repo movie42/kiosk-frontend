@@ -75,7 +75,7 @@ const SignupForm = () => {
       <ButtonGroup>
         <span>정보를 전부 입력하셨다면 가입하기 버튼을 눌러주세요.</span>
         <div>
-          <ActionButton onClick={(e) => handleGoBack(e)}>돌아가기</ActionButton>
+          <ActionButton onClick={handleGoBack}>돌아가기</ActionButton>
           <ActionButton type="submit" option="confirm">
             가입하기
           </ActionButton>

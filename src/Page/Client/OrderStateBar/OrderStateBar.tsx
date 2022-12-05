@@ -1,7 +1,5 @@
-import { BasicSquareButton } from "@/Components/UI/Atoms";
 import { translateLocalCurrency } from "@/lib/utils";
-import styled from "styled-components";
-import { MenuBarContainer } from "./styles";
+import { GoBackButton, MenuBarContainer, OrderButton } from "./styles";
 
 export interface TotalOrderMenu {
   totalCount: number;
@@ -35,6 +33,3 @@ const OrderStateBar = ({
 };
 
 export default OrderStateBar;
-
-const GoBackButton = styled(BasicSquareButton)``;
-const OrderButton = styled(BasicSquareButton)``;
