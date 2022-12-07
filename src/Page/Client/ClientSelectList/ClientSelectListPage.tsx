@@ -76,9 +76,7 @@ const MenuListItem = ({ item }: MenuListItemProps) => {
   return (
     <MenuListItemWrapper>
       {item.imageUrl ? (
-        <div style={{ padding: "0.5rem 1rem 0.5rem 0" }}>
-          <Images src={item.imageUrl} alt={item.name} />
-        </div>
+        <Images src={item.imageUrl} alt={item.name} />
       ) : (
         <Noimage />
       )}
