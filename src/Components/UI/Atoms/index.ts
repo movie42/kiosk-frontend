@@ -4,6 +4,12 @@ export {
   ManageOrderStatusButton,
   IconButton
 } from "./Buttons";
-export { InputDefault, LabelDefault, TextareaDefault } from "./Form";
+export {
+  InputDefault,
+  LabelDefault,
+  TextareaDefault,
+  Form,
+  FormItemContainer
+} from "./Form";
 export { Images, Noimage } from "./Images";
 export { LoadingBall } from "./LoadingBall";
