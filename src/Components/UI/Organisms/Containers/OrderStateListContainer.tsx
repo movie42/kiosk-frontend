@@ -15,7 +15,7 @@ import {
   CancelOrderButton,
   OrderProductInfoContainer
 } from "./styles";
-import useUpdateOrderStatus from "./useUpdateOrderStatus";
+import useUpdateOrderStatus from "./hooks/useUpdateOrderStatus";
 
 const OrderStateListContainer = () => {
   const orders = useRecoilValue(getOrderForFrontend);
