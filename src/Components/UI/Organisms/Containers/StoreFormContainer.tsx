@@ -1,7 +1,8 @@
-import { SignUpProps } from "@/Page/Landing/interface";
-import { ErrorMessage, GroupForm } from "@/Page/Landing/SignUp/styles";
 import { useFormContext } from "react-hook-form";
-import { Form } from "../../Atoms";
+
+import { SignUpProps } from "@/Page/Landing/interface";
+import { GroupForm } from "@/Page/Landing/SignUp/styles";
+import { ErrorLabel, Form } from "../../Atoms";
 
 interface StoreFormContainerProps {
   checkStore: boolean;
@@ -43,7 +44,7 @@ const StoreFormContainer = ({
           })}
         />
       </Form.FormItemContainer>
-      <ErrorMessage>{errors.code?.message}</ErrorMessage>
+      <ErrorLabel>{errors.code?.message}</ErrorLabel>
       <Form.FormItemContainer>
         <Form.Label htmlFor="storeName">상호명</Form.Label>
         <Form.Input
@@ -58,7 +59,7 @@ const StoreFormContainer = ({
           })}
         />
       </Form.FormItemContainer>
-      <ErrorMessage>{errors.storeName?.message}</ErrorMessage>
+      <ErrorLabel>{errors.storeName?.message}</ErrorLabel>
       <Form.FormItemContainer>
         <Form.Label htmlFor="phone">전화번호</Form.Label>
         <Form.Input
@@ -73,7 +74,7 @@ const StoreFormContainer = ({
           })}
         />
       </Form.FormItemContainer>
-      <ErrorMessage>{errors.phone?.message}</ErrorMessage>
+      <ErrorLabel>{errors.phone?.message}</ErrorLabel>
 
       <Form.FormItemContainer>
         <Form.Label htmlFor="address">주소</Form.Label>
@@ -89,7 +90,7 @@ const StoreFormContainer = ({
           })}
         />
       </Form.FormItemContainer>
-      <ErrorMessage>{errors.address?.message}</ErrorMessage>
+      <ErrorLabel>{errors.address?.message}</ErrorLabel>
     </Form.FieldSet>
   );
 };

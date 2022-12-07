@@ -1,8 +1,7 @@
 import { EMAIL_REX } from "@/lib/constant";
 import { SignUpProps } from "@/Page/Landing/interface";
-import { ErrorMessage } from "@/Page/Landing/SignUp/styles";
 import { useFormContext } from "react-hook-form";
-import { Form } from "../../Atoms";
+import { ErrorLabel, Form } from "../../Atoms";
 
 const UserFormContainer = () => {
   const {
@@ -27,7 +26,7 @@ const UserFormContainer = () => {
           })}
         />
       </Form.FormItemContainer>
-      <ErrorMessage>{errors.email?.message}</ErrorMessage>
+      <ErrorLabel>{errors.email?.message}</ErrorLabel>
       <Form.FormItemContainer>
         <Form.Label htmlFor="name">이름</Form.Label>
         <Form.Input
@@ -38,7 +37,7 @@ const UserFormContainer = () => {
           })}
         />
       </Form.FormItemContainer>
-      <ErrorMessage>{errors.name?.message}</ErrorMessage>
+      <ErrorLabel>{errors.name?.message}</ErrorLabel>
       <Form.FormItemContainer>
         <Form.Label htmlFor="password">비밀번호</Form.Label>
         <Form.Input
@@ -50,7 +49,7 @@ const UserFormContainer = () => {
           })}
         />
       </Form.FormItemContainer>
-      <ErrorMessage>{errors.password?.message}</ErrorMessage>
+      <ErrorLabel>{errors.password?.message}</ErrorLabel>
 
       <Form.FormItemContainer>
         <Form.Label htmlFor="passwordConfirm">비밀번호 확인</Form.Label>
@@ -65,7 +64,7 @@ const UserFormContainer = () => {
           })}
         />
       </Form.FormItemContainer>
-      <ErrorMessage>{errors.passwordConfirm?.message}</ErrorMessage>
+      <ErrorLabel>{errors.passwordConfirm?.message}</ErrorLabel>
     </Form.FieldSet>
   );
 };
