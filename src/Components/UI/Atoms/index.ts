@@ -9,7 +9,8 @@ export {
   LabelDefault,
   TextareaDefault,
   Form,
-  FormItemContainer
+  FormItemContainer,
+  ErrorLabel
 } from "./Form";
 export { Images, Noimage } from "./Images";
 export { LoadingBall } from "./LoadingBall";
