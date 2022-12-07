@@ -1,12 +1,6 @@
 import styled from "styled-components";
-import { BasicSquareButton } from "@/Components/UI/Atoms";
-import {
-  Body1,
-  Headline1,
-  // Headline2,
-  SubTitle1,
-  SubTitle2
-} from "@/lib/styles";
+import { BasicSquareButton, IconButton } from "@/Components/UI/Atoms";
+import { Body1, Body2, Headline1, SubTitle1, SubTitle2 } from "@/lib/styles";
 
 export const Header = styled.div`
   display: flex;
@@ -33,36 +27,39 @@ export const Header = styled.div`
 export const MenuListWrapper = styled.div`
   margin: 1rem 0;
 `;
-export const MenuListItemBox = styled.div`
+
+export const MenuListItemWrapper = styled.div`
   display: grid;
   grid-template-columns: 20% 50% 30%;
+  align-items: center;
   padding: 0.5rem 0;
   border-bottom: 1px solid black;
   img {
     border: 1px solid;
     border-color: ${(props) => props.theme.color.gray300};
   }
-  div {
-    /* display: grid; */
-    padding: 0 0.5rem;
-  }
   h2 {
     ${SubTitle1}
     font-weight: bold;
-    padding: 1.3rem 0 0.8rem 0;
-  }
-  p {
-    ${Body1}
-    padding: 0.3rem 0;
   }
   span {
     vertical-align: super;
-    padding: 0.5rem;
   }
   .price {
-    margin-top: 1rem;
     ${SubTitle2}
   }
+`;
+
+export const ListItemDetailBox = styled.div`
+  padding-left: 2rem;
+  ${Body1}
+`;
+export const RemoveItemBox = styled.div`
+  padding-left: 1rem;
+  ${Body2}
+`;
+export const CountBox = styled.div`
+  display: flex;
 `;
 export const DeleteButton = styled(BasicSquareButton)`
   background-color: ${(props) => props.theme.color.gray300};
@@ -75,15 +72,13 @@ export const ResetButton = styled(BasicSquareButton)`
   text-align: center;
   background-color: ${(props) => props.theme.color.primary500};
 `;
-export const AddCountButton = styled(BasicSquareButton)`
-  background-color: unset;
-  color: ${(props) => props.theme.color.primary500};
-  font-size: 2.3rem;
-  vertical-align: middle;
+export const AddCountButton = styled(IconButton)`
+  color: ${({ theme: { color } }) => color.primary500};
 `;
-export const MinusCountButton = styled(BasicSquareButton)`
-  background-color: unset;
-  color: ${(props) => props.theme.color.error500};
-  font-size: 2.3rem;
-  vertical-align: middle;
+
+export const MinusCountButton = styled(IconButton)`
+  color: ${({ theme: { color } }) => color.error500};
+  &:hover {
+    color: ${({ theme: { color } }) => color.error800};
+  }
 `;

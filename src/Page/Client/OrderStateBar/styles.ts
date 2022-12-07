@@ -1,3 +1,4 @@
+import { BasicSquareButton } from "@/Components/UI/Atoms";
 import styled from "styled-components";
 
 export const MenuBarContainer = styled.div`
@@ -43,4 +44,9 @@ export const MenuBarContainer = styled.div`
       gap: 10px;
     }
   }
+`;
+
+export const GoBackButton = styled(BasicSquareButton)``;
+export const OrderButton = styled(BasicSquareButton)`
+  margin-left: 1rem;
 `;
