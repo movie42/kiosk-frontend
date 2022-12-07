@@ -4,7 +4,8 @@ export {
   OrderStateListContainer,
   SignupFormContainer,
   UserFormContainer,
-  StoreFormContainer
+  StoreFormContainer,
+  LoginFormContainer
 } from "./Containers";
 export { AdminStoreListHeader, PageHeader } from "./Header";
 export {
