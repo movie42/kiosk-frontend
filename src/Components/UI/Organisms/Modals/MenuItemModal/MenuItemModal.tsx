@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import { IoIosAddCircle } from "react-icons/io";
-import { AiFillMinusCircle } from "react-icons/ai";
 import { translateLocalCurrency } from "@/lib/utils";
 import { Images, Noimage } from "@/Components/UI/Atoms/Images";
 import {
@@ -22,6 +20,7 @@ import {
   Title,
   ProductCount
 } from "./styles";
+import { MdAddCircle, MdRemoveCircle } from "react-icons/md";
 
 interface MenuItemModalProps {
   setIsModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -157,22 +156,24 @@ const MenuItemModal = ({
         <OrderContainer>
           {warning && <span className="warning">{warning}</span>}
           <MinusCountButton
+            ReactIcon={MdRemoveCircle}
+            hidden={false}
+            text=""
             onClick={() => {
               if (count < 1) return;
               setCount((count) => count - 1);
             }}
-          >
-            <AiFillMinusCircle />
-          </MinusCountButton>
+          />
           <ProductCount>{count}</ProductCount>
           <AddCountButton
+            ReactIcon={MdAddCircle}
+            hidden={false}
+            text=""
             onClick={() => {
               if (count < 0) return;
               setCount((count) => count + 1);
             }}
-          >
-            <IoIosAddCircle />
-          </AddCountButton>
+          />
           <CancelButton onClick={cancelItem}>취소하기</CancelButton>
           <OrderButton onClick={orderSelectedItem}>주문하기</OrderButton>
         </OrderContainer>

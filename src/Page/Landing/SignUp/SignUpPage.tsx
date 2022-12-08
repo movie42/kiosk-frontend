@@ -1,8 +1,8 @@
 import { FormProvider, useForm } from "react-hook-form";
-import { Wrapper, Container } from "./styles";
 
-import { SignUpProps } from "../interface";
 import { PageHeader, SignupFormContainer } from "@/Components/UI/Organisms";
+import { Wrapper, Container } from "./styles";
+import { SignUpProps } from "../interface";
 
 const SignUpPage = () => {
   const method = useForm<SignUpProps>();
