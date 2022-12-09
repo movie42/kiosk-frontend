@@ -3,7 +3,7 @@ import { useRecoilValue } from "recoil";
 import { translateLocalCurrency } from "@/lib/utils";
 import { getOrderForFrontend, NewOrder } from "@/lib/state";
 import { useModalHook } from "@/lib/hooks";
-import { OrderStatusType } from "@/lib/generated/graphql";
+import { OrderStatusValue } from "@/lib/state/interface";
 import OrderModal from "../Modals/OrderModal";
 import {
   List,
@@ -15,98 +15,119 @@ import {
   CancelOrderButton,
   OrderProductInfoContainer
 } from "./styles";
-import useUpdateOrderStatus from "./hooks/useUpdateOrderStatus";
+import { useGetStatusWithId } from "../hooks/useGetStatusWithId";
+import { ModalStatusKey } from "../interface";
 
 const OrderStateListContainer = () => {
   const orders = useRecoilValue(getOrderForFrontend);
 
-  const { id, setId, isModal, setIsModal, confirm, setConfirm } =
-    useModalHook();
+  const { isModal, setIsModal } = useModalHook();
+  const { orderId: id, orderStatus, getStatusWithId } = useGetStatusWithId();
 
-  const { orderStatus, handleSetModalItem } = useUpdateOrderStatus({
-    id,
-    confirm,
-    setId,
-    setIsModal,
-    setConfirm
-  });
+  if (isModal)
+    return (
+      <OrderModal
+        orderId={id as string}
+        status={orderStatus as ModalStatusKey}
+        setIsModal={setIsModal}
+        getStatusWithId={getStatusWithId}
+      />
+    );
 
   return (
-    <>
-      {isModal && (
-        <OrderModal
-          orderId={id as string}
-          setIsModal={setIsModal}
-          setConfirm={setConfirm}
-          status={orderStatus as OrderStatusType}
-        />
-      )}
-
-      <List>
-        {orders.map((order) => (
-          <li className="list-container" key={order.id} data-id={order.id}>
-            <OrderInfoHeader>
-              <div className="list-header">
-                <span>
-                  <strong>주문번호</strong>
-                  {order.number}
-                </span>
-                <span>
-                  <strong>총 금액</strong>
-                  {translateLocalCurrency(order.price)}원
-                </span>
-              </div>
-              <div className="order-button-container">
-                <ReadyOrderButton
-                  onClick={(e: any) =>
-                    handleSetModalItem(e, OrderStatusType.Ready)
-                  }
-                  variants={buttonBlinkVariants}
-                  animate={order.status === "READY" && "animation"}
-                  status={order.status}
-                >
-                  주문접수
-                </ReadyOrderButton>
-                <DoneOrderButton
-                  onClick={(e: any) =>
-                    handleSetModalItem(e, OrderStatusType.Done)
-                  }
-                  status={order.status}
-                >
-                  준비완료
-                </DoneOrderButton>
-                <CompleteOrderButton
-                  onClick={(e: any) =>
-                    handleSetModalItem(e, OrderStatusType.Complete)
-                  }
-                  status={order.status}
-                >
-                  주문완료
-                </CompleteOrderButton>
-                <CancelOrderButton
-                  onClick={(e: any) =>
-                    handleSetModalItem(e, OrderStatusType.Canceled)
-                  }
-                  status={order.status}
-                >
-                  주문취소
-                </CancelOrderButton>
-              </div>
-            </OrderInfoHeader>
-            <OrderProductInfo order={order} />
-          </li>
-        ))}
-      </List>
-    </>
+    <List>
+      {orders.map((order) => (
+        <li className="list-container" key={order.id} data-id={order.id}>
+          <OrderInfoHeader>
+            <StatusButtonContainer
+              number={order.number}
+              price={order.price}
+              id={order.id}
+              status={order.status}
+              getStatusWithId={getStatusWithId}
+              setIsModal={setIsModal}
+            />
+          </OrderInfoHeader>
+          <OrderProductInfo order={order} />
+        </li>
+      ))}
+    </List>
   );
 };
 
 export default OrderStateListContainer;
-interface OrderProps {
+
+interface StatusButtonContainerProps {
+  number: number;
+  price: number;
+  id: string;
+  status: OrderStatusValue;
+  getStatusWithId: (id: string, status: OrderStatusValue | null) => void;
+  setIsModal: React.Dispatch<React.SetStateAction<boolean>>;
+}
+const StatusButtonContainer = ({
+  number,
+  price,
+  id,
+  status,
+  getStatusWithId,
+  setIsModal
+}: StatusButtonContainerProps) => {
+  const handleSetModalItem = (id: string, status: OrderStatusValue) => () => {
+    getStatusWithId(id, status);
+    setIsModal(() => true);
+  };
+
+  return (
+    <>
+      <div className="list-header">
+        <span>
+          <strong>주문번호</strong>
+          {number}
+        </span>
+        <span>
+          <strong>총 금액</strong>
+          {translateLocalCurrency(price)}원
+        </span>
+      </div>
+
+      <div className="order-button-container">
+        <ReadyOrderButton
+          onClick={handleSetModalItem(id, "READY")}
+          variants={buttonBlinkVariants}
+          animate={status === "READY" && "animation"}
+          status={status}
+        >
+          주문접수
+        </ReadyOrderButton>
+        <DoneOrderButton
+          onClick={handleSetModalItem(id, "DONE")}
+          status={status}
+        >
+          준비완료
+        </DoneOrderButton>
+        <CompleteOrderButton
+          onClick={handleSetModalItem(id, "COMPLETE")}
+          status={status}
+        >
+          주문완료
+        </CompleteOrderButton>
+        <CancelOrderButton
+          onClick={handleSetModalItem(id, "CANCELED")}
+          status={status}
+        >
+          주문취소
+        </CancelOrderButton>
+      </div>
+    </>
+  );
+};
+
+interface OrderProductInfoProps {
   order: NewOrder;
 }
 
-const OrderProductInfo = ({ order }: OrderProps) => {
+const OrderProductInfo = ({ order }: OrderProductInfoProps) => {
   const handleProductState = (e: React.MouseEvent<HTMLSpanElement>) => {
     const productId = e.currentTarget.dataset.productid;
     console.log(productId);
