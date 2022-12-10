@@ -1,5 +1,6 @@
 import { SubTitle1 } from "@/lib/styles";
 import styled from "styled-components";
+import { BasicSquareButton } from "../../Atoms";
 
 export const StatusBar = styled.div`
   position: fixed;
@@ -48,4 +49,39 @@ export const StatusBar = styled.div`
       justify-content: space-around;
     }
   }
+`;
+
+export const ButtonContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0.8rem;
+  align-items: center;
+  justify-content: space-between;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  color: ${(props) => props.theme.color.fontColorBlack};
+  font-size: 2rem;
+  border-top: 1px solid ${(props) => props.theme.color.gray300};
+  button {
+    cursor: pointer;
+    border: 0;
+    font-size: 2rem;
+    color: ${(props) => props.theme.color.fontColorWhite};
+    border-radius: 0.3rem;
+    line-height: 2.8rem;
+  }
+  ${({ theme }) => theme.device.mobile} {
+    justify-content: center;
+  }
+`;
+
+export const CreateButton = styled(BasicSquareButton)`
+  background-color: ${(props) => props.theme.color.primary600};
+`;
+
+export const CancelButton = styled(BasicSquareButton)`
+  color: ${(props) => props.theme.color.fontColorWhite};
+  margin-right: 0.3rem;
 `;
