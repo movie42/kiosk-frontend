@@ -1,14 +1,42 @@
 import {
+  AddProductInput,
+  AddProductOptionInput,
+  AddProductOptionsMutation,
+  AddProductsMutation,
+  Exact,
   useAddProductOptionsMutation,
   useAddProductsMutation
 } from "@/lib/generated/graphql";
 import graphqlReqeustClient from "@/lib/graphqlRequestClient";
 import { userState } from "@/lib/state";
-import { useQueryClient } from "react-query";
+import { UseMutateFunction, useQueryClient } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 
-const useCreateProduct = () => {
+export interface UseCreateProductReturn {
+  newProducts: AddProductsMutation | undefined;
+  addProductMutate: UseMutateFunction<
+    AddProductsMutation,
+    unknown,
+    Exact<{
+      products: AddProductInput | AddProductInput[];
+    }>,
+    unknown
+  >;
+  isProductAddSuccess: boolean;
+  addProductOptionMutate: UseMutateFunction<
+    AddProductOptionsMutation,
+    unknown,
+    Exact<{
+      option: AddProductOptionInput | AddProductOptionInput[];
+    }>,
+    unknown
+  >;
+  isProductAdding: boolean;
+  isOptionAdding: boolean;
+}
+
+const useCreateProduct = (): UseCreateProductReturn => {
   const navigate = useNavigate();
   const { userId, storeId } = useParams();
   const { accessToken } = useRecoilValue(userState);
@@ -19,7 +47,7 @@ const useCreateProduct = () => {
     mutate: addProductMutate,
     isSuccess: isProductAddSuccess,
     isLoading: isProductAdding
-  } = useAddProductsMutation(graphqlReqeustClient(accessToken), {});
+  } = useAddProductsMutation(graphqlReqeustClient(accessToken));
 
   const { mutate: addProductOptionMutate, isLoading: isOptionAdding } =
     useAddProductOptionsMutation(graphqlReqeustClient(accessToken), {
