@@ -6,7 +6,7 @@ import {
 } from "@/Components/UI/Organisms";
 import { useModalHook } from "@/lib/hooks";
 import { ProductContextProvider } from "@/lib/state";
-import { CreateProductContainer, CreateProductHeader } from "./styles";
+import { ManageProductContainer, ManageProductHeader } from "./styles";
 
 const CreateProductPage = () => {
   const { isModal, setIsModal, setConfirm, confirm } = useModalHook();
@@ -19,12 +19,12 @@ const CreateProductPage = () => {
         setIsModal={setIsModal}
         setConfirm={setConfirm}
       />
-      <CreateProductContainer>
-        <CreateProductHeader>
+      <ManageProductContainer>
+        <ManageProductHeader>
           <PageHeader header="상품 등록" />
-        </CreateProductHeader>
+        </ManageProductHeader>
         <CreateProductFormContainer setIsModal={setIsModal} confirm={confirm} />
-      </CreateProductContainer>
+      </ManageProductContainer>
     </ProductContextProvider>
   );
 };

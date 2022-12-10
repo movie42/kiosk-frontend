@@ -11,10 +11,10 @@ import { OptionValue, selectOptionState } from "@/lib/state";
 import { useGetStore, useGetProduct } from "@/Page/Admin/hooks";
 import {
   ProductListPageButtonContainer,
-  ProductListPageContainer,
   CreateProductButton,
   DeleteProductButton,
-  ManageOptionContainer
+  ManageOptionContainer,
+  ManageProductContainer
 } from "./styles";
 import { List } from "@/Components/UI/Molecules/ListItem/styles";
 
@@ -33,7 +33,7 @@ const ProductListPage = () => {
   return isLoading ? (
     <Loading title="등록한 상품을 불러오고 있습니다." />
   ) : (
-    <ProductListPageContainer>
+    <ManageProductContainer>
       <ManageOptionContainer>
         <PageHeader header="상품 관리" message={store?.name} />
         <ProductListPageButtonContainer options={options}>
@@ -58,7 +58,7 @@ const ProductListPage = () => {
           ))}
       </List>
       {options !== "NONE" && <MenuStatusBar />}
-    </ProductListPageContainer>
+    </ManageProductContainer>
   );
 };
 
