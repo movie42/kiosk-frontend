@@ -3,9 +3,11 @@ import {
   useProductMutationContext,
   useProductOptionsFormContext
 } from "@/lib/state";
+import { ProductOptionValue } from "@/lib/state/ProductContextProvider";
 import { useEffect } from "react";
+import { IoIosAddCircle } from "react-icons/io";
 import { useParams } from "react-router-dom";
-import { Form } from "../../Atoms";
+import { Form, IconButton } from "../../Atoms";
 import { CreateProductStatusBar } from "../../Molecules";
 import OptionFieldContainer from "./OptionFieldContainer";
 
@@ -22,7 +24,8 @@ const CreateProductFormContainer = ({
 
   const { getValues, register } = useProductFormContext();
   const {
-    createProductOptionsForm: { setError, getValues: getOptionsValue }
+    createProductOptionsForm: { setError, getValues: getOptionsValue },
+    createOptionFieldArray: { append: optionsAppend }
   } = useProductOptionsFormContext();
   const {
     addProductMutate,
@@ -31,7 +34,7 @@ const CreateProductFormContainer = ({
     addProductOptionMutate
   } = useProductMutationContext();
 
-  const hasOptions = ({ options }: { options: { name: string }[] }) => {
+  const hasOptions = ({ options }: ProductOptionValue) => {
     if (options.length === 0) {
       setError("options", {
         message: "반드시 기본 옵션을 들어가야합니다."
@@ -90,8 +93,16 @@ const CreateProductFormContainer = ({
           />
         </Form.FormItemContainer>
         <Form.FormItemContainer>
-          <OptionFieldContainer />
+          <Form.Label>상품 옵션</Form.Label>
+          <IconButton
+            type="button"
+            onClick={() => optionsAppend({ name: "" })}
+            ReactIcon={IoIosAddCircle}
+            hidden={true}
+            text="상품 옵션 추가하기"
+          />
         </Form.FormItemContainer>
+        <OptionFieldContainer />
         <Form.FormItemContainer>
           <Form.Label htmlFor="price">상품 가격</Form.Label>
           <Form.Input

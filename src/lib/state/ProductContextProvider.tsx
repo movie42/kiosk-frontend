@@ -26,7 +26,7 @@ interface ProductMutationValue extends ProductDefaultValue {
   storeId: number;
 }
 
-interface ProductOptionValue {
+export interface ProductOptionValue {
   options: { name: string }[];
 }
 

@@ -148,6 +148,7 @@ export const boxVariants: Variants = {
     }
   }
 };
+export const FieldItem = styled.li``;
 
 export const imageBoxVariants: Variants = {
   init: { scale: 1 },
@@ -203,5 +204,3 @@ export const UpdateButton = styled(IconButton)`
     font-weight: bolder;
   }
 `;
-
-export const FieldItem = styled.li``;
