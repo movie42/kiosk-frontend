@@ -1,9 +1,6 @@
 import { CreateProductLoading } from "@/Components/UI/Molecules";
-import {
-  CreateProductFormContainer,
-  CreateProductModal,
-  PageHeader
-} from "@/Components/UI/Organisms";
+import { CreateProductModal, PageHeader } from "@/Components/UI/Organisms";
+import { CreateProductFormContainer } from "@/Components/UI/Organisms/Containers";
 import { useModalHook } from "@/lib/hooks";
 import { ProductContextProvider } from "@/lib/state";
 import { ManageProductContainer, ManageProductHeader } from "./styles";

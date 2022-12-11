@@ -33,7 +33,13 @@ const useGetProduct = () => {
             isAvailable
           })
         );
-        return products;
+        return {
+          store: {
+            id: store?.id,
+            name: store?.name
+          },
+          products
+        };
       }
     }
   );

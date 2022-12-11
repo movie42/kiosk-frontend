@@ -2,7 +2,7 @@ export {
   MenuStatusBar,
   StoreCreateStatusBar,
   StoreUpdateStatusBar,
-  CreateProductStatusBar
+  ManageProductStatusBar
 } from "./Bar";
 export { Nav } from "./Nav";
 export {

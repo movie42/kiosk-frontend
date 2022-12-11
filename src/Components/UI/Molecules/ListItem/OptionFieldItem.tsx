@@ -9,8 +9,8 @@ interface OptionFieldItemProps {
 
 const OptionFieldItem = ({ index }: OptionFieldItemProps) => {
   const {
-    createProductOptionsForm: { register },
-    createOptionFieldArray: { remove: optionsRemove }
+    productOptionsForm: { register },
+    optionFieldArray: { remove: optionsRemove }
   } = useProductOptionsFormContext();
 
   return (

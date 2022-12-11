@@ -35,7 +35,7 @@ export type {
 
 export { UserContextProvider, useUserContext } from "./UserContextProvider";
 export {
-  useProductMutationContext,
+  useCreateProductMutationContext,
   useProductFormContext,
   useProductOptionsFormContext,
   ProductContextProvider

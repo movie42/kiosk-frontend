@@ -1,5 +1,9 @@
-import { useCreateProduct } from "@/Page/Admin/hooks";
-import { UseCreateProductReturn } from "@/Page/Admin/hooks/useCreateProduct";
+import {
+  useCreateProduct,
+  useUpdateProduct,
+  UseCreateProductReturn,
+  UseUpdateProductReturn
+} from "@/Page/Admin/hooks";
 
 import React, { createContext, useContext } from "react";
 import {
@@ -10,7 +14,13 @@ import {
 } from "react-hook-form";
 import { useParams } from "react-router-dom";
 
-const ProductMutationContext = createContext<UseCreateProductReturn>(null!);
+const CreateProductMutationContext = createContext<UseCreateProductReturn>(
+  null!
+);
+const UpdateProductMutationContext = createContext<UseUpdateProductReturn>(
+  null!
+);
+
 const ProductFormContext = createContext<
   UseFormReturn<ProductMutationValue, any>
 >(null!);
@@ -31,18 +41,15 @@ export interface ProductOptionValue {
 }
 
 interface ProductOptionContextProps {
-  createProductOptionsForm: UseFormReturn<ProductOptionValue, any>;
-  createOptionFieldArray: UseFieldArrayReturn<
-    ProductOptionValue,
-    "options",
-    "id"
-  >;
+  productOptionsForm: UseFormReturn<ProductOptionValue, any>;
+  optionFieldArray: UseFieldArrayReturn<ProductOptionValue, "options", "id">;
 }
 const ProductOptionsContext = createContext<ProductOptionContextProps>(null!);
 
-export const useProductMutationContext = () =>
-  useContext(ProductMutationContext);
-
+export const useCreateProductMutationContext = () =>
+  useContext(CreateProductMutationContext);
+export const useUpdateProductMutationContext = () =>
+  useContext(UpdateProductMutationContext);
 export const useProductFormContext = () => useContext(ProductFormContext);
 
 export const useProductOptionsFormContext = () =>
@@ -75,26 +82,29 @@ interface ProductContextProviderProps {
 export const ProductContextProvider = ({
   children
 }: ProductContextProviderProps) => {
+  const updateProductMethod = useUpdateProduct();
   const createProductMethod = useCreateProduct();
-  const createProductForm = useProductForm();
-  const createProductOptionsForm = useProductOptionsForm();
-  const createOptionFieldArray = useFieldArray({
+  const productForm = useProductForm();
+  const productOptionsForm = useProductOptionsForm();
+  const optionFieldArray = useFieldArray({
     name: "options",
-    control: createProductOptionsForm.control
+    control: productOptionsForm.control
   });
 
   const optionValue = {
-    createProductOptionsForm,
-    createOptionFieldArray
+    productOptionsForm,
+    optionFieldArray
   };
 
   return (
-    <ProductMutationContext.Provider value={createProductMethod}>
-      <ProductFormContext.Provider value={createProductForm}>
-        <ProductOptionsContext.Provider value={optionValue}>
-          {children}
-        </ProductOptionsContext.Provider>
-      </ProductFormContext.Provider>
-    </ProductMutationContext.Provider>
+    <UpdateProductMutationContext.Provider value={updateProductMethod}>
+      <CreateProductMutationContext.Provider value={createProductMethod}>
+        <ProductFormContext.Provider value={productForm}>
+          <ProductOptionsContext.Provider value={optionValue}>
+            {children}
+          </ProductOptionsContext.Provider>
+        </ProductFormContext.Provider>
+      </CreateProductMutationContext.Provider>
+    </UpdateProductMutationContext.Provider>
   );
 };

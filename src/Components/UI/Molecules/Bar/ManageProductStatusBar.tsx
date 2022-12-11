@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { ButtonContainer, CancelButton, CreateButton } from "./styles";
 
-const CreateProductStatusBar = () => {
+const ManageProductStatusBar = () => {
   const navigate = useNavigate();
   const handleCancelAddProduct = () => {
     navigate(-1);
@@ -20,4 +20,4 @@ const CreateProductStatusBar = () => {
   );
 };
 
-export default CreateProductStatusBar;
+export default ManageProductStatusBar;

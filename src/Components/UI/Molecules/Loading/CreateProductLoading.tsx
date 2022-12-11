@@ -1,8 +1,8 @@
-import { useProductMutationContext } from "@/lib/state";
+import { useCreateProductMutationContext } from "@/lib/state";
 import Loading from "./Loading";
 
 const CreateProductLoading = () => {
-  const { isProductAdding, isOptionAdding } = useProductMutationContext();
+  const { isProductAdding, isOptionAdding } = useCreateProductMutationContext();
 
   return isProductAdding && isOptionAdding ? (
     <Loading

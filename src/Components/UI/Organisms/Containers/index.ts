@@ -4,5 +4,7 @@ export { default as SignupFormContainer } from "./SignupFormContainer";
 export { default as UserFormContainer } from "./UserFormContainer";
 export { default as StoreFormContainer } from "./StoreFormContainer";
 export { default as LoginFormContainer } from "./LoginFormContainer";
-export { default as CreateProductFormContainer } from "./CreateProductFormContainer";
+export { default as ManageProductFormContainer } from "./ProductForm";
 export { default as OptionFieldContainer } from "./OptionFieldContainer";
+export { default as ProductForm } from "./ProductForm";
+export { default as CreateProductFormContainer } from "./CreateProductFormContainer";

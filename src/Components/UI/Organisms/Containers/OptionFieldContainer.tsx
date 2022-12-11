@@ -5,10 +5,10 @@ import { OptionFieldItem } from "../../Molecules";
 
 const OptionFieldContainer = () => {
   const {
-    createProductOptionsForm: {
+    productOptionsForm: {
       formState: { errors: optionErrors }
     },
-    createOptionFieldArray: { fields: optionsFields }
+    optionFieldArray: { fields: optionsFields }
   } = useProductOptionsFormContext();
 
   return (

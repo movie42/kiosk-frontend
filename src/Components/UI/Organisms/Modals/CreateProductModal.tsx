@@ -26,7 +26,6 @@ const CreateProductModal = ({
     <Modal strach={false}>
       <ModalChildren>
         <h2>상품을 등록 하시겠습니까?</h2>
-        <p>상품을 등록하려면 아래 등록하기 버튼을 누르세요.</p>
         <ModalButtonContainer>
           <button
             className="modal-cancel-button"
