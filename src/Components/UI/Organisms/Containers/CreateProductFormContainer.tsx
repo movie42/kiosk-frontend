@@ -1,13 +1,13 @@
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
+
 import {
   useProductFormContext,
   useCreateProductMutationContext,
   useProductOptionsFormContext
 } from "@/lib/state";
-import { ProductOptionValue } from "@/lib/state/ProductContextProvider";
-import { useEffect } from "react";
-
-import { useParams } from "react-router-dom";
-import ProductForm from "./ProductForm";
+import { CreateProductOptionValue } from "@/lib/state/ProductContextProvider";
+import { ProductForm } from "../../Molecules";
 
 interface CreateProductFormContainerProps {
   setIsModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -31,7 +31,7 @@ const CreateProductFormContainer = ({
     addProductOptionMutate
   } = useCreateProductMutationContext();
 
-  const hasOptions = ({ options }: ProductOptionValue) => {
+  const hasOptions = ({ options }: CreateProductOptionValue) => {
     if (options.length === 0) {
       setError("options", {
         message: "반드시 기본 옵션을 들어가야합니다."
