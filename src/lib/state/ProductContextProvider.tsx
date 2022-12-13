@@ -1,7 +1,7 @@
 import {
   useCreateProduct,
-  useUpdateProduct,
   UseCreateProductReturn,
+  useUpdateProduct,
   UseUpdateProductReturn
 } from "@/Page/Admin/hooks";
 
@@ -12,18 +12,6 @@ import {
   useForm,
   UseFormReturn
 } from "react-hook-form";
-import { useParams } from "react-router-dom";
-
-const CreateProductMutationContext = createContext<UseCreateProductReturn>(
-  null!
-);
-const UpdateProductMutationContext = createContext<UseUpdateProductReturn>(
-  null!
-);
-
-const ProductFormContext = createContext<
-  UseFormReturn<ProductMutationValue, any>
->(null!);
 
 interface ProductDefaultValue {
   imageUrl?: string;
@@ -36,44 +24,38 @@ interface ProductMutationValue extends ProductDefaultValue {
   storeId: number;
 }
 
-export interface ProductOptionValue {
-  options: { name: string }[];
+export interface CreateProductOptionValue {
+  options: { optionId: number; name: string }[];
 }
 
 interface ProductOptionContextProps {
-  productOptionsForm: UseFormReturn<ProductOptionValue, any>;
-  optionFieldArray: UseFieldArrayReturn<ProductOptionValue, "options", "id">;
+  productOptionsForm: UseFormReturn<CreateProductOptionValue, any>;
+  optionFieldArray: UseFieldArrayReturn<
+    CreateProductOptionValue,
+    "options",
+    "id"
+  >;
 }
+
+const CreateProductMutationContext = createContext<UseCreateProductReturn>(
+  null!
+);
+const UpdateProductMutationContext = createContext<UseUpdateProductReturn>(
+  null!
+);
+const ProductFormContext = createContext<
+  UseFormReturn<ProductMutationValue, any>
+>(null!);
+
 const ProductOptionsContext = createContext<ProductOptionContextProps>(null!);
 
 export const useCreateProductMutationContext = () =>
   useContext(CreateProductMutationContext);
-export const useUpdateProductMutationContext = () =>
-  useContext(UpdateProductMutationContext);
 export const useProductFormContext = () => useContext(ProductFormContext);
-
 export const useProductOptionsFormContext = () =>
   useContext(ProductOptionsContext);
-
-const useProductForm = () => {
-  const { storeId } = useParams();
-  return useForm<ProductMutationValue>({
-    defaultValues: {
-      storeId: storeId ? Number(storeId) : 0,
-      imageUrl: "",
-      name: "",
-      price: 0,
-      description: ""
-    }
-  });
-};
-
-const useProductOptionsForm = () =>
-  useForm<ProductOptionValue>({
-    defaultValues: {
-      options: [{ name: "기본" }]
-    }
-  });
+export const useUpdateProductMutationContext = () =>
+  useContext(UpdateProductMutationContext);
 
 interface ProductContextProviderProps {
   children: React.ReactNode;
@@ -84,8 +66,8 @@ export const ProductContextProvider = ({
 }: ProductContextProviderProps) => {
   const updateProductMethod = useUpdateProduct();
   const createProductMethod = useCreateProduct();
-  const productForm = useProductForm();
-  const productOptionsForm = useProductOptionsForm();
+  const productForm = useForm<ProductMutationValue>();
+  const productOptionsForm = useForm<CreateProductOptionValue>();
   const optionFieldArray = useFieldArray({
     name: "options",
     control: productOptionsForm.control
@@ -97,14 +79,14 @@ export const ProductContextProvider = ({
   };
 
   return (
-    <UpdateProductMutationContext.Provider value={updateProductMethod}>
-      <CreateProductMutationContext.Provider value={createProductMethod}>
+    <CreateProductMutationContext.Provider value={createProductMethod}>
+      <UpdateProductMutationContext.Provider value={updateProductMethod}>
         <ProductFormContext.Provider value={productForm}>
           <ProductOptionsContext.Provider value={optionValue}>
             {children}
           </ProductOptionsContext.Provider>
         </ProductFormContext.Provider>
-      </CreateProductMutationContext.Provider>
-    </UpdateProductMutationContext.Provider>
+      </UpdateProductMutationContext.Provider>
+    </CreateProductMutationContext.Provider>
   );
 };
