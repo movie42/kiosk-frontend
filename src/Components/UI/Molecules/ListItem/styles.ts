@@ -9,8 +9,8 @@ export const ItemWrapper = styled(motion.li)`
 `;
 
 export const Item = styled(motion.div)<{
-  selectOption: OptionValue;
-  selected: boolean;
+  selectOption?: OptionValue;
+  selected?: boolean;
 }>`
   .item-container {
     position: relative;
@@ -49,9 +49,24 @@ export const Item = styled(motion.div)<{
         background-color: ${({ theme }) => theme.color.backgroundBlack60};
       }
     }
+    .item-info-container {
+      align-self: center;
+      padding: 0.8rem;
+      ${({ theme }) => theme.device.tablet} {
+        padding: 2rem;
+      }
+      h3 {
+        font-size: 3rem;
+        font-weight: bold;
+        margin-bottom: 0.6rem;
+      }
+      h4 {
+        font-size: 2rem;
+        align-self: end;
+      }
+    }
   }
 `;
-
 export const ProductInfoContainer = styled.div`
   align-self: center;
   padding: 0.8rem;

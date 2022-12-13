@@ -1,9 +1,9 @@
 export const ORDER_STATUS = {
-  All: "ALL",
-  Canceled: "CANCELED",
-  Complete: "COMPLETE",
-  Done: "DONE",
-  Ready: "READY"
+  ALL: "ALL",
+  CANCELED: "CANCELED",
+  COMPLETE: "COMPLETE",
+  DONE: "DONE",
+  READY: "READY"
 } as const;
 
 export type OrderStatusType = typeof ORDER_STATUS;
