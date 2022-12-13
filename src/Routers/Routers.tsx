@@ -8,7 +8,8 @@ import {
   ProductManageMainPage,
   ProductDetailPage,
   CreateProductPage,
-  ProductListPage
+  ProductListPage,
+  UpdateProductPage
 } from "@/Page/Admin/Product";
 import {
   StoreListPage,
@@ -40,6 +41,10 @@ const Router = () => {
               <Route path="manage-order" element={<ManageOrderPage />} />
               <Route path="product">
                 <Route path=":productId" element={<ProductDetailPage />} />
+                <Route
+                  path=":productId/update-product"
+                  element={<UpdateProductPage />}
+                />
                 <Route path="main" element={<ProductManageMainPage />} />
                 <Route path="manage-product" element={<ProductListPage />} />
                 <Route path="add-product" element={<CreateProductPage />} />

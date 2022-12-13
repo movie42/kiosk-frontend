@@ -6,19 +6,19 @@ export {
   UserFormContainer,
   StoreFormContainer,
   LoginFormContainer,
-  CreateProductFormContainer,
-  OptionFieldContainer
+  ManageProductFormContainer,
+  OptionFieldContainer,
+  ProductForm
 } from "./Containers";
 export { AdminStoreListHeader, PageHeader } from "./Header";
 export {
   StoreOpenCloseModal,
   StoreDeleteModal,
   ProductDeleteModal,
-  ProductUpdateModal,
-  ProductUpdateForm,
   CreateProductModal,
   OrderModal,
   Modal,
   MenuItemModal,
-  PaymentModal
+  PaymentModal,
+  UpdateProductModal
 } from "./Modals";
