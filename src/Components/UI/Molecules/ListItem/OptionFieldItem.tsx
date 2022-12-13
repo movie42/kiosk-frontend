@@ -5,16 +5,22 @@ import { FieldItem } from "./styles";
 
 interface OptionFieldItemProps {
   index: number;
+  optionName: string;
+  optionId: number;
 }
 
-const OptionFieldItem = ({ index }: OptionFieldItemProps) => {
+const OptionFieldItem = ({
+  index,
+  optionName,
+  optionId
+}: OptionFieldItemProps) => {
   const {
     productOptionsForm: { register },
     optionFieldArray: { remove: optionsRemove }
   } = useProductOptionsFormContext();
 
   return (
-    <FieldItem>
+    <FieldItem data-optionid={optionId}>
       <Form.FormItemContainer>
         <div>
           <Form.Label>옵션 {index + 1}</Form.Label>
@@ -30,7 +36,8 @@ const OptionFieldItem = ({ index }: OptionFieldItemProps) => {
           type="text"
           placeholder="옵션의 이름을 입력해주세요."
           {...register(`options.${index}.name`, {
-            required: "옵션의 이름은 반드시 입력해야합니다."
+            required: "옵션의 이름은 반드시 입력해야합니다.",
+            value: optionName
           })}
         />
       </Form.FormItemContainer>
