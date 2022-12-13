@@ -66,9 +66,9 @@ export interface ProductListValues {
   name: string;
   price: number;
   options?: ProductOptions[];
-  imageUrl?: string | null | undefined;
-  description?: string | null | undefined;
-  isAvailable?: boolean | undefined;
+  imageUrl?: string | null;
+  description?: string | null;
+  isAvailable?: boolean;
 }
 
 export interface Sales {

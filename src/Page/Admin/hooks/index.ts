@@ -9,3 +9,6 @@ export { default as useUpdateStoreOpenCloseToggle } from "./useUpdateStoreOpenCl
 export { default as useUpdateProductOpenCloseToggle } from "./useUpdateProductOpenCloseToggle";
 export { default as useCreateProduct } from "./useCreateProduct";
 export { default as useGetProductDetail } from "./useGetProductDetail";
+export { default as useUpdateProduct } from "./useUpdateProduct";
+export type { UseCreateProductReturn } from "./useCreateProduct";
+export type { UseUpdateProductReturn } from "./useUpdateProduct";
