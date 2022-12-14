@@ -8,34 +8,35 @@ import {
 } from "@/Components/UI/Molecules";
 import { PageHeader } from "@/Components/UI/Organisms";
 import { OptionValue, selectOptionState } from "@/lib/state";
-import { useGetStore, useGetProduct } from "@/Page/Admin/hooks";
+import { useGetProduct } from "@/Page/Admin/hooks";
 import {
   ProductListPageButtonContainer,
-  ProductListPageContainer,
   CreateProductButton,
   DeleteProductButton,
-  ManageOptionContainer
+  ManageOptionContainer,
+  ManageProductContainer
 } from "./styles";
 import { List } from "@/Components/UI/Molecules/ListItem/styles";
 
 const ProductListPage = () => {
   const { storeId, userId } = useParams();
   const navigate = useNavigate();
-  const { isLoading, data: products } = useGetProduct();
-  const { data: store } = useGetStore();
+  const { isLoading, data } = useGetProduct();
+
   const [{ options }, setSelectOption] = useRecoilState(selectOptionState);
   const handleDeleteItem = (option: OptionValue) => () => {
     setSelectOption({ options: option });
   };
+
   const handleGoToAddProduct = () =>
     navigate(`/admin/${userId}/store/${storeId}/product/add-product`);
 
   return isLoading ? (
     <Loading title="등록한 상품을 불러오고 있습니다." />
   ) : (
-    <ProductListPageContainer>
+    <ManageProductContainer>
       <ManageOptionContainer>
-        <PageHeader header="상품 관리" message={store?.name} />
+        <PageHeader header="상품 관리" message={data?.store.name} />
         <ProductListPageButtonContainer options={options}>
           <CreateProductButton
             ReactIcon={MdAddCircle}
@@ -52,13 +53,13 @@ const ProductListPage = () => {
         </ProductListPageButtonContainer>
       </ManageOptionContainer>
       <List>
-        {products &&
-          products.map((product) => (
+        {data?.products &&
+          data.products.map((product) => (
             <ProductListItem key={product.id} product={product} />
           ))}
       </List>
       {options !== "NONE" && <MenuStatusBar />}
-    </ProductListPageContainer>
+    </ManageProductContainer>
   );
 };
 

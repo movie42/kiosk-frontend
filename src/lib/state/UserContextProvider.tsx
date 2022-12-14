@@ -10,7 +10,7 @@ interface UserContextAPIProps {
   children: ReactNode;
 }
 
-export const UserContextAPI = ({ children }: UserContextAPIProps) => {
+export const UserContextProvider = ({ children }: UserContextAPIProps) => {
   return (
     <UserContext.Provider value={localStorageService}>
       {children}

@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { MdCreate, MdDelete } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
@@ -31,20 +30,28 @@ const StoreListItem = ({ store }: IAdminStoreListItemProps) => {
     useModalHook();
   const { id, name, isAvailable } = store || {};
 
-  const toggleHandler = () => {
+  const toggleHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
     setIsToggleModal(true);
   };
 
-  const deleteModalHandler = () => {
+  const deleteModalHandler = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
     setIsDeleteModal(true);
   };
 
-  const handleUpdate = (id: string | undefined) => () => {
-    navigate(`/admin/${user.id}/store/${id}/update`);
-  };
+  const handleUpdate =
+    (id: string | undefined) => (e: React.MouseEvent<HTMLDivElement>) => {
+      e.stopPropagation();
+      if (id) {
+        navigate(`/admin/${user.id}/store/${id}/update`);
+      }
+    };
 
-  const handleGoToStoreDetail = () => {
-    navigate(`/admin/${user.id}/store/${id}/product/main`);
+  const handleGoToStoreDetail = (id: string | undefined) => () => {
+    if (id) {
+      navigate(`/admin/${user.id}/store/${id}/product/main`);
+    }
   };
 
   return (
@@ -52,7 +59,7 @@ const StoreListItem = ({ store }: IAdminStoreListItemProps) => {
       key={id}
       itemId={Number(id)}
       name={name}
-      // onClick={handleGoToStoreDetail}
+      onClick={handleGoToStoreDetail(id)}
     >
       <StoreOpenCloseModal
         itemId={id}
@@ -66,11 +73,7 @@ const StoreListItem = ({ store }: IAdminStoreListItemProps) => {
         setIsDeleteModal={setIsDeleteModal}
       />
       <ListItemButtonContainer>
-        <StoreToggleButton
-          id={Number(id)}
-          isAvailable={isAvailable}
-          onClick={toggleHandler}
-        />
+        <StoreToggleButton isAvailable={isAvailable} onClick={toggleHandler} />
         <div className="block">
           <ListItemButtonWrapper onClick={handleUpdate(id)}>
             <MdCreate />
@@ -92,12 +95,11 @@ const StoreListItem = ({ store }: IAdminStoreListItemProps) => {
 export default StoreListItem;
 
 interface ToggleButton {
-  id: number;
   isAvailable?: boolean;
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-const StoreToggleButton = ({ id, isAvailable, onClick }: ToggleButton) => {
+const StoreToggleButton = ({ isAvailable, onClick }: ToggleButton) => {
   return (
     <ToggleContainer>
       <ToggleButton onClick={onClick} isActive={isAvailable} size={5} />

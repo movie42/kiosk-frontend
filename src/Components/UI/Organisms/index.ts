@@ -1,15 +1,24 @@
 export { Chart } from "./Chart";
-export { OptionsContainer, OrderStateListContainer } from "./Containers";
+export {
+  OptionsContainer,
+  OrderStateListContainer,
+  SignupFormContainer,
+  UserFormContainer,
+  StoreFormContainer,
+  LoginFormContainer,
+  ManageProductFormContainer,
+  OptionFieldContainer,
+  ProductForm
+} from "./Containers";
 export { AdminStoreListHeader, PageHeader } from "./Header";
 export {
   StoreOpenCloseModal,
   StoreDeleteModal,
   ProductDeleteModal,
-  ProductUpdateModal,
-  ProductUpdateForm,
   CreateProductModal,
   OrderModal,
   Modal,
   MenuItemModal,
-  PaymentModal
+  PaymentModal,
+  UpdateProductModal
 } from "./Modals";
