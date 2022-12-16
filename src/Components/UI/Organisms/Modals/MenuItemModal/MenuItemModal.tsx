@@ -155,7 +155,7 @@ const CountButtonGroup = ({ count, setCount }: CountButtonGroupProps) => {
     <>
       <MinusCountButton
         ReactIcon={MdRemoveCircle}
-        hidden={false}
+        hidden={true}
         text="수량 감소"
         onClick={() => {
           if (count < 1) return;
@@ -165,7 +165,7 @@ const CountButtonGroup = ({ count, setCount }: CountButtonGroupProps) => {
       <ProductCount>{count}</ProductCount>
       <AddCountButton
         ReactIcon={MdAddCircle}
-        hidden={false}
+        hidden={true}
         text="수량 증가"
         onClick={() => {
           if (count < 0) return;
