@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { MenuItemModal, Modal } from "@/Components/UI/Organisms";
@@ -17,17 +17,16 @@ const ClientMenuPage = () => {
   const { userId, storeId } = useParams();
 
   const [isModal, setIsModal] = useState(false);
-  const [count, setCount] = useState(0);
-  const [selectedItem, setSelectedItem] = useState<ProductListValues[]>([]);
-  const [orderItem, setOrderItem] = useRecoilState(selectMenuListState);
+  const [selectedItem, setSelectedItem] = useState<ProductListValues>();
+  const orderItem = useRecoilValue(selectMenuListState);
 
   const { isLoading, menuList } = useGetMenuList(storeId);
 
   const selectHandler = (menuId: number) => {
     setIsModal(true);
     if (menuList) {
-      const selected = menuList.filter((el) => el.id === menuId);
-      setSelectedItem([...selected]);
+      const [selected] = menuList.filter((el) => el.id === menuId);
+      setSelectedItem(selected);
     }
   };
 
@@ -36,11 +35,7 @@ const ClientMenuPage = () => {
       <Modal strach={true} fullBox={true}>
         <MenuItemModal
           setIsModal={setIsModal}
-          selectedItem={selectedItem}
-          count={count}
-          setCount={setCount}
-          orderItem={orderItem}
-          setOrderItem={setOrderItem}
+          selectedItem={selectedItem as ProductListValues}
         />
       </Modal>
     );
