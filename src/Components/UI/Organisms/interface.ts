@@ -14,3 +14,13 @@ export const CONFIRM_BUTTON_NAME = {
 
 export type ModalStatusType = typeof MODAL_MESSAGE;
 export type ModalStatusKey = keyof ModalStatusType;
+
+export const WARNING_MESSAGE = {
+  DEFAULT: "",
+  NONE: "",
+  COUNT: "수량을 선택하세요",
+  OPTION: "옵션을 선택하세요"
+} as const;
+
+export type WarningMessageType = typeof WARNING_MESSAGE;
+export type WarningMessageKey = keyof WarningMessageType;
