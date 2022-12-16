@@ -97,14 +97,14 @@ const MenuListItemDetail = ({ item }: MenuListItemProps) => {
         <span>주문수량:</span>
         <MinusCountButton
           ReactIcon={MdRemoveCircle}
-          hidden={false}
+          hidden={true}
           text="수량 감소"
           onClick={() => handleMinusCount(item)}
         />
         {item.totalCount}
         <AddCountButton
           ReactIcon={MdAddCircle}
-          hidden={false}
+          hidden={true}
           text="수량 증가"
           onClick={() => handleAddCount(item)}
         />
