@@ -4,14 +4,13 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { ToggleButton } from "@/Components/UI/Atoms";
-import { ProductUpdateModal } from "@/Components/UI/Organisms";
+
 import { useUpdateProductOpenCloseToggle } from "@/Page/Admin/hooks";
 import {
   ProductListValues,
   selectOptionState,
   selectProductListState
 } from "@/lib/state";
-import { useModalHook } from "@/lib/hooks";
 
 import {
   ListItemButtonContainer,
@@ -32,7 +31,6 @@ const ProductListItem = ({ product }: IProductItemProps) => {
   const [selectProducts, setSelectProducts] = useRecoilState(
     selectProductListState
   );
-  const { isModal, setIsModal } = useModalHook();
 
   const handleGoToProductDetail = () => {
     navigate(`/admin/${userId}/store/${storeId}/product/${product.id}`);
@@ -40,7 +38,9 @@ const ProductListItem = ({ product }: IProductItemProps) => {
 
   const handleUpdateItem = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
-    setIsModal(true);
+    navigate(
+      `/admin/${userId}/store/${storeId}/product/${product.id}/update-product`
+    );
   };
 
   const handleSelectItem = (id: number) => () => {
@@ -62,31 +62,28 @@ const ProductListItem = ({ product }: IProductItemProps) => {
   const selectOption = useRecoilValue(selectOptionState);
 
   return (
-    <>
-      {isModal && <ProductUpdateModal setIsModal={setIsModal} />}
-      <ListItem
-        key={product.id}
-        onClick={handleGoToProductDetail}
-        itemId={product.id}
-        name={product.name}
-        price={product.price}
-        imageUrl={product.imageUrl}
-        itemHandler={handleSelectItem(product.id)}
-        selectOption={selectOption.options}
-        selected={selectProduct.some((item) => item.id === product.id)}
-      >
-        <ListItemButtonContainer>
-          <ProductToggleButton
-            id={product.id}
-            isAvailable={product.isAvailable}
-          />
-          <ListItemButtonWrapper onClick={handleUpdateItem}>
-            <MdCreate />
-            <ListItemButton>수정</ListItemButton>
-          </ListItemButtonWrapper>
-        </ListItemButtonContainer>
-      </ListItem>
-    </>
+    <ListItem
+      key={product.id}
+      onClick={handleGoToProductDetail}
+      itemId={product.id}
+      name={product.name}
+      price={product.price}
+      imageUrl={product.imageUrl}
+      itemHandler={handleSelectItem(product.id)}
+      selectOption={selectOption.options}
+      selected={selectProduct.some((item) => item.id === product.id)}
+    >
+      <ListItemButtonContainer>
+        <ProductToggleButton
+          id={product.id}
+          isAvailable={product.isAvailable}
+        />
+        <ListItemButtonWrapper onClick={handleUpdateItem}>
+          <MdCreate />
+          <ListItemButton>수정</ListItemButton>
+        </ListItemButtonWrapper>
+      </ListItemButtonContainer>
+    </ListItem>
   );
 };
 

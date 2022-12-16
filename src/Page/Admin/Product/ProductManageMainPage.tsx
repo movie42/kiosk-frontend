@@ -13,12 +13,12 @@ import { ToggleButton } from "@/Components/UI/Atoms";
 import { useGetStore } from "../hooks";
 import {
   BusinessInfoContainer,
-  ProductMainPageHeader,
+  ManageProductHeader,
   LinkToStaffWindowButton,
   ProductMainPageMenu,
   MenuBasicSquareButton,
   ProductMenuButtonContainer,
-  ProductMainContainer
+  ManageProductContainer
 } from "./styles";
 
 const ProductManageMainPage = () => {
@@ -31,21 +31,21 @@ const ProductManageMainPage = () => {
   };
 
   return (
-    <ProductMainContainer>
+    <ManageProductContainer>
       <StoreOpenCloseModal
         itemId={storeId}
         isToggleModal={isModal}
         setIsToggleModal={setIsModal}
         isStoreOpen={store?.isAvailable}
       />
-      <ProductMainPageHeader>
+      <ManageProductHeader>
         <PageHeader header="관리자 메뉴" message={store?.name} />
         <StoreInfo
           code={store?.code}
           address={store?.address}
           phone={store?.phone}
         />
-      </ProductMainPageHeader>
+      </ManageProductHeader>
       <ProductMainPageMenu>
         <ProductMenuButtonContainer className="button-wrapper">
           <div className="store-state-container">
@@ -88,7 +88,7 @@ const ProductManageMainPage = () => {
           상품 관리하기
         </ManageProductMainPageLinkButton>
       </ProductMainPageMenu>
-    </ProductMainContainer>
+    </ManageProductContainer>
   );
 };
 

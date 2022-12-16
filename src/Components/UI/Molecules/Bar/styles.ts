@@ -81,6 +81,11 @@ export const MenuBarContainer = styled.div`
   }
 `;
 
+export const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
 export const ConfirmButton = styled(BasicSquareButton)`
   background-color: ${(props) => props.theme.color.error500};
 `;

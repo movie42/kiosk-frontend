@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { IoIosAddCircle } from "react-icons/io";
-import { AiFillMinusCircle } from "react-icons/ai";
 import { translateLocalCurrency } from "@/lib/utils";
 import { useHandleOrderItem } from "../../hooks/useHandleOrderItem";
 import { Images, Noimage } from "@/Components/UI/Atoms/Images";
@@ -22,6 +20,7 @@ import {
 } from "./styles";
 import { useWarning } from "../../hooks/useWarning";
 import { WARNING_MESSAGE } from "../../interface";
+import { MdAddCircle, MdRemoveCircle } from "react-icons/md";
 
 interface SelectedOption {
   name: string;
@@ -155,22 +154,24 @@ const CountButtonGroup = ({ count, setCount }: CountButtonGroupProps) => {
   return (
     <>
       <MinusCountButton
+        ReactIcon={MdRemoveCircle}
+        hidden={false}
+        text="수량 감소"
         onClick={() => {
           if (count < 1) return;
           setCount((count) => count - 1);
         }}
-      >
-        <AiFillMinusCircle />
-      </MinusCountButton>
+      />
       <ProductCount>{count}</ProductCount>
       <AddCountButton
+        ReactIcon={MdAddCircle}
+        hidden={false}
+        text="수량 증가"
         onClick={() => {
           if (count < 0) return;
           setCount((count) => count + 1);
         }}
-      >
-        <IoIosAddCircle />
-      </AddCountButton>
+      />
     </>
   );
 };

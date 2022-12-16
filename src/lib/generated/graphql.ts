@@ -422,6 +422,7 @@ export type GetProductsQuery = {
   store?: {
     __typename?: "Store";
     id: string;
+    name: string;
     products: Array<{
       __typename?: "Product";
       id: string;
@@ -754,6 +755,7 @@ export const GetProductsDocument = `
     query getProducts($id: Float!) {
   store(id: $id) {
     id
+    name
     products {
       id
       name

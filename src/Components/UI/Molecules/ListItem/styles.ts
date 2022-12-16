@@ -163,6 +163,7 @@ export const boxVariants: Variants = {
     }
   }
 };
+export const FieldItem = styled.li``;
 
 export const imageBoxVariants: Variants = {
   init: { scale: 1 },
