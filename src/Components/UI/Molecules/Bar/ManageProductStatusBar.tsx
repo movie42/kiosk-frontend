@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { ButtonContainer, CancelButton, CreateButton } from "./styles";
+import { ButtonContainer, CancelButton, ConfirmButton } from "./styles";
 
 const ManageProductStatusBar = () => {
   const navigate = useNavigate();
@@ -14,7 +14,7 @@ const ManageProductStatusBar = () => {
         <CancelButton type="button" onClick={handleCancelAddProduct}>
           등록 취소
         </CancelButton>
-        <CreateButton>상품 등록</CreateButton>
+        <ConfirmButton>상품 등록</ConfirmButton>
       </div>
     </ButtonContainer>
   );
