@@ -1,8 +1,9 @@
+/* eslint-disable */
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
 import { useNavigate, useParams } from "react-router-dom";
 import { Images, Noimage } from "@/Components/UI/Atoms";
-import { Modal, PaymentModal } from "@/Components/UI/Organisms";
+import { PaymentModal } from "@/Components/UI/Organisms";
 import { IOrderSelectedItem } from "@/lib/state/productItemState";
 import { calculateTotalAmount, translateLocalCurrency } from "@/lib/utils";
 import { selectMenuListState } from "@/lib/state";
@@ -32,11 +33,7 @@ const ClientSelectListPage = () => {
   const { deleteAll } = useHandleSelectMenu();
   return (
     <>
-      {isModal && (
-        <Modal strach={true}>
-          <PaymentModal setIsModal={setIsModal} />
-        </Modal>
-      )}
+      {isModal && <PaymentModal setIsModal={setIsModal} />}
       <Header>
         <h1>주문 목록</h1>
       </Header>
