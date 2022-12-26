@@ -1,25 +1,14 @@
 import { CancelButton, ConfirmButton, ModalButtonContainer } from "./styles";
 
 interface ModalButtonsProps {
-  confirmFn?: () => void;
-  cancelFn?: () => void;
-  confirmText?: string;
-  cancelText?: string;
+  cancelProps: React.ButtonHTMLAttributes<HTMLButtonElement>;
+  confirmProps: React.ButtonHTMLAttributes<HTMLButtonElement>;
 }
-const ModalButtons = ({
-  confirmFn,
-  cancelFn,
-  confirmText,
-  cancelText
-}: ModalButtonsProps) => {
+const ModalButtons = ({ cancelProps, confirmProps }: ModalButtonsProps) => {
   return (
     <ModalButtonContainer>
-      {confirmFn && confirmText && (
-        <ConfirmButton onClick={confirmFn}>{confirmText}</ConfirmButton>
-      )}
-      {cancelFn && cancelText && (
-        <CancelButton onClick={cancelFn}>{cancelText}</CancelButton>
-      )}
+      <ConfirmButton {...confirmProps}>{confirmProps.children}</ConfirmButton>
+      <CancelButton {...cancelProps}>{cancelProps.children}</CancelButton>
     </ModalButtonContainer>
   );
 };

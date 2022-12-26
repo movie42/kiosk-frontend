@@ -25,11 +25,11 @@ export const ModalDefaultWrapper = styled.div`
 export const NewModalContainer = styled.div<NewModalProps>`
   display: grid;
   grid-template-rows: 1fr 2fr 0.5fr;
-  height: ${(props) => props.strach && "60rem"};
+  height: ${(props) => props.modalOptions.strech && "60rem"};
   background-color: ${(props) => props.theme.color.background100};
   border-radius: 1rem;
   overflow-y: auto;
-  padding: ${(props) => (props.fullBox ? 0 : "2rem")};
+  padding: 0 2rem;
   h1 {
     ${Headline1};
     line-height: unset;
@@ -84,3 +84,4 @@ export const ConfirmButton = styled(BasicSquareButton)`
 `;
 
 export const CancelButton = styled(BasicSquareButton)``;
+export const BasicButton = styled(BasicSquareButton)``;

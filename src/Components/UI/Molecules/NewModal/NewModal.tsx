@@ -3,43 +3,25 @@ import {
   ModalDefaultWrapper,
   TransparentBackground
 } from "./styles";
-import ModalButtons from "./ModalButtons";
-import ModalHeader from "./ModalHeader";
-
 export interface NewModalProps {
-  strach?: boolean;
-  fullBox?: boolean;
-  children: React.ReactNode;
-  title?: string;
-  subtitle?: string;
-  confirmFn?: () => void;
-  cancelFn?: () => void;
-  confirmText?: string;
-  cancelText?: string;
+  Header?: React.ReactNode;
+  Model?: React.ReactNode;
+  Buttons?: React.ReactNode;
+  modalOptions: { strech: boolean };
 }
 
 const NewModal = ({
-  strach,
-  fullBox,
-  title = "",
-  subtitle = "",
-  confirmText = "",
-  cancelText = "",
-  confirmFn,
-  cancelFn,
-  children
+  Header,
+  Model,
+  Buttons,
+  modalOptions: { strech }
 }: NewModalProps) => {
   return (
     <ModalDefaultWrapper>
-      <NewModalContainer strach={strach} fullBox={fullBox}>
-        <ModalHeader title={title} subtitle={subtitle} />
-        {children}
-        <ModalButtons
-          confirmFn={confirmFn}
-          cancelFn={cancelFn}
-          confirmText={confirmText}
-          cancelText={cancelText}
-        />
+      <NewModalContainer modalOptions={{ strech }}>
+        <div>{Header}</div>
+        <div>{Model}</div>
+        <div>{Buttons}</div>
       </NewModalContainer>
       <TransparentBackground />
     </ModalDefaultWrapper>
