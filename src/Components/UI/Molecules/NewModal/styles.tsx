@@ -61,7 +61,7 @@ export const TransparentBackground = styled.div`
   overflow: hidden;
 `;
 
-export const ModalButtonContainer = styled.div`
+export const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   align-self: flex-end;
