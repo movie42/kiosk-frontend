@@ -1,7 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import { selectMenuListState } from "@/lib/state";
-import { BtnGroup, ConfirmButton, PaymentBox } from "./styles";
+import { PaymentBox } from "./styles";
+import { NewModal } from "@/Components/UI/Molecules";
 
 interface ConfirmProps {
   orderNumber: number;
@@ -19,14 +20,16 @@ const OrderConfirm = ({ orderNumber, userId, storeId }: ConfirmProps) => {
   };
 
   return (
-    <PaymentBox>
-      <h2>주문이 완료되었습니다</h2>
-      <h4>주문 번호를 확인해주세요</h4>
-      <h1>{orderNumber}</h1>
-      <BtnGroup>
-        <ConfirmButton onClick={confirmOrder}>확인</ConfirmButton>
-      </BtnGroup>
-    </PaymentBox>
+    <NewModal
+      title="주문이 완료되었습니다"
+      subtitle="주문 번호를 확인해주세요"
+      confirmFn={confirmOrder}
+      confirmText="확인"
+    >
+      <PaymentBox>
+        <h1>{orderNumber}</h1>
+      </PaymentBox>
+    </NewModal>
   );
 };
 

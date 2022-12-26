@@ -13,3 +13,4 @@ export {
 } from "./Loading";
 export { ProductListItem, StoreListItem, OptionFieldItem } from "./ListItem";
 export { ProductForm } from "./Form";
+export { NewModal } from "./NewModal";
