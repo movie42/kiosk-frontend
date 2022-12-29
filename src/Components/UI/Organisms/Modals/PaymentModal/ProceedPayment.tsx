@@ -3,13 +3,15 @@ import { useRecoilValue } from "recoil";
 import { OrderType, useAddOrderMutation } from "@/lib/generated/graphql";
 import graphqlReqeustClient from "@/lib/graphqlRequestClient";
 import { orderType, selectMenuListState, userState } from "@/lib/state";
-import {
-  AddOrderInput,
-  OrderProductInput
-} from "../../../../../Page/Client/interface";
 import { calculateTotalAmount, translateLocalCurrency } from "@/lib/utils";
 import { MenuBox, PaymentBox } from "./styles";
-import { NewModal } from "@/Components/UI/Molecules";
+import { AddOrderInput, OrderProductInput } from "@/Page/Client/interface";
+import {
+  ConfirmCancelButtons,
+  ModalHeader,
+  NewModal
+} from "@/Components/UI/Molecules";
+import { IOrderSelectedItem } from "@/lib/state/productItemState";
 
 interface PaymentProps {
   storeId: string | undefined;
@@ -76,34 +78,47 @@ const ProceedPayment = ({
 
   return (
     <NewModal
-      title="결제를 진행중입니다"
-      subtitle="주문 내용과 금액을 확인해주세요"
-      confirmFn={handlePayment}
-      cancelFn={() => setIsModal(false)}
-      confirmText="결제하기"
-      cancelText="취소하기"
-    >
-      <PaymentBox>
-        <p>주문 상품</p>
-        {orderList.map((el) => (
-          <MenuBox key={`${el.productId}${el.option}`}>
-            <span>
-              {el.name} {el.option}
-            </span>
-            <span>{el.totalCount}개</span>
-            <span>{translateLocalCurrency(el.totalPrice)}원</span>
-          </MenuBox>
-        ))}
-        <h3>
-          총 결제&nbsp;
-          {translateLocalCurrency(
-            calculateTotalAmount(orderList, "totalPrice")
-          )}
-          원
-        </h3>
-      </PaymentBox>
-    </NewModal>
+      modalOptions={{ strech: false }}
+      Header={
+        <ModalHeader
+          title="결제를 진행중입니다"
+          subtitle="주문 내용과 금액을 확인해주세요"
+        />
+      }
+      Model={<PaymentModel orderList={orderList} />}
+      Buttons={
+        <ConfirmCancelButtons
+          cancelProps={{
+            onClick: () => setIsModal(false),
+            children: "취소하기"
+          }}
+          confirmProps={{ onClick: handlePayment, children: "결제하기" }}
+        />
+      }
+    />
   );
 };
 
 export default ProceedPayment;
+
+const PaymentModel = ({ orderList }: { orderList: IOrderSelectedItem[] }) => {
+  return (
+    <PaymentBox>
+      <p>주문 상품</p>
+      {orderList.map((el) => (
+        <MenuBox key={`${el.productId}${el.option}`}>
+          <span>
+            {el.name} {el.option}
+          </span>
+          <span>{el.totalCount}개</span>
+          <span>{translateLocalCurrency(el.totalPrice)}원</span>
+        </MenuBox>
+      ))}
+      <h3>
+        총 결제&nbsp;
+        {translateLocalCurrency(calculateTotalAmount(orderList, "totalPrice"))}
+        원
+      </h3>
+    </PaymentBox>
+  );
+};

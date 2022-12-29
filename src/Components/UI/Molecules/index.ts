@@ -13,4 +13,5 @@ export {
 } from "./Loading";
 export { ProductListItem, StoreListItem, OptionFieldItem } from "./ListItem";
 export { ProductForm } from "./Form";
-export { NewModal } from "./NewModal";
+export { NewModal, ModalHeader, ModalModel } from "./NewModal";
+export { ConfirmCancelButtons } from "./Button";
