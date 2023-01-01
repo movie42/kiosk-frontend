@@ -1,9 +1,4 @@
-export {
-  MenuStatusBar,
-  StoreCreateStatusBar,
-  StoreUpdateStatusBar,
-  ManageProductStatusBar
-} from "./Bar";
+export { MenuStatusBar, StatusBar } from "./Bar";
 export { Nav } from "./Nav";
 export {
   Loading,

@@ -1,9 +1,10 @@
 import { useForm } from "react-hook-form";
 
 import { ErrorLabel, Form } from "@/Components/UI/Atoms";
-import { Loading, StoreCreateStatusBar } from "@/Components/UI/Molecules";
+import { Loading, StatusBar } from "@/Components/UI/Molecules";
 import { useAddStore, useLoadingComplete } from "@/Page/Admin/hooks";
 import { IStoreFormProps } from "../interface";
+import { useNavigate } from "react-router-dom";
 
 const StoreCreatePage = () => {
   const {
@@ -76,3 +77,29 @@ const StoreCreatePage = () => {
 };
 
 export default StoreCreatePage;
+
+interface StoreCreateStatusBarProps {
+  onSubmit: (
+    e?: React.BaseSyntheticEvent<object, any, any> | undefined
+  ) => Promise<void>;
+}
+
+const StoreCreateStatusBar = ({ onSubmit }: StoreCreateStatusBarProps) => {
+  const navigate = useNavigate();
+
+  return (
+    <StatusBar
+      statusMessage="가게를 등록하려면 가게등록 버튼을 누르세요."
+      cancelButtonProps={{
+        onClick: () => navigate(-1),
+        children: "등록취소",
+        className: "cancel-button"
+      }}
+      confirmButtonProps={{
+        onClick: onSubmit,
+        children: "가게등록",
+        className: "confirm-button"
+      }}
+    />
+  );
+};

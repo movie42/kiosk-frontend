@@ -1,13 +1,14 @@
 import { useForm } from "react-hook-form";
 
 import { ErrorLabel, Form } from "@/Components/UI/Atoms";
-import { Loading, StoreUpdateStatusBar } from "@/Components/UI/Molecules";
+import { Loading, StatusBar } from "@/Components/UI/Molecules";
 import {
   useGetStore,
   useLoadingComplete,
   useUpdateStore
 } from "@/Page/Admin/hooks";
 import { IStoreFormProps } from "../interface";
+import { useNavigate } from "react-router-dom";
 
 const StoreUpdatePage = () => {
   const { data: updateStore, isLoading: isLoadingGetStore } = useGetStore();
@@ -111,3 +112,28 @@ const StoreUpdatePage = () => {
 };
 
 export default StoreUpdatePage;
+
+interface IStoreUpdateStatusBarProps {
+  onSubmit: (
+    e?: React.BaseSyntheticEvent<object, any, any> | undefined
+  ) => Promise<void>;
+}
+
+const StoreUpdateStatusBar = ({ onSubmit }: IStoreUpdateStatusBarProps) => {
+  const navigate = useNavigate();
+  return (
+    <StatusBar
+      statusMessage="입력이 끝나면 수정하기 버튼을 눌러주세요."
+      confirmButtonProps={{
+        className: "confirm-button",
+        onClick: onSubmit,
+        children: "수정하기"
+      }}
+      cancelButtonProps={{
+        onClick: () => navigate(-1),
+        className: "cancel-button",
+        children: "돌아가기"
+      }}
+    />
+  );
+};
