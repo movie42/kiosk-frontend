@@ -4,16 +4,18 @@ import {
   ButtonContainer
 } from "../NewModal/styles";
 
-interface ConfirmCancelButtonProps {
+interface ConfirmCancelButtonProps
+  extends React.HTMLAttributes<HTMLDivElement> {
   cancelProps?: React.ButtonHTMLAttributes<HTMLButtonElement>;
   confirmProps?: React.ButtonHTMLAttributes<HTMLButtonElement>;
 }
 const ConfirmCancelButtons = ({
   cancelProps,
-  confirmProps
+  confirmProps,
+  ...props
 }: ConfirmCancelButtonProps) => {
   return (
-    <ButtonContainer>
+    <ButtonContainer {...props}>
       {confirmProps && (
         <ConfirmButton {...confirmProps}>{confirmProps.children}</ConfirmButton>
       )}
