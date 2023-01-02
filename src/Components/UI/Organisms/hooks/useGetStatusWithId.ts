@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { OrderStatusValue } from "@/lib/state/interface";
 
-export const useGetStatusWithId = () => {
+const useGetStatusWithId = () => {
   const [orderId, setOrderId] = useState("");
   const [orderStatus, setOrderStatus] = useState<OrderStatusValue | null>(null);
 
@@ -12,3 +12,5 @@ export const useGetStatusWithId = () => {
 
   return { getStatusWithId, orderId, orderStatus };
 };
+
+export default useGetStatusWithId;
