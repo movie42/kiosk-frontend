@@ -18,7 +18,7 @@ import {
 } from "./styles";
 import { OrderStatusType } from "@/lib/generated/graphql";
 import { OrderStatusValue } from "@/lib/state/interface";
-import useUpdateOrderStatus from "../hooks/useUpdateOrderStatus";
+import { useUpdateOrderStatus } from "../hooks";
 
 interface IOrderModalProps {
   orderId: string;

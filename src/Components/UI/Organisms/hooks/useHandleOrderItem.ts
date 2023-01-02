@@ -12,7 +12,7 @@ interface OrderSelectedItemProps {
   };
 }
 
-export const useHandleOrderItem = () => {
+const useHandleOrderItem = () => {
   const [orderItem, setOrderItem] = useRecoilState(selectMenuListState);
   const [orderDone, setOrderDone] = useState(false);
 
@@ -73,3 +73,5 @@ export const useHandleOrderItem = () => {
 
   return { orderSelectedItem, orderDone };
 };
+
+export default useHandleOrderItem;

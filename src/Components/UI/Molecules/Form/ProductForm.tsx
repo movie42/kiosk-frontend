@@ -76,19 +76,19 @@ const ProductForm = ({ handleSubmit, product }: ProductFormProps) => {
             ></Form.Textarea>
           </Form.FormItemContainer>
         </Form.FieldSet>
+        <StatusBar
+          confirmButtonProps={{
+            children: "상품등록",
+            className: "confirm-button"
+          }}
+          cancelButtonProps={{
+            type: "button",
+            children: "등록취소",
+            onClick: handleCancel,
+            className: "cancel-button"
+          }}
+        />
       </Form>
-      <StatusBar
-        confirmButtonProps={{
-          children: "상품등록",
-          className: "confirm-button"
-        }}
-        cancelButtonProps={{
-          type: "button",
-          children: "등록취소",
-          onClick: handleCancel,
-          className: "cancel-button"
-        }}
-      />
     </>
   );
 };

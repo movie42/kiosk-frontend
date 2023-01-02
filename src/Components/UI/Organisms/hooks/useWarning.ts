@@ -8,7 +8,7 @@ interface DisplayWarningProps {
   optionName: string;
 }
 
-export const useWarning = () => {
+const useWarning = () => {
   const [warning, setWarning] = useState<WarningMessageKey>("DEFAULT");
 
   const displayWarning = ({
@@ -36,3 +36,5 @@ export const useWarning = () => {
 
   return { warning, displayWarning };
 };
+
+export default useWarning;
