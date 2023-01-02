@@ -3,10 +3,7 @@ import Graph from "react-apexcharts";
 
 const Chart = () => {
   const [_, setChartOption] = useState("today");
-  const [chartState, __] = useState<{
-    options: ApexCharts.ApexOptions;
-    series: ApexAxisChartSeries;
-  }>({
+  const [chartState, __] = useState({
     options: {
       chart: {
         id: "0"

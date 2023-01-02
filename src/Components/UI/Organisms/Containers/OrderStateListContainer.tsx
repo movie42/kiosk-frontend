@@ -15,7 +15,7 @@ import {
   CancelOrderButton,
   OrderProductInfoContainer
 } from "./styles";
-import { useGetStatusWithId } from "../hooks/useGetStatusWithId";
+import { useGetStatusWithId } from "../hooks";
 import { ModalStatusKey } from "../interface";
 
 const OrderStateListContainer = () => {

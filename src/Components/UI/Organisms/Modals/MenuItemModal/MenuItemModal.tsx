@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { translateLocalCurrency } from "@/lib/utils";
-import { useHandleOrderItem } from "../../hooks/useHandleOrderItem";
+import { useHandleOrderItem } from "../../hooks";
 import { Images, Noimage } from "@/Components/UI/Atoms/Images";
 import { ProductListValues } from "@/lib/state/productItemState";
 import {
@@ -18,7 +18,7 @@ import {
   Title,
   ProductCount
 } from "./styles";
-import { useWarning } from "../../hooks/useWarning";
+import { useWarning } from "../../hooks";
 import { WARNING_MESSAGE } from "../../interface";
 import { MdAddCircle, MdRemoveCircle } from "react-icons/md";
 
