@@ -2,12 +2,15 @@ import React, { useEffect } from "react";
 import { useQueryClient } from "react-query";
 import { useRecoilValue } from "recoil";
 
-import Modal from "@/Components/UI/Organisms/Modals/Modal";
 import { useRemoveStoreMutation } from "@/lib/generated/graphql";
 import graphqlReqeustClient from "@/lib/graphqlRequestClient";
-import { userState } from "@/lib/state/userState";
-import useModalHook from "@/lib/hooks/useModalHook";
-import { ModalChildren } from "./styles";
+import { userState } from "@/lib/state";
+import { useModalHook } from "@/lib/hooks";
+import {
+  ConfirmCancelButtons,
+  ModalHeader,
+  NewModal
+} from "../../../Molecules";
 
 interface IStoreDeleteModalProps {
   itemId?: string;
@@ -44,20 +47,30 @@ const StoreDeleteModal = ({
   }, [deleteConfirm, deleteMutate, itemId, setIsDeleteModal]);
 
   return isDeleteModal ? (
-    <Modal>
-      <ModalChildren>
-        <h1>삭제하시겠습니까?</h1>
-        <p>삭제하면 가게에 등록된 모든 정보가 함께 삭제됩니다.</p>
-        <div className="button-container">
-          <button className="cancel-button" onClick={handleCancel}>
-            돌아가기
-          </button>
-          <button className="confirm-button" onClick={handleDeleteConfirm}>
-            삭제하기
-          </button>
-        </div>
-      </ModalChildren>
-    </Modal>
+    <NewModal
+      modalOptions={{ strech: false }}
+      Header={
+        <ModalHeader
+          title="삭제하시겠습니까?"
+          subtitle="삭제하면 가게에 등록된 모든 정보가 함께 삭제됩니다."
+        />
+      }
+      Buttons={
+        <ConfirmCancelButtons
+          className="button-container"
+          confirmProps={{
+            onClick: handleDeleteConfirm,
+            className: "confirm-button",
+            children: "삭제하기"
+          }}
+          cancelProps={{
+            onClick: handleCancel,
+            className: "confirm-button",
+            children: "돌아가기"
+          }}
+        />
+      }
+    />
   ) : null;
 };
 

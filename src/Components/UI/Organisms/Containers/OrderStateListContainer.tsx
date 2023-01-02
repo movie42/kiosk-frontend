@@ -128,11 +128,6 @@ interface OrderProductInfoProps {
 }
 
 const OrderProductInfo = ({ order }: OrderProductInfoProps) => {
-  const handleProductState = (e: React.MouseEvent<HTMLSpanElement>) => {
-    const productId = e.currentTarget.dataset.productid;
-    console.log(productId);
-  };
-
   return (
     <OrderProductInfoContainer>
       <div>
@@ -144,7 +139,6 @@ const OrderProductInfo = ({ order }: OrderProductInfoProps) => {
             >
               <span
                 data-productid={`${product?.orderId}-${product?.productId}-${index}`}
-                onClick={handleProductState}
               >
                 <strong>상품 이름</strong>
                 {product?.productName}

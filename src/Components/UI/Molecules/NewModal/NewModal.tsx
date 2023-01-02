@@ -20,7 +20,7 @@ const NewModal = ({
     <ModalDefaultWrapper>
       <NewModalContainer modalOptions={{ strech }}>
         <div>{Header}</div>
-        <div>{Model}</div>
+        {Model ? <div>{Model}</div> : null}
         <div>{Buttons}</div>
       </NewModalContainer>
       <TransparentBackground />

@@ -6,7 +6,7 @@ import {
   selectProductListState
 } from "@/lib/state";
 import useModalHook from "@/lib/hooks/useModalHook";
-import { CancelButton, ConfirmButton, MenuBarContainer } from "./styles";
+import StatusBar from "./StatusBar";
 
 const MenuStatusBar = () => {
   const [_, setSelectOption] = useRecoilState(selectOptionState);
@@ -29,13 +29,19 @@ const MenuStatusBar = () => {
   };
 
   return (
-    <MenuBarContainer>
-      <h2>{selectList.length}개의 상품을 삭제하려면 버튼을 누르세요.</h2>
-      <div>
-        <CancelButton onClick={updateSelectOptionToNone}>취소하기</CancelButton>
-        <ConfirmButton onClick={handleModalAppear}>삭제하기</ConfirmButton>
-      </div>
-    </MenuBarContainer>
+    <StatusBar
+      statusMessage={`${selectList.length}개의 상품을 삭제하려면 버튼을 누르세요.`}
+      confirmButtonProps={{
+        onClick: handleModalAppear,
+        children: "삭제하기",
+        className: "confirm-button"
+      }}
+      cancelButtonProps={{
+        onClick: updateSelectOptionToNone,
+        children: "취소하기",
+        className: "cancel-button"
+      }}
+    />
   );
 };
 
