@@ -1,4 +1,4 @@
-import ButtonDefaultStyle from "@/Components/UI/Atoms/Buttons/ButtonDefault";
+import BasicSquareButtonStyle from "@/Components/UI/Atoms/Buttons/BasicSquareButton";
 import { motion } from "framer-motion";
 import styled from "styled-components";
 
@@ -70,10 +70,10 @@ export const ButtonContainer = styled(motion.div)`
 `;
 export const FinalItem = styled.li``;
 
-export const CancelButton = styled(ButtonDefaultStyle)`
+export const CancelButton = styled(BasicSquareButtonStyle)`
   background-color: ${(props) => props.theme.color.gray400};
 `;
-export const ConfirmButton = styled(ButtonDefaultStyle)<{
+export const ConfirmButton = styled(BasicSquareButtonStyle)<{
   isSuccess?: boolean;
 }>`
   background-color: ${(props) =>

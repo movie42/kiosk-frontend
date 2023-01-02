@@ -1,42 +1,53 @@
-// import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
 import { useLoginMutation } from "@/lib/generated/graphql";
 import graphqlReqeustClient from "@/lib/graphqlRequestClient";
 import { userState } from "@/lib/state/userState";
 
+import { useFormContext } from "react-hook-form";
+import { IUserProps } from "../interface";
+import { ClientError } from "graphql-request";
+import { GraphQLError } from "graphql";
+
 const useLogin = () => {
-  // const queryClient = useQueryClient();
+  const method = useFormContext<IUserProps>();
+
+  if (method === null) {
+    throw new Error("useLogin은 FormProvider 안에서만 사용할 수 있습니다.");
+  }
 
   const setIsUser = useSetRecoilState(userState);
 
-  return useLoginMutation<Error>(graphqlReqeustClient(), {
+  return useLoginMutation<ClientError>(graphqlReqeustClient(), {
     onSuccess: (data) => {
       const {
         login: { accessToken, refreshToken }
       } = data;
-
       setIsUser((pre) => ({
         ...pre,
         isLogin: true,
         accessToken,
         refreshToken
       }));
-      // queryClient.invalidateQueries("me");
+    },
+    onError: (errors) => {
+      const [
+        {
+          extensions: {
+            response: { statusCode }
+          }
+        }
+      ] = errors.response.errors as GraphQLError[];
+
+      if (statusCode >= 500) {
+        method.setError("loginFail", {
+          message: "서버에 문제가 있습니다. 나중에 다시 시도해주세요."
+        });
+        return;
+      }
+      method.setError("loginFail", {
+        message: "존재하지 않는 회원이거나 비밀번호가 다릅니다."
+      });
     }
-    // onError: (error) => {
-    //   handleErrorMessage(error, setErrorState);
-    /**
-     * FIXME:
-     * 에러 메시지가 일관되지 않아 처리에 어려움이 있다.
-     * 백앤드 개발자에게 에러 메시지를 보낼때 message에 실어 보낼 수 있도록 요청하기.
-     * 에러 메시지를 처리할 수 있는 방법 생각해보기
-     */
-    //   if (errorState) {
-    //     const [message] = errorState.response.errors;
-    //     const error = message.extensions.exception.response.error;
-    //     return error;
-    //   }
-    // }
   });
 };
 

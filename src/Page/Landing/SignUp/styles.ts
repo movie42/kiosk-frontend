@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Body1, Headline1, Headline2, SubTitle2 } from "@/lib/styles";
-import { ButtonDefault, InputDefault } from "@/Components/UI/Atoms";
+import { BasicSquareButton, InputDefault } from "@/Components/UI/Atoms";
 
 export const Wrapper = styled.div`
   padding: 1rem 2rem;
@@ -75,7 +75,7 @@ export const ButtonGroup = styled.div`
   }
 `;
 
-export const ConfirmButton = styled(ButtonDefault)<{ isAgree?: boolean }>`
+export const ConfirmButton = styled(BasicSquareButton)<{ isAgree?: boolean }>`
   margin-left: 5px;
   color: ${(props) => props.theme.color.fontColorWhite};
   background-color: ${(props) =>
@@ -84,7 +84,7 @@ export const ConfirmButton = styled(ButtonDefault)<{ isAgree?: boolean }>`
       : props.theme.color.gray300};
 `;
 
-export const AgreementButton = styled(ButtonDefault)<{ isAgree?: boolean }>`
+export const AgreementButton = styled(BasicSquareButton)<{ isAgree?: boolean }>`
   font-size: 1.4rem;
   padding: 0.8rem;
   color: ${(props) => props.theme.color.fontColorWhite};
@@ -146,7 +146,7 @@ export const ErrorMessage = styled.p`
   color: ${(props) => props.theme.color.error500};
 `;
 
-export const ActionButton = styled(ButtonDefault)<{ option?: string }>`
+export const ActionButton = styled(BasicSquareButton)<{ option?: string }>`
   margin-left: 5px;
   color: ${(props) => props.theme.color.fontColorWhite};
   background-color: ${(props) =>

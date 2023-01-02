@@ -1,5 +1,5 @@
 import { translateLocalCurrency } from "@/lib/utils";
-import { MenuBarContainer } from "./styles";
+import { GoBackButton, MenuBarContainer, OrderButton } from "./styles";
 
 export interface TotalOrderMenu {
   totalCount: number;
@@ -24,12 +24,8 @@ const OrderStateBar = ({
           {translateLocalCurrency(totalPrice, "ko-KR")}원
         </h2>
         <div>
-          {goBack && (
-            <button className="go-back-button" onClick={goBack}>
-              돌아가기
-            </button>
-          )}
-          <button onClick={handler}>{label}</button>
+          <GoBackButton onClick={goBack}>돌아가기</GoBackButton>
+          <OrderButton onClick={handler}>{label}</OrderButton>
         </div>
       </MenuBarContainer>
     </div>

@@ -1,8 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import { selectMenuListState } from "@/lib/state";
-import { BtnGroup, ConfirmButton, PaymentBox } from "./styles";
-
+import { PaymentBox } from "./styles";
+import {
+  ConfirmCancelButtons,
+  ModalHeader,
+  NewModal
+} from "@/Components/UI/Molecules";
 interface ConfirmProps {
   orderNumber: number;
   userId: string | undefined;
@@ -19,14 +23,25 @@ const OrderConfirm = ({ orderNumber, userId, storeId }: ConfirmProps) => {
   };
 
   return (
-    <PaymentBox>
-      <h2>주문이 완료되었습니다</h2>
-      <h4>주문 번호를 확인해주세요</h4>
-      <h1>{orderNumber}</h1>
-      <BtnGroup>
-        <ConfirmButton onClick={confirmOrder}>확인</ConfirmButton>
-      </BtnGroup>
-    </PaymentBox>
+    <NewModal
+      modalOptions={{ strech: false }}
+      Header={
+        <ModalHeader
+          title="주문이 완료되었습니다"
+          subtitle="주문 번호를 확인해주세요"
+        />
+      }
+      Model={
+        <PaymentBox>
+          <h1>{orderNumber}</h1>
+        </PaymentBox>
+      }
+      Buttons={
+        <ConfirmCancelButtons
+          confirmProps={{ onClick: confirmOrder, children: "확인" }}
+        />
+      }
+    />
   );
 };
 

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { ButtonDefault } from "@/Components/UI/Atoms";
+import { BasicSquareButton } from "@/Components/UI/Atoms";
 import { Body1, SubTitle1, SubTitle2 } from "@/lib/styles/mixin";
 
 export const Wrapper = styled.div``;
@@ -16,7 +16,7 @@ export const Header = styled.div`
   }
 `;
 
-export const AddStoreButton = styled(ButtonDefault)`
+export const AddStoreButton = styled(BasicSquareButton)`
   display: flex;
   align-items: center;
   color: ${(props) => props.theme.color.fontColorBlack};
@@ -67,11 +67,7 @@ export const InputContainer = styled.div<{ disabled?: boolean }>`
     border: unset;
     outline: unset;
   }
-  .error-label {
-    grid-column: 2 / 10;
-    ${SubTitle2};
-    color: ${(props) => props.theme.color.error500};
-  }
+
   ${({ theme }) => theme.device.tablet} {
     padding: 0.8rem 0;
     label {

@@ -5,9 +5,18 @@ import { useSetRecoilState } from "recoil";
 
 import { orderStatusState } from "@/lib/state";
 import type { OrderStatusValue } from "@/lib/state/interface";
-import { ManageOrderStatusButton, ButtonDefault } from "@/Components/UI/Atoms";
+import {
+  ManageOrderStatusButton,
+  BasicSquareButton
+} from "@/Components/UI/Atoms";
 import { PageHeader } from "@/Components/UI/Organisms";
-import { ButtonContainer, OptionContainer, SearchingInput } from "./styles";
+import {
+  ButtonContainer,
+  OptionContainer,
+  SearchBox,
+  SearchForm,
+  SearchingInput
+} from "./styles";
 
 type OptionsContainerProps = React.HTMLAttributes<HTMLDivElement>;
 
@@ -33,17 +42,19 @@ const OptionsContainer = ({ ...props }: OptionsContainerProps) => {
   return (
     <OptionContainer {...props}>
       <PageHeader header="주문관리" />
-      <form onSubmit={searchOrder}>
-        <SearchingInput
-          type="number"
-          placeholder="주문번호를 입력해주세요."
-          {...register("searchOrder", {
-            max: 3000,
-            min: 1000
-          })}
-        />
-        <ButtonDefault>검색</ButtonDefault>
-      </form>
+      <SearchForm onSubmit={searchOrder}>
+        <SearchBox>
+          <SearchingInput
+            type="number"
+            placeholder="주문번호를 입력해주세요."
+            {...register("searchOrder", {
+              max: 3000,
+              min: 1000
+            })}
+          />
+          <BasicSquareButton>검색</BasicSquareButton>
+        </SearchBox>
+      </SearchForm>
       <AnimateSharedLayout>
         <ButtonContainer>
           <ManageOrderStatusButton

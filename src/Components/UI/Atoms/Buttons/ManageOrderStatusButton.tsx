@@ -3,7 +3,7 @@ import { useRecoilValue } from "recoil";
 
 import { orderStatusState } from "@/lib/state";
 import { OrderStatusValue } from "@/lib/state/interface";
-import ButtonDefault from "./ButtonDefault";
+import BasicSquareButton from "./BasicSquareButton";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 
@@ -21,10 +21,10 @@ const ManageOrderStatusButton = ({
   const orderStatus = useRecoilValue(orderStatusState);
 
   return (
-    <ButtonDefault {...props}>
+    <BasicSquareButton {...props}>
       {children}
       {orderStatus === statusCheck && <Underline layoutId="underline" />}
-    </ButtonDefault>
+    </BasicSquareButton>
   );
 };
 

@@ -1,10 +1,9 @@
+/* eslint-disable */
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
 import { useNavigate, useParams } from "react-router-dom";
-import { AiFillMinusCircle } from "react-icons/ai";
-import { IoIosAddCircle } from "react-icons/io";
 import { Images, Noimage } from "@/Components/UI/Atoms";
-import { Modal, PaymentModal } from "@/Components/UI/Organisms";
+import { PaymentModal } from "@/Components/UI/Organisms";
 import { IOrderSelectedItem } from "@/lib/state/productItemState";
 import { calculateTotalAmount, translateLocalCurrency } from "@/lib/utils";
 import { selectMenuListState } from "@/lib/state";
@@ -14,12 +13,16 @@ import {
   MenuListWrapper,
   ResetButtonWrapper,
   ResetButton,
-  MenuListItemBox,
+  MenuListItemWrapper,
   MinusCountButton,
   AddCountButton,
-  DeleteButton
+  DeleteButton,
+  ListItemDetailBox,
+  RemoveItemBox,
+  CountBox
 } from "./styles";
 import { useHandleSelectMenu } from "../hooks";
+import { MdAddCircle, MdRemoveCircle } from "react-icons/md";
 
 const ClientSelectListPage = () => {
   const navigate = useNavigate();
@@ -30,11 +33,7 @@ const ClientSelectListPage = () => {
   const { deleteAll } = useHandleSelectMenu();
   return (
     <>
-      {isModal && (
-        <Modal strach={true}>
-          <PaymentModal setIsModal={setIsModal} />
-        </Modal>
-      )}
+      {isModal && <PaymentModal setIsModal={setIsModal} />}
       <Header>
         <h1>주문 목록</h1>
       </Header>
@@ -72,17 +71,15 @@ interface MenuListItemProps {
 
 const MenuListItem = ({ item }: MenuListItemProps) => {
   return (
-    <MenuListItemBox>
+    <MenuListItemWrapper>
       {item.imageUrl ? (
-        <div style={{ padding: "0.5rem 1rem 0.5rem 0" }}>
-          <Images src={item.imageUrl} alt={item.name} />
-        </div>
+        <Images src={item.imageUrl} alt={item.name} />
       ) : (
         <Noimage />
       )}
       <MenuListItemDetail item={item} />
       <RemoveMenuListItem item={item} />
-    </MenuListItemBox>
+    </MenuListItemWrapper>
   );
 };
 
@@ -90,20 +87,26 @@ const MenuListItemDetail = ({ item }: MenuListItemProps) => {
   const { handleMinusCount, handleAddCount } = useHandleSelectMenu();
 
   return (
-    <div>
+    <ListItemDetailBox>
       <h2>{item.name}</h2>
       {item.option && <p>선택옵션: {item.option}</p>}
-      <p>
-        주문수량:
-        <MinusCountButton onClick={() => handleMinusCount(item)}>
-          <AiFillMinusCircle />
-        </MinusCountButton>
+      <CountBox>
+        <span>주문수량:</span>
+        <MinusCountButton
+          ReactIcon={MdRemoveCircle}
+          hidden={true}
+          text="수량 감소"
+          onClick={() => handleMinusCount(item)}
+        />
         {item.totalCount}
-        <AddCountButton onClick={() => handleAddCount(item)}>
-          <IoIosAddCircle />
-        </AddCountButton>
-      </p>
-    </div>
+        <AddCountButton
+          ReactIcon={MdAddCircle}
+          hidden={true}
+          text="수량 증가"
+          onClick={() => handleAddCount(item)}
+        />
+      </CountBox>
+    </ListItemDetailBox>
   );
 };
 
@@ -111,12 +114,12 @@ const RemoveMenuListItem = ({ item }: MenuListItemProps) => {
   const { handleDelete } = useHandleSelectMenu();
 
   return (
-    <div>
+    <RemoveItemBox>
+      총 가격
       <p className="price">
-        총 가격:&nbsp;
         {translateLocalCurrency(item.totalPrice, "ko-KR")}원
       </p>
       <DeleteButton onClick={() => handleDelete(item)}>삭제하기</DeleteButton>
-    </div>
+    </RemoveItemBox>
   );
 };

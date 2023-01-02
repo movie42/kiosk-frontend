@@ -1,12 +1,8 @@
-import React, { useState } from "react";
-import { IoIosAddCircle } from "react-icons/io";
-import { AiFillMinusCircle } from "react-icons/ai";
+import React, { useEffect, useState } from "react";
 import { translateLocalCurrency } from "@/lib/utils";
+import { useHandleOrderItem } from "../../hooks";
 import { Images, Noimage } from "@/Components/UI/Atoms/Images";
-import {
-  IOrderSelectedItem,
-  ProductListValues
-} from "@/lib/state/productItemState";
+import { ProductListValues } from "@/lib/state/productItemState";
 import {
   AddCountButton,
   MinusCountButton
@@ -22,100 +18,53 @@ import {
   Title,
   ProductCount
 } from "./styles";
+import { useWarning } from "../../hooks";
+import { WARNING_MESSAGE } from "../../interface";
+import { MdAddCircle, MdRemoveCircle } from "react-icons/md";
+
+interface SelectedOption {
+  name: string;
+  id: number;
+}
 
 interface MenuItemModalProps {
   setIsModal: React.Dispatch<React.SetStateAction<boolean>>;
-  selectedItem: ProductListValues[];
-  count: number;
-  setCount: React.Dispatch<React.SetStateAction<number>>;
-  orderItem: IOrderSelectedItem[];
-  setOrderItem: React.Dispatch<React.SetStateAction<IOrderSelectedItem[]>>;
+  selectedItem: ProductListValues;
 }
 
 const MenuItemModal = ({
   setIsModal,
-  selectedItem,
-  count,
-  setCount,
-  orderItem,
-  setOrderItem
+  selectedItem: selected
 }: MenuItemModalProps) => {
-  const [warning, setWarning] = useState("");
-  const [selected] = selectedItem;
-  const orderSelectedItem = () => {
-    const [sameMenu] = orderItem.filter(
-      (ordered) =>
-        ordered.productId === selected.id && ordered.option === selectedOption
-    );
+  const [count, setCount] = useState(0);
+  const [selectedOption, setSelectedOption] = useState<SelectedOption>({
+    name: "",
+    id: 0
+  });
+  const { warning, displayWarning } = useWarning();
+  const { orderSelectedItem, orderDone } = useHandleOrderItem();
 
-    const { options: hasOption }: any = selected;
+  const handleClick = () => {
+    displayWarning({ selected, count, optionName: selectedOption.name });
+  };
 
-    if (count === 0) {
-      setWarning("수량을 선택해주세요");
-      return;
-    }
-
-    if (hasOption?.length > 0 && !selectedOption) {
-      setWarning("옵션을 선택하세요");
-      return;
-    }
-
-    if (!sameMenu || sameMenu.option !== selectedOption) {
-      setOrderItem((orderItem) =>
-        [
-          ...orderItem,
-          {
-            productId: selected.id,
-            name: selected.name,
-            option: selectedOption,
-            optionId: selectedOptionId,
-            price: selected.price,
-            totalCount: count,
-            totalPrice: selected.price * count,
-            imageUrl: selected.imageUrl
-          }
-        ].sort((a: any, b: any) => {
-          if (a.productId === b.productId) {
-            return a?.option > b?.option ? 1 : -1;
-          }
-          return a.productId - b.productId;
-        })
-      );
-    }
-
-    if (sameMenu?.option === selectedOption) {
-      setOrderItem((orderItem) =>
-        [
-          ...orderItem.filter((el) => el !== sameMenu),
-          {
-            ...sameMenu,
-            totalCount: sameMenu.totalCount + count,
-            totalPrice: sameMenu.totalPrice + sameMenu.price * count
-          }
-        ].sort((a: any, b: any) => {
-          if (a.productId === b.productId) {
-            return a?.option > b?.option ? 1 : -1;
-          }
-          return a.productId - b.productId;
-        })
-      );
-    }
-
+  const closeModal = () => {
     setCount(0);
     setIsModal(false);
   };
 
-  const cancelItem = () => {
-    setCount(0);
-    setIsModal(false);
-  };
+  useEffect(() => {
+    if (warning === "NONE") {
+      orderSelectedItem({ selected, count, selectedOption });
+    }
+  }, [warning]);
 
-  const [selectedOption, setSelectedOption] = useState("");
-  const [selectedOptionId, setSelectedOptionId] = useState(0);
-  const selectOption = (name: string, id: number) => {
-    setSelectedOption(name);
-    setSelectedOptionId(id);
-  };
+  useEffect(() => {
+    if (orderDone) {
+      closeModal();
+      // setOrderDone(false); // is must?
+    }
+  }, [orderDone]);
 
   return (
     <Wrapper>
@@ -133,48 +82,29 @@ const MenuItemModal = ({
       <div className="item-info-container">
         <Title composition={true}>구성</Title>
         <p className="item-title">{selected.name} 1개</p>
+
         {selected.options && (
-          <>
-            <Title>상품옵션</Title>
-            <OptionContainer>
-              {selected.options?.map((item) => (
-                <OptionButton
-                  className="noto"
-                  key={item.name}
-                  selected={selectedOption === item.name ? true : false}
-                  onClick={() => selectOption(item.name, item.id)}
-                >
-                  {item.name}
-                </OptionButton>
-              ))}
-            </OptionContainer>
-          </>
+          <OptionSelection
+            selected={selected}
+            selectedOptionName={selectedOption.name}
+            setSelectedOption={setSelectedOption}
+          />
         )}
+
         <Title>
           총 가격&nbsp;
           {translateLocalCurrency(count * Number(selected.price), "ko-KR")}원
         </Title>
+
         <OrderContainer>
-          {warning && <span className="warning">{warning}</span>}
-          <MinusCountButton
-            onClick={() => {
-              if (count < 1) return;
-              setCount((count) => count - 1);
-            }}
-          >
-            <AiFillMinusCircle />
-          </MinusCountButton>
-          <ProductCount>{count}</ProductCount>
-          <AddCountButton
-            onClick={() => {
-              if (count < 0) return;
-              setCount((count) => count + 1);
-            }}
-          >
-            <IoIosAddCircle />
-          </AddCountButton>
-          <CancelButton onClick={cancelItem}>취소하기</CancelButton>
-          <OrderButton onClick={orderSelectedItem}>주문하기</OrderButton>
+          {warning && (
+            <span className="warning">{WARNING_MESSAGE[warning]}</span>
+          )}
+
+          <CountButtonGroup count={count} setCount={setCount} />
+
+          <CancelButton onClick={closeModal}>취소하기</CancelButton>
+          <OrderButton onClick={handleClick}>주문하기</OrderButton>
         </OrderContainer>
       </div>
     </Wrapper>
@@ -182,3 +112,66 @@ const MenuItemModal = ({
 };
 
 export default MenuItemModal;
+
+interface OptionSelectionProps {
+  selected: ProductListValues;
+  selectedOptionName: string;
+  setSelectedOption: React.Dispatch<React.SetStateAction<SelectedOption>>;
+}
+const OptionSelection = ({
+  selected,
+  selectedOptionName,
+  setSelectedOption
+}: OptionSelectionProps) => {
+  return (
+    <>
+      <Title>상품옵션</Title>
+      <OptionContainer>
+        {selected.options?.map((item) => (
+          <OptionButton
+            className="noto"
+            key={item.name}
+            selected={selectedOptionName === item.name ? true : false}
+            onClick={() =>
+              setSelectedOption((prev) => {
+                return { ...prev, name: item.name, id: item.id };
+              })
+            }
+          >
+            {item.name}
+          </OptionButton>
+        ))}
+      </OptionContainer>
+    </>
+  );
+};
+
+interface CountButtonGroupProps {
+  count: number;
+  setCount: React.Dispatch<React.SetStateAction<number>>;
+}
+const CountButtonGroup = ({ count, setCount }: CountButtonGroupProps) => {
+  return (
+    <>
+      <MinusCountButton
+        ReactIcon={MdRemoveCircle}
+        hidden={true}
+        text="수량 감소"
+        onClick={() => {
+          if (count < 1) return;
+          setCount((count) => count - 1);
+        }}
+      />
+      <ProductCount>{count}</ProductCount>
+      <AddCountButton
+        ReactIcon={MdAddCircle}
+        hidden={true}
+        text="수량 증가"
+        onClick={() => {
+          if (count < 0) return;
+          setCount((count) => count + 1);
+        }}
+      />
+    </>
+  );
+};

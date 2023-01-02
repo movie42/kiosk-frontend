@@ -1,32 +1,32 @@
 import { useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { MenuItemModal, Modal } from "@/Components/UI/Organisms";
 import { Loading } from "@/Components/UI/Molecules";
-import { Images, Noimage } from "@/Components/UI/Atoms";
 import { ProductListValues, selectMenuListState } from "@/lib/state";
 import { calculateTotalAmount } from "@/lib/utils";
 import { useGetMenuList } from "../hooks";
 import { OrderStateBar } from "../OrderStateBar";
-import { Header, Container, SubTitle, Item } from "./styles";
+import { Header, Container, SubTitle } from "./styles";
+import { ListItem } from "@/Components/UI/Molecules/ListItem";
+import { List } from "@/Components/UI/Molecules/ListItem/styles";
 
 const ClientMenuPage = () => {
   const navigate = useNavigate();
   const { userId, storeId } = useParams();
 
   const [isModal, setIsModal] = useState(false);
-  const [count, setCount] = useState(0);
-  const [selectedItem, setSelectedItem] = useState<ProductListValues[]>([]);
-  const [orderItem, setOrderItem] = useRecoilState(selectMenuListState);
+  const [selectedItem, setSelectedItem] = useState<ProductListValues>();
+  const orderItem = useRecoilValue(selectMenuListState);
 
   const { isLoading, menuList } = useGetMenuList(storeId);
 
   const selectHandler = (menuId: number) => {
     setIsModal(true);
     if (menuList) {
-      const selected = menuList.filter((el) => el.id === menuId);
-      setSelectedItem([...selected]);
+      const [selected] = menuList.filter((el) => el.id === menuId);
+      setSelectedItem(selected);
     }
   };
 
@@ -35,11 +35,7 @@ const ClientMenuPage = () => {
       <Modal strach={true} fullBox={true}>
         <MenuItemModal
           setIsModal={setIsModal}
-          selectedItem={selectedItem}
-          count={count}
-          setCount={setCount}
-          orderItem={orderItem}
-          setOrderItem={setOrderItem}
+          selectedItem={selectedItem as ProductListValues}
         />
       </Modal>
     );
@@ -79,25 +75,18 @@ const MenuList = ({ isLoading, menuList, selectHandler }: MenuListProps) => {
   if (isLoading) return <Loading title="등록한 상품을 불러오고 있습니다." />;
 
   return (
-    <ul className="productList">
+    <List>
       {menuList &&
         menuList.map((item) => (
-          <Item key={item.id} onClick={() => selectHandler(item.id)}>
-            <div className="item-container">
-              <div className="image-container">
-                {item.imageUrl ? (
-                  <Images src={item.imageUrl} alt={item.name} />
-                ) : (
-                  <Noimage />
-                )}
-              </div>
-              <div className="item-info-container">
-                <h3>{item.name}</h3>
-                <h4>가격 {item.price.toLocaleString()}원</h4>
-              </div>
-            </div>
-          </Item>
+          <ListItem
+            key={item.id}
+            onClick={() => selectHandler(item.id)}
+            itemId={item.id}
+            price={item.price}
+            name={item.name}
+            imageUrl={item.imageUrl}
+          />
         ))}
-    </ul>
+    </List>
   );
 };

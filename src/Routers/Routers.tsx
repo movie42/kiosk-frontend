@@ -1,19 +1,15 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { userState } from "@/lib/state";
-import {
-  AdminLayout,
-  ClientLayout,
-  LandingLayout,
-  AdminManageProductLayout
-} from "@/Components/Layouts";
+import { AdminLayout, ClientLayout, LandingLayout } from "@/Components/Layouts";
 import { AdminLoadingAndGetUser } from "@/Components/UI/Molecules";
 import { Login } from "@/Page/Admin/Login";
 import {
   ProductManageMainPage,
   ProductDetailPage,
   CreateProductPage,
-  ProductListPage
+  ProductListPage,
+  UpdateProductPage
 } from "@/Page/Admin/Product";
 import {
   StoreListPage,
@@ -31,7 +27,7 @@ import { LandingMainPage } from "@/Page/Landing";
 
 const Router = () => {
   const { isLogin, id: userId } = useRecoilValue(userState);
-  // const store = useRecoilValue(storeState);
+
   return (
     <Routes>
       <Route path="/admin" element={<AdminLayout />}>
@@ -43,18 +39,19 @@ const Router = () => {
             <Route path=":storeId">
               <Route path="update" element={<StoreUpdatePage />} />
               <Route path="manage-order" element={<ManageOrderPage />} />
+              <Route path="product">
+                <Route path=":productId" element={<ProductDetailPage />} />
+                <Route
+                  path=":productId/update-product"
+                  element={<UpdateProductPage />}
+                />
+                <Route path="main" element={<ProductManageMainPage />} />
+                <Route path="manage-product" element={<ProductListPage />} />
+                <Route path="add-product" element={<CreateProductPage />} />
+              </Route>
             </Route>
           </Route>
         </Route>
-      </Route>
-      <Route
-        path="/admin/:userId/store/:storeId/product"
-        element={<AdminManageProductLayout />}
-      >
-        <Route path=":productId" element={<ProductDetailPage />} />
-        <Route path="main" element={<ProductManageMainPage />} />
-        <Route path="manage-product" element={<ProductListPage />} />
-        <Route path="add-product" element={<CreateProductPage />} />
       </Route>
 
       <Route path="/client" element={<ClientLayout />}>

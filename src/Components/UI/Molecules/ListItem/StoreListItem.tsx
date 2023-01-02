@@ -1,5 +1,5 @@
 import { MdCreate, MdDelete } from "react-icons/md";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 
 import {
@@ -10,11 +10,12 @@ import { ToggleButton } from "@/Components/UI/Atoms";
 import { useModalHook } from "@/lib/hooks";
 import { storeStateProps, userState } from "@/lib/state";
 import {
-  ButtonContainer,
-  DeleteButton,
-  StoreListItemContainer,
-  UpdateButton
+  ListItemButtonContainer,
+  ToggleContainer,
+  ListItemButtonWrapper,
+  ListItemButton
 } from "./styles";
+import ListItem from "./ListItem";
 
 interface IAdminStoreListItemProps {
   store?: storeStateProps;
@@ -29,20 +30,37 @@ const StoreListItem = ({ store }: IAdminStoreListItemProps) => {
     useModalHook();
   const { id, name, isAvailable } = store || {};
 
-  const toggleHandler = () => {
+  const toggleHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
     setIsToggleModal(true);
   };
 
-  const deleteModalHandler = () => {
+  const deleteModalHandler = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
     setIsDeleteModal(true);
   };
 
-  const handleUpdate = (id: string | undefined) => () => {
-    navigate(`/admin/${user.id}/store/${id}/update`);
+  const handleUpdate =
+    (id: string | undefined) => (e: React.MouseEvent<HTMLDivElement>) => {
+      e.stopPropagation();
+      if (id) {
+        navigate(`/admin/${user.id}/store/${id}/update`);
+      }
+    };
+
+  const handleGoToStoreDetail = (id: string | undefined) => () => {
+    if (id) {
+      navigate(`/admin/${user.id}/store/${id}/product/main`);
+    }
   };
 
   return (
-    <StoreListItemContainer key={id} data-storeid={id}>
+    <ListItem
+      key={id}
+      itemId={Number(id)}
+      name={name}
+      onClick={handleGoToStoreDetail(id)}
+    >
       <StoreOpenCloseModal
         itemId={id}
         isStoreOpen={isAvailable}
@@ -54,24 +72,38 @@ const StoreListItem = ({ store }: IAdminStoreListItemProps) => {
         isDeleteModal={isDeleteModal}
         setIsDeleteModal={setIsDeleteModal}
       />
-      <Link to={`/admin/${user.id}/store/${id}/product/main`}>
-        <h3>{name}</h3>
-      </Link>
-      <ButtonContainer>
-        <ToggleButton size={4} isActive={isAvailable} onClick={toggleHandler} />
-        <div className="various-button-box">
-          <UpdateButton onClick={handleUpdate(id)}>
+      <ListItemButtonContainer>
+        <StoreToggleButton isAvailable={isAvailable} onClick={toggleHandler} />
+        <div className="block">
+          <ListItemButtonWrapper onClick={handleUpdate(id)}>
             <MdCreate />
-            <span>수정</span>
-          </UpdateButton>
-          <DeleteButton className="delete-button" onClick={deleteModalHandler}>
+            <ListItemButton>수정</ListItemButton>
+          </ListItemButtonWrapper>
+          <ListItemButtonWrapper
+            className="delete-button"
+            onClick={deleteModalHandler}
+          >
             <MdDelete />
-            <span>삭제</span>
-          </DeleteButton>
+            <ListItemButton>삭제</ListItemButton>
+          </ListItemButtonWrapper>
         </div>
-      </ButtonContainer>
-    </StoreListItemContainer>
+      </ListItemButtonContainer>
+    </ListItem>
   );
 };
 
 export default StoreListItem;
+
+interface ToggleButton {
+  isAvailable?: boolean;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+}
+
+const StoreToggleButton = ({ isAvailable, onClick }: ToggleButton) => {
+  return (
+    <ToggleContainer>
+      <ToggleButton onClick={onClick} isActive={isAvailable} size={5} />
+      {isAvailable ? <span>열기</span> : <span>중지</span>}
+    </ToggleContainer>
+  );
+};

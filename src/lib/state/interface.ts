@@ -1,9 +1,9 @@
 export const ORDER_STATUS = {
-  All: "ALL",
-  Canceled: "CANCELED",
-  Complete: "COMPLETE",
-  Done: "DONE",
-  Ready: "READY"
+  ALL: "ALL",
+  CANCELED: "CANCELED",
+  COMPLETE: "COMPLETE",
+  DONE: "DONE",
+  READY: "READY"
 } as const;
 
 export type OrderStatusType = typeof ORDER_STATUS;
@@ -66,9 +66,9 @@ export interface ProductListValues {
   name: string;
   price: number;
   options?: ProductOptions[];
-  imageUrl?: string | null | undefined;
-  description?: string | null | undefined;
-  isAvailable?: boolean | undefined;
+  imageUrl?: string | null;
+  description?: string | null;
+  isAvailable?: boolean;
 }
 
 export interface Sales {

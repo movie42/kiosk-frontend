@@ -1,6 +1,7 @@
 query getProducts($id: Float!) {
   store(id: $id) {
     id
+    name
     products {
       id
       name

@@ -1,22 +1,17 @@
-/* eslint-disable */
 import React from "react";
 import { useRecoilValue } from "recoil";
 import { OrderType, useAddOrderMutation } from "@/lib/generated/graphql";
 import graphqlReqeustClient from "@/lib/graphqlRequestClient";
 import { orderType, selectMenuListState, userState } from "@/lib/state";
-import { RequestPayResponse, RequestPayParams } from "@/lib/types/Payment";
-import {
-  AddOrderInput,
-  OrderProductInput
-} from "../../../../../Page/Client/interface";
 import { calculateTotalAmount, translateLocalCurrency } from "@/lib/utils";
+import { MenuBox, PaymentBox } from "./styles";
+import { AddOrderInput, OrderProductInput } from "@/Page/Client/interface";
 import {
-  BtnGroup,
-  CancelButton,
-  ConfirmButton,
-  MenuBox,
-  PaymentBox
-} from "./styles";
+  ConfirmCancelButtons,
+  ModalHeader,
+  NewModal
+} from "@/Components/UI/Molecules";
+import { IOrderSelectedItem } from "@/lib/state/productItemState";
 
 interface PaymentProps {
   storeId: string | undefined;
@@ -33,7 +28,6 @@ const ProceedPayment = ({
 }: PaymentProps) => {
   const ordertype = useRecoilValue(orderType);
   const orderList = useRecoilValue(selectMenuListState);
-  const impkey = (process.env.REACT_APP_IMP as string) || "temporary";
 
   const { accessToken } = useRecoilValue(userState);
   const { mutate } = useAddOrderMutation<AddOrderInput>(
@@ -65,8 +59,6 @@ const ProceedPayment = ({
   };
 
   const handlePayment = () => {
-    // window.IMP?.init(impkey);
-
     const amount: number = calculateTotalAmount(orderList, "totalPrice");
     const orderProducts = orderList.map((item) => {
       return {
@@ -81,30 +73,37 @@ const ProceedPayment = ({
       return;
     }
 
-    // const data: RequestPayParams = {
-    //   pg: "kakaopay",
-    //   pay_method: "card",
-    //   name: "Kiosk Payment",
-    //   merchant_uid: `mid_${new Date().getTime()}`,
-    //   amount: amount,
-    //   buyer_tel: "000-000-0000"
-    // };
-    // const callback = (response: RequestPayResponse) => {
-    //   const { success, merchant_uid, error_msg, imp_uid, error_code } =
-    //     response;
-    //   if (success) {
-    //     addOrderItems(orderProducts, imp_uid, merchant_uid);
     addOrderItems(orderProducts);
-    //   }
-    // };
-    // window.IMP?.request_pay(data, callback);
   };
 
   return (
-    <PaymentBox>
-      <h2>결제를 진행중입니다</h2>
-      <h4>주문 내용과 금액을 확인해주세요</h4>
+    <NewModal
+      modalOptions={{ strech: false }}
+      Header={
+        <ModalHeader
+          title="결제를 진행중입니다"
+          subtitle="주문 내용과 금액을 확인해주세요"
+        />
+      }
+      Model={<PaymentModel orderList={orderList} />}
+      Buttons={
+        <ConfirmCancelButtons
+          cancelProps={{
+            onClick: () => setIsModal(false),
+            children: "취소하기"
+          }}
+          confirmProps={{ onClick: handlePayment, children: "결제하기" }}
+        />
+      }
+    />
+  );
+};
 
+export default ProceedPayment;
+
+const PaymentModel = ({ orderList }: { orderList: IOrderSelectedItem[] }) => {
+  return (
+    <PaymentBox>
       <p>주문 상품</p>
       {orderList.map((el) => (
         <MenuBox key={`${el.productId}${el.option}`}>
@@ -120,12 +119,6 @@ const ProceedPayment = ({
         {translateLocalCurrency(calculateTotalAmount(orderList, "totalPrice"))}
         원
       </h3>
-      <BtnGroup>
-        <ConfirmButton onClick={handlePayment}>결제하기</ConfirmButton>
-        <CancelButton onClick={() => setIsModal(false)}>취소하기</CancelButton>
-      </BtnGroup>
     </PaymentBox>
   );
 };
-
-export default ProceedPayment;
