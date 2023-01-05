@@ -8,17 +8,15 @@ import {
   MODAL_MESSAGE
 } from "../interface";
 import {
-  OrderModalContainer,
-  OrderModalWrapper,
   PriceContainer,
   ModalItemContainer,
-  MordalItem,
-  OrderStateContainer,
+  ModalItem,
   ButtonContainer
 } from "./styles";
 import { OrderStatusType } from "@/lib/generated/graphql";
 import { OrderStatusValue } from "@/lib/state/interface";
 import { useUpdateOrderStatus } from "../hooks";
+import { NewModal } from "../../Molecules";
 
 interface IOrderModalProps {
   orderId: string;
@@ -51,8 +49,8 @@ const OrderModal = ({
   };
 
   return (
-    <OrderModalContainer strach={true}>
-      <OrderModalWrapper>
+    <NewModal
+      Header={
         <div>
           <PriceContainer>
             <h1>주문번호 {selectOrder?.number}</h1>
@@ -66,15 +64,17 @@ const OrderModal = ({
           </PriceContainer>
           <p>{status && MODAL_MESSAGE[status]}</p>
         </div>
+      }
+      Model={
         <ModalItemContainer>
-          <MordalItem>
+          <ModalItem>
             <span>상품이름</span>
             <span>옵션</span>
             <span>주문 수량</span>
             <span>가격</span>
-          </MordalItem>
+          </ModalItem>
           {selectOrder?.orderProducts.map((value) => (
-            <MordalItem key={value?.id}>
+            <ModalItem key={value?.id}>
               <span>
                 <strong>{value?.productName}</strong>
               </span>
@@ -97,21 +97,22 @@ const OrderModal = ({
                   원
                 </strong>
               </span>
-            </MordalItem>
+            </ModalItem>
           ))}
         </ModalItemContainer>
-        <OrderStateContainer>
-          <ButtonContainer>
-            <button className="cancel-button" onClick={() => setIsModal(false)}>
-              돌아가기
-            </button>
-            <button className="confirm-button" onClick={updateOrderStatus}>
-              {status && CONFIRM_BUTTON_NAME[status]}
-            </button>
-          </ButtonContainer>
-        </OrderStateContainer>
-      </OrderModalWrapper>
-    </OrderModalContainer>
+      }
+      Buttons={
+        <ButtonContainer>
+          <button className="cancel-button" onClick={() => setIsModal(false)}>
+            돌아가기
+          </button>
+          <button className="confirm-button" onClick={updateOrderStatus}>
+            {status && CONFIRM_BUTTON_NAME[status]}
+          </button>
+        </ButtonContainer>
+      }
+      modalOptions={{ stretch: true }}
+    />
   );
 };
 
