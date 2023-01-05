@@ -98,7 +98,7 @@ const CloseStore = ({
           }}
         />
       }
-      modalOptions={{ strech: false }}
+      modalOptions={{ stretch: false }}
     />
   );
 };
@@ -130,7 +130,7 @@ const OpenStore = ({
           }}
         />
       }
-      modalOptions={{ strech: false }}
+      modalOptions={{ stretch: false }}
     />
   );
 };

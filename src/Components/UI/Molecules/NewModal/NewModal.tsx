@@ -7,18 +7,18 @@ export interface NewModalProps {
   Header?: React.ReactNode;
   Model?: React.ReactNode;
   Buttons?: React.ReactNode;
-  modalOptions: { strech: boolean };
+  modalOptions: { stretch: boolean };
 }
 
 const NewModal = ({
   Header,
   Model,
   Buttons,
-  modalOptions: { strech }
+  modalOptions: { stretch: strech }
 }: NewModalProps) => {
   return (
     <ModalDefaultWrapper>
-      <NewModalContainer modalOptions={{ strech }}>
+      <NewModalContainer modalOptions={{ stretch: strech }}>
         <div>{Header}</div>
         {Model ? <div>{Model}</div> : null}
         <div>{Buttons}</div>
