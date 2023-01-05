@@ -15,9 +15,11 @@ interface IStoreOpenModalProps {
   setIsToggleModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+type ButtonType = (e: React.MouseEvent<HTMLButtonElement>) => void;
+
 interface IStoreOpenCloseProps {
-  handleModal: () => void;
-  handleShopOpenState: () => void;
+  handleModal: ButtonType;
+  handleShopOpenState: ButtonType;
 }
 
 const StoreOpenCloseModal = ({
@@ -32,11 +34,13 @@ const StoreOpenCloseModal = ({
   const { confirm: toggleConfirm, setConfirm: setToggleConfirm } =
     useModalHook();
 
-  const handleModal = () => {
+  const handleModal = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
     setIsToggleModal(false);
   };
 
-  const handleShopOpenState = () => {
+  const handleShopOpenState = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
     setToggleConfirm(true);
     setIsToggleModal(false);
   };
