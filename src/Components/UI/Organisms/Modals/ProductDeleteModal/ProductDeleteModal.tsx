@@ -49,8 +49,8 @@ const DeleteModalChildren = ({ setIsModal }: IDeleteModalChildrenProps) => {
 
   const handleModal = () => {
     setSelectProduct([]);
-    setIsModal(false);
     setSelectOption({ options: "NONE" });
+    setIsModal(false);
   };
 
   const selectDeleteItemsSubmitHandler = () => {
