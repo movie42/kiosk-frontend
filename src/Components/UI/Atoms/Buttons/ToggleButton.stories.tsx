@@ -22,5 +22,5 @@ BasicToggle.args = {
 
 export const ToggleAction = ToggleButtonTemplate.bind({});
 ToggleAction.args = {
-  onClick: () => alert("done") // ?????
+  onClick: () => alert("done")
 };
