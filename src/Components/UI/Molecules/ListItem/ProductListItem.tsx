@@ -1,6 +1,6 @@
 import React from "react";
 import { MdCreate } from "react-icons/md";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { ToggleButton } from "@/Components/UI/Atoms";
@@ -27,7 +27,7 @@ interface IProductItemProps extends React.HTMLAttributes<HTMLLIElement> {
 const ProductListItem = ({ product }: IProductItemProps) => {
   const navigate = useNavigate();
   const { userId, storeId } = useParams();
-  const [{ options }, _] = useRecoilState(selectOptionState);
+  const { options } = useRecoilValue(selectOptionState);
 
   const [selectProducts, setSelectProducts] = useRecoilState(
     selectProductListState
