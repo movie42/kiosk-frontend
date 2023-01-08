@@ -1,11 +1,13 @@
-import React from "react";
 import { BasicSquareButton } from ".";
 
 export default {
   title: "BasicSquareButton",
-  component: BasicSquareButton
+  component: BasicSquareButton,
+  args: {
+    children: "Basic Button"
+  }
 };
 
-export const BasicSquareButtonTest = () => (
-  <BasicSquareButton>안녕</BasicSquareButton>
+export const BasicSquareButtonTest = (props: { children: string }) => (
+  <BasicSquareButton>{props.children}</BasicSquareButton>
 );
