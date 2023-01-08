@@ -29,7 +29,7 @@ export const NewModalContainer = styled.div<NewModalProps>`
   overflow-y: auto;
   padding: 0 2rem;
   ${(props) => {
-    if (props.modalOptions.strech) {
+    if (props.modalOptions.stretch) {
       return css`
         grid-template-rows: 1fr 2fr 0.5fr;
         height: 60rem;

@@ -8,11 +8,9 @@ import {
   SubTitle2
 } from "@/lib/styles/mixin";
 import BasicSquareButtonStyle from "@/Components/UI/Atoms/Buttons/BasicSquareButton";
-import Modal, { IModalProps } from "./Modal";
+import { IModalProps } from "./Modal";
 import { ModalStatusKey } from "../interface";
 import { OrderStatusType } from "@/lib/generated/graphql";
-
-export const OrderModalContainer = styled(Modal)``;
 
 export const OrderModalWrapper = styled.div`
   display: grid;
@@ -84,7 +82,7 @@ export const ModalItemContainer = styled.ul`
   }
 `;
 
-export const MordalItem = styled.li`
+export const ModalItem = styled.li`
   display: grid;
   align-items: center;
   padding-bottom: 1rem;

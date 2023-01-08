@@ -1,3 +1,3 @@
-export { default as MenuStatusBar } from "./MenuStatusBar";
+export { default as ProductDeleteStatusBar } from "./ProductDeleteStatusBar";
 
 export { default as StatusBar } from "./StatusBar";

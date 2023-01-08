@@ -27,7 +27,7 @@ const UpdateProductModal = ({
 
   return isModal ? (
     <NewModal
-      modalOptions={{ strech: false }}
+      modalOptions={{ stretch: false }}
       Header={<ModalHeader title="상품을 업데이트 하시겠습니까?" />}
       Buttons={
         <ConfirmCancelButtons

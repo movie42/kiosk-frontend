@@ -1,17 +1,28 @@
 import { BasicSquareButton, IconButton } from "@/Components/UI/Atoms/Buttons";
 import { OptionValue } from "@/lib/state";
-// import { Headline3 } from "@/lib/styles";
+
 import { motion, Variants } from "framer-motion";
 import styled from "styled-components";
 
-export const ItemWrapper = styled(motion.li)`
+export const ItemWrapper = styled.li`
   position: relative;
+  cursor: pointer;
 `;
 
 export const Item = styled(motion.div)<{
   selectOption?: OptionValue;
   selected?: boolean;
 }>`
+  .is-select {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: ${(props) =>
+      props.selected ? "unset" : props.theme.color.background80};
+    z-index: 11;
+  }
   .item-container {
     position: relative;
     cursor: pointer;
@@ -25,16 +36,7 @@ export const Item = styled(motion.div)<{
     border-radius: 0.4rem;
     text-decoration: none;
     color: ${(props) => props.theme.color.fontColorBlack};
-    .is-select {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: ${(props) =>
-        props.selected ? "unset" : props.theme.color.background80};
-      z-index: 11;
-    }
+
     .image-container {
       overflow: hidden;
       position: relative;

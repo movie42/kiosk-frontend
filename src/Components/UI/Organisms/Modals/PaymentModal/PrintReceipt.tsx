@@ -14,7 +14,7 @@ const PrintReceipt = ({ remain, handleReceipt }: ReceiptProps) => {
   return (
     <>
       <NewModal
-        modalOptions={{ strech: false }}
+        modalOptions={{ stretch: false }}
         Header={
           <ModalHeader
             title="결제가 완료되었습니다"

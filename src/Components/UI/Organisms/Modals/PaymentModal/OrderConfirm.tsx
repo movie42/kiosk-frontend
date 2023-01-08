@@ -24,7 +24,7 @@ const OrderConfirm = ({ orderNumber, userId, storeId }: ConfirmProps) => {
 
   return (
     <NewModal
-      modalOptions={{ strech: false }}
+      modalOptions={{ stretch: false }}
       Header={
         <ModalHeader
           title="주문이 완료되었습니다"
