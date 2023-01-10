@@ -1,17 +1,17 @@
 import { useEffect, useRef, useState } from "react";
 
 const useElementTopOffset = () => {
-  const elemetRef = useRef<HTMLDivElement>(null);
+  const elementRef = useRef<HTMLDivElement>(null);
   const [topOffset, setTopOffset] = useState<number>(0);
 
   useEffect(() => {
-    if (elemetRef.current) {
-      const offsetTop = elemetRef.current.offsetTop as number;
+    if (elementRef.current) {
+      const offsetTop = elementRef.current.offsetTop as number;
       setTopOffset(offsetTop);
     }
-  }, [elemetRef]);
+  }, [elementRef]);
 
-  return { elemetRef, topOffset };
+  return { elementRef, topOffset };
 };
 
 export default useElementTopOffset;

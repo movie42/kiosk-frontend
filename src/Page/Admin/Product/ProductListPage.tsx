@@ -24,6 +24,7 @@ const ProductListPage = () => {
   const { isLoading, data } = useGetProduct();
 
   const [{ options }, setSelectOption] = useRecoilState(selectOptionState);
+
   const handleDeleteItem = (option: OptionValue) => () => {
     setSelectOption({ options: option });
   };

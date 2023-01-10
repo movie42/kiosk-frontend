@@ -48,7 +48,7 @@ const StoreDeleteModal = ({
 
   return isDeleteModal ? (
     <NewModal
-      modalOptions={{ strech: false }}
+      modalOptions={{ stretch: false }}
       Header={
         <ModalHeader
           title="삭제하시겠습니까?"

@@ -47,7 +47,7 @@ const CreateProductModal = ({
           }}
         />
       }
-      modalOptions={{ strech: false }}
+      modalOptions={{ stretch: false }}
     />
   ) : null;
 };

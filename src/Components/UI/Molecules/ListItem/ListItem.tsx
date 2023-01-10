@@ -4,50 +4,51 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Images, Noimage } from "../../Atoms";
 import { translateLocalCurrency } from "@/lib/utils";
-import { boxVariants, imageBoxVariants, Item, ItemWrapper } from "./styles";
+import { imageBoxVariants, Item, ItemWrapper } from "./styles";
+import { OptionValue } from "@/lib/state";
 
-type ListProps = React.LiHTMLAttributes<HTMLLIElement>;
-
-interface ListItemProps extends ListProps {
+interface ListItemProps extends React.LiHTMLAttributes<HTMLLIElement> {
   itemId?: number;
   price?: number;
   name?: string;
   imageUrl?: string | null;
-  selectOption?: any;
-  selected?: any;
+  selected?: boolean;
   itemHandler?: any;
+  selectOption?: OptionValue;
 }
 
-const ListItem = ({ ...props }: ListItemProps) => {
+const ListItem = ({
+  itemId,
+  price,
+  name,
+  imageUrl,
+  selected,
+  itemHandler,
+  selectOption,
+  ...props
+}: ListItemProps) => {
   return (
-    <ItemWrapper
-      variants={boxVariants}
-      initial="init"
-      whileHover="hover"
-      onClick={props.onClick}
-    >
+    <ItemWrapper {...props}>
       {props.children}
-      {props.name && (
-        <Item data-id={props.itemId}>
+      {name && (
+        <Item data-id={itemId}>
+          {selectOption && selectOption !== "NONE" && !selected && (
+            <span className="is-select"></span>
+          )}
           <div className="item-container">
             <div className="image-container">
-              {/* {props.selectOption && props.selectOption.options !== "NONE" && (
-                <span className="is-select"></span>
-              )} */}
               <span className="transparent-box"></span>
-              {props.imageUrl ? (
+              {imageUrl ? (
                 <motion.div variants={imageBoxVariants} whileHover="hover">
-                  <Images src={props.imageUrl} alt={props.name} />
+                  <Images src={imageUrl} alt={name} />
                 </motion.div>
               ) : (
                 <Noimage />
               )}
             </div>
             <div className="item-info-container">
-              <h3>{props.name}</h3>
-              {props.price && (
-                <h4>{translateLocalCurrency(props.price, "ko-KR")}원</h4>
-              )}
+              <h3>{name}</h3>
+              {price && <h4>{translateLocalCurrency(price, "ko-KR")}원</h4>}
             </div>
           </div>
         </Item>

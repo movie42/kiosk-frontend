@@ -1,4 +1,4 @@
-export { MenuStatusBar, StatusBar } from "./Bar";
+export { ProductDeleteStatusBar as MenuStatusBar, StatusBar } from "./Bar";
 export { Nav } from "./Nav";
 export {
   Loading,

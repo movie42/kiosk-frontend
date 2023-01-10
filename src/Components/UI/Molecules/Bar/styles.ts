@@ -2,6 +2,7 @@ import { SubTitle1 } from "@/lib/styles";
 import styled from "styled-components";
 
 export const StatusContainer = styled.div`
+  z-index: 20;
   position: fixed;
   bottom: 0;
   left: 0;
@@ -12,7 +13,7 @@ export const StatusContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   border-top: 1px solid ${(props) => props.theme.color.gray300};
-
+  background-color: ${(props) => props.theme.color.background100};
   h3 {
     ${SubTitle1};
     color: ${(props) => props.theme.color.fontColorBlack};
