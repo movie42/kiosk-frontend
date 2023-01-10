@@ -1,9 +1,9 @@
 import { RecoilRoot } from "recoil";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import ManageOrderStatusButton from "./ManageOrderStatusButton";
+import ManageOrderStatusButton from "../ManageOrderStatusButton";
 
 export default {
-  title: "ManageOrderStatusButton",
+  title: "Atom/Button/ManageOrderStatusButton",
   component: ManageOrderStatusButton,
   args: {
     children: "Test",

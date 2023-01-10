@@ -1,8 +1,8 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import ToggleButton from "./ToggleButton";
+import ToggleButton from "../ToggleButton";
 
 export default {
-  title: "ToggleButton",
+  title: "Atom/Button/ToggleButton",
   component: ToggleButton,
   args: {
     isActive: true,

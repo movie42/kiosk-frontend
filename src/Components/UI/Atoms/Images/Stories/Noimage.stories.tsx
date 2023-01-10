@@ -1,8 +1,8 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import Noimage from "./Noimage";
+import Noimage from "../Noimage";
 
 export default {
-  title: "NoImage",
+  title: "Atom/Images/NoImage",
   component: Noimage
 } as ComponentMeta<typeof Noimage>;
 

@@ -1,7 +1,7 @@
-import { BasicSquareButton } from ".";
+import { BasicSquareButton } from "..";
 
 export default {
-  title: "BasicSquareButton",
+  title: "Atom/Button/BasicSquareButton",
   component: BasicSquareButton,
   args: {
     children: "Basic Button"

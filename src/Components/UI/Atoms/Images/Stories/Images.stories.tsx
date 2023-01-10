@@ -1,9 +1,9 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import Images from "./Images";
-import noimage from "./noimage.png";
+import Images from "../Images";
+import noimage from "../noimage.png";
 
 export default {
-  title: "Images",
+  title: "Atom/Images/Images",
   component: Images,
   args: {
     alt: "image"

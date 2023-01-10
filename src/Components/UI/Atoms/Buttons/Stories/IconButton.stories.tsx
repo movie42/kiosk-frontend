@@ -1,10 +1,10 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import styled from "styled-components";
 import { MdAddCircle } from "react-icons/md";
-import IconButton from "./IconButton";
+import IconButton from "../IconButton";
 
 export default {
-  title: "IconButton",
+  title: "Atom/Button/IconButton",
   component: IconButton,
   args: {
     ReactIcon: MdAddCircle,
