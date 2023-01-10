@@ -27,6 +27,7 @@ interface IProductItemProps extends React.HTMLAttributes<HTMLLIElement> {
 const ProductListItem = ({ product }: IProductItemProps) => {
   const navigate = useNavigate();
   const { userId, storeId } = useParams();
+  const { options } = useRecoilValue(selectOptionState);
 
   const [selectProducts, setSelectProducts] = useRecoilState(
     selectProductListState
@@ -43,7 +44,7 @@ const ProductListItem = ({ product }: IProductItemProps) => {
     );
   };
 
-  const handleSelectItem = (id: number) => () => {
+  const handleSelectItem = (id: number) => {
     const findSelectProduct = selectProducts.findIndex(
       (product) => product.id === id
     );
@@ -58,20 +59,24 @@ const ProductListItem = ({ product }: IProductItemProps) => {
     ]);
   };
 
-  const selectProduct = useRecoilValue(selectProductListState);
-  const selectOption = useRecoilValue(selectOptionState);
+  const handleItem = (id: number) => () => {
+    if (options === "DELETE") {
+      handleSelectItem(id);
+      return;
+    }
+    handleGoToProductDetail();
+  };
 
   return (
     <ListItem
       key={product.id}
-      onClick={handleGoToProductDetail}
       itemId={product.id}
+      onClick={handleItem(product.id)}
       name={product.name}
       price={product.price}
       imageUrl={product.imageUrl}
-      itemHandler={handleSelectItem(product.id)}
-      selectOption={selectOption.options}
-      selected={selectProduct.some((item) => item.id === product.id)}
+      selectOption={options}
+      selected={selectProducts.some((item) => item.id === product.id)}
     >
       <ListItemButtonContainer>
         <ProductToggleButton

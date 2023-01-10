@@ -78,7 +78,7 @@ const ProceedPayment = ({
 
   return (
     <NewModal
-      modalOptions={{ strech: false }}
+      modalOptions={{ stretch: false }}
       Header={
         <ModalHeader
           title="결제를 진행중입니다"

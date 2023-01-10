@@ -14,7 +14,7 @@ const handleMotionDiff = <TStart, TDiff>(start: TStart, ...rest: TDiff[]) => {
 
 const ManageOrderPage = () => {
   const { isLoading, isRefetching } = useGetOrder();
-  const { elemetRef, topOffset } = useElementTopOffset();
+  const { elementRef, topOffset } = useElementTopOffset();
 
   const { scrollY } = useViewportScroll();
 
@@ -42,7 +42,7 @@ const ManageOrderPage = () => {
       >
         <OptionsContainer />
       </OrderStateHeader>
-      <div ref={elemetRef}>
+      <div ref={elementRef}>
         <OptionsContainer />
       </div>
       <OrderStateContainer>

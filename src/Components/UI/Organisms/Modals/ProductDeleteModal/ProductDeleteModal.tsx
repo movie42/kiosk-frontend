@@ -13,7 +13,6 @@ import { useRemoveProductsMutation } from "@/lib/generated/graphql";
 import graphqlReqeustClient from "@/lib/graphqlRequestClient";
 import { LoadingBall, Images, Noimage } from "@/Components/UI/Atoms";
 import { CancelButton } from "../styles";
-import Modal from "../Modal";
 import {
   ButtonContainer,
   ConfirmButton,
@@ -22,6 +21,7 @@ import {
   ItemListContainer,
   ItemWrapper
 } from "./styles";
+import { ModalHeader, NewModal } from "@/Components/UI/Molecules";
 
 interface IDeleteModalChildrenProps {
   setIsModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -49,8 +49,8 @@ const DeleteModalChildren = ({ setIsModal }: IDeleteModalChildrenProps) => {
 
   const handleModal = () => {
     setSelectProduct([]);
-    setIsModal(false);
     setSelectOption({ options: "NONE" });
+    setIsModal(false);
   };
 
   const selectDeleteItemsSubmitHandler = () => {
@@ -71,6 +71,19 @@ const DeleteModalChildren = ({ setIsModal }: IDeleteModalChildrenProps) => {
     setFinalSelectedProduct((pre) => pre.filter((item) => item.id !== id));
   };
 
+  const deleteModalStatusMessage = () => {
+    if (!isSuccess) {
+      return "상품을 삭제하면 복구할 수 없습니다. 한 번 더 확인해주세요.";
+    }
+    if (isSendingItem) {
+      return `${finalSelectedProduct.length}개의 상품을 삭제하고 있습니다.`;
+    }
+
+    if (isSuccess && !isSendingItem) {
+      return "상품 삭제를 완료했습니다.";
+    }
+  };
+
   useEffect(() => {
     return () => {
       setSelectOption({ options: "NONE" });
@@ -86,80 +99,79 @@ const DeleteModalChildren = ({ setIsModal }: IDeleteModalChildrenProps) => {
   }, [isSuccess]);
 
   return (
-    <Modal>
-      <h1>삭제하기</h1>
-      {!isSuccess && (
-        <p>상품을 삭제하면 복구할 수 없습니다. 한 번 더 확인해주세요.</p>
-      )}
-      {isSendingItem && (
-        <p>{finalSelectedProduct.length}개의 상품을 삭제하고 있습니다.</p>
-      )}
-      {isSuccess && !isSendingItem && <p>상품 삭제를 완료했습니다.</p>}
-
-      <ItemWrapper>
-        <ItemListContainer>
-          {!isSuccess &&
-            !isSendingItem &&
-            selectProduct?.map((item) => (
-              <Item
-                key={item.id}
-                data-id={item.id}
-                onClick={() => checkBoxChangeHandler(item.id)}
-                selected={finalSelectedProduct?.some(
-                  (findItem) => findItem.id === item.id
-                )}
-              >
-                <span className="check-box"></span>
-                <div className="image-container">
-                  {item.imageUrl ? (
-                    <Images src={`${item.imageUrl}`} alt={item.name} />
-                  ) : (
-                    <Noimage />
+    <NewModal
+      modalOptions={{ stretch: true }}
+      Header={
+        <ModalHeader title="삭제하기" subtitle={deleteModalStatusMessage()} />
+      }
+      Model={
+        <ItemWrapper>
+          <ItemListContainer>
+            {!isSuccess &&
+              !isSendingItem &&
+              selectProduct?.map((item) => (
+                <Item
+                  key={item.id}
+                  data-id={item.id}
+                  onClick={() => checkBoxChangeHandler(item.id)}
+                  selected={finalSelectedProduct?.some(
+                    (findItem) => findItem.id === item.id
                   )}
-                </div>
-                <div className="item-info-container">
+                >
+                  <span className="check-box"></span>
+                  <div className="image-container">
+                    {item.imageUrl ? (
+                      <Images src={`${item.imageUrl}`} alt={item.name} />
+                    ) : (
+                      <Noimage />
+                    )}
+                  </div>
+                  <div className="item-info-container">
+                    <h3>{item.name}</h3>
+                    <p>
+                      {translateLocalCurrency(item.price, "ko-KR", {
+                        style: "currency",
+                        currency: "KRW"
+                      })}
+                    </p>
+                  </div>
+                </Item>
+              ))}
+            {isSendingItem &&
+              finalSelectedProduct.map((item) => (
+                <FinalItem key={item.id}>
                   <h3>{item.name}</h3>
-                  <p>
-                    {translateLocalCurrency(item.price, "ko-KR", {
-                      style: "currency",
-                      currency: "KRW"
-                    })}
-                  </p>
-                </div>
-              </Item>
-            ))}
-          {isSendingItem &&
-            finalSelectedProduct.map((item) => (
-              <FinalItem key={item.id}>
-                <h3>{item.name}</h3>
-              </FinalItem>
-            ))}
-          {isSuccess &&
-            !isSendingItem &&
-            finalSelectedProduct.map((item) => (
-              <FinalItem key={item.id}>
-                <h3>{item.name}</h3>
-              </FinalItem>
-            ))}
-        </ItemListContainer>
-      </ItemWrapper>
-      <ButtonContainer>
-        {!isSuccess && !isSendingItem && (
-          <>
-            <CancelButton onClick={handleModal}>돌아가기</CancelButton>
-            <ConfirmButton onClick={selectDeleteItemsSubmitHandler}>
-              삭제하기
+                </FinalItem>
+              ))}
+            {isSuccess &&
+              !isSendingItem &&
+              finalSelectedProduct.map((item) => (
+                <FinalItem key={item.id}>
+                  <h3>{item.name}</h3>
+                </FinalItem>
+              ))}
+          </ItemListContainer>
+        </ItemWrapper>
+      }
+      Buttons={
+        <ButtonContainer>
+          {!isSuccess && !isSendingItem && (
+            <>
+              <CancelButton onClick={handleModal}>돌아가기</CancelButton>
+              <ConfirmButton onClick={selectDeleteItemsSubmitHandler}>
+                삭제하기
+              </ConfirmButton>
+            </>
+          )}
+          {isSendingItem && <LoadingBall color="black" />}
+          {isSuccess && !isSendingItem && (
+            <ConfirmButton onClick={handleModal} isSuccess={isSuccess}>
+              완료하기
             </ConfirmButton>
-          </>
-        )}
-        {isSendingItem && <LoadingBall color="black" />}
-        {isSuccess && !isSendingItem && (
-          <ConfirmButton onClick={handleModal} isSuccess={isSuccess}>
-            완료하기
-          </ConfirmButton>
-        )}
-      </ButtonContainer>
-    </Modal>
+          )}
+        </ButtonContainer>
+      }
+    />
   );
 };
 
