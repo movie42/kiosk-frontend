@@ -18,7 +18,7 @@
 
 [build 이슈](https://github.com/movie42/kiosk-frontend/wiki/%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85/_edit#React-Build-%EC%9D%B4%ED%9B%84%EC%97%90-%ED%99%98%EA%B2%BD-%EB%B3%80%EC%88%98%EA%B0%92%EC%9D%B4-%EC%A0%81%EC%9A%A9%EB%90%98%EC%A7%80-%EC%95%8A%EB%8A%94-%EB%AC%B8%EC%A0%9C)로 어플리케이션의 주문과 사진 등록이 되지 않습니다.  
 더미 데이터가 등록된 아이디로 어플리케이션을 체험해볼 수 있습니다.  
-id : a@gmail.com  
+id : a@test.com  
 pw : 123qwe!@
 
 ## 📑 위키
